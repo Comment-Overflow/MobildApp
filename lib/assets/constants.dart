@@ -1,3 +1,6 @@
 class Constants {
-  static const pageSize = 8;
+  /// Default page size of pageable list.
+  static const defaultPageSize = 8;
+  /// Default padding of any card component.
+  static const defaultCardPadding = 16.0;
 }
