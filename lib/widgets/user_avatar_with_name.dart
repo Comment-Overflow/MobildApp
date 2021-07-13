@@ -2,25 +2,24 @@ import 'package:flutter/widgets.dart';
 import 'package:zhihu_demo/widgets/user_avatar.dart';
 
 class UserAvatarWithName extends StatelessWidget {
-
   final UserAvatar _userAvatar;
   final String _userName;
+
   /// Font size of user name
   final TextStyle? textStyle;
+
   /// Gap between avatar and user name.
   final double gap;
 
   UserAvatarWithName(
     this._userName,
     imageSize, {
-      Key? key,
-      image,
-      this.textStyle,
-      this.gap = 10.0,
-    }
-  ) : _userAvatar =
-    UserAvatar(imageSize, image: image),
-    super(key: key);
+    Key? key,
+    image,
+    this.textStyle,
+    this.gap = 10.0,
+  })  : _userAvatar = UserAvatar(imageSize, image: image),
+        super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -31,13 +30,12 @@ class UserAvatarWithName extends StatelessWidget {
         _userAvatar,
         SizedBox(width: this.gap),
         Expanded(
-          child: Text(
+            child: Text(
           _userName,
           style: this.textStyle,
           maxLines: 1,
           overflow: TextOverflow.ellipsis,
-          )
-        ),
+        )),
       ],
     );
   }

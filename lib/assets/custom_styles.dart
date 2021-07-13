@@ -13,4 +13,12 @@ class CustomStyles {
   static const postContentStyle = TextStyle(
     fontSize: 14,
   );
+
+  /// Default icon for reply with changeable size.
+  static Icon getDefaultReplyIcon({size = 14.0}) =>
+      Icon(Icons.chat_outlined, color: Colors.grey, size: size);
+
+  /// Default icon for thumb up.
+  static getDefaultThumbUpIcon({size = 14.0}) =>
+      Icon(Icons.favorite, color: Colors.pink[300], size: size);
 }

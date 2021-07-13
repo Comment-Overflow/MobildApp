@@ -1,11 +1,12 @@
 class Post {
 
-  final _title;
-  final _author;
-  final _content;
-  final _numOfApprovals;
-  final _numOfComments;
-  final _date;
+  final String _title;
+  final String _author;
+  final String _content;
+  final int _numOfApprovals;
+  final int _numOfComments;
+  final String _date;
+  final String? _firstImageUrl;
 
   get title => _title;
 
@@ -19,6 +20,8 @@ class Post {
 
   get date => _date;
 
+  get firstImageUrl => _firstImageUrl;
+
   Post(this._title, this._author, this._content, this._numOfApprovals,
-      this._numOfComments, this._date);
+      this._numOfComments, this._date, this._firstImageUrl);
 }
