@@ -18,7 +18,7 @@ class PostCardList extends StatefulWidget {
 class _PostCardListState extends State<PostCardList> {
 
   final PagingManager<Post> _pagingManager = PagingManager(
-      Constants.pageSize,
+      Constants.defaultPageSize,
       (page, pageSize) {
         return Future.delayed(
           const Duration(seconds: 1),

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:zhihu_demo/assets/constants.dart';
 import 'package:zhihu_demo/assets/custom_styles.dart';
 import 'package:zhihu_demo/model/post.dart';
 
@@ -18,7 +19,7 @@ class PostCard extends StatelessWidget {
       ),
       child: InkWell(
         child: Padding(
-          padding: EdgeInsets.all(16.0),
+          padding: EdgeInsets.all(Constants.defaultCardPadding),
           child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
