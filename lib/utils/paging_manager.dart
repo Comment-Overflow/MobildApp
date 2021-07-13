@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
 
 class PagingManager<T> {
@@ -9,12 +8,16 @@ class PagingManager<T> {
   PagingController(firstPageKey: 0);
   // _customApi must be wrapped with a function with parameters
   // (pageKey, pageSize), such as
+  //
+  // ```dart
   // (page, pageSize) => {
   //   getBooks(bookId: 0, page, pageSize);
   // }
+  // ```
   final _customFetchApi;
   // _customItemBuilder should be a function with parameters
   // (context, item, index), and must return a widget displayed as list item
+  // such as
   final _customItemBuilder;
 
   Future<void> _fetchPage(int pageKey) async {
