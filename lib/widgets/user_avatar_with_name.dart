@@ -6,7 +6,7 @@ class UserAvatarWithName extends StatelessWidget {
   final UserAvatar _userAvatar;
   final String _userName;
   /// Font size of user name
-  final double fontSize;
+  final TextStyle? textStyle;
   /// Gap between avatar and user name.
   final double gap;
 
@@ -15,7 +15,7 @@ class UserAvatarWithName extends StatelessWidget {
     imageSize, {
       Key? key,
       image,
-      this.fontSize = 16.0,
+      this.textStyle,
       this.gap = 10.0,
     }
   ) : _userAvatar =
@@ -25,16 +25,19 @@ class UserAvatarWithName extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Row(
+      mainAxisSize: MainAxisSize.max,
       crossAxisAlignment: CrossAxisAlignment.center,
       children: [
         _userAvatar,
         SizedBox(width: this.gap),
-        Text(
+        Expanded(
+          child: Text(
           _userName,
-          style: TextStyle(fontSize: fontSize),
+          style: this.textStyle,
           maxLines: 1,
           overflow: TextOverflow.ellipsis,
-        )
+          )
+        ),
       ],
     );
   }

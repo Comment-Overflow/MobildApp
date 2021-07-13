@@ -10,4 +10,7 @@ class CustomStyles {
     color: Colors.grey,
     fontSize: 13,
   );
+  static const postContentStyle = TextStyle(
+    fontSize: 14,
+  );
 }
