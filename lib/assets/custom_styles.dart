@@ -13,4 +13,17 @@ class CustomStyles {
   static const postContentStyle = TextStyle(
     fontSize: 14,
   );
+  static const commentContentStyle = TextStyle(
+    fontWeight: FontWeight.normal,
+    fontSize: 13,
+  );
+  static const dateStyle = TextStyle(
+    fontWeight: FontWeight.w300,
+    fontSize: 12,
+    color: Colors.grey,
+  );
+  static const floorStyle = TextStyle(
+    fontWeight: FontWeight.normal,
+    fontSize: 12,
+  );
 }
