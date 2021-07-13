@@ -3,6 +3,7 @@ import 'package:flutter/widgets.dart';
 import 'package:zhihu_demo/assets/constants.dart';
 import 'package:zhihu_demo/assets/custom_styles.dart';
 import 'package:zhihu_demo/model/post.dart';
+import 'package:zhihu_demo/widgets/user_avatar_with_name.dart';
 
 class PostCard extends StatelessWidget {
 
@@ -28,9 +29,11 @@ class PostCard extends StatelessWidget {
                   style: CustomStyles.postTitleStyle,
                 ),
                 _gap,
-                Text(
-                  _post.author,
-                ),
+                UserAvatarWithName(
+                    _post.author + _post.author,
+                    24.0,
+                    textStyle: CustomStyles.postContentStyle,
+                    gap: 7.0),
                 _gap,
                 Text(
                   _post.content,
