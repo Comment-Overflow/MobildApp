@@ -79,13 +79,13 @@ class PostCard extends StatelessWidget {
                     child: CustomStyles.getDefaultReplyIcon(),
                   ),
                   TextSpan(
-                    text: ' ${_post.numOfComments} · ',
+                    text: ' ${_post.commentCount} · ',
                   ),
                   WidgetSpan(
                     child: CustomStyles.getDefaultThumbUpIcon(),
                   ),
                   TextSpan(
-                    text: ' ${_post.numOfApprovals} · ${_post.date}',
+                    text: ' ${_post.approvalCount} · ${_post.date}',
                   ),
                 ],
                 style: CustomStyles.postFooterStyle,

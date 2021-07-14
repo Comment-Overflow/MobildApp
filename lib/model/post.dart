@@ -3,8 +3,8 @@ class Post {
   final String _title;
   final String _author;
   final String _content;
-  final int _numOfApprovals;
-  final int _numOfComments;
+  final int _approvalCount;
+  final int _commentCount;
   final String _date;
   final String? _firstImageUrl;
 
@@ -14,14 +14,14 @@ class Post {
 
   get content => _content;
 
-  get numOfApprovals => _numOfApprovals;
+  get approvalCount => _approvalCount;
 
-  get numOfComments => _numOfComments;
+  get commentCount => _commentCount;
 
   get date => _date;
 
   get firstImageUrl => _firstImageUrl;
 
-  Post(this._title, this._author, this._content, this._numOfApprovals,
-      this._numOfComments, this._date, this._firstImageUrl);
+  Post(this._title, this._author, this._content, this._approvalCount,
+      this._commentCount, this._date, this._firstImageUrl);
 }
