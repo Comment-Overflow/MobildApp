@@ -6,8 +6,10 @@ import 'package:zhihu_demo/model/post.dart';
 import 'package:zhihu_demo/widgets/user_avatar_with_name.dart';
 
 class PostCard extends StatelessWidget {
-  final Post _post;
+
+  /// Vertical gap between rows.
   static const _gap = const SizedBox(height: 5.0);
+  final Post _post;
 
   const PostCard(this._post, {Key? key}) : super(key: key);
 
