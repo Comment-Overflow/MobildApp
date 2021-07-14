@@ -37,3 +37,9 @@ final quotes = List<Quote>.filled(
   Quote(_author, _content),
   growable: true,
 );
+
+final comments = List<Comment>.filled(
+  10,
+  _noneComment,
+  growable: true,
+);
