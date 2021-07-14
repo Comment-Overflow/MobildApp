@@ -2,7 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:fsearch/fsearch.dart';
 import 'package:zhihu_demo/assets/custom_colors.dart';
+import 'package:zhihu_demo/fake_data/fake_data.dart';
 import 'package:zhihu_demo/widgets/post_card_list.dart';
+import 'package:zhihu_demo/widgets/reference_card.dart';
 
 
 class HomePage extends StatelessWidget {
@@ -32,7 +34,7 @@ class HomePage extends StatelessWidget {
                     corner: FSearchCorner.all(18.0),
                     backgroundColor: CustomColors.lightGrey,
                     style: TextStyle(
-                        fontSize: 16.0, height: 1.2, color: Color(0xff333333)),
+                      fontSize: 16.0, height: 1.2, color: Color(0xff333333)),
                     margin: EdgeInsets.only(left: 6.0),
                     prefixes: [
                       const SizedBox(width: 10.0),
@@ -52,8 +54,8 @@ class HomePage extends StatelessWidget {
                 SizedBox(width: 15.0),
                 ConstrainedBox(
                   constraints: BoxConstraints.tightFor(
-                      width: _searchbarHeight,
-                      height: _searchbarHeight
+                    width: _searchbarHeight,
+                    height: _searchbarHeight
                   ),
                   child: ElevatedButton(
                     onPressed: () {},
@@ -79,7 +81,7 @@ class HomePage extends StatelessWidget {
               child: PostCardList(),
               removeTop: true,
             ),
-            Text('推荐'),
+            QuoteCard(quotes[0]),
             Text('热榜'),
           ],
         ),

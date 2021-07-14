@@ -53,3 +53,4 @@ pubspec.lock
 /ios/Runner.xcodeproj/project.pbxproj
 /ios/Runner/Runner.entitlements
 /ios/build
+/ios/Podfile

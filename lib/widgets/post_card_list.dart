@@ -3,7 +3,7 @@ import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:zhihu_demo/assets/constants.dart';
-import 'package:zhihu_demo/fake_data/posts.dart';
+import 'package:zhihu_demo/fake_data/fake_data.dart';
 import 'package:zhihu_demo/model/post.dart';
 import 'package:zhihu_demo/utils/paging_manager.dart';
 import 'package:zhihu_demo/widgets/post_card.dart';
