@@ -7,7 +7,7 @@ class Comment {
   final UserInfo user;
   final String _content;
   final DateTime _time;
-  final Quote _quote;
+  final Quote? _quote;
   final int _floor;
   int _approvalCount;
   final ApprovalStatus _approvalStatus;
@@ -16,7 +16,7 @@ class Comment {
   String get content => _content;
   DateTime get time => _time;
   String get timeString => DateFormat("yyyy-MM-dd").format(_time);
-  Quote get quote => _quote;
+  Quote? get quote => _quote;
   int get floor => _floor;
   String get floorString => _floor.toString();
   int get approvalCount => _approvalCount;

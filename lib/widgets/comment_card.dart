@@ -2,10 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:zhihu_demo/assets/constants.dart';
 import 'package:zhihu_demo/model/comment.dart';
 import 'package:zhihu_demo/assets/custom_styles.dart';
+import 'package:zhihu_demo/widgets/reference_card.dart';
 import 'package:zhihu_demo/widgets/user_avatar_with_name.dart';
 
 class CommentCard extends StatefulWidget {
-
   final Comment _comment;
 
   const CommentCard(this._comment, {Key? key}) : super(key: key);
@@ -55,8 +55,14 @@ class _CommentCardState extends State<CommentCard> {
                   ),
                 ],
               ),
-              _gap,
-              //QuoteWidget(widget._comment.quote),
+              widget._comment.quote == null
+                  ? SizedBox.shrink()
+                  : Row(
+                      children: [
+                        _gap,
+                        QuoteCard(widget._comment.quote),
+                      ],
+                    ),
               _gap,
               RichText(
                 text: TextSpan(text: widget._comment.content),
@@ -65,19 +71,17 @@ class _CommentCardState extends State<CommentCard> {
               Row(
                 children: [
                   Expanded(
-                    child: IconButton(
-                      icon: Icon(liked ? Icons.favorite_border : Icons.favorite),
-                      onPressed: _pushLike,
-                      alignment: Alignment.centerRight,
-                    )
-                  ),
+                      child: IconButton(
+                    icon: Icon(liked ? Icons.favorite_border : Icons.favorite),
+                    onPressed: _pushLike,
+                    alignment: Alignment.centerRight,
+                  )),
                   Expanded(
-                    child: IconButton(
-                      icon: Icon(Icons.comment_outlined),
-                      onPressed: _pushComment,
-                      alignment: Alignment.centerRight,
-                    )
-                  )
+                      child: IconButton(
+                    icon: Icon(Icons.comment_outlined),
+                    onPressed: _pushComment,
+                    alignment: Alignment.centerRight,
+                  ))
                 ],
               )
             ],
@@ -96,5 +100,6 @@ class _CommentCardState extends State<CommentCard> {
       widget._comment.addApprovals();
     }
   }
+
   void _pushComment() {}
 }
