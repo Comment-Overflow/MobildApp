@@ -10,7 +10,7 @@ class Comment {
   final Quote? _quote;
   final int _floor;
   int _approvalCount;
-  final ApprovalStatus _approvalStatus;
+  ApprovalStatus _approvalStatus;
   List<String> _imageUrl;
 
   String get content => _content;
@@ -26,6 +26,29 @@ class Comment {
   Comment(this.user, this._content, this._time, this._quote, this._floor,
       this._approvalCount, this._approvalStatus, this._imageUrl);
 
-  void addApprovals() => ++_approvalCount;
-  void subApprovals() => --_approvalCount;
+  void addApprovals() {
+    ++_approvalCount;
+    switch (_approvalStatus) {
+      case ApprovalStatus.approve: break;
+      case ApprovalStatus.disapprove:
+        _approvalStatus = ApprovalStatus.none;
+        break;
+      case ApprovalStatus.none:
+        _approvalStatus = ApprovalStatus.approve;
+        break;
+    }
+  }
+
+  void subApprovals() {
+    --_approvalCount;
+    switch (_approvalStatus) {
+      case ApprovalStatus.disapprove: break;
+      case ApprovalStatus.approve:
+        _approvalStatus = ApprovalStatus.none;
+        break;
+      case ApprovalStatus.none:
+        _approvalStatus = ApprovalStatus.disapprove;
+        break;
+    }
+  }
 }

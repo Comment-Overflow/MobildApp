@@ -16,7 +16,6 @@ class CommentCard extends StatefulWidget {
 
 class _CommentCardState extends State<CommentCard> {
   static const _gap = const SizedBox(height: 5.0);
-  var liked = false;
 
   @override
   Widget build(BuildContext context) {
@@ -48,7 +47,7 @@ class _CommentCardState extends State<CommentCard> {
                   ),
                   Expanded(
                     child: Text(
-                      widget._comment.floorString,
+                      widget._comment.floorString + '楼',
                       style: CustomStyles.floorStyle,
                       textAlign: TextAlign.right,
                     ),
@@ -65,23 +64,37 @@ class _CommentCardState extends State<CommentCard> {
                     ),
               _gap,
               RichText(
-                text: TextSpan(text: widget._comment.content),
+                text: TextSpan(
+                  text: widget._comment.content,
+                  style: CustomStyles.commentContentStyle,
+                ),
               ),
               _gap,
               Row(
+                mainAxisSize: MainAxisSize.min,
+                mainAxisAlignment: MainAxisAlignment.end,
                 children: [
-                  Expanded(
-                      child: IconButton(
-                    icon: Icon(liked ? Icons.favorite_border : Icons.favorite),
+                  IconButton(
+                    icon: CustomStyles.getDefaultDeleteIcon(),
+                    onPressed: () => {},
+                  ),
+                  IconButton(
+                    icon: widget._comment.approvalStatus == ApprovalStatus.approve
+                        ? CustomStyles.getDefaultThumbUpIcon()
+                        : CustomStyles.getDefaultNotThumbUpIcon(),
                     onPressed: _pushLike,
-                    alignment: Alignment.centerRight,
-                  )),
-                  Expanded(
-                      child: IconButton(
-                    icon: Icon(Icons.comment_outlined),
-                    onPressed: _pushComment,
-                    alignment: Alignment.centerRight,
-                  ))
+                  ),
+                  Text(widget._comment.approvalCount.toString()),
+                  IconButton(
+                    icon: widget._comment.approvalStatus == ApprovalStatus.disapprove
+                        ? CustomStyles.getDefaultThumbDownIcon()
+                        : CustomStyles.getDefaultNotThumbDownIcon(),
+                    onPressed: _pushDislike,
+                  ),
+                  IconButton(
+                    icon: CustomStyles.getDefaultReplyIcon(),
+                    onPressed: _pushReply,
+                  )
                 ],
               )
             ],
@@ -92,14 +105,30 @@ class _CommentCardState extends State<CommentCard> {
   }
 
   void _pushLike() {
-    if (liked) {
-      liked = false;
-      widget._comment.subApprovals();
-    } else {
-      liked = true;
-      widget._comment.addApprovals();
+    switch (widget._comment.approvalStatus) {
+      case ApprovalStatus.none:
+        widget._comment.addApprovals();
+        break;
+      case ApprovalStatus.approve:
+        widget._comment.subApprovals();
+        break;
+      case ApprovalStatus.disapprove:
+        break;
     }
   }
 
-  void _pushComment() {}
+  void _pushDislike() {
+    switch (widget._comment.approvalStatus) {
+      case ApprovalStatus.none:
+        widget._comment.subApprovals();
+        break;
+      case ApprovalStatus.disapprove:
+        widget._comment.addApprovals();
+        break;
+      case ApprovalStatus.approve:
+        break;
+    }
+  }
+
+  void _pushReply() {}
 }
