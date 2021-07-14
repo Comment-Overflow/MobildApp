@@ -14,6 +14,19 @@ class CustomStyles {
     fontSize: 14.0,
   );
 
+  static const commentContentStyle = TextStyle(
+    fontWeight: FontWeight.normal,
+    fontSize: 13,
+  );
+  static const dateStyle = TextStyle(
+    fontWeight: FontWeight.w300,
+    fontSize: 12,
+    color: Colors.grey,
+  );
+  static const floorStyle = TextStyle(
+    fontWeight: FontWeight.normal,
+    fontSize: 12,
+  );
   /// Default icon for reply with changeable size.
   static Icon getDefaultReplyIcon({size = 14.0}) =>
       Icon(Icons.chat_outlined, color: Colors.grey, size: size);
