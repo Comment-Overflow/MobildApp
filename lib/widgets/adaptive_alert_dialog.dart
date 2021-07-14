@@ -3,22 +3,23 @@ import 'dart:io';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
-class CrossPlatformAlertDialog extends StatelessWidget {
+
+class AdaptiveAlertDialog extends StatelessWidget {
 
   final String? _titleText;
   final String? _contentText;
-  final String _approveText;
-  final String _disapproveText;
-  final VoidCallback _approveCallback;
-  final VoidCallback _disapproveCallback;
+  final String _okLabel;
+  final String _cancelLabel;
+  final VoidCallback _okCallback;
+  final VoidCallback _cancelCallback;
 
-  const CrossPlatformAlertDialog(
+  const AdaptiveAlertDialog(
     this._titleText,
     this._contentText,
-    this._approveText,
-    this._disapproveText,
-    this._approveCallback,
-    this._disapproveCallback,
+    this._okLabel,
+    this._cancelLabel,
+    this._okCallback,
+    this._cancelCallback,
     {Key? key}
   ) : super(key: key);
 
@@ -28,12 +29,12 @@ class CrossPlatformAlertDialog extends StatelessWidget {
     Text? title = _titleText != null ?  Text(_titleText!) : null;
     Text? content = _contentText != null ? Text(_contentText!) : null;
     Widget androidApproveButton = TextButton(
-      onPressed: _approveCallback,
-      child: Text(_approveText)
+      onPressed: _okCallback,
+      child: Text(_okLabel)
     );
     Widget androidDisapproveButton = TextButton(
-        onPressed: _disapproveCallback,
-        child: Text(_disapproveText)
+        onPressed: _cancelCallback,
+        child: Text(_cancelLabel)
     );
 
     if (Platform.isIOS) {
@@ -44,12 +45,12 @@ class CrossPlatformAlertDialog extends StatelessWidget {
         ),
         actions: <Widget>[
           CupertinoDialogAction(
-            onPressed: _approveCallback,
-            child: Text(_approveText),
+            onPressed: _okCallback,
+            child: Text(_okLabel),
           ),
           CupertinoDialogAction(
-            onPressed: _disapproveCallback,
-            child: Text(_disapproveText),
+            onPressed: _cancelCallback,
+            child: Text(_cancelLabel),
             isDestructiveAction: true,
           ),
         ],
@@ -62,12 +63,12 @@ class CrossPlatformAlertDialog extends StatelessWidget {
         ),
         actions: <Widget>[
           TextButton(
-            onPressed: _approveCallback,
-            child: Text(_approveText),
+            onPressed: _okCallback,
+            child: Text(_okLabel),
           ),
           TextButton(
-            onPressed: _disapproveCallback,
-            child: Text(_disapproveText),
+            onPressed: _cancelCallback,
+            child: Text(_cancelLabel),
           ),
         ],
       );
