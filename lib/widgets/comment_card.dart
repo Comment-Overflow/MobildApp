@@ -33,18 +33,18 @@ class _CommentCardState extends State<CommentCard> {
               Row(
                 children: [
                   Expanded(
-                      child: UserAvatarWithName(
-                        widget._comment.user.userName,
-                        Constants.defaultAvatarInCommentSize,
-                        image: widget._comment.user.userAvatarImageProvider,
-                      ),
+                    child: UserAvatarWithName(
+                      widget._comment.user.userName,
+                      Constants.defaultAvatarInCommentSize,
+                      image: widget._comment.user.userAvatarImageProvider,
+                    ),
                   ),
                   Expanded(
-                      child: Text(
-                        widget._comment.date,
-                        style: CustomStyles.dateStyle,
-                        textAlign: TextAlign.right,
-                      )
+                    child: Text(
+                      widget._comment.date,
+                      style: CustomStyles.dateStyle,
+                      textAlign: TextAlign.right,
+                    ),
                   ),
                   Expanded(
                     child: Text(
@@ -52,31 +52,31 @@ class _CommentCardState extends State<CommentCard> {
                       style: CustomStyles.floorStyle,
                       textAlign: TextAlign.right,
                     ),
-                  )
+                  ),
                 ],
               ),
               _gap,
               //QuoteWidget(widget._comment.quote),
               _gap,
               RichText(
-                  text: widget._comment.content
+                text: widget._comment.content
               ),
               _gap,
               Row(
                 children: [
                   Expanded(
-                      child: IconButton(
-                        icon: Icon(liked ? Icons.favorite_border : Icons.favorite),
-                        onPressed: _pushLike,
-                        alignment: Alignment.centerRight,
-                      )
+                    child: IconButton(
+                      icon: Icon(liked ? Icons.favorite_border : Icons.favorite),
+                      onPressed: _pushLike,
+                      alignment: Alignment.centerRight,
+                    )
                   ),
                   Expanded(
-                      child: IconButton(
-                        icon: Icon(Icons.comment_outlined),
-                        onPressed: _pushComment,
-                        alignment: Alignment.centerRight,
-                  )
+                    child: IconButton(
+                      icon: Icon(Icons.comment_outlined),
+                      onPressed: _pushComment,
+                      alignment: Alignment.centerRight,
+                    )
                   )
                 ],
               )
