@@ -11,6 +11,10 @@ const _content =
 
 final _date = DateTime(2020);
 final UserInfo _userInfo = UserInfo(0, "Gun9niR", "http://img8.zol.com.cn/bbs/upload/23765/23764201.jpg");
+final UserCardInfo _userCardInfo = UserCardInfo(
+    _userInfo.userId, _userInfo.userName, _userInfo.avatarUrl,
+    "This is a long long long long long long long long long long long description", 
+    12, 23567, FollowStatus.followedByMe);
 final Quote _quote = Quote("Gun9niR", _content);
 final Comment _approvedComment = Comment(_userInfo, _content, _date, _quote, 0, 500, ApprovalStatus.approve, []);
 final Comment _disapprovedComment = Comment(_userInfo, _content, _date, _quote, 0, 500, ApprovalStatus.approve, ["http://img8.zol.com.cn/bbs/upload/23765/23764201.jpg", "https://images.unsplash.com/photo-1526512340740-9217d0159da9?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=2677&q=80"]);
@@ -37,3 +41,36 @@ final quotes = List<Quote>.filled(
   Quote(_author, _content),
   growable: true,
 );
+
+final users = List<UserCardInfo>.filled(
+  2,
+  UserCardInfo(
+      _userInfo.userId, "江湖骗子", _userInfo.avatarUrl,
+      "This is a long long long long long long long long long long long description",
+      12, 23567, FollowStatus.followedByMe,),
+  growable: true,
+)
+  ..addAll(List<UserCardInfo>.filled(
+    2,
+    UserCardInfo(
+        _userInfo.userId, "很长很长很长很长很长很长的用户名", _userInfo.avatarUrl,
+        "这是一段很长很长很长很长很长很长很长很长很长很长很长很长很长很长的个人描述",
+        12, 23567, FollowStatus.followingMe,),
+    growable: true,
+  ))
+  ..addAll(List<UserCardInfo>.filled(
+    2,
+    UserCardInfo(
+        _userInfo.userId, "xx01cyx", _userInfo.avatarUrl,
+        "This is a long long long long long long long long long long long description",
+        12, 23567, FollowStatus.both,),
+    growable: true,
+  ))
+  ..addAll(List<UserCardInfo>.filled(
+    2,
+    UserCardInfo(
+        _userInfo.userId, _userInfo.userName, _userInfo.avatarUrl,
+        "This is a long long long long long long long long long long long description",
+        12, 23567, FollowStatus.none,),
+    growable: true,
+  ));

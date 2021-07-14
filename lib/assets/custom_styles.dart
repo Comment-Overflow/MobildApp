@@ -1,5 +1,7 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:cupertino_icons/cupertino_icons.dart';
 
 class CustomStyles {
   static const postTitleStyle = TextStyle(
@@ -32,8 +34,24 @@ class CustomStyles {
       Icon(Icons.chat_outlined, color: Colors.grey, size: size);
 
   /// Default icon for thumb up.
-  static getDefaultThumbUpIcon({size = 14.0}) =>
+  static Icon getDefaultThumbUpIcon({size = 14.0}) =>
       Icon(Icons.favorite, color: Colors.pink[300], size: size);
+
+  /// Default icon for plus.
+  static Icon getDefaultPlusIcon({size = 18.0}) =>
+      Icon(Icons.add, color: Colors.blue, size: size);
+
+  /// Default icon for tick.
+  static Icon getDefaultTickIcon({size = 18.0}) =>
+      Icon(Icons.check, color: Colors.white, size: size);
+
+  /// Default icon for bidirectional following relationship.
+  static Icon getDefaultBidirectionalFollowIcon({size = 16.0}) =>
+      Icon(CupertinoIcons.arrow_right_arrow_left, color: Colors.white, size: size);
+
+  /// Default icon for followers.
+  static Icon getDefaultFollowerIcon({size = 14.0}) =>
+      Icon(Icons.people_alt, color: Colors.grey, size: size);
 
   static const referenceUserNameStyle = TextStyle(
     fontWeight: FontWeight.bold,
