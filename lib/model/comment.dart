@@ -6,7 +6,7 @@ class Comment {
   final _quote;
   final _date;
   final _floor;
-  num _numOfApprovals;
+  int _approvalCount;
 
   get user => _user;
   get content => _content;
@@ -14,11 +14,11 @@ class Comment {
   get date => _date;
   get floor => _floor;
 
-  num get numOfApprovals => _numOfApprovals;
+  int get approvalCount => _approvalCount;
 
-  void addApprovals() => _numOfApprovals++;
-  void subApprovals() => _numOfApprovals--;
+  void addApprovals() => _approvalCount++;
+  void subApprovals() => _approvalCount--;
 
   Comment(this._user, this._content, this._quote, this._date,
-      this._floor, this._numOfApprovals);
+      this._floor, this._approvalCount);
 }

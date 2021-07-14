@@ -26,7 +26,7 @@ class _CommentCardState extends State<CommentCard> {
       ),
       child: InkWell(
         child: Padding(
-          padding: EdgeInsets.all(16.0),
+          padding: EdgeInsets.all(Constants.defaultCardPadding),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [

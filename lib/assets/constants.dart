@@ -4,5 +4,5 @@ class Constants {
   /// Default padding of any card component.
   static const defaultCardPadding = 16.0;
   /// Default size of Avatar in commentCard.
-  static const defaultAvatarInCommentSize = 20.0;
+  static const defaultAvatarInCommentSize = 24.0;
 }
