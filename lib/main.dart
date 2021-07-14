@@ -1,7 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:zhihu_demo/utils/route_generator.dart';
 
 void main() {
+  // Disable landscape mode.
+  WidgetsFlutterBinding.ensureInitialized();
+  SystemChrome.setPreferredOrientations(
+      [DeviceOrientation.portraitUp, DeviceOrientation.portraitDown]);
+
   runApp(ZhiHu());
 }
 
@@ -20,4 +26,3 @@ class ZhiHu extends StatelessWidget {
     );
   }
 }
-
