@@ -50,4 +50,7 @@ pubspec.lock
 
 # IOS signing configuration
 /ios/Runner.xcworkspace
+/ios/Runner.xcodeproj/project.pbxproj
+/ios/Runner/Runner.entitlements
+/ios/Podfile
 
