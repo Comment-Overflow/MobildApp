@@ -36,19 +36,19 @@ class _CommentCardState extends State<CommentCard> {
                     child: UserAvatarWithName(
                       widget._comment.user.userName,
                       Constants.defaultAvatarInCommentSize,
-                      image: widget._comment.user.userAvatarImageProvider,
+                      image: NetworkImage(widget._comment.user.avatarUrl),
                     ),
                   ),
                   Expanded(
                     child: Text(
-                      widget._comment.date,
+                      widget._comment.timeString,
                       style: CustomStyles.dateStyle,
                       textAlign: TextAlign.right,
                     ),
                   ),
                   Expanded(
                     child: Text(
-                      widget._comment.floor,
+                      widget._comment.floorString,
                       style: CustomStyles.floorStyle,
                       textAlign: TextAlign.right,
                     ),
@@ -59,7 +59,7 @@ class _CommentCardState extends State<CommentCard> {
               //QuoteWidget(widget._comment.quote),
               _gap,
               RichText(
-                text: widget._comment.content
+                text: TextSpan(text: widget._comment.content),
               ),
               _gap,
               Row(

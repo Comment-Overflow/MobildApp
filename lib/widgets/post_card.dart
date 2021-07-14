@@ -17,11 +17,11 @@ class PostCard extends StatelessWidget {
   Widget build(BuildContext context) {
     final userAndContentColumn = Column(
       children: [
-        UserAvatarWithName(_post.author + _post.author, 24.0,
+        UserAvatarWithName(_post.commentToDisplay.user.userName, 24.0,
             textStyle: CustomStyles.postContentStyle, gap: 7.0),
         _gap,
         Text(
-          _post.content,
+          _post.commentToDisplay.content,
           maxLines: 3,
           overflow: TextOverflow.ellipsis,
         ),
@@ -30,7 +30,7 @@ class PostCard extends StatelessWidget {
 
     /// If the post contains an images, display the first on the left, taking up
     /// 3/4 of the entire width.
-    final userAndContentColumnWithImage = _post.firstImageUrl != null
+    final userAndContentColumnWithImage = _post.commentToDisplay.imageUrl.isNotEmpty
         ? IntrinsicHeight(
             child: Row(children: [
             Expanded(
@@ -48,7 +48,7 @@ class PostCard extends StatelessWidget {
                   child: ClipRRect(
                     borderRadius: BorderRadius.circular(8.0),
                     child: Image.network(
-                      _post.firstImageUrl,
+                      _post.commentToDisplay.imageUrl[0],
                       fit: BoxFit.cover,
                     ),
                   )),
@@ -85,7 +85,7 @@ class PostCard extends StatelessWidget {
                     child: CustomStyles.getDefaultThumbUpIcon(),
                   ),
                   TextSpan(
-                    text: ' ${_post.approvalCount} · ${_post.date}',
+                    text: ' ${_post.approvalCount} · ${_post.commentToDisplay.timeString}',
                   ),
                 ],
                 style: CustomStyles.postFooterStyle,

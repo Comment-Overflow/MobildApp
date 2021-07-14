@@ -6,3 +6,14 @@ class Constants {
   /// Default size of Avatar in commentCard.
   static const defaultAvatarInCommentSize = 24.0;
 }
+
+enum FollowStatus {
+  none, followedByMe, followingMe, both,
+}
+enum Sex {
+  male, female,
+}
+
+enum ApprovalStatus {
+  none, approve, disapprove,
+}

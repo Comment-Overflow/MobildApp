@@ -81,7 +81,7 @@ class HomePage extends StatelessWidget {
               child: PostCardList(),
               removeTop: true,
             ),
-            ReferenceCard(references[0]),
+            QuoteCard(quotes[0]),
             Text('热榜'),
           ],
         ),

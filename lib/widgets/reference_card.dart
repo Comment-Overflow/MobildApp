@@ -4,14 +4,13 @@ import 'package:zhihu_demo/assets/constants.dart';
 import 'package:zhihu_demo/assets/custom_colors.dart';
 import 'package:zhihu_demo/assets/custom_styles.dart';
 
-class ReferenceCard extends StatelessWidget {
-
+class QuoteCard extends StatelessWidget {
   /// Vertical gap between rows.
   static const _gap = const SizedBox(height: 5.0);
 
-  final _reference;
+  final _quote;
 
-  const ReferenceCard(this._reference, {Key? key}) : super(key: key);
+  const QuoteCard(this._quote, {Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -26,14 +25,14 @@ class ReferenceCard extends StatelessWidget {
           mainAxisSize: MainAxisSize.min,
           children: [
             Text(
-              this._reference.userName,
+              this._quote.userName,
               style: CustomStyles.referenceUserNameStyle,
               maxLines: 1,
               overflow: TextOverflow.ellipsis,
             ),
             _gap,
             Text(
-              this._reference.content,
+              this._quote.content,
               style: CustomStyles.referenceContentStyle,
               maxLines: 2,
               overflow: TextOverflow.ellipsis,

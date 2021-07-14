@@ -1,4 +1,4 @@
-class Reference {
+class Quote {
   final String _userName;
   final String _content;
 
@@ -6,5 +6,5 @@ class Reference {
 
   String get content => _content;
 
-  Reference(this._userName, this._content);
+  Quote(this._userName, this._content);
 }

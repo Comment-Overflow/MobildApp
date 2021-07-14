@@ -1,27 +1,19 @@
+import 'package:zhihu_demo/model/comment.dart';
+
 class Post {
-
+  final int _postId;
   final String _title;
-  final String _author;
-  final String _content;
-  final int _approvalCount;
   final int _commentCount;
-  final String _date;
-  final String? _firstImageUrl;
+  final int _approvalCount;
+  // Depending on whether the comment is displayed as post or comment.
+  final Comment _commentToDisplay;
 
-  get title => _title;
+  int get postId => _postId;
+  String get title => _title;
+  int get commentCount => _commentCount;
+  int get approvalCount => _approvalCount;
+  Comment get commentToDisplay => _commentToDisplay;
 
-  get author => _author;
-
-  get content => _content;
-
-  get approvalCount => _approvalCount;
-
-  get commentCount => _commentCount;
-
-  get date => _date;
-
-  get firstImageUrl => _firstImageUrl;
-
-  Post(this._title, this._author, this._content, this._approvalCount,
-      this._commentCount, this._date, this._firstImageUrl);
+  Post(this._postId, this._title, this._commentCount, this._approvalCount,
+      this._commentToDisplay);
 }
