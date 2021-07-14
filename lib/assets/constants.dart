@@ -6,7 +6,7 @@ class Constants {
   /// Default size height of a user card.
   static const defaultUserCardHeight = 100.0;
   /// Default padding of a button.
-  static const defaultButtonPadding = 5.0;
+  static const defaultButtonPaddinqg = 5.0;
   /// Default size of Avatar in commentCard.
   static const defaultAvatarInCommentSize = 24.0;
 }

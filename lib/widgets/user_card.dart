@@ -1,17 +1,21 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:zhihu_demo/assets/constants.dart';
-import 'package:zhihu_demo/model/combined_user.dart';
+import 'package:zhihu_demo/assets/custom_styles.dart';
+import 'package:zhihu_demo/model/user_info.dart';
 import 'package:zhihu_demo/widgets/follow_button.dart';
 
 class UserCard extends StatefulWidget {
+
+  final UserCardInfo _userCardInfo;
+
+  UserCard(this._userCardInfo, {Key? key}) : super(key: key);
+
   @override
   _UserCardState createState() => _UserCardState();
 }
 
 class _UserCardState extends State<UserCard> {
-  CombinedUser _combinedUser =
-      CombinedUser("xx01cyx", "Software Engineering, SJTU", 0, 0, false);
 
   @override
   Widget build(BuildContext context) {
@@ -22,7 +26,6 @@ class _UserCardState extends State<UserCard> {
             borderRadius: BorderRadius.all(Radius.circular(20.0)),
           ),
           child: Container(
-            // height: Constants.defaultUserCardHeight,
             width: MediaQuery.of(context).size.width,
             padding: EdgeInsets.all(Constants.defaultCardPadding),
             child: Row(
@@ -47,16 +50,16 @@ class _UserCardState extends State<UserCard> {
                 ),
 
                 Expanded(
-                  flex: 55,
+                  flex: 51,
                   child: Column(
                     mainAxisSize: MainAxisSize.max,
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: <Widget>[
                       Expanded(
-                        flex: 35,
+                        flex: 36,
                         child: Container(
                           child: Text(
-                            _combinedUser.username,
+                            widget._userCardInfo.userName,
                             overflow: TextOverflow.ellipsis,
                             maxLines: 1,
                             style: TextStyle(
@@ -65,17 +68,43 @@ class _UserCardState extends State<UserCard> {
                         ),
                       ),
                       Expanded(
+                        flex: 3,
+                        child: Container(),
+                      ),
+                      Expanded(
+                        flex: 28,
+                        child: Text(
+                          widget._userCardInfo.brief,
+                          overflow: TextOverflow.ellipsis,
+                          maxLines: 1,
+                          style: TextStyle(
+                            color: Theme.of(context).secondaryHeaderColor)),
+                      ),
+                      Expanded(
                         flex: 5,
                         child: Container(),
                       ),
                       Expanded(
-                        flex: 60,
-                        child: Text(
-                          _combinedUser.description,
-                          overflow: TextOverflow.ellipsis,
-                          maxLines: 2,
-                          style: TextStyle(
-                            color: Theme.of(context).secondaryHeaderColor)),
+                        flex: 28,
+                        child: RichText(
+                          text: TextSpan(
+                            children: [
+                              WidgetSpan(
+                                child: CustomStyles.getDefaultReplyIcon(),
+                              ),
+                              TextSpan(
+                                text: ' ${widget._userCardInfo.commentCount}   ',
+                              ),
+                              WidgetSpan(
+                                child: CustomStyles.getDefaultFollowerIcon(),
+                              ),
+                              TextSpan(
+                                text: ' ${widget._userCardInfo.followerCount} ',
+                              ),
+                            ],
+                            style: CustomStyles.postFooterStyle,
+                          ),
+                        ),
                       ),
                     ],
                   ),
@@ -87,10 +116,10 @@ class _UserCardState extends State<UserCard> {
                 ),
 
                 Expanded(
-                  flex: 25,
+                  flex: 29,
                   child: FollowButton(
-                    this._combinedUser.isFollowing,
-                    this._combinedUser.username,
+                    widget._userCardInfo.userName,
+                    widget._userCardInfo.followStatus,
                   ),
                 ),
               ],
