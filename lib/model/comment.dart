@@ -17,6 +17,7 @@ class Comment {
   num get numOfApprovals => _numOfApprovals;
 
   void addApprovals() => _numOfApprovals++;
+  void subApprovals() => _numOfApprovals--;
 
   Comment(this._user, this._content, this._quote, this._date,
       this._floor, this._numOfApprovals);

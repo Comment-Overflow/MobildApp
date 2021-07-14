@@ -56,7 +56,7 @@ class _CommentCardState extends State<CommentCard> {
                 ],
               ),
               _gap,
-              QuoteWidget(widget._comment.quote),
+              //QuoteWidget(widget._comment.quote),
               _gap,
               RichText(
                   text: widget._comment.content
@@ -87,6 +87,14 @@ class _CommentCardState extends State<CommentCard> {
     );
   }
 
-  void _pushLike() => liked = liked ? false : true;
+  void _pushLike() {
+    if (liked) {
+      liked = false;
+      widget._comment.subApprovals();
+    } else {
+      liked = true;
+      widget._comment.addApprovals();
+    }
+  }
   void _pushComment() {}
 }
