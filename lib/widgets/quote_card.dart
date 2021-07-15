@@ -22,6 +22,7 @@ class QuoteCard extends StatelessWidget {
       child: Padding(
         padding: EdgeInsets.all(Constants.defaultCardPadding),
         child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
           mainAxisSize: MainAxisSize.min,
           children: [
             Text(

@@ -7,6 +7,7 @@ import 'package:zhihu_demo/fake_data/fake_data.dart';
 import 'package:zhihu_demo/widgets/post_card_list.dart';
 import 'package:zhihu_demo/widgets/reference_card.dart';
 import 'package:zhihu_demo/widgets/search_bar.dart';
+import 'package:zhihu_demo/widgets/quote_card.dart';
 
 
 class HomePage extends StatelessWidget {
