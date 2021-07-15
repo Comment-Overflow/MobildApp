@@ -1,12 +1,9 @@
+import 'package:comment_overflow/model/notification_message.dart';
+import 'package:comment_overflow/widgets/notification_card_list.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 
-import 'package:zhihu_demo/model/notification_message.dart';
-import 'package:zhihu_demo/widgets/notification_card_list.dart';
-
-
 class NotificationPage extends StatelessWidget {
-
   final NotificationType _notificationType;
   NotificationPage(this._notificationType, {Key? key}) : super(key: key);
 
@@ -29,26 +26,25 @@ class NotificationPage extends StatelessWidget {
     }
     return Scaffold(
       body: NestedScrollView(
-            floatHeaderSlivers: true,
-            headerSliverBuilder: (context, value) => [
-              SliverAppBar(
-                pinned: true,
-                floating: true,
-                elevation: 0.5,
-                title: Text(typeContent),
-                leading: IconButton(icon:Icon(Icons.arrow_back),
-                  //onPressed:() => Navigator.pop(context, false),
-                  onPressed:() => {},
-                )
-              ),
-            ],
-            body: MediaQuery.removePadding(
-                  context: context,
-                  child: NotificationCardList(),
-                  removeTop: true,
-            ),
+        floatHeaderSlivers: true,
+        headerSliverBuilder: (context, value) => [
+          SliverAppBar(
+              pinned: true,
+              floating: true,
+              elevation: 0.5,
+              title: Text(typeContent),
+              leading: IconButton(
+                icon: Icon(Icons.arrow_back),
+                //onPressed:() => Navigator.pop(context, false),
+                onPressed: () => {},
+              )),
+        ],
+        body: MediaQuery.removePadding(
+          context: context,
+          child: NotificationCardList(),
+          removeTop: true,
+        ),
       ),
     );
   }
 }
-

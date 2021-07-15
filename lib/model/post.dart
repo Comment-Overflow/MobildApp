@@ -1,4 +1,4 @@
-import 'package:zhihu_demo/model/comment.dart';
+import 'package:comment_overflow/model/comment.dart';
 
 class Post {
   final int _postId;

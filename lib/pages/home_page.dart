@@ -1,11 +1,11 @@
+import 'package:comment_overflow/assets/constants.dart';
+import 'package:comment_overflow/fake_data/fake_data.dart';
+import 'package:comment_overflow/utils/route_generator.dart';
+import 'package:comment_overflow/widgets/post_card_list.dart';
+import 'package:comment_overflow/widgets/quote_card.dart';
+import 'package:comment_overflow/widgets/search_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
-import 'package:zhihu_demo/assets/constants.dart';
-import 'package:zhihu_demo/fake_data/fake_data.dart';
-import 'package:zhihu_demo/utils/route_generator.dart';
-import 'package:zhihu_demo/widgets/post_card_list.dart';
-import 'package:zhihu_demo/widgets/quote_card.dart';
-import 'package:zhihu_demo/widgets/search_bar.dart';
 
 class HomePage extends StatelessWidget {
   static const _tabs = ['浏览', '推荐', '关注', '校园生活', '校园生活', '校园生活'];

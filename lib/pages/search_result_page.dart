@@ -1,10 +1,10 @@
+import 'package:comment_overflow/assets/constants.dart';
+import 'package:comment_overflow/assets/custom_styles.dart';
+import 'package:comment_overflow/utils/route_generator.dart';
+import 'package:comment_overflow/widgets/search_bar.dart';
+import 'package:comment_overflow/widgets/searched_post_card_list.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
-import 'package:zhihu_demo/assets/constants.dart';
-import 'package:zhihu_demo/assets/custom_styles.dart';
-import 'package:zhihu_demo/utils/route_generator.dart';
-import 'package:zhihu_demo/widgets/search_bar.dart';
-import 'package:zhihu_demo/widgets/searched_post_card_list.dart';
 
 class SearchResultPage extends StatelessWidget {
   static const _tabs = ['综合', '用户', '校园生活', '校园生活', '校园生活'];

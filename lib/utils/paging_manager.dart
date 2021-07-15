@@ -1,7 +1,7 @@
+import 'package:comment_overflow/widgets/adaptive_refresher.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
-import 'package:zhihu_demo/widgets/adaptive_refresher.dart';
 
 class PagingManager<T> {
   final _pageSize;

@@ -1,12 +1,12 @@
 import 'dart:math';
 
+import 'package:comment_overflow/assets/constants.dart';
+import 'package:comment_overflow/fake_data/fake_data.dart';
+import 'package:comment_overflow/model/post.dart';
+import 'package:comment_overflow/utils/paging_manager.dart';
+import 'package:comment_overflow/widgets/post_card.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
-import 'package:zhihu_demo/assets/constants.dart';
-import 'package:zhihu_demo/fake_data/fake_data.dart';
-import 'package:zhihu_demo/model/post.dart';
-import 'package:zhihu_demo/utils/paging_manager.dart';
-import 'package:zhihu_demo/widgets/post_card.dart';
 
 class PostCardList extends StatefulWidget {
   const PostCardList({Key? key}) : super(key: key);

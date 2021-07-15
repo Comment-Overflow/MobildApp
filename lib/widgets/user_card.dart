@@ -1,12 +1,11 @@
+import 'package:comment_overflow/assets/constants.dart';
+import 'package:comment_overflow/assets/custom_styles.dart';
+import 'package:comment_overflow/model/user_info.dart';
+import 'package:comment_overflow/widgets/follow_button.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:zhihu_demo/assets/constants.dart';
-import 'package:zhihu_demo/assets/custom_styles.dart';
-import 'package:zhihu_demo/model/user_info.dart';
-import 'package:zhihu_demo/widgets/follow_button.dart';
 
 class UserCard extends StatefulWidget {
-
   final UserCardInfo _userCardInfo;
 
   UserCard(this._userCardInfo, {Key? key}) : super(key: key);
@@ -16,7 +15,6 @@ class UserCard extends StatefulWidget {
 }
 
 class _UserCardState extends State<UserCard> {
-
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -39,16 +37,14 @@ class _UserCardState extends State<UserCard> {
                     height: 55.0,
                     child: CircleAvatar(
                       backgroundImage: NetworkImage(
-                        "http://img8.zol.com.cn/bbs/upload/23765/23764201.jpg"),
+                          "http://img8.zol.com.cn/bbs/upload/23765/23764201.jpg"),
                     ),
                   ),
                 ),
-
                 Expanded(
                   flex: 3,
                   child: Container(),
                 ),
-
                 Expanded(
                   flex: 51,
                   child: Column(
@@ -63,7 +59,7 @@ class _UserCardState extends State<UserCard> {
                             overflow: TextOverflow.ellipsis,
                             maxLines: 1,
                             style: TextStyle(
-                              fontSize: 18.0, fontWeight: FontWeight.bold),
+                                fontSize: 18.0, fontWeight: FontWeight.bold),
                           ),
                         ),
                       ),
@@ -73,12 +69,11 @@ class _UserCardState extends State<UserCard> {
                       ),
                       Expanded(
                         flex: 28,
-                        child: Text(
-                          widget._userCardInfo.brief,
-                          overflow: TextOverflow.ellipsis,
-                          maxLines: 1,
-                          style: TextStyle(
-                            color: Theme.of(context).secondaryHeaderColor)),
+                        child: Text(widget._userCardInfo.brief,
+                            overflow: TextOverflow.ellipsis,
+                            maxLines: 1,
+                            style: TextStyle(
+                                color: Theme.of(context).secondaryHeaderColor)),
                       ),
                       Expanded(
                         flex: 5,
@@ -93,7 +88,8 @@ class _UserCardState extends State<UserCard> {
                                 child: CustomStyles.getDefaultReplyIcon(),
                               ),
                               TextSpan(
-                                text: ' ${widget._userCardInfo.commentCount}   ',
+                                text:
+                                    ' ${widget._userCardInfo.commentCount}   ',
                               ),
                               WidgetSpan(
                                 child: CustomStyles.getDefaultFollowerIcon(),
@@ -109,12 +105,10 @@ class _UserCardState extends State<UserCard> {
                     ],
                   ),
                 ),
-
                 Expanded(
                   flex: 2,
                   child: Container(),
                 ),
-
                 Expanded(
                   flex: 29,
                   child: FollowButton(

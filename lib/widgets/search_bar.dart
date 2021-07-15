@@ -1,8 +1,8 @@
+import 'package:comment_overflow/assets/constants.dart';
+import 'package:comment_overflow/assets/custom_colors.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:fsearch/fsearch.dart';
-import 'package:zhihu_demo/assets/constants.dart';
-import 'package:zhihu_demo/assets/custom_colors.dart';
 
 class SearchBar extends StatefulWidget {
   final enable;

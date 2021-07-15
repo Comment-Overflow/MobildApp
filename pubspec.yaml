@@ -1,5 +1,5 @@
-name: zhihu_demo
-description: Demo for Zhihu
+name: comment_overflow
+description: A forum for SJTUers where they can voice their opinions freely.
 
 # The following line prevents the package from being accidentally published to
 # pub.dev using `pub publish`. This is preferred for private packages.

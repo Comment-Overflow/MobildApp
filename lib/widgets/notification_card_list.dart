@@ -1,12 +1,12 @@
 import 'dart:math';
 
+import 'package:comment_overflow/assets/constants.dart';
+import 'package:comment_overflow/fake_data/fake_data.dart';
+import 'package:comment_overflow/model/notification_message.dart';
+import 'package:comment_overflow/utils/paging_manager.dart';
+import 'package:comment_overflow/widgets/notification_card.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
-import 'package:zhihu_demo/assets/constants.dart';
-import 'package:zhihu_demo/fake_data/fake_data.dart';
-import 'package:zhihu_demo/model/notification_message.dart';
-import 'package:zhihu_demo/utils/paging_manager.dart';
-import 'package:zhihu_demo/widgets/notification_card.dart';
 
 class NotificationCardList extends StatefulWidget {
   const NotificationCardList({Key? key}) : super(key: key);
@@ -16,19 +16,14 @@ class NotificationCardList extends StatefulWidget {
 }
 
 class _NotificationCardListState extends State<NotificationCardList> {
-
-  final PagingManager<NotificationMessage> _pagingManager = PagingManager(
-      Constants.defaultNotificationPageSize,
-          (page, pageSize) {
-        return Future.delayed(
-          const Duration(seconds: 1),
-              () => notifications.sublist(
-              page * pageSize, min((page + 1) * pageSize, posts.length)
-          ),
-        );
-      },
-          (context, item, index) => NotificationCard(item)
-  );
+  final PagingManager<NotificationMessage> _pagingManager =
+      PagingManager(Constants.defaultNotificationPageSize, (page, pageSize) {
+    return Future.delayed(
+      const Duration(seconds: 1),
+      () => notifications.sublist(
+          page * pageSize, min((page + 1) * pageSize, posts.length)),
+    );
+  }, (context, item, index) => NotificationCard(item));
 
   @override
   dispose() {
@@ -41,5 +36,3 @@ class _NotificationCardListState extends State<NotificationCardList> {
     return _pagingManager.getListView();
   }
 }
-
-
