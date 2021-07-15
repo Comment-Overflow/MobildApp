@@ -13,7 +13,14 @@ class CustomStyles {
   static const postContentStyle = TextStyle(
     fontSize: 14.0,
   );
-
+  static const postPageTitleStyle = TextStyle(
+    fontWeight: FontWeight.bold,
+    fontSize: 24.0,
+  );
+  static const postPageBottomStyle = TextStyle(
+    fontSize: 16.0,
+    color: Colors.grey,
+  );
   static const commentContentStyle = TextStyle(
     fontWeight: FontWeight.normal,
     fontSize: 15.0,
@@ -54,6 +61,14 @@ class CustomStyles {
   /// Default icon for drop down menu.
   static getDefaultArrowDownIcon({size = 14.0}) =>
       Icon(Icons.keyboard_arrow_down, color: Colors.black87, size: size);
+
+  /// Default icon for star.
+  static getDefaultStaredIcon({size = 14.0}) =>
+      Icon(Icons.star, color: Colors.amberAccent, size: size);
+
+  /// Default icon for not star.
+  static getDefaultNotStarIcon({size = 14.0}) =>
+      Icon(Icons.star_border, color: Colors.grey, size: size);
 
   static const referenceUserNameStyle = TextStyle(
     fontWeight: FontWeight.bold,

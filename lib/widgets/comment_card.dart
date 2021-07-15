@@ -16,12 +16,13 @@ class CommentCard extends StatefulWidget {
 
 class _CommentCardState extends State<CommentCard> {
   static const _gap = const SizedBox(height: 5.0);
+  static const _iconSize = 20.0;
 
   @override
   Widget build(BuildContext context) {
     return Card(
       shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.all(Radius.circular(20.0)),
+        borderRadius: BorderRadius.all(Radius.circular(10.0)),
       ),
       child: InkWell(
         child: Padding(
@@ -38,65 +39,66 @@ class _CommentCardState extends State<CommentCard> {
                       image: NetworkImage(widget._comment.user.avatarUrl),
                     ),
                   ),
-                  Expanded(
-                    child: Text(
-                      widget._comment.timeString,
-                      style: CustomStyles.dateStyle,
-                      textAlign: TextAlign.right,
-                    ),
+                  Text(
+                    widget._comment.timeString,
+                    style: CustomStyles.dateStyle,
+                    textAlign: TextAlign.right,
                   ),
-                  Expanded(
-                    child: Text(
-                      widget._comment.floorString + '楼',
-                      style: CustomStyles.floorStyle,
-                      textAlign: TextAlign.right,
-                    ),
+                  SizedBox(width: 10),
+                  Text(
+                    widget._comment.floorString + '楼',
+                    style: CustomStyles.floorStyle,
+                    textAlign: TextAlign.right,
                   ),
                 ],
               ),
               widget._comment.quote == null
                   ? SizedBox.shrink()
                   : Row(
+                      mainAxisSize: MainAxisSize.min,
                       children: [
                         _gap,
-                        QuoteCard(widget._comment.quote),
+                        Expanded(child: QuoteCard(widget._comment.quote)),
                       ],
                     ),
               _gap,
-              RichText(
-                text: TextSpan(
-                  text: widget._comment.content,
-                  style: CustomStyles.commentContentStyle,
-                ),
+              Text(
+                widget._comment.content,
               ),
-              _gap,
-              Row(
-                mainAxisSize: MainAxisSize.min,
-                mainAxisAlignment: MainAxisAlignment.end,
+              widget._comment.floor > 0
+                ? Column(
                 children: [
-                  IconButton(
-                    icon: CustomStyles.getDefaultDeleteIcon(),
-                    onPressed: () => {},
-                  ),
-                  IconButton(
-                    icon: widget._comment.approvalStatus == ApprovalStatus.approve
-                        ? CustomStyles.getDefaultThumbUpIcon()
-                        : CustomStyles.getDefaultNotThumbUpIcon(),
-                    onPressed: _pushLike,
-                  ),
-                  Text(widget._comment.approvalCount.toString()),
-                  IconButton(
-                    icon: widget._comment.approvalStatus == ApprovalStatus.disapprove
-                        ? CustomStyles.getDefaultThumbDownIcon()
-                        : CustomStyles.getDefaultNotThumbDownIcon(),
-                    onPressed: _pushDislike,
-                  ),
-                  IconButton(
-                    icon: CustomStyles.getDefaultReplyIcon(),
-                    onPressed: _pushReply,
+                  _gap,
+                  Row(
+                    mainAxisSize: MainAxisSize.min,
+                    mainAxisAlignment: MainAxisAlignment.end,
+                    children: [
+                      IconButton(
+                        icon: CustomStyles.getDefaultDeleteIcon(size: _iconSize),
+                        onPressed: () => {},
+                      ),
+                      IconButton(
+                        icon: widget._comment.approvalStatus == ApprovalStatus.approve
+                            ? CustomStyles.getDefaultThumbUpIcon(size: _iconSize)
+                            : CustomStyles.getDefaultNotThumbUpIcon(size: _iconSize),
+                        onPressed: _pushLike,
+                      ),
+                      Text(widget._comment.approvalCount.toString()),
+                      IconButton(
+                        icon: widget._comment.approvalStatus == ApprovalStatus.disapprove
+                            ? CustomStyles.getDefaultThumbDownIcon(size: _iconSize)
+                            : CustomStyles.getDefaultNotThumbDownIcon(size: _iconSize),
+                        onPressed: _pushDislike,
+                      ),
+                      IconButton(
+                        icon: CustomStyles.getDefaultReplyIcon(size: _iconSize),
+                        onPressed: _pushReply,
+                      )
+                    ],
                   )
                 ],
               )
+              : SizedBox.shrink(),
             ],
           ),
         ),
