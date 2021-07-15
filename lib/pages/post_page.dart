@@ -106,7 +106,9 @@ class _PostPageState extends State<PostPage> {
             ],
           ),
           _gap,
-          //CommentCardList(widget._commentList),
+          Expanded(
+            child: CommentCardList(widget._commentList),
+          ),
         ],
       ),
       bottomNavigationBar: BottomAppBar(
@@ -178,7 +180,7 @@ class _PostPageState extends State<PostPage> {
         return SingleChildScrollView(  // !important
           child: Container(
             padding: EdgeInsets.only(
-              bottom: MediaQuery.of(context).viewInsets.bottom),
+                bottom: MediaQuery.of(context).viewInsets.bottom),
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               mainAxisSize: MainAxisSize.min,

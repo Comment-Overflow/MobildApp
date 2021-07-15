@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:zhihu_demo/assets/constants.dart';
 import 'package:zhihu_demo/model/comment.dart';
 import 'package:zhihu_demo/assets/custom_styles.dart';
-import 'package:zhihu_demo/widgets/reference_card.dart';
+import 'package:zhihu_demo/widgets/quote_card.dart';
 import 'package:zhihu_demo/widgets/user_avatar_with_name.dart';
 
 class CommentCard extends StatefulWidget {
