@@ -29,7 +29,7 @@ class ZhiHu extends StatelessWidget {
         disabledColor: Colors.grey.withOpacity(0.5),
         secondaryHeaderColor: Colors.grey,
       ),
-      initialRoute: '/',
+      initialRoute: RouteGenerator.homeRoute,
       onGenerateRoute: RouteGenerator.generateRoute,
     );
   }

@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
+import 'package:zhihu_demo/assets/constants.dart';
 import 'package:zhihu_demo/fake_data/fake_data.dart';
+import 'package:zhihu_demo/utils/route_generator.dart';
 import 'package:zhihu_demo/widgets/search_bar.dart';
 
 class SearchPage extends StatelessWidget {
@@ -15,25 +17,30 @@ class SearchPage extends StatelessWidget {
             children: [
               Expanded(
                 child: SearchBar(
-                  onSearch: (text) => print(text),
+                  onSearch: (text) {
+                    Navigator.of(context).pushNamed(
+                        RouteGenerator.searchResultRoute,
+                        arguments: text);
+                  },
                   autoFocus: true,
                 ),
               ),
               SizedBox(width: 10.0),
-              TextButton(
-                style: ButtonStyle(
-                  minimumSize: MaterialStateProperty.all(Size(1, 1)),
-                  padding: MaterialStateProperty.all(EdgeInsets.zero),
-                ),
-                onPressed: () => Navigator.of(context).pop(),
-                child: Text(
-                  "取消",
-                ),
-              )
+              GestureDetector(
+                  onTap: () => Navigator.of(context).pop(),
+                  child: Padding(
+                      padding: EdgeInsets.only(left: 7.0, right: 7.0,),
+                      child: Text(
+                        "取消",
+                        style: TextStyle(
+                          fontSize: 14.0,
+                          color: Theme.of(context).accentColor,
+                        ),
+                      ))),
             ],
           ),
           automaticallyImplyLeading: false,
-          elevation: 0.5,
+          elevation: Constants.defaultAppBarElevation,
         ),
         body: Padding(
           padding: EdgeInsets.all(16.0),

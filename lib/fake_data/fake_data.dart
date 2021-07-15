@@ -21,17 +21,17 @@ final Comment _disapprovedComment = Comment(_userInfo, _content, _date, _quote, 
 final Comment _noneComment = Comment(_userInfo, _content, _date, _quote, 0, 500, ApprovalStatus.none, ["https://images.unsplash.com/photo-1526512340740-9217d0159da9?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=2677&q=80"]);
 
 final posts = List<Post>.filled(
-  5,
+  10,
   Post(1, _title, 500, 300, _approvedComment,),
   growable: true,
 )
   ..addAll(List<Post>.filled(
-    5,
+    10,
     Post(1, _title, 500, 700, _disapprovedComment,),
     growable: true,
   ))
   ..addAll(List<Post>.filled(
-    5,
+    10,
     Post(1, _title, 500, 1000, _noneComment,),
     growable: true,
   ));

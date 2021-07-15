@@ -9,10 +9,11 @@ class SearchBar extends StatefulWidget {
   final onTap;
   final onSearch;
   final autoFocus;
+  final String defaultText;
   final _controller = FSearchController();
 
   SearchBar({Key? key, this.onSearch, this.enable = true, this.onTap,
-    this.autoFocus = false}) :
+    this.autoFocus = false, this.defaultText = ""}) :
         super(key: key);
 
   @override
@@ -26,14 +27,23 @@ class _SearchBarState extends State<SearchBar> {
   void initState() {
     super.initState();
     // Update text on input field change.
-    widget._controller.setListener(() {
-      setState(() {_text = widget._controller.text;});
-    });
+    if (widget.defaultText.isNotEmpty) {
+      _text = widget.defaultText;
+      // Must be called after first build.
+      WidgetsBinding.instance!.addPostFrameCallback(
+              (_) => widget._controller.text = widget.defaultText
+      );
+    }
+
     if (widget.autoFocus) {
       WidgetsBinding.instance!.addPostFrameCallback(
         (_) => widget._controller.requestFocus()
       );
     }
+
+    widget._controller.setListener(() {
+      setState(() {_text = widget._controller.text;});
+    });
   }
 
   @override
@@ -56,7 +66,7 @@ class _SearchBarState extends State<SearchBar> {
         ),
         const SizedBox(width: 3.0)
       ],
-      suffixes: this._text.isNotEmpty ? [
+      suffixes: this._text.isNotEmpty && widget._controller.focus ? [
         const SizedBox(width: 3.0),
         GestureDetector(
           onTap: () { widget._controller.text = ""; },

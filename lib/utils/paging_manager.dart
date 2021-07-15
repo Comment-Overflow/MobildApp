@@ -19,10 +19,15 @@ class PagingManager<T> {
   // (context, item, index), and must return a widget displayed as list item
   // such as
   final _customItemBuilder;
+  // Check prevent manipulation of paging controller after disposal.
+  bool _disposed = false;
 
   Future<void> _fetchPage(int pageKey) async {
     try {
       final newItems = await _customFetchApi(pageKey ~/ _pageSize, _pageSize);
+      if (this._disposed) {
+        return;
+      }
       final isLastPage = newItems.length < _pageSize;
       if (isLastPage) {
         _pagingController.appendLastPage(newItems);
@@ -42,21 +47,23 @@ class PagingManager<T> {
   }
 
   dispose() {
+    _disposed = true;
     _pagingController.dispose();
   }
 
-  RefreshIndicator getListView() =>
-    RefreshIndicator(
-      child: PagedListView<int, T>(
-        pagingController: _pagingController,
-        builderDelegate: PagedChildBuilderDelegate<T>(
-          animateTransitions: true,
-          transitionDuration: const Duration(milliseconds: 500),
-          itemBuilder: _customItemBuilder,
-        ),
-      ),
-      onRefresh: () => Future.sync(
-        () => _pagingController.refresh(),
+  Widget getListView({refreshable = true}) {
+    PagedListView<int, T> listView = PagedListView<int, T>(
+      pagingController: _pagingController,
+      builderDelegate: PagedChildBuilderDelegate<T>(
+        animateTransitions: true,
+        transitionDuration: const Duration(milliseconds: 500),
+        itemBuilder: _customItemBuilder,
       ),
     );
+
+    return refreshable ? RefreshIndicator(
+      child: listView,
+      onRefresh: () => Future.sync(() => _pagingController.refresh(),),
+    ) : listView;
+  }
 }
