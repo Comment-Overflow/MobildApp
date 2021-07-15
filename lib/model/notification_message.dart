@@ -4,7 +4,7 @@ import 'package:zhihu_demo/model/user_info.dart';
 
 enum NotificationType {approvePost, approveComment, collect, attention, reply}
 
-class NotificationMsg {
+class NotificationMessage {
 
   final UserInfo _userInfo;
   //userAvatar
@@ -33,7 +33,7 @@ class NotificationMsg {
 
   get type => _type;
 
-  NotificationMsg(this._userInfo, this._imageSize, this._gap, this._type,
+  NotificationMessage(this._userInfo, this._imageSize, this._gap, this._type,
       {ImageProvider<Object>? image, TextStyle? textStyle, String? title, String? comment}):
         _image = image,
         _textStyle = textStyle,

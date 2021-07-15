@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 
-import 'package:zhihu_demo/model/notification_msg.dart';
+import 'package:zhihu_demo/model/notification_message.dart';
 import 'package:zhihu_demo/widgets/notification_card_list.dart';
 
 

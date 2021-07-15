@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:zhihu_demo/assets/constants.dart';
 import 'package:zhihu_demo/fake_data/fake_data.dart';
-import 'package:zhihu_demo/model/notification_msg.dart';
+import 'package:zhihu_demo/model/notification_message.dart';
 import 'package:zhihu_demo/utils/paging_manager.dart';
 import 'package:zhihu_demo/widgets/notification_card.dart';
 
@@ -17,7 +17,7 @@ class NotificationCardList extends StatefulWidget {
 
 class _NotificationCardListState extends State<NotificationCardList> {
 
-  final PagingManager<NotificationMsg> _pagingManager = PagingManager(
+  final PagingManager<NotificationMessage> _pagingManager = PagingManager(
       Constants.defaultNotificationPageSize,
           (page, pageSize) {
         return Future.delayed(

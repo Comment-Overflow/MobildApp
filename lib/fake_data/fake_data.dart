@@ -3,7 +3,7 @@ import 'package:zhihu_demo/model/comment.dart';
 import 'package:zhihu_demo/model/post.dart';
 import 'package:zhihu_demo/model/quote.dart';
 import 'package:zhihu_demo/model/user_info.dart';
-import 'package:zhihu_demo/model/notification_msg.dart';
+import 'package:zhihu_demo/model/notification_message.dart';
 
 const _title = 'Lorem ipsum dolor sit amet, consectetur adipiscing elit';
 const _author = 'Gun9niR';
@@ -24,9 +24,9 @@ final Comment _noneComment = Comment(_userInfo, _content, _date, _quote, 0, 500,
 const _comment = 'zhihu sucks, sjtu-zhihu awesome';
 const _type = NotificationType.reply;
 
-final notifications = List<NotificationMsg>.filled(
+final notifications = List<NotificationMessage>.filled(
   20,
-  NotificationMsg(_userInfo, 24.0, 7.0, _type,
+  NotificationMessage(_userInfo, 24.0, 7.0, _type,
       comment: _comment, title: _title),
   growable: true,
 );
