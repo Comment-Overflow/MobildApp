@@ -88,3 +88,6 @@ final users = List<UserCardInfo>.filled(
         12, 23567, FollowStatus.none,),
     growable: true,
   ));
+
+// Tags for posts
+final tags = List<String>.filled(5, '校园生活');

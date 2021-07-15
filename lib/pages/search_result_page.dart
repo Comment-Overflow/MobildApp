@@ -6,35 +6,88 @@ import 'package:zhihu_demo/widgets/search_bar.dart';
 import 'package:zhihu_demo/widgets/searched_post_card_list.dart';
 
 class SearchResultPage extends StatelessWidget {
+  static const _tabs = ['综合', '用户', '校园生活', '校园生活', '校园生活'];
   final _searchKey;
 
   const SearchResultPage(this._searchKey, {Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-          elevation: Constants.defaultAppBarElevation,
-          automaticallyImplyLeading: false,
-          title: Row(children: [
-            GestureDetector(
-              onTap: () => Navigator.of(context).pushNamedAndRemoveUntil(
-                  RouteGenerator.homeRoute, (route) => false),
-              child: Icon(
-                Icons.arrow_back_ios,
-                size: Constants.searchBarHeight * 0.8,
-                color: Theme.of(context).accentColor,
+    return DefaultTabController(
+        length: _tabs.length,
+        child: Scaffold(
+          body: Stack(
+            children: <Widget>[
+              NestedScrollView(
+                floatHeaderSlivers: true,
+                headerSliverBuilder:
+                    (BuildContext context, bool innerBoxIsScrolled) {
+                  return <Widget>[
+                    SliverAppBar(
+                      floating: true,
+                      pinned: true,
+                      bottom: buildTabBar(),
+                    ),
+                  ];
+                },
+                body: TabBarView(
+                  children: [
+                    MediaQuery.removePadding(
+                      context: context,
+                      child: SearchedPostCardList(this._searchKey),
+                      removeTop: true,
+                    ),
+                    Text('热榜'),
+                    Text('热榜'),
+                    Text('热榜'),
+                    Text('热榜'),
+                  ],
+                  physics: new NeverScrollableScrollPhysics(),
+                ),
               ),
-            ),
-            Expanded(
-              child: SearchBar(
-                  defaultText: this._searchKey,
-                  enable: false,
-                  onTap: () => Navigator.of(context)
-                      .pushNamed(RouteGenerator.searchRoute)),
-            ),
-          ])),
-      body: SearchedPostCardList(this._searchKey),
-    );
+              Positioned(
+                top: 0.0,
+                left: 0.0,
+                right: 0.0,
+                child: Container(
+                  child: SafeArea(
+                    top: false,
+                    child: AppBar(
+                      elevation: 0,
+                      automaticallyImplyLeading: false,
+                      title: Row(children: [
+                        buildBackIcon(context),
+                        buildSearchBar(context),
+                      ]),
+                    ),
+                  ),
+                ),
+              ),
+            ],
+          ),
+        ));
   }
+
+  buildTabBar() => TabBar(
+        tabs: _tabs.map((e) => Tab(text: e)).toList(),
+        isScrollable: true,
+      );
+
+  buildSearchBar(BuildContext context) => Expanded(
+        child: SearchBar(
+            defaultText: this._searchKey,
+            enable: false,
+            onTap: () =>
+                Navigator.of(context).pushNamed(RouteGenerator.searchRoute)),
+      );
+
+  buildBackIcon(BuildContext context) => GestureDetector(
+        onTap: () => Navigator.of(context).pushNamedAndRemoveUntil(
+            RouteGenerator.homeRoute, (route) => false),
+        child: Icon(
+          Icons.arrow_back_ios,
+          size: Constants.searchBarHeight * 0.8,
+          color: Theme.of(context).accentColor,
+        ),
+      );
 }
