@@ -3,6 +3,7 @@ import 'package:zhihu_demo/model/comment.dart';
 import 'package:zhihu_demo/model/post.dart';
 import 'package:zhihu_demo/model/quote.dart';
 import 'package:zhihu_demo/model/user_info.dart';
+import 'package:zhihu_demo/model/notification_message.dart';
 
 const _title = 'Lorem ipsum dolor sit amet, consectetur adipiscing elit';
 const _author = 'Gun9niR';
@@ -19,6 +20,16 @@ final Quote _quote = Quote("Gun9niR", _content);
 final Comment _approvedComment = Comment(_userInfo, _content, _date, _quote, 0, 500, ApprovalStatus.approve, []);
 final Comment _disapprovedComment = Comment(_userInfo, _content, _date, _quote, 0, 500, ApprovalStatus.approve, ["http://img8.zol.com.cn/bbs/upload/23765/23764201.jpg", "https://images.unsplash.com/photo-1526512340740-9217d0159da9?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=2677&q=80"]);
 final Comment _noneComment = Comment(_userInfo, _content, _date, _quote, 0, 500, ApprovalStatus.none, ["https://images.unsplash.com/photo-1526512340740-9217d0159da9?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=2677&q=80"]);
+
+const _comment = 'zhihu sucks, sjtu-zhihu awesome';
+const _type = NotificationType.reply;
+
+final notifications = List<NotificationMessage>.filled(
+  20,
+  NotificationMessage(_userInfo, 24.0, 7.0, _type,
+      comment: _comment, title: _title),
+  growable: true,
+);
 
 final posts = List<Post>.filled(
   5,
