@@ -15,7 +15,6 @@ class CustomStyles {
   static const postContentStyle = TextStyle(
     fontSize: 14.0,
   );
-
   static const commentContentStyle = TextStyle(
     fontWeight: FontWeight.normal,
     fontSize: 13,
@@ -28,6 +27,13 @@ class CustomStyles {
   static const floorStyle = TextStyle(
     fontWeight: FontWeight.normal,
     fontSize: 12,
+  );
+  static const userNameStyle = TextStyle(
+    fontWeight: FontWeight.bold,
+    fontSize: 18,
+  );
+  static const userBriefStyle = TextStyle(
+    color: Colors.grey,
   );
   /// Default icon for reply with changeable size.
   static Icon getDefaultReplyIcon({size = 14.0}) =>

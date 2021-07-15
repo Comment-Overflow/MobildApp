@@ -57,14 +57,11 @@ class _UserCardState extends State<UserCard> {
                     children: <Widget>[
                       Expanded(
                         flex: 36,
-                        child: Container(
-                          child: Text(
-                            widget._userCardInfo.userName,
-                            overflow: TextOverflow.ellipsis,
-                            maxLines: 1,
-                            style: TextStyle(
-                              fontSize: 18.0, fontWeight: FontWeight.bold),
-                          ),
+                        child: Text(
+                          widget._userCardInfo.userName,
+                          overflow: TextOverflow.ellipsis,
+                          maxLines: 1,
+                          style: CustomStyles.userNameStyle,
                         ),
                       ),
                       Expanded(
@@ -77,8 +74,8 @@ class _UserCardState extends State<UserCard> {
                           widget._userCardInfo.brief,
                           overflow: TextOverflow.ellipsis,
                           maxLines: 1,
-                          style: TextStyle(
-                            color: Theme.of(context).secondaryHeaderColor)),
+                          style: CustomStyles.userBriefStyle,
+                        ),
                       ),
                       Expanded(
                         flex: 5,
