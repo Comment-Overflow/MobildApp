@@ -88,3 +88,9 @@ final users = List<UserCardInfo>.filled(
         12, 23567, FollowStatus.none,),
     growable: true,
   ));
+
+final comments = List<Comment>.filled(
+  10,
+  _noneComment,
+  growable: true,
+);

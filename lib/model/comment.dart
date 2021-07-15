@@ -7,16 +7,16 @@ class Comment {
   final UserInfo user;
   final String _content;
   final DateTime _time;
-  final Quote _quote;
+  final Quote? _quote;
   final int _floor;
   int _approvalCount;
-  final ApprovalStatus _approvalStatus;
+  ApprovalStatus _approvalStatus;
   List<String> _imageUrl;
 
   String get content => _content;
   DateTime get time => _time;
   String get timeString => DateFormat("yyyy-MM-dd").format(_time);
-  Quote get quote => _quote;
+  Quote? get quote => _quote;
   int get floor => _floor;
   String get floorString => _floor.toString();
   int get approvalCount => _approvalCount;
@@ -26,6 +26,29 @@ class Comment {
   Comment(this.user, this._content, this._time, this._quote, this._floor,
       this._approvalCount, this._approvalStatus, this._imageUrl);
 
-  void addApprovals() => ++_approvalCount;
-  void subApprovals() => --_approvalCount;
+  void addApprovals() {
+    ++_approvalCount;
+    switch (_approvalStatus) {
+      case ApprovalStatus.approve: break;
+      case ApprovalStatus.disapprove:
+        _approvalStatus = ApprovalStatus.none;
+        break;
+      case ApprovalStatus.none:
+        _approvalStatus = ApprovalStatus.approve;
+        break;
+    }
+  }
+
+  void subApprovals() {
+    --_approvalCount;
+    switch (_approvalStatus) {
+      case ApprovalStatus.disapprove: break;
+      case ApprovalStatus.approve:
+        _approvalStatus = ApprovalStatus.none;
+        break;
+      case ApprovalStatus.none:
+        _approvalStatus = ApprovalStatus.disapprove;
+        break;
+    }
+  }
 }

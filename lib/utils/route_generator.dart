@@ -2,7 +2,8 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:zhihu_demo/pages/search_page.dart';
 import 'package:zhihu_demo/pages/search_result_page.dart';
-import 'package:zhihu_demo/widgets/pages_container.dart';
+import 'package:zhihu_demo/pages/post_page.dart';
+import 'package:zhihu_demo/fake_data/fake_data.dart';
 
 class RouteGenerator {
   static const homeRoute = '/';
@@ -21,7 +22,7 @@ class RouteGenerator {
             builder: (_) => SearchResultPage(args as String));
       case homeRoute:
       default:
-        return MaterialPageRoute(builder: (_) => PagesContainer());
+        return MaterialPageRoute(builder: (_) => PostPage(posts[0], comments));
     }
   }
 }
