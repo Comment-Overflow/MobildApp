@@ -16,7 +16,7 @@ class ZhiHu extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: '畅所欲言',
+      title: '有可奉告',
       theme: ThemeData(
         primaryColor: Colors.white,
         accentColor: Colors.blueAccent,
