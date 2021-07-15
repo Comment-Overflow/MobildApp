@@ -46,7 +46,9 @@ class _CommentCardState extends State<CommentCard> {
                   ),
                   SizedBox(width: 10),
                   Text(
-                    widget._comment.floorString + '楼',
+                    widget._comment.floor > 0
+                      ? widget._comment.floorString + "楼"
+                      : "",
                     style: CustomStyles.floorStyle,
                     textAlign: TextAlign.right,
                   ),
