@@ -25,25 +25,12 @@ class HomePage extends StatelessWidget {
               elevation: 0.5,
               title: Row(
                 children: [
-                  Expanded(
-                    child: SearchBar(
-                      enable: false,
-                      onTap: () => Navigator.of(context)
-                          .pushNamed(RouteGenerator.searchRoute),
-                    ),
-                  ),
+                  buildSearchBar(context),
                   SizedBox(width: 15.0),
                   buildAddButton(context),
                 ],
               ),
-              bottom: TabBar(
-                tabs: _tabs
-                    .map((e) => Tab(
-                          text: e,
-                        ))
-                    .toList(),
-                isScrollable: true,
-              ),
+              bottom: buildTabBar(),
             ),
           ],
           body: TabBarView(
@@ -63,13 +50,31 @@ class HomePage extends StatelessWidget {
         ));
   }
 
+  buildSearchBar(BuildContext context) => Expanded(
+        child: SearchBar(
+          enable: false,
+          onTap: () =>
+              Navigator.of(context).pushNamed(RouteGenerator.searchRoute),
+        ),
+      );
+
+  buildTabBar() => TabBar(
+        tabs: _tabs
+            .map((e) => Tab(
+                  text: e,
+                ))
+            .toList(),
+        isScrollable: true,
+      );
+
   buildAddButton(BuildContext context) => ConstrainedBox(
         constraints: BoxConstraints.tightFor(
           width: Constants.searchBarHeight,
           height: Constants.searchBarHeight,
         ),
         child: ElevatedButton(
-          onPressed: () {},
+          onPressed: () =>
+              Navigator.of(context).pushNamed(RouteGenerator.newPostRoute),
           style: ElevatedButton.styleFrom(
             primary: Theme.of(context).accentColor,
             shape: CircleBorder(),
