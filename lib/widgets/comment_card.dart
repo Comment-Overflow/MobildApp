@@ -7,8 +7,10 @@ import 'package:zhihu_demo/widgets/user_avatar_with_name.dart';
 
 class CommentCard extends StatefulWidget {
   final Comment _comment;
+  final String _title;
 
-  const CommentCard(this._comment, {Key? key}) : super(key: key);
+  const CommentCard(this._comment, {Key? key, title = ""})
+      : _title = title, super(key: key);
 
   @override
   createState() => _CommentCardState();
@@ -30,6 +32,9 @@ class _CommentCardState extends State<CommentCard> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
+              widget._comment.floor == 0 && widget._title.isNotEmpty
+                ? buildTitle()
+                : SizedBox.shrink(),
               Row(
                 children: [
                   Expanded(
@@ -107,6 +112,20 @@ class _CommentCardState extends State<CommentCard> {
       ),
     );
   }
+
+  Padding buildTitle() =>
+      Padding(
+        padding: const EdgeInsets.only(
+          top: Constants.defaultCardPadding / 2,
+          left: Constants.defaultCardPadding,
+          right: Constants.defaultCardPadding,
+          bottom: Constants.defaultCardPadding / 3,
+        ),
+        child: Text(
+          widget._title,
+          style: CustomStyles.postPageTitleStyle,
+        ),
+      );
 
   void _pushLike() {
     setState(() {

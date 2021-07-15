@@ -2,9 +2,9 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:zhihu_demo/assets/constants.dart';
 import 'package:zhihu_demo/assets/custom_styles.dart';
+import 'package:zhihu_demo/fake_data/fake_data.dart';
 import 'package:zhihu_demo/model/comment.dart';
 import 'package:zhihu_demo/model/post.dart';
-import 'package:zhihu_demo/widgets/comment_card.dart';
 import 'package:zhihu_demo/widgets/comment_card_list.dart';
 
 class PostPage extends StatefulWidget {
@@ -21,9 +21,6 @@ class PostPage extends StatefulWidget {
 class _PostPageState extends State<PostPage> {
   var _sortPolicy = SortPolicy.earliest;
   var _stared = false;
-
-  /// Vertical gap between rows.
-  static const _gap = const SizedBox(height: 5.0);
 
   static const _iconSize = 20.0;
   static const _bottomIconSize = 30.0;
@@ -58,72 +55,18 @@ class _PostPageState extends State<PostPage> {
         ],
         centerTitle: true,
       ),
-      body: Column(
-        children: [
-          Padding(
-            padding: const EdgeInsets.only(
-              top: Constants.defaultCardPadding / 2,
-              left: Constants.defaultCardPadding,
-              right: Constants.defaultCardPadding,
-              bottom: Constants.defaultCardPadding / 3,
-            ),
-            child: Text(
-              widget._post.title,
-              style: CustomStyles.postPageTitleStyle,
-            ),
-          ),
-          CommentCard(widget._post.commentToDisplay),
-          _gap,
-          Row(
-            mainAxisAlignment: MainAxisAlignment.end,
-            children: [
-              PopupMenuButton<SortPolicy>(
-                padding: const EdgeInsets.all(7.0),
-                onSelected: (SortPolicy result) => {
-                  setState(() {_sortPolicy = result;})
-                },
-                child: Row(
-                  children: [
-                    Text("${getPolicyName(_sortPolicy)}"),
-                    CustomStyles.getDefaultArrowDownIcon(size: _iconSize),
-                  ],
-                ),
-                itemBuilder: (BuildContext context) => <PopupMenuEntry<SortPolicy>>[
-                  const PopupMenuItem(
-                    value: SortPolicy.earliest,
-                    child: Text("最早回复"),
-                  ),
-                  const PopupMenuItem(
-                    value: SortPolicy.latest,
-                    child: Text("最近回复"),
-                  ),
-                  const PopupMenuItem(
-                    value: SortPolicy.hottest,
-                    child: Text("最热回复"),
-                  ),
-                ]
-              ),
-            ],
-          ),
-          _gap,
-          Expanded(
-            child: CommentCardList(widget._commentList),
-          ),
-        ],
+      floatingActionButton: FloatingActionButton(
+          onPressed: _pushReply,
+          child: CustomStyles.getDefaultReplyIcon(
+              size: _bottomIconSize,
+              color: Colors.white
+          )
       ),
+      body: CommentCardList(posts[0]),
       bottomNavigationBar: BottomAppBar(
         child: Row(
           children: [
-            TextButton(
-              onPressed: _pushReply,
-              child: Column(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  CustomStyles.getDefaultReplyIcon(size: _bottomIconSize),
-                  Text("回复", style: CustomStyles.postPageBottomStyle)
-                ],
-              ),
-            ),
+            buildDropDownMenu(),
             TextButton(
               onPressed: () {},
               child: Column(
@@ -169,6 +112,39 @@ class _PostPageState extends State<PostPage> {
           mainAxisAlignment: MainAxisAlignment.spaceAround,
         ),
       ),
+    );
+  }
+
+  Widget buildDropDownMenu() {
+    return PopupMenuButton<SortPolicy>(
+      padding: const EdgeInsets.all(7.0),
+      onSelected: (SortPolicy result) => {
+        setState(() {_sortPolicy = result;})
+      },
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          CustomStyles.getDefaultListIcon(size: _bottomIconSize),
+          Text(
+            "${getPolicyName(_sortPolicy)}",
+            style: CustomStyles.postPageBottomStyle,
+          ),
+        ],
+      ),
+      itemBuilder: (BuildContext context) => <PopupMenuEntry<SortPolicy>>[
+        const PopupMenuItem(
+          value: SortPolicy.earliest,
+          child: Text("最早回复"),
+        ),
+        const PopupMenuItem(
+          value: SortPolicy.latest,
+          child: Text("最近回复"),
+        ),
+        const PopupMenuItem(
+          value: SortPolicy.hottest,
+          child: Text("最热回复"),
+        ),
+      ]
     );
   }
 
