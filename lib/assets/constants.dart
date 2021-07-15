@@ -6,9 +6,15 @@ class Constants {
   /// Default size height of a user card.
   static const defaultUserCardHeight = 100.0;
   /// Default padding of a button.
-  static const defaultButtonPaddinqg = 5.0;
+  static const defaultButtonPaddind = 5.0;
   /// Default size of Avatar in commentCard.
   static const defaultAvatarInCommentSize = 24.0;
+  /// Default size of buttons in notification page.
+  static const defaultNotificationButtonSize = 43.0;
+  /// Default size height of a chat card.
+  static const defaultChatCardHeight = 100.0;
+  /// Default size of chat avatar.
+  static const defaultChatAvatar = 60.0;
 }
 
 enum FollowStatus {

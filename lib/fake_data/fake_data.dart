@@ -1,4 +1,5 @@
 import 'package:zhihu_demo/assets/constants.dart';
+import 'package:zhihu_demo/model/chat.dart';
 import 'package:zhihu_demo/model/comment.dart';
 import 'package:zhihu_demo/model/post.dart';
 import 'package:zhihu_demo/model/quote.dart';
@@ -73,4 +74,14 @@ final users = List<UserCardInfo>.filled(
         "This is a long long long long long long long long long long long description",
         12, 23567, FollowStatus.none,),
     growable: true,
+  ));
+
+final recentChats = List<Chat>.filled(
+  3, Chat(_userInfo, "Hi", DateTime.now(), 2), growable: true,
+)
+  ..addAll(List<Chat>.filled(
+    3, Chat(_userInfo, "You look good today", DateTime(2021, 7, 14, 21, 3), 0), growable: true,
+  ))
+  ..addAll(List<Chat>.filled(
+    3, Chat(_userInfo, "Very long long long long long long long long message", DateTime(2021), 3), growable: true,
   ));
