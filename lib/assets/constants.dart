@@ -5,6 +5,8 @@ class Constants {
   static const defaultCardPadding = 16.0;
   /// Default size of Avatar in commentCard.
   static const defaultAvatarInCommentSize = 24.0;
+  /// Search bar height.
+  static const searchBarHeight = 32.0;
 }
 
 enum FollowStatus {

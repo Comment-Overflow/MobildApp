@@ -1,16 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:fsearch/fsearch.dart';
+import 'package:zhihu_demo/assets/constants.dart';
 import 'package:zhihu_demo/assets/custom_colors.dart';
 import 'package:zhihu_demo/fake_data/fake_data.dart';
 import 'package:zhihu_demo/widgets/post_card_list.dart';
 import 'package:zhihu_demo/widgets/reference_card.dart';
+import 'package:zhihu_demo/widgets/search_bar.dart';
 
 
 class HomePage extends StatelessWidget {
 
   static const _tabs = ['浏览', '推荐', '关注'];
-  static const _searchbarHeight = 30.0;
 
   const HomePage({Key? key}) : super(key: key);
 
@@ -28,34 +29,15 @@ class HomePage extends StatelessWidget {
             title: Row(
               children: [
                 Expanded(
-                  child: FSearch(
-                    height: _searchbarHeight,
-                    cursorWidth: 1.0,
-                    corner: FSearchCorner.all(18.0),
-                    backgroundColor: CustomColors.lightGrey,
-                    style: TextStyle(
-                      fontSize: 16.0, height: 1.2, color: Color(0xff333333)),
-                    margin: EdgeInsets.only(left: 6.0),
-                    prefixes: [
-                      const SizedBox(width: 10.0),
-                      Icon(
-                        Icons.search,
-                        size: 20,
-                        color: Colors.grey[400],
-                      ),
-                      const SizedBox(width: 3.0)
-                    ],
-                    hints: [
-                      "搜索..."
-                    ],
-                    onTap: () => {},
-                  ),
+                  child: SearchBar(
+                    enable: false,
+                    onTap: () => Navigator.of(context).pushNamed('/search'),),
                 ),
                 SizedBox(width: 15.0),
                 ConstrainedBox(
                   constraints: BoxConstraints.tightFor(
-                    width: _searchbarHeight,
-                    height: _searchbarHeight
+                    width: Constants.searchBarHeight,
+                    height: Constants.searchBarHeight,
                   ),
                   child: ElevatedButton(
                     onPressed: () {},
