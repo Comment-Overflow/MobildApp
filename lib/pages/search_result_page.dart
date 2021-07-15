@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:zhihu_demo/assets/constants.dart';
+import 'package:zhihu_demo/assets/custom_styles.dart';
 import 'package:zhihu_demo/utils/route_generator.dart';
 import 'package:zhihu_demo/widgets/search_bar.dart';
 import 'package:zhihu_demo/widgets/searched_post_card_list.dart';
@@ -84,10 +85,7 @@ class SearchResultPage extends StatelessWidget {
   buildBackIcon(BuildContext context) => GestureDetector(
         onTap: () => Navigator.of(context).pushNamedAndRemoveUntil(
             RouteGenerator.homeRoute, (route) => false),
-        child: Icon(
-          Icons.arrow_back_ios,
-          size: Constants.searchBarHeight * 0.8,
-          color: Theme.of(context).accentColor,
-        ),
+        child: CustomStyles.getDefaultBackIcon(context,
+            size: Constants.searchBarHeight * 0.8),
       );
 }

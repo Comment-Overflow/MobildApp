@@ -1,7 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
-import 'package:cupertino_icons/cupertino_icons.dart';
 
 class CustomStyles {
   static const postTitleStyle = TextStyle(
@@ -29,6 +28,7 @@ class CustomStyles {
     fontWeight: FontWeight.normal,
     fontSize: 12,
   );
+
   /// Default icon for reply with changeable size.
   static Icon getDefaultReplyIcon({size = 14.0}) =>
       Icon(Icons.chat_outlined, color: Colors.grey, size: size);
@@ -47,12 +47,18 @@ class CustomStyles {
 
   /// Default icon for bidirectional following relationship.
   static Icon getDefaultBidirectionalFollowIcon({size = 16.0}) =>
-      Icon(CupertinoIcons.arrow_right_arrow_left, color: Colors.white, size: size);
+      Icon(CupertinoIcons.arrow_right_arrow_left,
+          color: Colors.white, size: size);
 
   /// Default icon for followers.
   static Icon getDefaultFollowerIcon({size = 14.0}) =>
       Icon(Icons.people_alt, color: Colors.grey, size: size);
 
+  static Icon getDefaultBackIcon(context, {size = 14.0}) => Icon(
+        Icons.arrow_back_ios,
+        color: Theme.of(context).accentColor,
+        size: size,
+      );
   static const referenceUserNameStyle = TextStyle(
     fontWeight: FontWeight.bold,
     fontSize: 16.0,
