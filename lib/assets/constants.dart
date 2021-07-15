@@ -12,9 +12,9 @@ class Constants {
   /// Default size of buttons in notification page.
   static const defaultNotificationButtonSize = 43.0;
   /// Default size height of a chat card.
-  static const defaultChatCardHeight = 100.0;
+  static const defaultChatCardHeight = 80.0;
   /// Default size of chat avatar.
-  static const defaultChatAvatar = 60.0;
+  static const defaultChatAvatar = 65.0;
 }
 
 enum FollowStatus {

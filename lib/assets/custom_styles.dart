@@ -37,7 +37,7 @@ class CustomStyles {
     color: Colors.grey,
   );
   static const lastMessageTextStyle = TextStyle(
-    fontSize: 17,
+    fontSize: 16,
     color: Colors.grey,
   );
   static const unreadChatTextStyle = TextStyle(
@@ -46,6 +46,7 @@ class CustomStyles {
     color: Colors.white,
   );
   static const lastChatTimeTextStyle = TextStyle(
+    fontSize: 12,
     color: Colors.grey,
   );
   /// Default icon for reply with changeable size.

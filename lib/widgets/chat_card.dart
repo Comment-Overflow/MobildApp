@@ -7,12 +7,14 @@ import 'package:zhihu_demo/model/chat.dart';
 import 'package:zhihu_demo/pages/home_page.dart';
 import 'package:zhihu_demo/widgets/user_avatar.dart';
 import 'package:dart_date/dart_date.dart';
+import 'package:flutter_slidable/flutter_slidable.dart';
 
 class ChatCard extends StatelessWidget {
 
   final Chat _chat;
+  final VoidCallback _deleteChat;
 
-  const ChatCard(this._chat, {Key? key}) : super(key: key);
+  const ChatCard(this._chat, this._deleteChat, {Key? key}) : super(key: key);
 
   String getDisplayTime() {
     if (_chat.time.isToday)
@@ -37,7 +39,7 @@ class ChatCard extends StatelessWidget {
         ),
       );
 
-    return Container(
+    Container card =  Container(
       padding: EdgeInsets.fromLTRB(
           Constants.defaultCardPadding * 0.4,
           Constants.defaultCardPadding,
@@ -65,11 +67,11 @@ class ChatCard extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[
                   Expanded(
-                    flex: 3,
+                    flex: 7,
                     child: Container(),
                   ),
                   Expanded(
-                    flex: 32,
+                    flex: 48,
                     child: Text(
                       _chat.chatter.userName,
                       overflow: TextOverflow.ellipsis,
@@ -82,7 +84,7 @@ class ChatCard extends StatelessWidget {
                     child: Container(),
                   ),
                   Expanded(
-                    flex: 60,
+                    flex: 40,
                     child: Text(
                       _chat.lastMessage,
                       overflow: TextOverflow.ellipsis,
@@ -104,19 +106,19 @@ class ChatCard extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: <Widget>[
                   Expanded(
-                    flex: 3,
+                    flex: 7,
                     child: Container(),
                   ),
                   Expanded(
-                    flex: 32,
+                    flex: 50,
                     child: unreadPrompt
                   ),
                   Expanded(
-                    flex: 5,
+                    flex: 10,
                     child: Container(),
                   ),
                   Expanded(
-                    flex: 60,
+                    flex: 33,
                     child: Text(
                       getDisplayTime(),
                       style: CustomStyles.lastChatTimeTextStyle,
@@ -128,6 +130,20 @@ class ChatCard extends StatelessWidget {
           ],
         ),
       ),
+    );
+
+    return Slidable(
+      actionPane: SlidableDrawerActionPane(),
+      actionExtentRatio: 0.25,
+      child: card,
+      secondaryActions: <Widget>[
+        IconSlideAction(
+          caption: '删除',
+          color: Colors.red,
+          icon: Icons.delete,
+          onTap: _deleteChat,
+        ),
+      ],
     );
   }
 }
