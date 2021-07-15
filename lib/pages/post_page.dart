@@ -6,6 +6,7 @@ import 'package:zhihu_demo/fake_data/fake_data.dart';
 import 'package:zhihu_demo/model/comment.dart';
 import 'package:zhihu_demo/model/post.dart';
 import 'package:zhihu_demo/widgets/comment_card_list.dart';
+import 'package:zhihu_demo/widgets/quote_card.dart';
 
 class PostPage extends StatefulWidget {
   final Post _post;
@@ -161,10 +162,53 @@ class _PostPageState extends State<PostPage> {
               mainAxisAlignment: MainAxisAlignment.center,
               mainAxisSize: MainAxisSize.min,
               children: <Widget>[
-                TextField(
-                  keyboardType: TextInputType.text,
-                  autofocus: true,
+                Container(
+                  height: 17.0,
+                  child: Row(
+                    mainAxisSize: MainAxisSize.max,
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    children: [
+                      IconButton(
+                        onPressed: () {},
+                        icon: CustomStyles.getDefaultCloseIcon(size: 16.0),
+                      )
+                    ],
+                  ),
                 ),
+                Padding(
+                  padding: EdgeInsets.all(6.0),
+                  child: QuoteCard(quotes[0]),
+                ),
+                Row(
+                  children: [
+                    Expanded(
+                      child: Padding(
+                        padding: const EdgeInsets.all(6.0),
+                        child: TextField(
+                          textInputAction: TextInputAction.newline,
+                          keyboardType: TextInputType.text,
+                          decoration: InputDecoration(
+                              border: OutlineInputBorder(),
+                              suffixIcon: Row(
+                                mainAxisSize: MainAxisSize.min,
+                                children: [
+                                  IconButton(
+                                    icon: CustomStyles.getDefaultImageIcon(size: 24.0),
+                                    onPressed: () {},
+                                  ),
+                                ],
+                              )
+                          ),
+                          autofocus: true,
+                        ),
+                      )
+                    ),
+                    ElevatedButton(
+                      child: Text("发送"),
+                      onPressed: () {},
+                    )
+                  ],
+                )
               ],
             ),
           ),

@@ -92,6 +92,14 @@ class CustomStyles {
   static Icon getDefaultFollowerIcon({size = 14.0}) =>
       Icon(Icons.people_alt, color: Colors.grey, size: size);
 
+  /// Default icon for image.
+  static Icon getDefaultImageIcon({size = 14.0, color = Colors.grey}) =>
+      Icon(Icons.photo, color: color, size: size);
+
+  /// Default icon for close.
+  static Icon getDefaultCloseIcon({size = 14.0, color = Colors.grey}) =>
+      Icon(Icons.close, color: color, size: size);
+
   static const referenceUserNameStyle = TextStyle(
     fontWeight: FontWeight.bold,
     fontSize: 16.0,
