@@ -1,8 +1,7 @@
 
 import 'package:flutter/cupertino.dart';
+import 'package:zhihu_demo/assets/constants.dart';
 import 'package:zhihu_demo/model/user_info.dart';
-
-enum NotificationType {approvePost, approveComment, collect, attention, reply}
 
 class NotificationMessage {
 

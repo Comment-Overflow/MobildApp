@@ -10,12 +10,6 @@ class NotificationCard extends StatelessWidget {
 
   final NotificationMessage _notificationMessage;
 
-  // NotificationCard(userName, imageSize, NotificationType type,
-  //     {Key? key, image, title, comment, this.textStyle, this.gap = 10.0})
-  //     : _userAvatar = UserAvatar(imageSize, image: image),
-  //       _notificationMsg = NotificationMsg(userName, title, comment, type),
-  //       super(key: key);
-
   NotificationCard(this._notificationMessage,
     {Key? key}):super(key: key);
 

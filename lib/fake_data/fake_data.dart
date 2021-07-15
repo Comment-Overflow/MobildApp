@@ -1,5 +1,6 @@
 import 'package:zhihu_demo/assets/constants.dart';
 import 'package:zhihu_demo/model/comment.dart';
+import 'package:zhihu_demo/model/my_comment.dart';
 import 'package:zhihu_demo/model/post.dart';
 import 'package:zhihu_demo/model/quote.dart';
 import 'package:zhihu_demo/model/user_info.dart';
@@ -28,6 +29,12 @@ final notifications = List<NotificationMessage>.filled(
   20,
   NotificationMessage(_userInfo, 24.0, 7.0, _type,
       comment: _comment, title: _title),
+  growable: true,
+);
+
+final myComments = List<MyComment>.filled(
+  20,
+  MyComment(_title, _content, "http://img8.zol.com.cn/bbs/upload/23765/23764201.jpg"),
   growable: true,
 );
 
