@@ -16,19 +16,14 @@ class PostCardList extends StatefulWidget {
 }
 
 class _PostCardListState extends State<PostCardList> {
-
-  final PagingManager<Post> _pagingManager = PagingManager(
-      Constants.defaultPageSize,
-      (page, pageSize) {
-        return Future.delayed(
-          const Duration(seconds: 1),
-          () => posts.sublist(
-            page * pageSize, min((page + 1) * pageSize, posts.length)
-          ),
-        );
-      },
-      (context, item, index) => PostCard(item)
-  );
+  final PagingManager<Post> _pagingManager =
+      PagingManager(Constants.defaultPageSize, (page, pageSize) {
+    return Future.delayed(
+      const Duration(milliseconds: 500),
+      () => posts.sublist(
+          page * pageSize, min((page + 1) * pageSize, posts.length)),
+    );
+  }, (context, item, index) => PostCard(item));
 
   @override
   dispose() {
@@ -41,5 +36,3 @@ class _PostCardListState extends State<PostCardList> {
     return _pagingManager.getListView();
   }
 }
-
-
