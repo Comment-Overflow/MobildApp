@@ -84,7 +84,7 @@ class _PostPageState extends State<PostPage> {
                 },
                 child: Row(
                   children: [
-                    Text("${getPolicyName(_sortPolicy)} |"),
+                    Text("${getPolicyName(_sortPolicy)}"),
                     CustomStyles.getDefaultArrowDownIcon(size: _iconSize),
                   ],
                 ),
@@ -113,7 +113,7 @@ class _PostPageState extends State<PostPage> {
         child: Row(
           children: [
             TextButton(
-              onPressed: () {},
+              onPressed: _pushReply,
               child: Column(
                 mainAxisSize: MainAxisSize.min,
                 children: [
@@ -167,6 +167,31 @@ class _PostPageState extends State<PostPage> {
           mainAxisAlignment: MainAxisAlignment.spaceAround,
         ),
       ),
+    );
+  }
+
+  void _pushReply() {
+    showModalBottomSheet(
+      isScrollControlled: true,  // !important
+      context: context,
+      builder: (BuildContext context) {
+        return SingleChildScrollView(  // !important
+          child: Container(
+            padding: EdgeInsets.only(
+                bottom: MediaQuery.of(context).viewInsets.bottom),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              mainAxisSize: MainAxisSize.min,
+              children: <Widget>[
+                TextField(
+                  keyboardType: TextInputType.text,
+                  autofocus: true,
+                ),
+              ],
+            ),
+          ),
+        );
+      },
     );
   }
 }
