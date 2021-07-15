@@ -52,9 +52,13 @@ pubspec.lock
 /ios/Runner.xcworkspace
 /ios/Runner.xcodeproj/project.pbxproj
 /ios/Runner/Runner.entitlements
+/ios/build
 /ios/Podfile
+<<<<<<< HEAD
 /ios/Podfile.lock
 /ios/Flutter/Debug.xcconfig
 /ios/Flutter/Release.xcconfig
 /ios/Runner.xcworkspace/contents.xcworkspacedata
 
+=======
+>>>>>>> pre-release

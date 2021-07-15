@@ -13,7 +13,7 @@ class NotificationButtonList extends StatelessWidget {
     _notificationButtonTextStyle = TextStyle(
       fontSize: _buttonSize * 0.4,
       fontWeight: FontWeight.bold,
-      color: Colors.black,
+      color: Colors.grey[800],
     );
     _gap = SizedBox(height: _buttonSize * 0.15);
   }
@@ -38,7 +38,7 @@ class NotificationButtonList extends StatelessWidget {
               mainAxisSize: MainAxisSize.max,
               crossAxisAlignment: CrossAxisAlignment.center,
               children: <Widget>[
-                CustomStyles.getDefaultNotThumbUpIcon(size: _buttonSize, color: Colors.black),
+                CustomStyles.getDefaultLightNotThumbUpIcon(size: _buttonSize, color: Colors.black),
                 _gap,
                 Text("赞同", style: _notificationButtonTextStyle),
               ],

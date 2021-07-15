@@ -20,11 +20,16 @@ class ZhiHu extends StatelessWidget {
       theme: ThemeData(
         primaryColor: Colors.white,
         accentColor: Colors.blueAccent,
+        textButtonTheme: TextButtonThemeData(
+            style: TextButton.styleFrom(
+              primary: Colors.blueAccent,
+            )
+        ),
         buttonColor: Colors.blue.withOpacity(0.12),
         disabledColor: Colors.grey.withOpacity(0.5),
         secondaryHeaderColor: Colors.grey,
       ),
-      initialRoute: '/',
+      initialRoute: RouteGenerator.homeRoute,
       onGenerateRoute: RouteGenerator.generateRoute,
     );
   }

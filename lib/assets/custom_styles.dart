@@ -20,6 +20,16 @@ class CustomStyles {
     fontWeight: FontWeight.normal,
     fontSize: 13,
   );
+
+  static const myCommentContentStyle = TextStyle(
+    fontWeight: FontWeight.bold,
+    fontSize: 16.0,
+  );
+  static const myCommentPostTitleStyle = TextStyle(
+    fontWeight: FontWeight.normal,
+    fontSize: 13,
+  );
+
   static const dateStyle = TextStyle(
     fontWeight: FontWeight.w300,
     fontSize: 12,
@@ -29,6 +39,7 @@ class CustomStyles {
     fontWeight: FontWeight.normal,
     fontSize: 12,
   );
+
   static const userNameStyle = TextStyle(
     fontWeight: FontWeight.bold,
     fontSize: 18,
@@ -36,6 +47,7 @@ class CustomStyles {
   static const userBriefStyle = TextStyle(
     color: Colors.grey,
   );
+
   static const lastMessageTextStyle = TextStyle(
     fontSize: 16,
     color: Colors.grey,
@@ -49,9 +61,14 @@ class CustomStyles {
     fontSize: 12,
     color: Colors.grey,
   );
+
+  static const notificationPageTitleStyle = TextStyle(
+    fontWeight: FontWeight.bold,
+  );
+
   /// Default icon for reply with changeable size.
   static Icon getDefaultReplyIcon({size = 14.0, color: Colors.grey}) =>
-      Icon(Icons.chat_outlined, color: color, size: size);
+      Icon(CupertinoIcons.text_bubble, color: color, size: size);
 
   /// Default icon for thumb up.
   static Icon getDefaultThumbUpIcon({size = 14.0, color = CustomColors.thumbUpPink}) =>
@@ -60,6 +77,10 @@ class CustomStyles {
   /// Default icon for not thumb up.
   static getDefaultNotThumbUpIcon({size = 14.0, color = Colors.grey}) =>
       Icon(Icons.favorite_border, color: color, size: size);
+
+  /// Default icon for light not thumb up.
+  static getDefaultLightNotThumbUpIcon({size = 14.0, color = Colors.grey}) =>
+      Icon(CupertinoIcons.heart, color: color, size: size);
 
   /// Default icon for plus.
   static Icon getDefaultPlusIcon({size = 18.0, color = Colors.blue}) =>
@@ -79,11 +100,11 @@ class CustomStyles {
 
   /// Default icon for followers (unfilled).
   static Icon getDefaultUnfilledFollowerIcon({size = 14.0, color = Colors.grey}) =>
-      Icon(Icons.people_outline, color: color, size: size);
+      Icon(CupertinoIcons.person, color: color, size: size);
 
   /// Default icon for not star.
   static getDefaultNotStarIcon({size = 14.0, color = Colors.grey}) =>
-      Icon(Icons.star_border, color: color, size: size);
+      Icon(CupertinoIcons.star, color: color, size: size);
 
   static const referenceUserNameStyle = TextStyle(
     fontWeight: FontWeight.bold,
