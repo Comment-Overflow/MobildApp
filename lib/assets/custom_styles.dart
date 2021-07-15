@@ -19,6 +19,16 @@ class CustomStyles {
     fontWeight: FontWeight.normal,
     fontSize: 13,
   );
+
+  static const myCommentContentStyle = TextStyle(
+    fontWeight: FontWeight.bold,
+    fontSize: 16.0,
+  );
+  static const myCommentPostTitleStyle = TextStyle(
+    fontWeight: FontWeight.normal,
+    fontSize: 13,
+  );
+
   static const dateStyle = TextStyle(
     fontWeight: FontWeight.w300,
     fontSize: 12,

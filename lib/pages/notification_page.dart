@@ -1,4 +1,4 @@
-import 'package:comment_overflow/model/notification_message.dart';
+import 'package:comment_overflow/assets/constants.dart';
 import 'package:comment_overflow/widgets/notification_card_list.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';

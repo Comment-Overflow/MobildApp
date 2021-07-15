@@ -1,5 +1,6 @@
 import 'package:comment_overflow/assets/constants.dart';
 import 'package:comment_overflow/model/comment.dart';
+import 'package:comment_overflow/model/my_comment.dart';
 import 'package:comment_overflow/model/notification_message.dart';
 import 'package:comment_overflow/model/post.dart';
 import 'package:comment_overflow/model/quote.dart';
@@ -41,6 +42,13 @@ final notifications = List<NotificationMessage>.filled(
   20,
   NotificationMessage(_userInfo, 24.0, 7.0, _type,
       comment: _comment, title: _title),
+  growable: true,
+);
+
+final myComments = List<MyComment>.filled(
+  20,
+  MyComment(
+      _title, _content, "http://img8.zol.com.cn/bbs/upload/23765/23764201.jpg"),
   growable: true,
 );
 

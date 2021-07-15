@@ -1,7 +1,6 @@
+import 'package:comment_overflow/assets/constants.dart';
 import 'package:comment_overflow/model/user_info.dart';
 import 'package:flutter/cupertino.dart';
-
-enum NotificationType { approvePost, approveComment, collect, attention, reply }
 
 class NotificationMessage {
   final UserInfo _userInfo;
