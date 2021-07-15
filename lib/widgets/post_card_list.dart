@@ -32,8 +32,8 @@ class _PostCardListState extends State<PostCardList> {
 
   @override
   dispose() {
-    super.dispose();
     _pagingManager.dispose();
+    super.dispose();
   }
 
   @override

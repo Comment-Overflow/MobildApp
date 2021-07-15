@@ -32,17 +32,17 @@ final notifications = List<NotificationMessage>.filled(
 );
 
 final posts = List<Post>.filled(
-  5,
+  10,
   Post(1, _title, 500, 300, _approvedComment,),
   growable: true,
 )
   ..addAll(List<Post>.filled(
-    5,
+    10,
     Post(1, _title, 500, 700, _disapprovedComment,),
     growable: true,
   ))
   ..addAll(List<Post>.filled(
-    5,
+    10,
     Post(1, _title, 500, 1000, _noneComment,),
     growable: true,
   ));

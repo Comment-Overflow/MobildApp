@@ -11,6 +11,7 @@ class Constants {
   static const defaultButtonPaddinqg = 5.0;
   /// Default size of Avatar in commentCard.
   static const defaultAvatarInCommentSize = 24.0;
+  static const defaultAppBarElevation = 0.5;
   /// Search bar height.
   static const searchBarHeight = 32.0;
 }
