@@ -51,6 +51,10 @@ class CustomStyles {
   static getDefaultDeleteIcon({size = 14.0}) =>
       Icon(Icons.delete_forever, color: Colors.grey, size: size);
 
+  /// Default icon for drop down menu.
+  static getDefaultArrowDownIcon({size = 14.0}) =>
+      Icon(Icons.keyboard_arrow_down, color: Colors.black87, size: size);
+
   static const referenceUserNameStyle = TextStyle(
     fontWeight: FontWeight.bold,
     fontSize: 16.0,

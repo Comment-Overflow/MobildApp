@@ -105,29 +105,33 @@ class _CommentCardState extends State<CommentCard> {
   }
 
   void _pushLike() {
-    switch (widget._comment.approvalStatus) {
-      case ApprovalStatus.none:
-        widget._comment.addApprovals();
-        break;
-      case ApprovalStatus.approve:
-        widget._comment.subApprovals();
-        break;
-      case ApprovalStatus.disapprove:
-        break;
-    }
+    setState(() {
+      switch (widget._comment.approvalStatus) {
+        case ApprovalStatus.none:
+          widget._comment.addApprovals();
+          break;
+        case ApprovalStatus.approve:
+          widget._comment.subApprovals();
+          break;
+        case ApprovalStatus.disapprove:
+          break;
+      }
+    });
   }
 
   void _pushDislike() {
-    switch (widget._comment.approvalStatus) {
-      case ApprovalStatus.none:
-        widget._comment.subApprovals();
-        break;
-      case ApprovalStatus.disapprove:
-        widget._comment.addApprovals();
-        break;
-      case ApprovalStatus.approve:
-        break;
-    }
+    setState(() {
+      switch (widget._comment.approvalStatus) {
+        case ApprovalStatus.none:
+          widget._comment.subApprovals();
+          break;
+        case ApprovalStatus.disapprove:
+          widget._comment.addApprovals();
+          break;
+        case ApprovalStatus.approve:
+          break;
+      }
+    });
   }
 
   void _pushReply() {}

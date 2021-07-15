@@ -17,3 +17,7 @@ enum Sex {
 enum ApprovalStatus {
   none, approve, disapprove,
 }
+
+enum SortPolicy {
+  earliest, latest, hottest,
+}
