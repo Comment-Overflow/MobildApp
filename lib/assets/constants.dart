@@ -1,6 +1,8 @@
 class Constants {
   /// Default page size of pageable list.
   static const defaultPageSize = 8;
+  /// Default page size of notification page list.
+  static const defaultNotificationPageSize = 10;
   /// Default padding of any card component.
   static const defaultCardPadding = 16.0;
   /// Default size height of a user card.
