@@ -76,33 +76,6 @@ class CustomStyles {
   static getDefaultListIcon({size = 14.0, color = Colors.grey}) =>
     Icon(Icons.list, color: color, size: size);
 
-  static getDefaultThumbDownIcon({size = 14.0, color = Colors.black87}) =>
-      Icon(Icons.thumb_down, color: color, size: size);
-
-  /// Default icon for not thumb up.
-  static getDefaultNotThumbDownIcon({size = 14.0, color = Colors.grey}) =>
-      Icon(Icons.thumb_down_outlined, color: color, size: size);
-
-  /// Default icon for delete.
-  static getDefaultDeleteIcon({size = 14.0, color = Colors.grey}) =>
-      Icon(Icons.delete_forever, color: color, size: size);
-
-  /// Default icon for drop down menu.
-  static getDefaultArrowDownIcon({size = 14.0, color = Colors.black87}) =>
-      Icon(Icons.keyboard_arrow_down, color: color, size: size);
-
-  /// Default icon for star.
-  static getDefaultStaredIcon({size = 14.0, color = Colors.amberAccent}) =>
-      Icon(Icons.star, color: color, size: size);
-
-  /// Default icon for not star.
-  static getDefaultNotStarIcon({size = 14.0, color = Colors.grey}) =>
-      Icon(Icons.star_border, color: color, size: size);
-  
-  /// Default icon for list.
-  static getDefaultListIcon({size = 14.0, color = Colors.grey}) =>
-    Icon(Icons.list, color: color, size: size);
-
   /// Default icon for plus.
   static Icon getDefaultPlusIcon({size = 18.0}) =>
       Icon(Icons.add, color: Colors.blue, size: size);
