@@ -1,27 +1,16 @@
-<<<<<<< HEAD
 import 'package:comment_overflow/assets/constants.dart';
 import 'package:comment_overflow/assets/custom_styles.dart';
+import 'package:comment_overflow/fake_data/fake_data.dart';
 import 'package:comment_overflow/model/comment.dart';
 import 'package:comment_overflow/model/post.dart';
-import 'package:comment_overflow/widgets/comment_card.dart';
+import 'package:comment_overflow/utils/my_image_picker.dart';
 import 'package:comment_overflow/widgets/comment_card_list.dart';
-import 'package:flutter/cupertino.dart';
-import 'package:flutter/material.dart';
-=======
+import 'package:comment_overflow/widgets/horizontal_image_scroller.dart';
+import 'package:comment_overflow/widgets/quote_card.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:wechat_assets_picker/wechat_assets_picker.dart';
-import 'package:zhihu_demo/assets/constants.dart';
-import 'package:zhihu_demo/assets/custom_styles.dart';
-import 'package:zhihu_demo/fake_data/fake_data.dart';
-import 'package:zhihu_demo/model/comment.dart';
-import 'package:zhihu_demo/model/post.dart';
-import 'package:zhihu_demo/utils/my_image_picker.dart';
-import 'package:zhihu_demo/widgets/comment_card_list.dart';
-import 'package:zhihu_demo/widgets/quote_card.dart';
-import 'package:zhihu_demo/widgets/horizontal_image_scroller.dart';
->>>>>>> 1ddfcacf241396368a1709bdc7996a268858d1c5
 
 class PostPage extends StatefulWidget {
   final Post _post;
@@ -75,70 +64,10 @@ class _PostPageState extends State<PostPage> {
         ],
         centerTitle: true,
       ),
-<<<<<<< HEAD
-      body: Column(
-        children: [
-          Padding(
-            padding: const EdgeInsets.only(
-              top: Constants.defaultCardPadding / 2,
-              left: Constants.defaultCardPadding,
-              right: Constants.defaultCardPadding,
-              bottom: Constants.defaultCardPadding / 3,
-            ),
-            child: Text(
-              widget._post.title,
-              style: CustomStyles.postPageTitleStyle,
-            ),
-          ),
-          CommentCard(widget._post.commentToDisplay),
-          _gap,
-          Row(
-            mainAxisAlignment: MainAxisAlignment.end,
-            children: [
-              PopupMenuButton<SortPolicy>(
-                  padding: const EdgeInsets.all(7.0),
-                  onSelected: (SortPolicy result) => {
-                        setState(() {
-                          _sortPolicy = result;
-                        })
-                      },
-                  child: Row(
-                    children: [
-                      Text("${getPolicyName(_sortPolicy)}"),
-                      CustomStyles.getDefaultArrowDownIcon(size: _iconSize),
-                    ],
-                  ),
-                  itemBuilder: (BuildContext context) =>
-                      <PopupMenuEntry<SortPolicy>>[
-                        const PopupMenuItem(
-                          value: SortPolicy.earliest,
-                          child: Text("最早回复"),
-                        ),
-                        const PopupMenuItem(
-                          value: SortPolicy.latest,
-                          child: Text("最近回复"),
-                        ),
-                        const PopupMenuItem(
-                          value: SortPolicy.hottest,
-                          child: Text("最热回复"),
-                        ),
-                      ]),
-            ],
-          ),
-          _gap,
-          Expanded(
-            child: CommentCardList(widget._commentList),
-          ),
-        ],
-=======
       floatingActionButton: FloatingActionButton(
           onPressed: _pushReply,
           child: CustomStyles.getDefaultReplyIcon(
-              size: _bottomIconSize,
-              color: Colors.white
-          )
->>>>>>> 4a40a757b9ce438c9c22d3468e558545f833b2eb
-      ),
+              size: _bottomIconSize, color: Colors.white)),
       body: CommentCardList(posts[0]),
       bottomNavigationBar: BottomAppBar(
         child: Row(
@@ -199,219 +128,119 @@ class _PostPageState extends State<PostPage> {
 
   Widget buildDropDownMenu() {
     return PopupMenuButton<SortPolicy>(
-      padding: const EdgeInsets.all(7.0),
-      onSelected: (SortPolicy result) => {
-        setState(() {_sortPolicy = result;})
-      },
-      child: Column(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          CustomStyles.getDefaultListIcon(size: _bottomIconSize),
-          Text(
-            "${getPolicyName(_sortPolicy)}",
-            style: CustomStyles.postPageBottomStyle,
-          ),
-        ],
-      ),
-      itemBuilder: (BuildContext context) => <PopupMenuEntry<SortPolicy>>[
-        const PopupMenuItem(
-          value: SortPolicy.earliest,
-          child: Text("最早回复"),
+        padding: const EdgeInsets.all(7.0),
+        onSelected: (SortPolicy result) => {
+              setState(() {
+                _sortPolicy = result;
+              })
+            },
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            CustomStyles.getDefaultListIcon(size: _bottomIconSize),
+            Text(
+              "${getPolicyName(_sortPolicy)}",
+              style: CustomStyles.postPageBottomStyle,
+            ),
+          ],
         ),
-        const PopupMenuItem(
-          value: SortPolicy.latest,
-          child: Text("最近回复"),
-        ),
-        const PopupMenuItem(
-          value: SortPolicy.hottest,
-          child: Text("最热回复"),
-        ),
-      ]
-    );
+        itemBuilder: (BuildContext context) => <PopupMenuEntry<SortPolicy>>[
+              const PopupMenuItem(
+                value: SortPolicy.earliest,
+                child: Text("最早回复"),
+              ),
+              const PopupMenuItem(
+                value: SortPolicy.latest,
+                child: Text("最近回复"),
+              ),
+              const PopupMenuItem(
+                value: SortPolicy.hottest,
+                child: Text("最热回复"),
+              ),
+            ]);
   }
 
   void _pushReply() {
     showModalBottomSheet(
       isScrollControlled: true, // !important
       context: context,
-<<<<<<< HEAD
       builder: (BuildContext context) {
-<<<<<<< HEAD
         return SingleChildScrollView(
-          // !important
-          child: Container(
-            padding: EdgeInsets.only(
-                bottom: MediaQuery.of(context).viewInsets.bottom),
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              mainAxisSize: MainAxisSize.min,
-              children: <Widget>[
-                TextField(
-                  keyboardType: TextInputType.text,
-                  autofocus: true,
-                ),
-              ],
-            ),
-          ),
-=======
-        return SingleChildScrollView(  // !important
-          child: _inputField
->>>>>>> 4a40a757b9ce438c9c22d3468e558545f833b2eb
-        );
+            // !important
+            child: _inputField);
       },
-=======
-      builder: (context) => StatefulBuilder(
-        builder: (context, setState) {
-          return SingleChildScrollView(  // !important
-            child: _inputField
-          );
-        },
-      ),
->>>>>>> 1ddfcacf241396368a1709bdc7996a268858d1c5
     );
   }
-<<<<<<< HEAD
-}
-=======
 
   Widget get _inputField => Container(
-      padding: EdgeInsets.only(
-          bottom: MediaQuery.of(context).viewInsets.bottom),
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        mainAxisSize: MainAxisSize.min,
-        children: <Widget>[
-          Container(
-            height: 17.0,
-            child: Row(
-              mainAxisSize: MainAxisSize.max,
-              mainAxisAlignment: MainAxisAlignment.start,
+        padding:
+            EdgeInsets.only(bottom: MediaQuery.of(context).viewInsets.bottom),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          mainAxisSize: MainAxisSize.min,
+          children: <Widget>[
+            Container(
+              height: 17.0,
+              child: Row(
+                mainAxisSize: MainAxisSize.max,
+                mainAxisAlignment: MainAxisAlignment.start,
+                children: [
+                  IconButton(
+                    onPressed: () {
+                      Navigator.pop(context);
+                    },
+                    icon: CustomStyles.getDefaultCloseIcon(size: 16.0),
+                  )
+                ],
+              ),
+            ),
+            Padding(
+              padding: EdgeInsets.all(6.0),
+              child: QuoteCard(quotes[0]),
+            ),
+            HorizontalImageScroller(_assets),
+            Row(
               children: [
-                IconButton(
-                  onPressed: () {Navigator.pop(context);},
-                  icon: CustomStyles.getDefaultCloseIcon(size: 16.0),
+                _textField,
+                ElevatedButton(
+                  child: Text("发送"),
+                  onPressed: () {},
                 )
               ],
-            ),
-          ),
-          Padding(
-            padding: EdgeInsets.all(6.0),
-            child: QuoteCard(quotes[0]),
-          ),
-          HorizontalImageScroller(_assets),
-          Row(
-            children: [
-              _textField,
-              ElevatedButton(
-                child: Text("发送"),
-                onPressed: () {},
-              )
-            ],
-          )
-        ],
-      ),
-    );
+            )
+          ],
+        ),
+      );
 
   Widget get _textField => Expanded(
-    child: TextField(
-      textInputAction: TextInputAction.newline,
-      keyboardType: TextInputType.text,
-      decoration: InputDecoration(
-        hintText: "友善的回复",
-        border: OutlineInputBorder(),
-        contentPadding: const EdgeInsets.all(6.0),
-        suffixIcon: Row(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            IconButton(
-              icon: CustomStyles.getDefaultImageIcon(size: 24.0),
-              onPressed: _selectAssets,
-            ),
-          ],
-        )
-      ),
-      autofocus: true,
-    ),
-  );
+        child: TextField(
+          textInputAction: TextInputAction.newline,
+          keyboardType: TextInputType.text,
+          decoration: InputDecoration(
+              hintText: "友善的回复",
+              border: OutlineInputBorder(),
+              contentPadding: const EdgeInsets.all(6.0),
+              suffixIcon: Row(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  IconButton(
+                    icon: CustomStyles.getDefaultImageIcon(size: 24.0),
+                    onPressed: _selectAssets,
+                  ),
+                ],
+              )),
+          autofocus: true,
+        ),
+      );
 
   Future<void> _selectAssets() async {
-    final List<AssetEntity>? result = await MyImagePicker.pickImage(
-      context,
-      maxAssets: Constants.maxImageNumber - _assets.length,
-      selectedAssets: _assets
-    );
+    final List<AssetEntity>? result = await MyImagePicker.pickImage(context,
+        maxAssets: Constants.maxImageNumber - _assets.length,
+        selectedAssets: _assets);
     if (result != null) {
       setState(() {
         _assets = List<AssetEntity>.from(result);
       });
     }
   }
-<<<<<<< HEAD
-
-  void _removeAsset(int index) {
-    setState(() {
-      assets.remove(assets.elementAt(index));
-    });
-  }
-
-  Widget get _assetListView => ListView.builder(
-    itemBuilder: _assetItemBuilder,
-    scrollDirection: Axis.horizontal,
-    itemCount: assets.length,
-  );
-
-  Widget _assetItemBuilder(BuildContext _, int index) {
-    return Container(
-      height: 60.0,
-      width: 60.0,
-      margin: const EdgeInsets.symmetric(horizontal: 5.0, vertical: 10.0),
-      child: AspectRatio(
-        aspectRatio: 1.0,
-        child: ClipRRect(
-          borderRadius: BorderRadius.circular(10.0),
-          child: Stack(
-            children: <Widget>[
-              _imageWidget(index),
-              _deleteButton(index),
-            ],
-          ),
-        ),
-      ),
-    );
-  }
-
-  Widget _imageWidget(int index) {
-    return Positioned.fill(
-      child: ExtendedImage(
-        image: AssetEntityImageProvider(
-          assets.elementAt(index),
-          isOriginal: false,
-        ),
-        fit: BoxFit.cover,
-      ),
-    );
-  }
-
-  Widget _deleteButton(int index) {
-    return Positioned(
-      top: 6.0,
-      right: 6.0,
-      child: GestureDetector(
-        behavior: HitTestBehavior.opaque,
-        onTap: () => _removeAsset(index),
-        child: Container(
-          padding: const EdgeInsets.all(2.0),
-          decoration: BoxDecoration(
-            color: Theme.of(context).dividerColor.withOpacity(0.5),
-            shape: BoxShape.circle,
-          ),
-          child: Icon(Icons.close, size: 14.0, color: Colors.white),
-        ),
-      ),
-    );
-  }
 }
->>>>>>> 4a40a757b9ce438c9c22d3468e558545f833b2eb
-=======
-}
->>>>>>> 1ddfcacf241396368a1709bdc7996a268858d1c5
