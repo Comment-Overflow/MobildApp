@@ -12,7 +12,7 @@ class MyImagePicker {
   dynamic pickImageError;
   final ImagePicker _picker = ImagePicker();
 
-  void pickImage(ImageSource source,
+  Future<List<PickedFile>?> pickImage(ImageSource source,
       {BuildContext? context, bool isMultiImage = false,
         double? maxWidth, double? maxHeight, int? quality}) async {
     if (isMultiImage) {
@@ -39,6 +39,7 @@ class MyImagePicker {
         pickImageError = error;
       }
     }
+    return imageFileList;
   }
 
 }

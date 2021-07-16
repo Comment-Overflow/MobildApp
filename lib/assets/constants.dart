@@ -14,6 +14,8 @@ class Constants {
   static const defaultAppBarElevation = 0.5;
   /// Search bar height.
   static const searchBarHeight = 32.0;
+  /// Max image number of a comment.
+  static const maxImageNumber = 9;
 }
 
 enum FollowStatus {

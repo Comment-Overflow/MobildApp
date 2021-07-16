@@ -1,5 +1,8 @@
+import 'package:extended_image/extended_image.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/rendering.dart';
+import 'package:wechat_assets_picker/wechat_assets_picker.dart';
 import 'package:zhihu_demo/assets/constants.dart';
 import 'package:zhihu_demo/assets/custom_styles.dart';
 import 'package:zhihu_demo/fake_data/fake_data.dart';
@@ -22,6 +25,7 @@ class PostPage extends StatefulWidget {
 class _PostPageState extends State<PostPage> {
   var _sortPolicy = SortPolicy.earliest;
   var _stared = false;
+  List<AssetEntity> assets = <AssetEntity>[];
 
   static const _iconSize = 20.0;
   static const _bottomIconSize = 30.0;
@@ -155,65 +159,146 @@ class _PostPageState extends State<PostPage> {
       context: context,
       builder: (BuildContext context) {
         return SingleChildScrollView(  // !important
-          child: Container(
-            padding: EdgeInsets.only(
-              bottom: MediaQuery.of(context).viewInsets.bottom),
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              mainAxisSize: MainAxisSize.min,
-              children: <Widget>[
-                Container(
-                  height: 17.0,
-                  child: Row(
-                    mainAxisSize: MainAxisSize.max,
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    children: [
-                      IconButton(
-                        onPressed: () {Navigator.pop(context);},
-                        icon: CustomStyles.getDefaultCloseIcon(size: 16.0),
-                      )
-                    ],
-                  ),
-                ),
-                Padding(
-                  padding: EdgeInsets.all(6.0),
-                  child: QuoteCard(quotes[0]),
-                ),
-                Row(
-                  children: [
-                    Expanded(
-                      child: Padding(
-                        padding: const EdgeInsets.all(6.0),
-                        child: TextField(
-                          textInputAction: TextInputAction.newline,
-                          keyboardType: TextInputType.text,
-                          decoration: InputDecoration(
-                              border: OutlineInputBorder(),
-                              suffixIcon: Row(
-                                mainAxisSize: MainAxisSize.min,
-                                children: [
-                                  IconButton(
-                                    icon: CustomStyles.getDefaultImageIcon(size: 24.0),
-                                    onPressed: () {},
-                                  ),
-                                ],
-                              )
-                          ),
-                          autofocus: true,
-                        ),
-                      )
-                    ),
-                    ElevatedButton(
-                      child: Text("发送"),
-                      onPressed: () {},
-                    )
-                  ],
-                )
-              ],
-            ),
-          ),
+          child: _inputField
         );
       },
+    );
+  }
+
+  Widget get _inputField => Container(
+    padding: EdgeInsets.only(
+        bottom: MediaQuery.of(context).viewInsets.bottom),
+    child: Column(
+      mainAxisAlignment: MainAxisAlignment.center,
+      mainAxisSize: MainAxisSize.min,
+      children: <Widget>[
+        Container(
+          height: 17.0,
+          child: Row(
+            mainAxisSize: MainAxisSize.max,
+            mainAxisAlignment: MainAxisAlignment.start,
+            children: [
+              IconButton(
+                onPressed: () {Navigator.pop(context);},
+                icon: CustomStyles.getDefaultCloseIcon(size: 16.0),
+              )
+            ],
+          ),
+        ),
+        Padding(
+          padding: EdgeInsets.all(6.0),
+          child: QuoteCard(quotes[0]),
+        ),
+        assets.isNotEmpty ? Padding(
+          padding: EdgeInsets.all(3.0),
+          child: _assetListView,
+        ) : SizedBox.shrink(),
+        Row(
+          children: [
+            _textField,
+            ElevatedButton(
+              child: Text("发送"),
+              onPressed: () {},
+            )
+          ],
+        )
+      ],
+    ),
+  );
+
+  Widget get _textField => Expanded(
+    child: TextField(
+      textInputAction: TextInputAction.newline,
+      keyboardType: TextInputType.text,
+      decoration: InputDecoration(
+        hintText: "友善的回复",
+        border: OutlineInputBorder(),
+        contentPadding: const EdgeInsets.all(6.0),
+        suffixIcon: Row(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            IconButton(
+              icon: CustomStyles.getDefaultImageIcon(size: 24.0),
+              onPressed: _selectAssets,
+            ),
+          ],
+        )
+      ),
+      autofocus: true,
+    ),
+  );
+
+  Future<void> _selectAssets() async {
+    final List<AssetEntity>? result = await AssetPicker.pickAssets(
+      context,
+      maxAssets: Constants.maxImageNumber - assets.length,
+      pathThumbSize: 84,
+      selectedAssets: assets,
+      requestType: RequestType.image,
+    );
+    if (result != null) {
+      assets = List<AssetEntity>.from(result);
+    }
+  }
+
+  void _removeAsset(int index) {
+    setState(() {
+      assets.remove(assets.elementAt(index));
+    });
+  }
+
+  Widget get _assetListView => ListView.builder(
+    itemBuilder: _assetItemBuilder,
+    scrollDirection: Axis.horizontal,
+    itemCount: assets.length,
+  );
+
+  Widget _assetItemBuilder(BuildContext _, int index) {
+    return Container(
+      margin: const EdgeInsets.symmetric(horizontal: 5.0, vertical: 10.0),
+      child: AspectRatio(
+        aspectRatio: 1.0,
+        child: ClipRRect(
+          borderRadius: BorderRadius.circular(10.0),
+          child: Stack(
+            children: <Widget>[
+              _imageWidget(index),
+              _deleteButton(index),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+
+  Widget _imageWidget(int index) {
+    return Positioned.fill(
+      child: ExtendedImage(
+        image: AssetEntityImageProvider(
+          assets.elementAt(index),
+          isOriginal: false,
+        ),
+        fit: BoxFit.cover,
+      ),
+    );
+  }
+
+  Widget _deleteButton(int index) {
+    return Positioned(
+      top: 6.0,
+      right: 6.0,
+      child: GestureDetector(
+        behavior: HitTestBehavior.opaque,
+        onTap: () => _removeAsset(index),
+        child: Container(
+          padding: const EdgeInsets.all(2.0),
+          decoration: BoxDecoration(
+            color: Theme.of(context).dividerColor.withOpacity(0.5),
+            shape: BoxShape.circle,
+          ),
+          child: Icon(Icons.close, size: 14.0, color: Colors.white),
+        ),
+      ),
     );
   }
 }
