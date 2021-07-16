@@ -34,6 +34,10 @@ dependencies:
   intl: ^0.17.0
   flutter_staggered_grid_view: ^0.4.0
   pull_to_refresh: ^2.0.0
+  flutter_login:
+    git:
+      url: https://github.com/Gun9niR/flutter_login.git
+      ref: 63f952a84e5e51ee4342352b39e18a13975a03e2
 
 dev_dependencies:
   flutter_test:
