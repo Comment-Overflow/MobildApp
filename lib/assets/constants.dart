@@ -31,6 +31,9 @@ class Constants {
   /// Search bar height.
   static const searchBarHeight = 32.0;
 
+  /// Maximum characters for post title.
+  static const postTitleMaximumLength = 30;
+
   /// Default size of avatar in chat room.
   static const defaultChatRoomAvatarSize = 50.0;
 

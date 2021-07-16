@@ -164,7 +164,7 @@ final comments = List<Comment>.filled(
   growable: true,
 );
 // Tags for posts
-final tags = List<String>.filled(5, '校园生活');
+final List<String> tags = List<String>.filled(5, '校园生活');
 
 final recentChats = List<Chat>.filled(
   3,

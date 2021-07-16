@@ -140,6 +140,12 @@ class CustomStyles {
         size: size,
       );
 
+  static Icon getDefaultSendIcon(context, {size = 14.0}) => Icon(
+        Icons.send,
+        color: Theme.of(context).accentColor,
+        size: size,
+      );
+
   /// Default icon for image.
   static Icon getDefaultImageIcon({size = 14.0, color = Colors.grey}) =>
       Icon(Icons.photo, color: color, size: size);
@@ -154,5 +160,8 @@ class CustomStyles {
   );
   static const referenceContentStyle = TextStyle(
     fontSize: 14.0,
+  );
+  static const newPostTitleStyle = TextStyle(
+    fontSize: 17.0,
   );
 }
