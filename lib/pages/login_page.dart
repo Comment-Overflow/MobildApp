@@ -55,7 +55,7 @@ class LoginPage extends StatelessWidget {
         userHint: '邮箱',
         passwordHint: '密码',
         confirmPasswordHint: '确认密码',
-        loginButton: '登陆',
+        loginButton: '登录',
         signupButton: '注册',
       );
 }
