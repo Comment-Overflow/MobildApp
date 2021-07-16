@@ -217,7 +217,7 @@ class _PostPageState extends State<PostPage> {
       textInputAction: TextInputAction.newline,
       keyboardType: TextInputType.text,
       decoration: InputDecoration(
-        hintText: "友善的回复",
+        hintText: "友善的回复与世界问好",
         border: OutlineInputBorder(),
         contentPadding: const EdgeInsets.all(6.0),
         suffixIcon: Row(
