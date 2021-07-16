@@ -24,38 +24,40 @@ class _NewPostPageState extends State<NewPostPage> {
     final _activeBackgroundColor = Theme.of(context).buttonColor;
 
     return Scaffold(
-        appBar: buildAppBar(),
-        body: SingleChildScrollView(
-            child: Column(children: [
-          ChipsChoice<int>.single(
-            value: _idx,
-            onChanged: (val) => setState(() => _idx = val),
-            choiceItems: C2Choice.listFrom<int, String>(
-              source: _options,
-              value: (i, v) => i,
-              label: (i, v) => v,
-            ),
-            choiceStyle: C2ChoiceStyle(
+      appBar: buildAppBar(),
+      body: SingleChildScrollView(
+          child: Column(children: [
+        ChipsChoice<int>.single(
+          value: _idx,
+          onChanged: (val) => setState(() => _idx = val),
+          choiceItems: C2Choice.listFrom<int, String>(
+            source: _options,
+            value: (i, v) => i,
+            label: (i, v) => v,
+          ),
+          choiceStyle: C2ChoiceStyle(
+            clipBehavior: Clip.none,
+            padding: EdgeInsets.all(2.0),
+          ),
+          choiceActiveStyle: C2ChoiceStyle(
+              brightness: Brightness.dark,
+              color: _activeBackgroundColor,
               clipBehavior: Clip.none,
               padding: EdgeInsets.all(2.0),
-            ),
-            choiceActiveStyle: C2ChoiceStyle(
-                brightness: Brightness.dark,
-                color: _activeBackgroundColor,
-                clipBehavior: Clip.none,
-                padding: EdgeInsets.all(2.0),
-                borderColor: _activeForegroundColor,
-                labelStyle: TextStyle(
-                  color: _activeForegroundColor,
-                )),
-          ),
-          Padding(
-              padding: EdgeInsets.only(left: 16.0, right: 16.0),
-              child: Column(children: [
-                Divider(height: 1),
-                buildTitleInputField(_activeForegroundColor),
-              ]))
-        ])));
+              borderColor: _activeForegroundColor,
+              labelStyle: TextStyle(
+                color: _activeForegroundColor,
+              )),
+        ),
+        Padding(
+            padding: EdgeInsets.only(left: 16.0, right: 16.0),
+            child: Column(children: [
+              Divider(height: 1),
+              buildTitleInputField(_activeForegroundColor),
+              buildContentInputField(_activeForegroundColor),
+            ]))
+      ])),
+    );
   }
 
   buildAppBar() => AppBar(
@@ -90,6 +92,16 @@ class _NewPostPageState extends State<NewPostPage> {
               width: 1.5,
             ),
           ),
+        ),
+      );
+
+  buildContentInputField(lineColor) => TextField(
+        maxLines: null,
+        keyboardType: TextInputType.multiline,
+        cursorColor: lineColor,
+        decoration: InputDecoration(
+          border: InputBorder.none,
+          hintText: '请输入内容',
         ),
       );
 }
