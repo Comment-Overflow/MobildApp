@@ -5,15 +5,25 @@ import 'package:comment_overflow/model/notification_message.dart';
 import 'package:comment_overflow/model/post.dart';
 import 'package:comment_overflow/model/quote.dart';
 import 'package:comment_overflow/model/user_info.dart';
+import 'package:comment_overflow/model/chat.dart';
+import 'package:comment_overflow/model/message.dart';
 
 const _title = 'Lorem ipsum dolor sit amet, consectetur adipiscing elit';
 const _author = 'Gun9niR';
 const _content =
     'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.';
 
+const int currentUserId = 0;
+
 final _date = DateTime(2020);
 final UserInfo _userInfo = UserInfo(
     0, "Gun9niR", "http://img8.zol.com.cn/bbs/upload/23765/23764201.jpg");
+final UserInfo _cyxInfo = UserInfo(
+    1, "xx01cyx", "http://img8.zol.com.cn/bbs/upload/23765/23764201.jpg");
+final UserInfo _yzyInfo = UserInfo(
+    2, "JolyneFr", "http://img8.zol.com.cn/bbs/upload/23765/23764201.jpg");
+final UserInfo _wxpInfo = UserInfo(
+    3, "WindowsXp", "http://img8.zol.com.cn/bbs/upload/23765/23764201.jpg");
 final UserCardInfo _userCardInfo = UserCardInfo(
     _userInfo.userId,
     _userInfo.userName,
@@ -40,7 +50,7 @@ const _type = NotificationType.reply;
 
 final notifications = List<NotificationMessage>.filled(
   20,
-  NotificationMessage(_userInfo, 24.0, 7.0, _type,
+  NotificationMessage(_cyxInfo, 24.0, 7.0, _type,
       comment: _comment, title: _title),
   growable: true,
 );
@@ -150,3 +160,28 @@ final users = List<UserCardInfo>.filled(
 
 // Tags for posts
 final tags = List<String>.filled(5, '校园生活');
+
+final recentChats = List<Chat>.filled(
+  3,
+  Chat(_cyxInfo, "Hi", DateTime.now(), 2),
+  growable: true,
+)
+  ..addAll(List<Chat>.filled(
+    3,
+    Chat(_cyxInfo, "You look good today", DateTime(2021, 7, 14, 21, 3), 0),
+    growable: true,
+  ))
+  ..addAll(List<Chat>.filled(
+    3,
+    Chat(_cyxInfo, "Very long long long long long long long long message",
+        DateTime(2021), 3),
+    growable: true,
+  ));
+
+List<Message> messages = [
+  Message(MessageType.Text, DateTime.now(), _userInfo, _cyxInfo, true,
+      "中午吃啥中午吃啥中午吃啥中午吃啥中午吃啥中午吃啥中午吃啥中午吃啥中午吃啥中午吃啥中午吃啥中午吃啥"),
+  Message(MessageType.Text, DateTime.now(), _cyxInfo, _userInfo, true, "好问题"),
+  Message(MessageType.Image, DateTime.now(), _userInfo, _cyxInfo, true,
+      "http://img8.zol.com.cn/bbs/upload/23765/23764201.jpg"),
+];
