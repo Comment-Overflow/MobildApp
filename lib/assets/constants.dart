@@ -17,8 +17,12 @@ class Constants {
   /// Default size of Avatar in commentCard.
   static const defaultAvatarInCommentSize = 24.0;
   static const defaultAppBarElevation = 0.5;
+
   /// Search bar height.
   static const searchBarHeight = 32.0;
+
+  /// Maximum characters for post title.
+  static const postTitleMaximumLength = 30;
 }
 
 enum FollowStatus {
@@ -38,6 +42,4 @@ enum ApprovalStatus {
   disapprove,
 }
 
-enum NotificationType {
-  approvePost, approveComment, collect, attention, reply
-}
+enum NotificationType { approvePost, approveComment, collect, attention, reply }

@@ -69,11 +69,21 @@ class CustomStyles {
         color: Theme.of(context).accentColor,
         size: size,
       );
+
+  static Icon getDefaultSendIcon(context, {size = 14.0}) => Icon(
+        Icons.send,
+        color: Theme.of(context).accentColor,
+        size: size,
+      );
+
   static const referenceUserNameStyle = TextStyle(
     fontWeight: FontWeight.bold,
     fontSize: 16.0,
   );
   static const referenceContentStyle = TextStyle(
     fontSize: 14.0,
+  );
+  static const newPostTitleStyle = TextStyle(
+    fontSize: 17.0,
   );
 }

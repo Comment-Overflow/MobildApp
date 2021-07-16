@@ -149,4 +149,4 @@ final users = List<UserCardInfo>.filled(
   ));
 
 // Tags for posts
-final tags = List<String>.filled(5, '校园生活');
+final List<String> tags = List<String>.filled(5, '校园生活');
