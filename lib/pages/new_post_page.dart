@@ -57,6 +57,12 @@ class _NewPostPageState extends State<NewPostPage> {
               buildContentInputField(_activeForegroundColor),
             ]))
       ])),
+      floatingActionButton: FloatingActionButton(
+        mini: true,
+        onPressed: () {},
+        child: CustomStyles.getDefaultImageIcon(
+            size: Constants.defaultFabIconSize * 0.8, color: Colors.white),
+      ),
     );
   }
 

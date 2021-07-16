@@ -67,7 +67,7 @@ class _PostPageState extends State<PostPage> {
       floatingActionButton: FloatingActionButton(
           onPressed: _pushReply,
           child: CustomStyles.getDefaultReplyIcon(
-              size: _bottomIconSize, color: Colors.white)),
+              size: Constants.defaultFabIconSize, color: Colors.white)),
       body: CommentCardList(posts[0]),
       bottomNavigationBar: BottomAppBar(
         child: Row(
