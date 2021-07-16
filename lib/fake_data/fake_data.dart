@@ -158,6 +158,11 @@ final users = List<UserCardInfo>.filled(
     growable: true,
   ));
 
+final comments = List<Comment>.filled(
+  10,
+  _noneComment,
+  growable: true,
+);
 // Tags for posts
 final List<String> tags = List<String>.filled(5, '校园生活');
 

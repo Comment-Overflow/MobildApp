@@ -1,5 +1,3 @@
-import 'package:flutter/cupertino.dart';
-import 'package:flutter/material.dart';
 import 'package:comment_overflow/assets/constants.dart';
 import 'package:comment_overflow/assets/custom_colors.dart';
 import 'package:comment_overflow/assets/custom_styles.dart';
@@ -7,13 +5,13 @@ import 'package:comment_overflow/model/chat.dart';
 import 'package:comment_overflow/pages/chat_room_page.dart';
 import 'package:comment_overflow/widgets/user_avatar.dart';
 import 'package:dart_date/dart_date.dart';
+import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 
 class ChatCard extends StatelessWidget {
-
   final Chat _chat;
   final VoidCallback _deleteChat;
-
   const ChatCard(this._chat, this._deleteChat, {Key? key}) : super(key: key);
 
   String getDisplayTime() {
@@ -27,25 +25,23 @@ class ChatCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    Widget? unreadPrompt = _chat.unreadCount == 0
+        ? Container(height: 0, width: 0)
+        : CircleAvatar(
+            radius: 9.0,
+            backgroundColor: CustomColors.UnreadChatRed,
+            child: Text(
+              _chat.unreadCount.toString(),
+              style: CustomStyles.unreadChatTextStyle,
+            ),
+          );
 
-    Widget? unreadPrompt = _chat.unreadCount == 0 ?
-      Container(height: 0, width: 0) :
-      CircleAvatar(
-        radius: 9.0,
-        backgroundColor: CustomColors.UnreadChatRed,
-        child: Text(
-          _chat.unreadCount.toString(),
-          style: CustomStyles.unreadChatTextStyle,
-        ),
-      );
-
-    Container card =  Container(
+    Container card = Container(
       padding: EdgeInsets.fromLTRB(
           Constants.defaultCardPadding * 0.4,
           Constants.defaultCardPadding,
           Constants.defaultCardPadding,
-          Constants.defaultCardPadding
-      ),
+          Constants.defaultCardPadding),
       height: Constants.defaultChatCardHeight,
       child: GestureDetector(
         onTap: () {
@@ -109,10 +105,7 @@ class ChatCard extends StatelessWidget {
                     flex: 7,
                     child: Container(),
                   ),
-                  Expanded(
-                    flex: 50,
-                    child: unreadPrompt
-                  ),
+                  Expanded(flex: 50, child: unreadPrompt),
                   Expanded(
                     flex: 10,
                     child: Container(),

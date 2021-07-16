@@ -1,10 +1,9 @@
-import 'package:flutter/cupertino.dart';
-import 'package:flutter/material.dart';
 import 'package:comment_overflow/assets/custom_styles.dart';
 import 'package:comment_overflow/pages/home_page.dart';
+import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
 
 class NotificationButtonList extends StatelessWidget {
-
   final double _buttonSize;
   late final TextStyle _notificationButtonTextStyle;
   late final SizedBox _gap;
@@ -28,8 +27,7 @@ class NotificationButtonList extends StatelessWidget {
           flex: 25,
           child: GestureDetector(
             onTap: () {
-              Navigator.push(context,
-              CupertinoPageRoute(builder: (context) {
+              Navigator.push(context, CupertinoPageRoute(builder: (context) {
                 // TODO: ScrollViewPage
                 return HomePage();
               }));
@@ -38,7 +36,8 @@ class NotificationButtonList extends StatelessWidget {
               mainAxisSize: MainAxisSize.max,
               crossAxisAlignment: CrossAxisAlignment.center,
               children: <Widget>[
-                CustomStyles.getDefaultLightNotThumbUpIcon(size: _buttonSize, color: Colors.black),
+                Icon(CupertinoIcons.heart,
+                    size: _buttonSize, color: Colors.black),
                 _gap,
                 Text("赞同", style: _notificationButtonTextStyle),
               ],
@@ -49,17 +48,17 @@ class NotificationButtonList extends StatelessWidget {
           flex: 25,
           child: GestureDetector(
             onTap: () {
-              Navigator.push(context,
-                  CupertinoPageRoute(builder: (context) {
-                    // TODO: ScrollViewPage
-                    return HomePage();
-                  }));
+              Navigator.push(context, CupertinoPageRoute(builder: (context) {
+                // TODO: ScrollViewPage
+                return HomePage();
+              }));
             },
             child: Column(
               mainAxisSize: MainAxisSize.max,
               crossAxisAlignment: CrossAxisAlignment.center,
               children: <Widget>[
-                CustomStyles.getDefaultReplyIcon(size: _buttonSize, color: Colors.black),
+                Icon(CupertinoIcons.text_bubble,
+                    size: _buttonSize, color: Colors.black),
                 _gap,
                 Text("回复", style: _notificationButtonTextStyle),
               ],
@@ -70,17 +69,17 @@ class NotificationButtonList extends StatelessWidget {
           flex: 25,
           child: GestureDetector(
             onTap: () {
-              Navigator.push(context,
-                  CupertinoPageRoute(builder: (context) {
-                    // TODO: ScrollViewPage
-                    return HomePage();
-                  }));
+              Navigator.push(context, CupertinoPageRoute(builder: (context) {
+                // TODO: ScrollViewPage
+                return HomePage();
+              }));
             },
             child: Column(
               mainAxisSize: MainAxisSize.max,
               crossAxisAlignment: CrossAxisAlignment.center,
               children: <Widget>[
-                CustomStyles.getDefaultNotStarIcon(size: _buttonSize, color: Colors.black),
+                Icon(CupertinoIcons.star,
+                    size: _buttonSize, color: Colors.black),
                 _gap,
                 Text("收藏", style: _notificationButtonTextStyle),
               ],
@@ -91,17 +90,17 @@ class NotificationButtonList extends StatelessWidget {
           flex: 25,
           child: GestureDetector(
             onTap: () {
-              Navigator.push(context,
-                  CupertinoPageRoute(builder: (context) {
-                    // TODO: ScrollViewPage
-                    return HomePage();
-                  }));
+              Navigator.push(context, CupertinoPageRoute(builder: (context) {
+                // TODO: ScrollViewPage
+                return HomePage();
+              }));
             },
             child: Column(
               mainAxisSize: MainAxisSize.max,
               crossAxisAlignment: CrossAxisAlignment.center,
               children: <Widget>[
-                CustomStyles.getDefaultUnfilledFollowerIcon(size: _buttonSize, color: Colors.black),
+                CustomStyles.getDefaultUnfilledFollowerIcon(
+                    size: _buttonSize, color: Colors.black),
                 _gap,
                 Text("关注", style: _notificationButtonTextStyle),
               ],
