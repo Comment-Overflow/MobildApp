@@ -169,7 +169,7 @@ class _PostPageState extends State<PostPage> {
                     mainAxisAlignment: MainAxisAlignment.start,
                     children: [
                       IconButton(
-                        onPressed: () {},
+                        onPressed: () {Navigator.pop(context);},
                         icon: CustomStyles.getDefaultCloseIcon(size: 16.0),
                       )
                     ],
