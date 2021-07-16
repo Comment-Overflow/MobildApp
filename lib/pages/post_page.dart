@@ -10,6 +10,7 @@ import 'package:zhihu_demo/model/comment.dart';
 import 'package:zhihu_demo/model/post.dart';
 import 'package:zhihu_demo/utils/my_image_picker.dart';
 import 'package:zhihu_demo/widgets/comment_card_list.dart';
+import 'package:zhihu_demo/widgets/horizontal_image_scroller.dart';
 import 'package:zhihu_demo/widgets/quote_card.dart';
 
 class PostPage extends StatefulWidget {
@@ -26,7 +27,7 @@ class PostPage extends StatefulWidget {
 class _PostPageState extends State<PostPage> {
   var _sortPolicy = SortPolicy.earliest;
   var _stared = false;
-  List<AssetEntity> assets = <AssetEntity>[];
+  List<AssetEntity> _assets = <AssetEntity>[];
 
   static const _iconSize = 20.0;
   static const _bottomIconSize = 30.0;
@@ -190,11 +191,7 @@ class _PostPageState extends State<PostPage> {
           padding: EdgeInsets.all(6.0),
           child: QuoteCard(quotes[0]),
         ),
-        assets.isNotEmpty ? Container(
-          child: _assetListView,
-          height: 100.0,
-        )
-        : SizedBox.shrink(),
+        HorizontalImageScroller(_assets),
         Row(
           children: [
             _textField,
@@ -233,74 +230,11 @@ class _PostPageState extends State<PostPage> {
   Future<void> _selectAssets() async {
     final List<AssetEntity>? result = await MyImagePicker.pickImage(
       context,
-      maxAssets: Constants.maxImageNumber - assets.length,
-      selectedAssets: assets
+      maxAssets: Constants.maxImageNumber - _assets.length,
+      selectedAssets: _assets
     );
     if (result != null) {
-      assets = List<AssetEntity>.from(result);
+      _assets = List<AssetEntity>.from(result);
     }
-  }
-
-  void _removeAsset(int index) {
-    setState(() {
-      assets.remove(assets.elementAt(index));
-    });
-  }
-
-  Widget get _assetListView => ListView.builder(
-    itemBuilder: _assetItemBuilder,
-    scrollDirection: Axis.horizontal,
-    itemCount: assets.length,
-  );
-
-  Widget _assetItemBuilder(BuildContext _, int index) {
-    return Container(
-      height: 60.0,
-      width: 60.0,
-      margin: const EdgeInsets.symmetric(horizontal: 5.0, vertical: 10.0),
-      child: AspectRatio(
-        aspectRatio: 1.0,
-        child: ClipRRect(
-          borderRadius: BorderRadius.circular(10.0),
-          child: Stack(
-            children: <Widget>[
-              _imageWidget(index),
-              _deleteButton(index),
-            ],
-          ),
-        ),
-      ),
-    );
-  }
-
-  Widget _imageWidget(int index) {
-    return Positioned.fill(
-      child: ExtendedImage(
-        image: AssetEntityImageProvider(
-          assets.elementAt(index),
-          isOriginal: false,
-        ),
-        fit: BoxFit.cover,
-      ),
-    );
-  }
-
-  Widget _deleteButton(int index) {
-    return Positioned(
-      top: 6.0,
-      right: 6.0,
-      child: GestureDetector(
-        behavior: HitTestBehavior.opaque,
-        onTap: () => _removeAsset(index),
-        child: Container(
-          padding: const EdgeInsets.all(2.0),
-          decoration: BoxDecoration(
-            color: Theme.of(context).dividerColor.withOpacity(0.5),
-            shape: BoxShape.circle,
-          ),
-          child: Icon(Icons.close, size: 14.0, color: Colors.white),
-        ),
-      ),
-    );
   }
 }
