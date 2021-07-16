@@ -22,7 +22,7 @@ class MultipleInputField extends StatelessWidget {
   /*
     Usage:
     add [onTap] property for reply button
-
+  ================================================
     void _pushReply() {
     showModalBottomSheet(
       isScrollControlled: true, // !important
@@ -37,7 +37,7 @@ class MultipleInputField extends StatelessWidget {
       }
     );
   }
-
+  ================================================
   */
 
   MultipleInputField({
