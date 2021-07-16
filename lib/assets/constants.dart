@@ -31,6 +31,9 @@ class Constants {
   /// Search bar height.
   static const searchBarHeight = 32.0;
 
+  /// Maximum characters for post title.
+  static const postTitleMaximumLength = 30;
+
   /// Default size of avatar in chat room.
   static const defaultChatRoomAvatarSize = 50.0;
 
@@ -46,6 +49,8 @@ class Constants {
   /// Default chat room padding.
   static const defaultChatRoomPadding = 10.0;
 
+  /// Max image number of a comment.
+  static const maxImageNumber = 9;
 }
 
 enum FollowStatus {
@@ -65,14 +70,17 @@ enum ApprovalStatus {
   disapprove,
 }
 
-enum NotificationType {
-  approvePost, approveComment, collect, attention, reply
+enum SortPolicy {
+  earliest,
+  latest,
+  hottest,
 }
 
-enum MessageType {
-  Text, Image
-}
+enum NotificationType { approvePost, approveComment, collect, attention, reply }
+
+enum MessageType { Text, Image }
 
 enum ChatterType {
-  Me, Other,
+  Me,
+  Other,
 }

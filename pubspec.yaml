@@ -35,6 +35,10 @@ dependencies:
   dart_date: ^1.1.0
   flutter_slidable: ^0.6.0
   pull_to_refresh: ^2.0.0
+  chips_choice:
+    git:
+      url: https://github.com/Gun9niR/flutter_chips_choice.git
+      ref: b648c5afd65ba4ce26d28149bd8a00af75bf1188
   flutter_staggered_grid_view: ^0.4.0
   image_picker: ^0.8.1+4
   mime: ^1.0.0
@@ -44,6 +48,9 @@ dependencies:
     git:
       url: https://github.com/Gun9niR/flutter_login.git
       ref: 63f952a84e5e51ee4342352b39e18a13975a03e2
+  wechat_assets_picker: ^5.5.8
+  extended_image: ^4.1.0
+  provider: ^5.0.0
 
 dev_dependencies:
   flutter_test:

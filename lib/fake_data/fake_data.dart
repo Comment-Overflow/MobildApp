@@ -1,12 +1,12 @@
 import 'package:comment_overflow/assets/constants.dart';
+import 'package:comment_overflow/model/chat.dart';
 import 'package:comment_overflow/model/comment.dart';
+import 'package:comment_overflow/model/message.dart';
 import 'package:comment_overflow/model/my_comment.dart';
 import 'package:comment_overflow/model/notification_message.dart';
 import 'package:comment_overflow/model/post.dart';
 import 'package:comment_overflow/model/quote.dart';
 import 'package:comment_overflow/model/user_info.dart';
-import 'package:comment_overflow/model/chat.dart';
-import 'package:comment_overflow/model/message.dart';
 
 const _title = 'Lorem ipsum dolor sit amet, consectetur adipiscing elit';
 const _author = 'Gun9niR';
@@ -158,8 +158,13 @@ final users = List<UserCardInfo>.filled(
     growable: true,
   ));
 
+final comments = List<Comment>.filled(
+  10,
+  _noneComment,
+  growable: true,
+);
 // Tags for posts
-final tags = List<String>.filled(5, '校园生活');
+final List<String> tags = List<String>.filled(5, '校园生活');
 
 final recentChats = List<Chat>.filled(
   3,
