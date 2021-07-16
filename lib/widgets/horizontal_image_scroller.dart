@@ -3,25 +3,25 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:wechat_assets_picker/wechat_assets_picker.dart';
 
-class VerticalImageScroller extends StatefulWidget {
+class HorizontalImageScroller extends StatefulWidget {
   final List<AssetEntity> _assets;
 
-  VerticalImageScroller(this._assets, {Key? key}) : super(key: key);
+  HorizontalImageScroller(this._assets, {Key? key}) : super(key: key);
   @override
-  _VerticalImageScrollerState createState() => _VerticalImageScrollerState();
+  _HorizontalImageScrollerState createState() => _HorizontalImageScrollerState();
 }
 
-class _VerticalImageScrollerState extends State<VerticalImageScroller> {
+class _HorizontalImageScrollerState extends State<HorizontalImageScroller> {
   @override
   Widget build(BuildContext context) {
-    return Container(
+    return widget._assets.isNotEmpty ? Container(
       child: ListView.builder(
         itemBuilder: _assetItemBuilder,
         scrollDirection: Axis.horizontal,
         itemCount: widget._assets.length,
       ),
       height: 100.0,
-    );
+    ) : SizedBox.shrink();
   }
 
   Widget _assetItemBuilder(BuildContext _, int index) {
