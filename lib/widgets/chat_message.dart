@@ -1,11 +1,11 @@
 import 'package:bubble/bubble.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:zhihu_demo/assets/constants.dart';
-import 'package:zhihu_demo/assets/custom_colors.dart';
-import 'package:zhihu_demo/fake_data/fake_data.dart';
-import 'package:zhihu_demo/model/message.dart';
-import 'package:zhihu_demo/widgets/user_avatar.dart';
+import 'package:comment_overflow/assets/constants.dart';
+import 'package:comment_overflow/assets/custom_colors.dart';
+import 'package:comment_overflow/fake_data/fake_data.dart';
+import 'package:comment_overflow/model/message.dart';
+import 'package:comment_overflow/widgets/user_avatar.dart';
 
 class ChatMessage extends StatelessWidget {
 

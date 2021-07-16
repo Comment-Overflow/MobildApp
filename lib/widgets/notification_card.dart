@@ -1,17 +1,13 @@
+import 'package:comment_overflow/assets/constants.dart';
+import 'package:comment_overflow/model/notification_message.dart';
+import 'package:comment_overflow/widgets/user_avatar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 
-import 'package:zhihu_demo/assets/constants.dart';
-import 'package:zhihu_demo/assets/custom_styles.dart';
-import 'package:zhihu_demo/model/notification_message.dart';
-import 'package:zhihu_demo/widgets/user_avatar.dart';
-
 class NotificationCard extends StatelessWidget {
-
   final NotificationMessage _notificationMessage;
 
-  NotificationCard(this._notificationMessage,
-    {Key? key}):super(key: key);
+  NotificationCard(this._notificationMessage, {Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -48,7 +44,8 @@ class NotificationCard extends StatelessWidget {
               mainAxisSize: MainAxisSize.max,
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
-                UserAvatar(_notificationMessage.imageSize, image: _notificationMessage.image),
+                UserAvatar(_notificationMessage.imageSize,
+                    image: _notificationMessage.image),
                 SizedBox(width: _notificationMessage.gap),
                 Expanded(
                     child: Text(

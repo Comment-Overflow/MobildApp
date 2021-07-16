@@ -1,12 +1,11 @@
+import 'package:comment_overflow/assets/constants.dart';
+import 'package:comment_overflow/assets/custom_styles.dart';
+import 'package:comment_overflow/model/user_info.dart';
+import 'package:comment_overflow/widgets/follow_button.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:zhihu_demo/assets/constants.dart';
-import 'package:zhihu_demo/assets/custom_styles.dart';
-import 'package:zhihu_demo/model/user_info.dart';
-import 'package:zhihu_demo/widgets/follow_button.dart';
 
 class UserCard extends StatelessWidget {
-
   final UserCardInfo _userCardInfo;
 
   const UserCard(this._userCardInfo, {Key? key}) : super(key: key);
@@ -20,10 +19,7 @@ class UserCard extends StatelessWidget {
           borderRadius: BorderRadius.all(Radius.circular(20.0)),
         ),
         child: Container(
-          width: MediaQuery
-              .of(context)
-              .size
-              .width,
+          width: MediaQuery.of(context).size.width,
           padding: EdgeInsets.all(Constants.defaultCardPadding),
           child: Row(
             mainAxisSize: MainAxisSize.max,
@@ -40,12 +36,10 @@ class UserCard extends StatelessWidget {
                   ),
                 ),
               ),
-
               Expanded(
                 flex: 3,
                 child: Container(),
               ),
-
               Expanded(
                 flex: 51,
                 child: Column(
@@ -90,8 +84,8 @@ class UserCard extends StatelessWidget {
                               text: ' ${_userCardInfo.commentCount}   ',
                             ),
                             WidgetSpan(
-                              child: CustomStyles
-                                  .getDefaultFilledFollowerIcon(),
+                              child:
+                                  CustomStyles.getDefaultFilledFollowerIcon(),
                             ),
                             TextSpan(
                               text: ' ${_userCardInfo.followerCount} ',
@@ -104,12 +98,10 @@ class UserCard extends StatelessWidget {
                   ],
                 ),
               ),
-
               Expanded(
                 flex: 2,
                 child: Container(),
               ),
-
               Expanded(
                 flex: 29,
                 child: FollowButton(
@@ -119,8 +111,8 @@ class UserCard extends StatelessWidget {
               ),
             ],
           ),
-        ),),
+        ),
+      ),
     );
   }
 }
-

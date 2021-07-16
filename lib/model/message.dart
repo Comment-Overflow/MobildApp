@@ -1,5 +1,5 @@
-import 'package:zhihu_demo/assets/constants.dart';
-import 'package:zhihu_demo/model/user_info.dart';
+import 'package:comment_overflow/assets/constants.dart';
+import 'package:comment_overflow/model/user_info.dart';
 
 class Message {
   final MessageType _type;

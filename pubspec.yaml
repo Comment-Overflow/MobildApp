@@ -1,5 +1,5 @@
-name: zhihu_demo
-description: Demo for Zhihu
+name: comment_overflow
+description: A forum for SJTUers where they can voice their opinions freely.
 
 # The following line prevents the package from being accidentally published to
 # pub.dev using `pub publish`. This is preferred for private packages.
@@ -40,6 +40,10 @@ dependencies:
   mime: ^1.0.0
   video_player: ^2.1.10
   bubble: ^1.2.1
+  flutter_login:
+    git:
+      url: https://github.com/Gun9niR/flutter_login.git
+      ref: 63f952a84e5e51ee4342352b39e18a13975a03e2
 
 dev_dependencies:
   flutter_test:

@@ -1,8 +1,8 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:zhihu_demo/fake_data/fake_data.dart';
-import 'package:zhihu_demo/model/chat.dart';
-import 'package:zhihu_demo/widgets/chat_card.dart';
+import 'package:comment_overflow/fake_data/fake_data.dart';
+import 'package:comment_overflow/model/chat.dart';
+import 'package:comment_overflow/widgets/chat_card.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 
 class RecentChatList extends StatelessWidget {

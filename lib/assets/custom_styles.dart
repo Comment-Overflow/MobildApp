@@ -1,8 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
-import 'package:cupertino_icons/cupertino_icons.dart';
-import 'package:zhihu_demo/assets/custom_colors.dart';
+import 'package:comment_overflow/assets/custom_colors.dart';
 
 class CustomStyles {
   static const postTitleStyle = TextStyle(
@@ -71,7 +70,8 @@ class CustomStyles {
       Icon(CupertinoIcons.text_bubble, color: color, size: size);
 
   /// Default icon for thumb up.
-  static Icon getDefaultThumbUpIcon({size = 14.0, color = CustomColors.thumbUpPink}) =>
+  static Icon getDefaultThumbUpIcon(
+          {size = 14.0, color = CustomColors.thumbUpPink}) =>
       Icon(Icons.favorite, color: color, size: size);
 
   /// Default icon for not thumb up.
@@ -91,21 +91,29 @@ class CustomStyles {
       Icon(Icons.check, color: color, size: size);
 
   /// Default icon for bidirectional following relationship.
-  static Icon getDefaultBidirectionalFollowIcon({size = 16.0, color = Colors.white}) =>
+  static Icon getDefaultBidirectionalFollowIcon(
+          {size = 16.0, color = Colors.white}) =>
       Icon(CupertinoIcons.arrow_right_arrow_left, color: color, size: size);
 
   /// Default icon for followers (filled).
-  static Icon getDefaultFilledFollowerIcon({size = 14.0, color = Colors.grey}) =>
+  static Icon getDefaultFilledFollowerIcon(
+          {size = 14.0, color = Colors.grey}) =>
       Icon(Icons.people_alt, color: color, size: size);
 
   /// Default icon for followers (unfilled).
-  static Icon getDefaultUnfilledFollowerIcon({size = 14.0, color = Colors.grey}) =>
+  static Icon getDefaultUnfilledFollowerIcon(
+          {size = 14.0, color = Colors.grey}) =>
       Icon(CupertinoIcons.person, color: color, size: size);
 
   /// Default icon for not star.
   static getDefaultNotStarIcon({size = 14.0, color = Colors.grey}) =>
       Icon(CupertinoIcons.star, color: color, size: size);
 
+  static Icon getDefaultBackIcon(context, {size = 14.0}) => Icon(
+        Icons.arrow_back_ios,
+        color: Theme.of(context).accentColor,
+        size: size,
+      );
   static const referenceUserNameStyle = TextStyle(
     fontWeight: FontWeight.bold,
     fontSize: 16.0,

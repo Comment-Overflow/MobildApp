@@ -1,4 +1,4 @@
-import 'package:zhihu_demo/model/user_info.dart';
+import 'package:comment_overflow/model/user_info.dart';
 
 class Chat {
 

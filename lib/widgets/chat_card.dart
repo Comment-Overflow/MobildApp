@@ -1,12 +1,11 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:zhihu_demo/assets/constants.dart';
-import 'package:zhihu_demo/assets/custom_colors.dart';
-import 'package:zhihu_demo/assets/custom_styles.dart';
-import 'package:zhihu_demo/model/chat.dart';
-import 'package:zhihu_demo/pages/chat_room_page.dart';
-import 'package:zhihu_demo/pages/home_page.dart';
-import 'package:zhihu_demo/widgets/user_avatar.dart';
+import 'package:comment_overflow/assets/constants.dart';
+import 'package:comment_overflow/assets/custom_colors.dart';
+import 'package:comment_overflow/assets/custom_styles.dart';
+import 'package:comment_overflow/model/chat.dart';
+import 'package:comment_overflow/pages/chat_room_page.dart';
+import 'package:comment_overflow/widgets/user_avatar.dart';
 import 'package:dart_date/dart_date.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 

@@ -1,7 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:zhihu_demo/assets/custom_styles.dart';
-import 'package:zhihu_demo/pages/home_page.dart';
+import 'package:comment_overflow/assets/custom_styles.dart';
+import 'package:comment_overflow/pages/home_page.dart';
 
 class NotificationButtonList extends StatelessWidget {
 
