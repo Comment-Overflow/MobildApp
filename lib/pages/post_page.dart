@@ -1,7 +1,6 @@
 import 'package:comment_overflow/assets/constants.dart';
 import 'package:comment_overflow/assets/custom_styles.dart';
 import 'package:comment_overflow/fake_data/fake_data.dart';
-import 'package:comment_overflow/model/comment.dart';
 import 'package:comment_overflow/model/post.dart';
 import 'package:comment_overflow/utils/my_image_picker.dart';
 import 'package:comment_overflow/widgets/comment_card_list.dart';
@@ -14,9 +13,8 @@ import 'package:wechat_assets_picker/wechat_assets_picker.dart';
 
 class PostPage extends StatefulWidget {
   final Post _post;
-  final List<Comment> _commentList;
 
-  const PostPage(this._post, this._commentList, {Key? key}) : super(key: key);
+  const PostPage(this._post, {Key? key}) : super(key: key);
 
   @override
   _PostPageState createState() => _PostPageState();
@@ -202,9 +200,12 @@ class _PostPageState extends State<PostPage> {
         Row(
           children: [
             _textField,
-            ElevatedButton(
-              child: Text("发送"),
-              onPressed: () {},
+            Padding(
+              padding: EdgeInsets.only(right: 5.0),
+              child: ElevatedButton(
+                child: Text("发送"),
+                onPressed: () {},
+              ),
             )
           ],
         ),
@@ -213,25 +214,28 @@ class _PostPageState extends State<PostPage> {
   );
 
   Widget get _textField => Expanded(
-    child: TextField(
-      textInputAction: TextInputAction.newline,
-      keyboardType: TextInputType.text,
-      decoration: InputDecoration(
-        hintText: "友善的回复与世界问好",
-        border: OutlineInputBorder(),
-        contentPadding: const EdgeInsets.all(6.0),
-        suffixIcon: Row(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            IconButton(
-              icon: CustomStyles.getDefaultImageIcon(size: 24.0),
-              onPressed: _selectAssets,
-            ),
-          ],
-        )
+    child: Padding(
+      padding: const EdgeInsets.all(5.0),
+      child: TextField(
+        textInputAction: TextInputAction.newline,
+        keyboardType: TextInputType.text,
+        decoration: InputDecoration(
+          hintText: "友善的回复向世界问好",
+          border: OutlineInputBorder(),
+          contentPadding: const EdgeInsets.all(6.0),
+          suffixIcon: Row(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              IconButton(
+                icon: CustomStyles.getDefaultImageIcon(size: 24.0),
+                onPressed: _selectAssets,
+              ),
+            ],
+          )
+        ),
+        autofocus: true,
       ),
-      autofocus: true,
-    ),
+    )
   );
 
   Future<void> _selectAssets() async {

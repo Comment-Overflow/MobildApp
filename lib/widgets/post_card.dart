@@ -1,6 +1,8 @@
 import 'package:comment_overflow/assets/constants.dart';
 import 'package:comment_overflow/assets/custom_styles.dart';
+import 'package:comment_overflow/fake_data/fake_data.dart';
 import 'package:comment_overflow/model/post.dart';
+import 'package:comment_overflow/utils/route_generator.dart';
 import 'package:comment_overflow/widgets/user_avatar_with_name.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
@@ -93,7 +95,17 @@ class PostCard extends StatelessWidget {
             )
           ]),
         ),
-        onTap: () => {},
+        onTap: () {
+          Navigator.push(
+            context,
+            RouteGenerator.generateRoute(
+              RouteSettings(
+                name: RouteGenerator.postRoute,
+                arguments: posts[0],
+              )
+            )
+          );
+        },
       ),
     );
   }
