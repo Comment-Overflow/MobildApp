@@ -54,3 +54,8 @@ pubspec.lock
 /ios/Runner/Runner.entitlements
 /ios/build
 /ios/Podfile
+/ios/Podfile.lock
+/ios/Flutter/Debug.xcconfig
+/ios/Flutter/Release.xcconfig
+/ios/Runner.xcworkspace/contents.xcworkspacedata
+
