@@ -1,4 +1,4 @@
-import 'package:zhihu_demo/assets/constants.dart';
+import 'package:comment_overflow/assets/constants.dart';
 
 class UserInfo {
   final int _userId;
@@ -24,8 +24,8 @@ class UserCardInfo extends UserInfo {
   FollowStatus get followStatus => _followStatus;
 
   UserCardInfo(userId, userName, avatarUrl, this._brief, this._commentCount,
-      this._followerCount, this._followStatus) :
-        super(userId, userName, avatarUrl);
+      this._followerCount, this._followStatus)
+      : super(userId, userName, avatarUrl);
 }
 
 class PersonalPageInfo extends UserInfo {
@@ -43,8 +43,15 @@ class PersonalPageInfo extends UserInfo {
   int get followerCount => _followerCount;
   int get followedCount => _followedCount;
 
-  PersonalPageInfo(userId, userName, avatarUrl, this._sex, this._brief,
-      this._commentCount, this._approvalCount, this._followerCount,
-      this._followedCount) : super(userId, userName, avatarUrl);
+  PersonalPageInfo(
+      userId,
+      userName,
+      avatarUrl,
+      this._sex,
+      this._brief,
+      this._commentCount,
+      this._approvalCount,
+      this._followerCount,
+      this._followedCount)
+      : super(userId, userName, avatarUrl);
 }
-

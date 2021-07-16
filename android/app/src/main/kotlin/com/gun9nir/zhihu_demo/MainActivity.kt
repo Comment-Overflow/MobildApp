@@ -1,4 +1,4 @@
-package com.gun9nir.zhihu_demo
+package com.gun9nir.comment_overflow
 
 import io.flutter.embedding.android.FlutterActivity
 

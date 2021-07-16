@@ -1,11 +1,12 @@
+import 'package:comment_overflow/widgets/adaptive_refresher.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
 
 class PagingManager<T> {
-
   final _pageSize;
   final PagingController<int, T> _pagingController =
-  PagingController(firstPageKey: 0);
+      PagingController(firstPageKey: 0);
   // _customApi must be wrapped with a function with parameters
   // (pageKey, pageSize), such as
   //
@@ -56,14 +57,28 @@ class PagingManager<T> {
       pagingController: _pagingController,
       builderDelegate: PagedChildBuilderDelegate<T>(
         animateTransitions: true,
-        transitionDuration: const Duration(milliseconds: 500),
+        transitionDuration: const Duration(milliseconds: 200),
         itemBuilder: _customItemBuilder,
+        firstPageProgressIndicatorBuilder: (_) => Container(),
       ),
     );
 
-    return refreshable ? RefreshIndicator(
-      child: listView,
-      onRefresh: () => Future.sync(() => _pagingController.refresh(),),
-    ) : listView;
+    return refreshable
+        ? AdaptiveRefresher(
+            onRefresh: () {
+              _pagingController.refresh();
+            },
+            iosComplete: buildIosRotatingIndicator(),
+            child: listView,
+          )
+        : listView;
   }
+
+  buildIosRotatingIndicator() => SizedBox(
+        width: 25.0,
+        height: 25.0,
+        child: const CupertinoActivityIndicator(),
+      );
+
+  // buildMaterialRotatingIndicator() =>
 }

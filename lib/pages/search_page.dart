@@ -1,10 +1,10 @@
+import 'package:comment_overflow/assets/constants.dart';
+import 'package:comment_overflow/fake_data/fake_data.dart';
+import 'package:comment_overflow/utils/route_generator.dart';
+import 'package:comment_overflow/widgets/search_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
-import 'package:zhihu_demo/assets/constants.dart';
-import 'package:zhihu_demo/fake_data/fake_data.dart';
-import 'package:zhihu_demo/utils/route_generator.dart';
-import 'package:zhihu_demo/widgets/search_bar.dart';
 
 class SearchPage extends StatelessWidget {
   const SearchPage({Key? key}) : super(key: key);
@@ -29,7 +29,10 @@ class SearchPage extends StatelessWidget {
               GestureDetector(
                   onTap: () => Navigator.of(context).pop(),
                   child: Padding(
-                      padding: EdgeInsets.only(left: 7.0, right: 7.0,),
+                      padding: EdgeInsets.only(
+                        left: 7.0,
+                        right: 7.0,
+                      ),
                       child: Text(
                         "取消",
                         style: TextStyle(

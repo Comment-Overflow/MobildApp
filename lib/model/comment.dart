@@ -1,7 +1,7 @@
+import 'package:comment_overflow/assets/constants.dart';
+import 'package:comment_overflow/model/quote.dart';
+import 'package:comment_overflow/model/user_info.dart';
 import 'package:intl/intl.dart';
-import 'package:zhihu_demo/assets/constants.dart';
-import 'package:zhihu_demo/model/quote.dart';
-import 'package:zhihu_demo/model/user_info.dart';
 
 class Comment {
   final UserInfo user;

@@ -1,11 +1,11 @@
 import 'dart:math';
 
+import 'package:comment_overflow/assets/constants.dart';
+import 'package:comment_overflow/fake_data/fake_data.dart';
+import 'package:comment_overflow/model/comment.dart';
+import 'package:comment_overflow/model/post.dart';
+import 'package:comment_overflow/utils/paging_manager.dart';
 import 'package:flutter/cupertino.dart';
-import 'package:zhihu_demo/assets/constants.dart';
-import 'package:zhihu_demo/fake_data/fake_data.dart';
-import 'package:zhihu_demo/model/comment.dart';
-import 'package:zhihu_demo/model/post.dart';
-import 'package:zhihu_demo/utils/paging_manager.dart';
 
 import 'comment_card.dart';
 
@@ -16,22 +16,17 @@ class CommentCardList extends StatefulWidget {
   final PagingManager<Comment> _pagingManager;
 
   CommentCardList(this._post, {Key? key})
-      : _pagingManager =
-          PagingManager(
-            Constants.defaultPageSize,
+      : _pagingManager = PagingManager(Constants.defaultPageSize,
             (page, pageSize) {
-              return Future.delayed(
-                const Duration(seconds: 1),
-                () => comments.sublist(
-                  page * pageSize,
-                  min((page + 1) * pageSize, comments.length)
-                ),
-              );
-            },
+          return Future.delayed(
+            const Duration(seconds: 1),
+            () => comments.sublist(
+                page * pageSize, min((page + 1) * pageSize, comments.length)),
+          );
+        },
             (context, item, index) => index == 0
                 ? CommentCard(item, title: _post.title)
-                : CommentCard(item)
-          ),
+                : CommentCard(item)),
         super(key: key);
 
   @override

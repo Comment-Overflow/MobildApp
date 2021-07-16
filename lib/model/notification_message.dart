@@ -1,11 +1,8 @@
-
+import 'package:comment_overflow/assets/constants.dart';
+import 'package:comment_overflow/model/user_info.dart';
 import 'package:flutter/cupertino.dart';
-import 'package:zhihu_demo/model/user_info.dart';
-
-enum NotificationType {approvePost, approveComment, collect, attention, reply}
 
 class NotificationMessage {
-
   final UserInfo _userInfo;
   //userAvatar
   final double _imageSize;
@@ -34,8 +31,11 @@ class NotificationMessage {
   get type => _type;
 
   NotificationMessage(this._userInfo, this._imageSize, this._gap, this._type,
-      {ImageProvider<Object>? image, TextStyle? textStyle, String? title, String? comment}):
-        _image = image,
+      {ImageProvider<Object>? image,
+      TextStyle? textStyle,
+      String? title,
+      String? comment})
+      : _image = image,
         _textStyle = textStyle,
         _title = title,
         _comment = comment;
