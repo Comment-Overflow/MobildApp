@@ -1,6 +1,9 @@
+import 'package:comment_overflow/assets/custom_colors.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+
+import 'constants.dart';
 
 class CustomStyles {
   static const postTitleStyle = TextStyle(
@@ -72,6 +75,11 @@ class CustomStyles {
     fontWeight: FontWeight.bold,
   );
 
+  static const personalPageUserNameStyle = TextStyle(
+    fontWeight: FontWeight.bold,
+    fontSize: Constants.defaultPersonalPageHeaderTitleSize,
+  );
+
   /// Default icon for reply with changeable size.
   static Icon getDefaultReplyIcon({size = 14.0, color = Colors.grey}) =>
       Icon(Icons.chat_outlined, color: color, size: size);
@@ -140,6 +148,14 @@ class CustomStyles {
         size: size,
       );
 
+  /// Default icon for female.
+  static getDefaultFemaleIcon({size = Constants.defaultPersonalPageHeaderTitleSize, color = CustomColors.femalePink}) =>
+      Icon(Icons.female, color: color, size: size);
+
+  /// Default icon for male.
+  static getDefaultMaleIcon({size = Constants.defaultPersonalPageHeaderTitleSize, color = CustomColors.maleBlue}) =>
+      Icon(Icons.male, color: color, size: size);
+
   static Icon getDefaultSendIcon(context, {size = 14.0}) => Icon(
         Icons.send,
         color: Theme.of(context).accentColor,
@@ -153,6 +169,7 @@ class CustomStyles {
   /// Default icon for close.
   static Icon getDefaultCloseIcon({size = 14.0, color = Colors.grey}) =>
       Icon(Icons.close, color: color, size: size);
+
 
   static const referenceUserNameStyle = TextStyle(
     fontWeight: FontWeight.bold,
