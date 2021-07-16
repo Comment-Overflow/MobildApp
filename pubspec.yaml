@@ -37,6 +37,7 @@ dependencies:
   chips_choice:
     git:
       url: https://github.com/Gun9niR/flutter_chips_choice.git
+      ref: b648c5afd65ba4ce26d28149bd8a00af75bf1188
   flutter_login:
     git:
       url: https://github.com/Gun9niR/flutter_login.git
