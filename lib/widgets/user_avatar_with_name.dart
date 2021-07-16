@@ -1,5 +1,5 @@
+import 'package:comment_overflow/widgets/user_avatar.dart';
 import 'package:flutter/widgets.dart';
-import 'package:zhihu_demo/widgets/user_avatar.dart';
 
 class UserAvatarWithName extends StatelessWidget {
   final UserAvatar _userAvatar;

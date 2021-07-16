@@ -2,33 +2,34 @@ import 'dart:math';
 
 import 'package:comment_overflow/assets/constants.dart';
 import 'package:comment_overflow/fake_data/fake_data.dart';
-import 'package:comment_overflow/model/post.dart';
+import 'package:comment_overflow/model/my_comment.dart';
 import 'package:comment_overflow/utils/paging_manager.dart';
-import 'package:comment_overflow/widgets/post_card.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 
-class PostCardList extends StatefulWidget {
-  const PostCardList({Key? key}) : super(key: key);
+import 'my_comment_card.dart';
+
+class MyCommentCardList extends StatefulWidget {
+  const MyCommentCardList({Key? key}) : super(key: key);
 
   @override
-  _PostCardListState createState() => _PostCardListState();
+  _MyCommentCardListState createState() => _MyCommentCardListState();
 }
 
-class _PostCardListState extends State<PostCardList> {
-  final PagingManager<Post> _pagingManager =
+class _MyCommentCardListState extends State<MyCommentCardList> {
+  final PagingManager<MyComment> _pagingManager =
       PagingManager(Constants.defaultPageSize, (page, pageSize) {
     return Future.delayed(
-      const Duration(milliseconds: 500),
-      () => posts.sublist(
+      const Duration(seconds: 1),
+      () => myComments.sublist(
           page * pageSize, min((page + 1) * pageSize, posts.length)),
     );
-  }, (context, item, index) => PostCard(item));
+  }, (context, item, index) => MyCommentCard(item));
 
   @override
   dispose() {
-    _pagingManager.dispose();
     super.dispose();
+    _pagingManager.dispose();
   }
 
   @override
