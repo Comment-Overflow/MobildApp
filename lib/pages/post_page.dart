@@ -1,12 +1,9 @@
 import 'package:comment_overflow/assets/constants.dart';
 import 'package:comment_overflow/assets/custom_styles.dart';
 import 'package:comment_overflow/fake_data/fake_data.dart';
-import 'package:comment_overflow/model/comment.dart';
 import 'package:comment_overflow/model/post.dart';
-import 'package:comment_overflow/utils/my_image_picker.dart';
 import 'package:comment_overflow/widgets/comment_card_list.dart';
-import 'package:comment_overflow/widgets/horizontal_image_scroller.dart';
-import 'package:comment_overflow/widgets/quote_card.dart';
+import 'package:comment_overflow/widgets/multiple_input_field.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
@@ -14,9 +11,8 @@ import 'package:wechat_assets_picker/wechat_assets_picker.dart';
 
 class PostPage extends StatefulWidget {
   final Post _post;
-  final List<Comment> _commentList;
 
-  const PostPage(this._post, this._commentList, {Key? key}) : super(key: key);
+  const PostPage(this._post, {Key? key}) : super(key: key);
 
   @override
   _PostPageState createState() => _PostPageState();
@@ -25,7 +21,8 @@ class PostPage extends StatefulWidget {
 class _PostPageState extends State<PostPage> {
   var _sortPolicy = SortPolicy.earliest;
   var _stared = false;
-  List<AssetEntity> _assets = <AssetEntity>[];
+  final List<AssetEntity> _assets = <AssetEntity>[];
+  final TextEditingController _replyController = TextEditingController();
 
   static const _iconSize = 20.0;
   static const _bottomIconSize = 30.0;
@@ -162,85 +159,15 @@ class _PostPageState extends State<PostPage> {
 
   void _pushReply() {
     showModalBottomSheet(
-      isScrollControlled: true, // !important
-      context: context,
-      builder: (BuildContext context) {
-        return SingleChildScrollView(
-            // !important
-            child: _inputField);
-      },
-    );
-  }
-
-  Widget get _inputField => Container(
-        padding:
-            EdgeInsets.only(bottom: MediaQuery.of(context).viewInsets.bottom),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          mainAxisSize: MainAxisSize.min,
-          children: <Widget>[
-            Container(
-              height: 17.0,
-              child: Row(
-                mainAxisSize: MainAxisSize.max,
-                mainAxisAlignment: MainAxisAlignment.start,
-                children: [
-                  IconButton(
-                    onPressed: () {
-                      Navigator.pop(context);
-                    },
-                    icon: CustomStyles.getDefaultCloseIcon(size: 16.0),
-                  )
-                ],
-              ),
-            ),
-            Padding(
-              padding: EdgeInsets.all(6.0),
-              child: QuoteCard(quotes[0]),
-            ),
-            HorizontalImageScroller(_assets),
-            Row(
-              children: [
-                _textField,
-                ElevatedButton(
-                  child: Text("发送"),
-                  onPressed: () {},
-                )
-              ],
-            )
-          ],
-        ),
-      );
-
-  Widget get _textField => Expanded(
-        child: TextField(
-          textInputAction: TextInputAction.newline,
-          keyboardType: TextInputType.text,
-          decoration: InputDecoration(
-              hintText: "友善的回复",
-              border: OutlineInputBorder(),
-              contentPadding: const EdgeInsets.all(6.0),
-              suffixIcon: Row(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  IconButton(
-                    icon: CustomStyles.getDefaultImageIcon(size: 24.0),
-                    onPressed: _selectAssets,
-                  ),
-                ],
-              )),
-          autofocus: true,
-        ),
-      );
-
-  Future<void> _selectAssets() async {
-    final List<AssetEntity>? result = await MyImagePicker.pickImage(context,
-        maxAssets: Constants.maxImageNumber - _assets.length,
-        selectedAssets: _assets);
-    if (result != null) {
-      setState(() {
-        _assets = List<AssetEntity>.from(result);
-      });
-    }
+        isScrollControlled: true, // !important
+        context: context,
+        builder: (_) {
+          return MultipleInputField(
+            context: context,
+            textController: _replyController,
+            assets: _assets,
+            quote: quotes[0],
+          );
+        });
   }
 }
