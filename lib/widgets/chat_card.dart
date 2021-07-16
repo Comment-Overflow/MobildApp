@@ -43,100 +43,99 @@ class ChatCard extends StatelessWidget {
           Constants.defaultCardPadding,
           Constants.defaultCardPadding),
       height: Constants.defaultChatCardHeight,
-      child: GestureDetector(
+      child: Row(
+        mainAxisSize: MainAxisSize.max,
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: <Widget>[
+          Expanded(
+            flex: 20,
+            child: UserAvatar(Constants.defaultChatListAvatarSize),
+          ),
+          Expanded(
+            flex: 59,
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: <Widget>[
+                Expanded(
+                  flex: 10,
+                  child: Container(),
+                ),
+                Expanded(
+                  flex: 45,
+                  child: Text(
+                    _chat.chatter.userName,
+                    overflow: TextOverflow.ellipsis,
+                    maxLines: 1,
+                    style: CustomStyles.userNameStyle,
+                  ),
+                ),
+                Expanded(
+                  flex: 5,
+                  child: Container(),
+                ),
+                Expanded(
+                  flex: 40,
+                  child: Text(
+                    _chat.lastMessage,
+                    overflow: TextOverflow.ellipsis,
+                    maxLines: 1,
+                    style: CustomStyles.lastMessageTextStyle,
+                  ),
+                ),
+              ],
+            ),
+          ),
+          Expanded(
+            flex: 1,
+            child: Container(),
+          ),
+          Expanded(
+            flex: 20,
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.end,
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: <Widget>[
+                Expanded(
+                  flex: 12,
+                  child: Container(),
+                ),
+                Expanded(flex: 50, child: unreadPrompt),
+                Expanded(
+                  flex: 10,
+                  child: Container(),
+                ),
+                Expanded(
+                  flex: 28,
+                  child: Text(
+                    getDisplayTime(),
+                    style: CustomStyles.lastChatTimeTextStyle,
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ],
+      ),
+    );
+
+    return GestureDetector(
         onTap: () {
           Navigator.push(context, CupertinoPageRoute(builder: (context) {
             return ChatRoomPage(_chat);
           }));
         },
-        child: Row(
-          mainAxisSize: MainAxisSize.max,
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: <Widget>[
-            Expanded(
-              flex: 20,
-              child: UserAvatar(Constants.defaultChatListAvatarSize),
-            ),
-            Expanded(
-              flex: 59,
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: <Widget>[
-                  Expanded(
-                    flex: 10,
-                    child: Container(),
-                  ),
-                  Expanded(
-                    flex: 47,
-                    child: Text(
-                      _chat.chatter.userName,
-                      overflow: TextOverflow.ellipsis,
-                      maxLines: 1,
-                      style: CustomStyles.userNameStyle,
-                    ),
-                  ),
-                  Expanded(
-                    flex: 5,
-                    child: Container(),
-                  ),
-                  Expanded(
-                    flex: 38,
-                    child: Text(
-                      _chat.lastMessage,
-                      overflow: TextOverflow.ellipsis,
-                      maxLines: 1,
-                      style: CustomStyles.lastMessageTextStyle,
-                    ),
-                  ),
-                ],
-              ),
-            ),
-            Expanded(
-              flex: 1,
-              child: Container(),
-            ),
-            Expanded(
-              flex: 20,
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.end,
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: <Widget>[
-                  Expanded(
-                    flex: 7,
-                    child: Container(),
-                  ),
-                  Expanded(flex: 50, child: unreadPrompt),
-                  Expanded(
-                    flex: 10,
-                    child: Container(),
-                  ),
-                  Expanded(
-                    flex: 33,
-                    child: Text(
-                      getDisplayTime(),
-                      style: CustomStyles.lastChatTimeTextStyle,
-                    ),
-                  ),
-                ],
-              ),
+        child: Slidable(
+          actionPane: SlidableDrawerActionPane(),
+          actionExtentRatio: 0.25,
+          child: card,
+          secondaryActions: <Widget>[
+            IconSlideAction(
+              caption: '删除',
+              color: Colors.red,
+              icon: Icons.delete,
+              onTap: _deleteChat,
             ),
           ],
-        ),
-      ),
-    );
-
-    return Slidable(
-      actionPane: SlidableDrawerActionPane(),
-      actionExtentRatio: 0.25,
-      child: card,
-      secondaryActions: <Widget>[
-        IconSlideAction(
-          caption: '删除',
-          color: Colors.red,
-          icon: Icons.delete,
-          onTap: _deleteChat,
-        ),
-      ],
-    );
+        ));
   }
 }

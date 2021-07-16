@@ -67,6 +67,7 @@ class PagingManager<T> {
         ? AdaptiveRefresher(
             onRefresh: () {
               _pagingController.refresh();
+              return Future.delayed(Duration.zero);
             },
             iosComplete: buildIosRotatingIndicator(),
             child: listView,
