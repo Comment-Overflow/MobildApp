@@ -1,5 +1,3 @@
-import 'package:flutter/cupertino.dart';
-import 'package:flutter/material.dart';
 import 'package:comment_overflow/assets/constants.dart';
 import 'package:comment_overflow/assets/custom_colors.dart';
 import 'package:comment_overflow/assets/custom_styles.dart';
@@ -7,12 +5,13 @@ import 'package:comment_overflow/model/chat.dart';
 import 'package:comment_overflow/pages/chat_room_page.dart';
 import 'package:comment_overflow/widgets/user_avatar.dart';
 import 'package:dart_date/dart_date.dart';
+import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 
 class ChatCard extends StatelessWidget {
   final Chat _chat;
   final VoidCallback _deleteChat;
-
   const ChatCard(this._chat, this._deleteChat, {Key? key}) : super(key: key);
 
   String getDisplayTime() {
