@@ -43,6 +43,9 @@ class Constants {
   /// Default max chat bubble width.
   static const defaultMaxBubbleWidth = 200.0;
 
+  /// Default chat room padding.
+  static const defaultChatRoomPadding = 10.0;
+
 }
 
 enum FollowStatus {

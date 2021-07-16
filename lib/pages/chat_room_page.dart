@@ -28,7 +28,7 @@ class _ChatRoomPageState extends State<ChatRoomPage> {
         ),
       ),
       body: Container(
-          padding: EdgeInsets.all(20.0),
+          padding: EdgeInsets.all(Constants.defaultChatRoomPadding),
           child: Column(
             children: messages.map((message) =>
                 Container(
