@@ -43,6 +43,8 @@ class Constants {
   /// Default max chat bubble width.
   static const defaultMaxBubbleWidth = 200.0;
 
+  /// Max image number of a comment.
+  static const maxImageNumber = 9;
 }
 
 enum FollowStatus {
@@ -62,14 +64,17 @@ enum ApprovalStatus {
   disapprove,
 }
 
-enum NotificationType {
-  approvePost, approveComment, collect, attention, reply
+enum SortPolicy {
+  earliest,
+  latest,
+  hottest,
 }
 
-enum MessageType {
-  Text, Image
-}
+enum NotificationType { approvePost, approveComment, collect, attention, reply }
+
+enum MessageType { Text, Image }
 
 enum ChatterType {
-  Me, Other,
+  Me,
+  Other,
 }
