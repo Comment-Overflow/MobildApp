@@ -1,4 +1,5 @@
 import 'package:comment_overflow/pages/home_page.dart';
+import 'package:comment_overflow/pages/personal_page.dart';
 import 'package:convex_bottom_bar/convex_bottom_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
@@ -13,7 +14,7 @@ class PagesContainer extends StatefulWidget {
 
 class _PagesContainerState extends State<PagesContainer> {
   int _index = 0;
-  final _pages = <Widget> [HomePage(), NotificationPage(), HomePage()];
+  final _pages = <Widget> [HomePage(), NotificationPage(), PersonalPage()];
 
   @override
   Widget build(BuildContext context) {

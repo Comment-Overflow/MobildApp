@@ -46,6 +46,27 @@ class Constants {
   /// Default chat room padding.
   static const defaultChatRoomPadding = 10.0;
 
+  /// Default personal page header height.
+  static const defaultPersonalPageHeaderHeight = 200.0;
+
+  /// Default personal page avatar size.
+  static const defaultPersonalPageAvatarSize = 130.0;
+
+  /// Default personal page avatar padding.
+  static const defaultPersonalPageAvatarPadding = 5.0;
+
+  /// Default sex icon size on personal page.
+  static const defaultPersonalPageHeaderTitleSize = 26.0;
+
+  /// Default size of personal page header footer text.
+  static const defaultPersonalPageHeaderFooterSize = 14.0;
+
+  /// Default personal page header padding.
+  static const defaultPersonalPageHeaderHorizontalPadding = 20.0;
+
+  /// Default personal page header padding.
+  static const defaultPersonalPageHeaderVerticalPadding = 17.0;
+
 }
 
 enum FollowStatus {

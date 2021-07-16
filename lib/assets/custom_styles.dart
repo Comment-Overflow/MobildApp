@@ -3,6 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:comment_overflow/assets/custom_colors.dart';
 
+import 'constants.dart';
+
 class CustomStyles {
   static const postTitleStyle = TextStyle(
     fontWeight: FontWeight.bold,
@@ -65,6 +67,11 @@ class CustomStyles {
     fontWeight: FontWeight.bold,
   );
 
+  static const personalPageUserNameStyle = TextStyle(
+    fontWeight: FontWeight.bold,
+    fontSize: Constants.defaultPersonalPageHeaderTitleSize,
+  );
+
   /// Default icon for reply with changeable size.
   static Icon getDefaultReplyIcon({size = 14.0, color: Colors.grey}) =>
       Icon(CupertinoIcons.text_bubble, color: color, size: size);
@@ -114,6 +121,15 @@ class CustomStyles {
         color: Theme.of(context).accentColor,
         size: size,
       );
+
+  /// Default icon for female.
+  static getDefaultFemaleIcon({size = Constants.defaultPersonalPageHeaderTitleSize, color = CustomColors.femalePink}) =>
+      Icon(Icons.female, color: color, size: size);
+
+  /// Default icon for male.
+  static getDefaultMaleIcon({size = Constants.defaultPersonalPageHeaderTitleSize, color = CustomColors.maleBlue}) =>
+      Icon(Icons.male, color: color, size: size);
+
   static const referenceUserNameStyle = TextStyle(
     fontWeight: FontWeight.bold,
     fontSize: 16.0,
