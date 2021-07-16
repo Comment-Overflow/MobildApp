@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 import 'package:comment_overflow/assets/constants.dart';
 import 'package:comment_overflow/assets/custom_styles.dart';
 import 'package:comment_overflow/model/comment.dart';
@@ -6,6 +7,21 @@ import 'package:comment_overflow/widgets/comment_card.dart';
 import 'package:comment_overflow/widgets/comment_card_list.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+=======
+import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter/rendering.dart';
+import 'package:wechat_assets_picker/wechat_assets_picker.dart';
+import 'package:zhihu_demo/assets/constants.dart';
+import 'package:zhihu_demo/assets/custom_styles.dart';
+import 'package:zhihu_demo/fake_data/fake_data.dart';
+import 'package:zhihu_demo/model/comment.dart';
+import 'package:zhihu_demo/model/post.dart';
+import 'package:zhihu_demo/utils/my_image_picker.dart';
+import 'package:zhihu_demo/widgets/comment_card_list.dart';
+import 'package:zhihu_demo/widgets/quote_card.dart';
+import 'package:zhihu_demo/widgets/horizontal_image_scroller.dart';
+>>>>>>> 1ddfcacf241396368a1709bdc7996a268858d1c5
 
 class PostPage extends StatefulWidget {
   final Post _post;
@@ -20,7 +36,7 @@ class PostPage extends StatefulWidget {
 class _PostPageState extends State<PostPage> {
   var _sortPolicy = SortPolicy.earliest;
   var _stared = false;
-  List<AssetEntity> assets = <AssetEntity>[];
+  List<AssetEntity> _assets = <AssetEntity>[];
 
   static const _iconSize = 20.0;
   static const _bottomIconSize = 30.0;
@@ -218,6 +234,7 @@ class _PostPageState extends State<PostPage> {
     showModalBottomSheet(
       isScrollControlled: true, // !important
       context: context,
+<<<<<<< HEAD
       builder: (BuildContext context) {
 <<<<<<< HEAD
         return SingleChildScrollView(
@@ -242,6 +259,15 @@ class _PostPageState extends State<PostPage> {
 >>>>>>> 4a40a757b9ce438c9c22d3468e558545f833b2eb
         );
       },
+=======
+      builder: (context) => StatefulBuilder(
+        builder: (context, setState) {
+          return SingleChildScrollView(  // !important
+            child: _inputField
+          );
+        },
+      ),
+>>>>>>> 1ddfcacf241396368a1709bdc7996a268858d1c5
     );
   }
 <<<<<<< HEAD
@@ -249,46 +275,42 @@ class _PostPageState extends State<PostPage> {
 =======
 
   Widget get _inputField => Container(
-    padding: EdgeInsets.only(
-        bottom: MediaQuery.of(context).viewInsets.bottom),
-    child: Column(
-      mainAxisAlignment: MainAxisAlignment.center,
-      mainAxisSize: MainAxisSize.min,
-      children: <Widget>[
-        Container(
-          height: 17.0,
-          child: Row(
-            mainAxisSize: MainAxisSize.max,
-            mainAxisAlignment: MainAxisAlignment.start,
+      padding: EdgeInsets.only(
+          bottom: MediaQuery.of(context).viewInsets.bottom),
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        mainAxisSize: MainAxisSize.min,
+        children: <Widget>[
+          Container(
+            height: 17.0,
+            child: Row(
+              mainAxisSize: MainAxisSize.max,
+              mainAxisAlignment: MainAxisAlignment.start,
+              children: [
+                IconButton(
+                  onPressed: () {Navigator.pop(context);},
+                  icon: CustomStyles.getDefaultCloseIcon(size: 16.0),
+                )
+              ],
+            ),
+          ),
+          Padding(
+            padding: EdgeInsets.all(6.0),
+            child: QuoteCard(quotes[0]),
+          ),
+          HorizontalImageScroller(_assets),
+          Row(
             children: [
-              IconButton(
-                onPressed: () {Navigator.pop(context);},
-                icon: CustomStyles.getDefaultCloseIcon(size: 16.0),
+              _textField,
+              ElevatedButton(
+                child: Text("发送"),
+                onPressed: () {},
               )
             ],
-          ),
-        ),
-        Padding(
-          padding: EdgeInsets.all(6.0),
-          child: QuoteCard(quotes[0]),
-        ),
-        assets.isNotEmpty ? Container(
-          child: _assetListView,
-          height: 100.0,
-        )
-        : SizedBox.shrink(),
-        Row(
-          children: [
-            _textField,
-            ElevatedButton(
-              child: Text("发送"),
-              onPressed: () {},
-            )
-          ],
-        )
-      ],
-    ),
-  );
+          )
+        ],
+      ),
+    );
 
   Widget get _textField => Expanded(
     child: TextField(
@@ -315,13 +337,16 @@ class _PostPageState extends State<PostPage> {
   Future<void> _selectAssets() async {
     final List<AssetEntity>? result = await MyImagePicker.pickImage(
       context,
-      maxAssets: Constants.maxImageNumber - assets.length,
-      selectedAssets: assets
+      maxAssets: Constants.maxImageNumber - _assets.length,
+      selectedAssets: _assets
     );
     if (result != null) {
-      assets = List<AssetEntity>.from(result);
+      setState(() {
+        _assets = List<AssetEntity>.from(result);
+      });
     }
   }
+<<<<<<< HEAD
 
   void _removeAsset(int index) {
     setState(() {
@@ -387,3 +412,6 @@ class _PostPageState extends State<PostPage> {
   }
 }
 >>>>>>> 4a40a757b9ce438c9c22d3468e558545f833b2eb
+=======
+}
+>>>>>>> 1ddfcacf241396368a1709bdc7996a268858d1c5
