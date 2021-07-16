@@ -24,12 +24,24 @@ class Constants {
   static const defaultChatCardHeight = 80.0;
 
   /// Default size of chat avatar.
-  static const defaultChatAvatar = 65.0;
+  static const defaultChatListAvatarSize = 65.0;
 
   static const defaultAppBarElevation = 0.5;
 
   /// Search bar height.
   static const searchBarHeight = 32.0;
+
+  /// Default size of avatar in chat room.
+  static const defaultChatRoomAvatarSize = 50.0;
+
+  /// Default left padding of avatar in chat room.
+  static const defaultChatRoomAvatarPadding = 5.0;
+
+  /// Default vertical padding of chat message.
+  static const defaultChatMessagePadding = 4.0;
+
+  /// Default max chat bubble width.
+  static const defaultMaxBubbleWidth = 200.0;
 
 }
 
@@ -52,4 +64,12 @@ enum ApprovalStatus {
 
 enum NotificationType {
   approvePost, approveComment, collect, attention, reply
+}
+
+enum MessageType {
+  Text, Image
+}
+
+enum ChatterType {
+  Me, Other,
 }

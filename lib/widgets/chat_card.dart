@@ -4,6 +4,7 @@ import 'package:zhihu_demo/assets/constants.dart';
 import 'package:zhihu_demo/assets/custom_colors.dart';
 import 'package:zhihu_demo/assets/custom_styles.dart';
 import 'package:zhihu_demo/model/chat.dart';
+import 'package:zhihu_demo/pages/chat_room_page.dart';
 import 'package:zhihu_demo/pages/home_page.dart';
 import 'package:zhihu_demo/widgets/user_avatar.dart';
 import 'package:dart_date/dart_date.dart';
@@ -50,7 +51,7 @@ class ChatCard extends StatelessWidget {
       child: GestureDetector(
         onTap: () {
           Navigator.push(context, CupertinoPageRoute(builder: (context) {
-            return HomePage();
+            return ChatRoomPage(_chat);
           }));
         },
         child: Row(
@@ -59,7 +60,7 @@ class ChatCard extends StatelessWidget {
           children: <Widget>[
             Expanded(
               flex: 20,
-              child: UserAvatar(Constants.defaultChatAvatar),
+              child: UserAvatar(Constants.defaultChatListAvatarSize),
             ),
             Expanded(
               flex: 59,
@@ -67,11 +68,11 @@ class ChatCard extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[
                   Expanded(
-                    flex: 7,
+                    flex: 10,
                     child: Container(),
                   ),
                   Expanded(
-                    flex: 48,
+                    flex: 47,
                     child: Text(
                       _chat.chatter.userName,
                       overflow: TextOverflow.ellipsis,
@@ -84,7 +85,7 @@ class ChatCard extends StatelessWidget {
                     child: Container(),
                   ),
                   Expanded(
-                    flex: 40,
+                    flex: 38,
                     child: Text(
                       _chat.lastMessage,
                       overflow: TextOverflow.ellipsis,

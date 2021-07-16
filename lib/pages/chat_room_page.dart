@@ -1,12 +1,43 @@
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
+import 'package:zhihu_demo/assets/constants.dart';
+import 'package:zhihu_demo/assets/custom_styles.dart';
+import 'package:zhihu_demo/fake_data/fake_data.dart';
+import 'package:zhihu_demo/widgets/chat_message.dart';
+import 'package:zhihu_demo/model/chat.dart';
 
-class ChatRoomPage extends StatelessWidget {
-  const ChatRoomPage({Key? key}) : super(key: key);
+class ChatRoomPage extends StatefulWidget {
+
+  final Chat chat;
+
+  const ChatRoomPage(this.chat, {Key? key}) : super(key: key);
+
+  @override
+  _ChatRoomPageState createState() => _ChatRoomPageState();
+}
+
+class _ChatRoomPageState extends State<ChatRoomPage> {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      child: Text("ChatRoom"),
+    return Scaffold(
+      appBar: AppBar(
+        title: Text(
+          widget.chat.chatter.userName,
+          style: CustomStyles.pageTitleStyle,
+        ),
+      ),
+      body: Container(
+          padding: EdgeInsets.all(20.0),
+          child: Column(
+            children: messages.map((message) =>
+                Container(
+                  padding: EdgeInsets.symmetric(vertical: Constants.defaultChatMessagePadding),
+                  child: ChatMessage(message),
+                )
+            ).toList()
+        ),
+      ),
     );
   }
 }

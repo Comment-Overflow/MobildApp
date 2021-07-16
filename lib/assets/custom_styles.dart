@@ -62,7 +62,7 @@ class CustomStyles {
     color: Colors.grey,
   );
 
-  static const notificationPageTitleStyle = TextStyle(
+  static const pageTitleStyle = TextStyle(
     fontWeight: FontWeight.bold,
   );
 

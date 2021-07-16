@@ -15,7 +15,7 @@ class NotificationPage extends StatelessWidget {
       appBar: AppBar(
         title: Text(
           "消息",
-          style: CustomStyles.notificationPageTitleStyle,
+          style: CustomStyles.pageTitleStyle,
         ),
       ),
       body: Column(
