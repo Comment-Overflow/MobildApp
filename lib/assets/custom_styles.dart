@@ -1,7 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
-import 'package:comment_overflow/assets/custom_colors.dart';
 
 class CustomStyles {
   static const postTitleStyle = TextStyle(
@@ -20,7 +19,7 @@ class CustomStyles {
     fontSize: 24.0,
   );
   static const postPageBottomStyle = TextStyle(
-    fontSize: 16.0,
+    fontSize: 15.0,
     color: Colors.grey,
   );
   static const commentContentStyle = TextStyle(
@@ -77,14 +76,13 @@ class CustomStyles {
   static Icon getDefaultReplyIcon({size = 14.0, color = Colors.grey}) =>
       Icon(Icons.chat_outlined, color: color, size: size);
 
+  /// Default icon for thumb up.
+  static getDefaultThumbUpIcon({size = 14.0, color = Colors.pinkAccent}) =>
+      Icon(Icons.favorite, color: color, size: size);
+
   /// Default icon for not thumb up.
   static getDefaultNotThumbUpIcon({size = 14.0, color = Colors.grey}) =>
       Icon(Icons.favorite_border, color: color, size: size);
-
-  /// Default icon for thumb up.
-  static Icon getDefaultThumbUpIcon(
-          {size = 14.0, color = CustomColors.thumbUpPink}) =>
-      Icon(Icons.favorite, color: color, size: size);
 
   static getDefaultThumbDownIcon({size = 14.0, color = Colors.black87}) =>
       Icon(Icons.thumb_down, color: color, size: size);
@@ -108,10 +106,10 @@ class CustomStyles {
   /// Default icon for not star.
   static getDefaultNotStarIcon({size = 14.0, color = Colors.grey}) =>
       Icon(Icons.star_border, color: color, size: size);
-  
+
   /// Default icon for list.
   static getDefaultListIcon({size = 14.0, color = Colors.grey}) =>
-    Icon(Icons.list, color: color, size: size);
+      Icon(Icons.list, color: color, size: size);
 
   /// Default icon for plus.
   static Icon getDefaultPlusIcon({size = 18.0, color = Colors.blue}) =>
@@ -141,6 +139,15 @@ class CustomStyles {
         color: Theme.of(context).accentColor,
         size: size,
       );
+
+  /// Default icon for image.
+  static Icon getDefaultImageIcon({size = 14.0, color = Colors.grey}) =>
+      Icon(Icons.photo, color: color, size: size);
+
+  /// Default icon for close.
+  static Icon getDefaultCloseIcon({size = 14.0, color = Colors.grey}) =>
+      Icon(Icons.close, color: color, size: size);
+
   static const referenceUserNameStyle = TextStyle(
     fontWeight: FontWeight.bold,
     fontSize: 16.0,

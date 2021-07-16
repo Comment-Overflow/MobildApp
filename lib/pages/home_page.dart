@@ -25,12 +25,38 @@ class HomePage extends StatelessWidget {
               elevation: 0.5,
               title: Row(
                 children: [
-                  buildSearchBar(context),
+                  Expanded(
+                    child: SearchBar(
+                      enable: false,
+                      onTap: () => Navigator.of(context)
+                          .pushNamed(RouteGenerator.searchRoute),
+                    ),
+                  ),
                   SizedBox(width: 15.0),
-                  buildAddButton(context),
+                  ConstrainedBox(
+                    constraints: BoxConstraints.tightFor(
+                      width: Constants.searchBarHeight,
+                      height: Constants.searchBarHeight,
+                    ),
+                    child: ElevatedButton(
+                      onPressed: () {},
+                      style: ElevatedButton.styleFrom(
+                        primary: Theme.of(context).accentColor,
+                        shape: CircleBorder(),
+                        padding: EdgeInsets.zero,
+                      ),
+                      child: Icon(Icons.add_outlined),
+                    ),
+                  ),
                 ],
               ),
-              bottom: buildTabBar(),
+              bottom: TabBar(
+                tabs: _tabs
+                    .map((e) => Tab(
+                          text: e,
+                        ))
+                    .toList(),
+              ),
             ),
           ],
           body: TabBarView(
@@ -41,9 +67,6 @@ class HomePage extends StatelessWidget {
                 removeTop: true,
               ),
               QuoteCard(quotes[0]),
-              Text('热榜'),
-              Text('热榜'),
-              Text('热榜'),
               Text('热榜'),
             ],
           ),

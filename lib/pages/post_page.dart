@@ -20,9 +20,7 @@ class PostPage extends StatefulWidget {
 class _PostPageState extends State<PostPage> {
   var _sortPolicy = SortPolicy.earliest;
   var _stared = false;
-
-  /// Vertical gap between rows.
-  static const _gap = const SizedBox(height: 5.0);
+  List<AssetEntity> assets = <AssetEntity>[];
 
   static const _iconSize = 20.0;
   static const _bottomIconSize = 30.0;
@@ -61,6 +59,7 @@ class _PostPageState extends State<PostPage> {
         ],
         centerTitle: true,
       ),
+<<<<<<< HEAD
       body: Column(
         children: [
           Padding(
@@ -115,20 +114,20 @@ class _PostPageState extends State<PostPage> {
             child: CommentCardList(widget._commentList),
           ),
         ],
+=======
+      floatingActionButton: FloatingActionButton(
+          onPressed: _pushReply,
+          child: CustomStyles.getDefaultReplyIcon(
+              size: _bottomIconSize,
+              color: Colors.white
+          )
+>>>>>>> 4a40a757b9ce438c9c22d3468e558545f833b2eb
       ),
+      body: CommentCardList(posts[0]),
       bottomNavigationBar: BottomAppBar(
         child: Row(
           children: [
-            TextButton(
-              onPressed: _pushReply,
-              child: Column(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  CustomStyles.getDefaultReplyIcon(size: _bottomIconSize),
-                  Text("回复", style: CustomStyles.postPageBottomStyle)
-                ],
-              ),
-            ),
+            buildDropDownMenu(),
             TextButton(
                 onPressed: () {},
                 child: Column(
@@ -182,11 +181,45 @@ class _PostPageState extends State<PostPage> {
     );
   }
 
+  Widget buildDropDownMenu() {
+    return PopupMenuButton<SortPolicy>(
+      padding: const EdgeInsets.all(7.0),
+      onSelected: (SortPolicy result) => {
+        setState(() {_sortPolicy = result;})
+      },
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          CustomStyles.getDefaultListIcon(size: _bottomIconSize),
+          Text(
+            "${getPolicyName(_sortPolicy)}",
+            style: CustomStyles.postPageBottomStyle,
+          ),
+        ],
+      ),
+      itemBuilder: (BuildContext context) => <PopupMenuEntry<SortPolicy>>[
+        const PopupMenuItem(
+          value: SortPolicy.earliest,
+          child: Text("最早回复"),
+        ),
+        const PopupMenuItem(
+          value: SortPolicy.latest,
+          child: Text("最近回复"),
+        ),
+        const PopupMenuItem(
+          value: SortPolicy.hottest,
+          child: Text("最热回复"),
+        ),
+      ]
+    );
+  }
+
   void _pushReply() {
     showModalBottomSheet(
       isScrollControlled: true, // !important
       context: context,
       builder: (BuildContext context) {
+<<<<<<< HEAD
         return SingleChildScrollView(
           // !important
           child: Container(
@@ -203,8 +236,154 @@ class _PostPageState extends State<PostPage> {
               ],
             ),
           ),
+=======
+        return SingleChildScrollView(  // !important
+          child: _inputField
+>>>>>>> 4a40a757b9ce438c9c22d3468e558545f833b2eb
         );
       },
     );
   }
+<<<<<<< HEAD
 }
+=======
+
+  Widget get _inputField => Container(
+    padding: EdgeInsets.only(
+        bottom: MediaQuery.of(context).viewInsets.bottom),
+    child: Column(
+      mainAxisAlignment: MainAxisAlignment.center,
+      mainAxisSize: MainAxisSize.min,
+      children: <Widget>[
+        Container(
+          height: 17.0,
+          child: Row(
+            mainAxisSize: MainAxisSize.max,
+            mainAxisAlignment: MainAxisAlignment.start,
+            children: [
+              IconButton(
+                onPressed: () {Navigator.pop(context);},
+                icon: CustomStyles.getDefaultCloseIcon(size: 16.0),
+              )
+            ],
+          ),
+        ),
+        Padding(
+          padding: EdgeInsets.all(6.0),
+          child: QuoteCard(quotes[0]),
+        ),
+        assets.isNotEmpty ? Container(
+          child: _assetListView,
+          height: 100.0,
+        )
+        : SizedBox.shrink(),
+        Row(
+          children: [
+            _textField,
+            ElevatedButton(
+              child: Text("发送"),
+              onPressed: () {},
+            )
+          ],
+        )
+      ],
+    ),
+  );
+
+  Widget get _textField => Expanded(
+    child: TextField(
+      textInputAction: TextInputAction.newline,
+      keyboardType: TextInputType.text,
+      decoration: InputDecoration(
+        hintText: "友善的回复",
+        border: OutlineInputBorder(),
+        contentPadding: const EdgeInsets.all(6.0),
+        suffixIcon: Row(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            IconButton(
+              icon: CustomStyles.getDefaultImageIcon(size: 24.0),
+              onPressed: _selectAssets,
+            ),
+          ],
+        )
+      ),
+      autofocus: true,
+    ),
+  );
+
+  Future<void> _selectAssets() async {
+    final List<AssetEntity>? result = await MyImagePicker.pickImage(
+      context,
+      maxAssets: Constants.maxImageNumber - assets.length,
+      selectedAssets: assets
+    );
+    if (result != null) {
+      assets = List<AssetEntity>.from(result);
+    }
+  }
+
+  void _removeAsset(int index) {
+    setState(() {
+      assets.remove(assets.elementAt(index));
+    });
+  }
+
+  Widget get _assetListView => ListView.builder(
+    itemBuilder: _assetItemBuilder,
+    scrollDirection: Axis.horizontal,
+    itemCount: assets.length,
+  );
+
+  Widget _assetItemBuilder(BuildContext _, int index) {
+    return Container(
+      height: 60.0,
+      width: 60.0,
+      margin: const EdgeInsets.symmetric(horizontal: 5.0, vertical: 10.0),
+      child: AspectRatio(
+        aspectRatio: 1.0,
+        child: ClipRRect(
+          borderRadius: BorderRadius.circular(10.0),
+          child: Stack(
+            children: <Widget>[
+              _imageWidget(index),
+              _deleteButton(index),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+
+  Widget _imageWidget(int index) {
+    return Positioned.fill(
+      child: ExtendedImage(
+        image: AssetEntityImageProvider(
+          assets.elementAt(index),
+          isOriginal: false,
+        ),
+        fit: BoxFit.cover,
+      ),
+    );
+  }
+
+  Widget _deleteButton(int index) {
+    return Positioned(
+      top: 6.0,
+      right: 6.0,
+      child: GestureDetector(
+        behavior: HitTestBehavior.opaque,
+        onTap: () => _removeAsset(index),
+        child: Container(
+          padding: const EdgeInsets.all(2.0),
+          decoration: BoxDecoration(
+            color: Theme.of(context).dividerColor.withOpacity(0.5),
+            shape: BoxShape.circle,
+          ),
+          child: Icon(Icons.close, size: 14.0, color: Colors.white),
+        ),
+      ),
+    );
+  }
+}
+>>>>>>> 4a40a757b9ce438c9c22d3468e558545f833b2eb

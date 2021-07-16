@@ -42,6 +42,9 @@ class Constants {
 
   /// Default max chat bubble width.
   static const defaultMaxBubbleWidth = 200.0;
+
+  /// Max image number of a comment.
+  static const maxImageNumber = 9;
 }
 
 enum FollowStatus {
