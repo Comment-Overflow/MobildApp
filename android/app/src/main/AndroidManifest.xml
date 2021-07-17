@@ -1,7 +1,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.gun9nir.comment_overflow">
    <application
-        android:label="有可逢告"
+        android:label="有可奉告"
         android:icon="@mipmap/ic_launcher">
         <activity
             android:name=".MainActivity"

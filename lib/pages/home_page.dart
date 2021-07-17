@@ -20,6 +20,7 @@ class HomePage extends StatelessWidget {
           floatHeaderSlivers: true,
           headerSliverBuilder: (context, value) => [
             SliverAppBar(
+              automaticallyImplyLeading: false,
               pinned: true,
               floating: true,
               elevation: 0.5,

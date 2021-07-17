@@ -1,49 +1,34 @@
-import 'package:comment_overflow/assets/constants.dart';
-import 'package:comment_overflow/widgets/notification_card_list.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
+import 'package:comment_overflow/assets/constants.dart';
+import 'package:comment_overflow/assets/custom_styles.dart';
+import 'package:comment_overflow/widgets/notification_button_list.dart';
+import 'package:comment_overflow/widgets/recent_chat_list.dart';
 
 class NotificationPage extends StatelessWidget {
-  final NotificationType _notificationType;
-  NotificationPage(this._notificationType, {Key? key}) : super(key: key);
+
+  NotificationPage({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    String typeContent = "";
-    switch (_notificationType) {
-      case NotificationType.approvePost:
-      case NotificationType.approveComment:
-        typeContent = "赞同";
-        break;
-      case NotificationType.reply:
-        typeContent = "回复";
-        break;
-      case NotificationType.attention:
-        typeContent = "收藏";
-        break;
-      default:
-        typeContent = "关注";
-    }
     return Scaffold(
-      body: NestedScrollView(
-        floatHeaderSlivers: true,
-        headerSliverBuilder: (context, value) => [
-          SliverAppBar(
-              pinned: true,
-              floating: true,
-              elevation: 0.5,
-              title: Text(typeContent),
-              leading: IconButton(
-                icon: Icon(Icons.arrow_back),
-                //onPressed:() => Navigator.pop(context, false),
-                onPressed: () => {},
-              )),
-        ],
-        body: MediaQuery.removePadding(
-          context: context,
-          child: NotificationCardList(),
-          removeTop: true,
+      appBar: AppBar(
+        title: Text(
+          "消息",
+          style: CustomStyles.pageTitleStyle,
         ),
+      ),
+      body: Column(
+        children: <Widget>[
+          Container(
+            padding: EdgeInsets.symmetric(
+                vertical: Constants.defaultNotificationButtonSize,
+                horizontal: Constants.defaultNotificationButtonSize * 0.35
+            ),
+            child: NotificationButtonList(Constants.defaultNotificationButtonSize),
+          ),
+          RecentChatList(),
+        ],
       ),
     );
   }
