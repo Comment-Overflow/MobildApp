@@ -53,14 +53,10 @@ class _PersonalPageState extends State<PersonalPage> {
         physics: NeverScrollableScrollPhysics(),
         headerSliverBuilder: (context, value) {
           return [
-            SliverAppBar(
-              automaticallyImplyLeading: false,
-              pinned: false,
-              floating: false,
-              collapsedHeight: Constants.defaultPersonalProfileHeight,
-              expandedHeight: Constants.defaultPersonalProfileHeight,
-              backgroundColor: Theme.of(context).scaffoldBackgroundColor,
-              flexibleSpace: PersonalProfileCard(_personalPageInfo),
+            SliverToBoxAdapter(
+              child: Container(
+                  color: Colors.white,
+                  child: PersonalProfileCard(_personalPageInfo)),
             ),
             SliverPersistentHeader(
               floating: true,
@@ -176,23 +172,11 @@ class PersonalPostHeader extends SliverPersistentHeaderDelegate {
               itemBuilder: (BuildContext context) => [
                 PopupMenuItem(
                   value: 0,
-                  child: Row(
-                    children: [
-                      // CustomStyles.getDefaultEditIcon(),
-                      // SizedBox(width: 10.0),
-                      Text("查看帖子"),
-                    ],
-                  ),
+                  child: Text("查看帖子"),
                 ),
                 PopupMenuItem(
                   value: 1,
-                  child: Row(
-                    children: [
-                      // CustomStyles.getDefaultSignOutIcon(),
-                      // SizedBox(width: 10.0),
-                      Text("查看回复"),
-                    ],
-                  ),
+                  child: Text("查看回复"),
                 ),
               ],
             ),
@@ -212,20 +196,22 @@ class PersonalPostHeader extends SliverPersistentHeaderDelegate {
             vertical: Constants.defaultPersonalPageVerticalPadding * 0.7),
         child: Stack(
           children: [
-            Row(
-              mainAxisSize: MainAxisSize.max,
-              mainAxisAlignment: MainAxisAlignment.center,
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: [
-                Text(
-                  "帖子",
-                  // shrinkOffset.toString(),
-                  style: TextStyle(
-                    fontSize: 22.0,
-                    // fontWeight: FontWeight.bold,
+            Center(
+              child: Row(
+                mainAxisSize: MainAxisSize.max,
+                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  Text(
+                    "帖子",
+                    // shrinkOffset.toString(),
+                    style: TextStyle(
+                      fontSize: 22.0,
+                      // fontWeight: FontWeight.bold,
+                    ),
                   ),
-                ),
-              ],
+                ],
+              ),
             ),
             _onToggle == null ? _buildSelector() : _buildToggle(context),
           ],

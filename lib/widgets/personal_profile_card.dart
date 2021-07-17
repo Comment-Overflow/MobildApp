@@ -18,30 +18,6 @@ class PersonalProfileCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final commentAndApprovalInfo = RichText(
-      text: TextSpan(
-        children: [
-          WidgetSpan(
-            child: CustomStyles.getDefaultReplyIcon(
-                size: Constants.defaultPersonalPageHeaderFooterSize),
-          ),
-          TextSpan(
-            text: ' ${_personalPageInfo.commentCount}   ',
-          ),
-          WidgetSpan(
-            child: CustomStyles.getDefaultThumbUpIcon(
-                size: Constants.defaultPersonalPageHeaderFooterSize),
-          ),
-          TextSpan(
-            text: ' ${_personalPageInfo.approvalCount} ',
-          ),
-        ],
-        style: TextStyle(
-            color: Colors.grey,
-            fontSize: Constants.defaultPersonalPageHeaderFooterSize),
-      ),
-    );
-
     return Theme(
       data: ThemeData(
         splashColor: Colors.transparent,
@@ -118,7 +94,7 @@ class PersonalProfileCard extends StatelessWidget {
                         ),
                         Expanded(
                           flex: 27,
-                          child: commentAndApprovalInfo,
+                          child: _buildCommentAndApprovalInfo(),
                         )
                       ],
                     ),
@@ -178,9 +154,36 @@ class PersonalProfileCard extends StatelessWidget {
               ],
             ),
           ),
-          Divider(),
+          // Divider(),
         ],
       ),
     );
   }
+
+  _buildCommentAndApprovalInfo() {
+    return RichText(
+      text: TextSpan(
+        children: [
+          WidgetSpan(
+            child: CustomStyles.getDefaultReplyIcon(
+                size: Constants.defaultPersonalPageHeaderFooterSize),
+          ),
+          TextSpan(
+            text: ' ${_personalPageInfo.commentCount}   ',
+          ),
+          WidgetSpan(
+            child: CustomStyles.getDefaultThumbUpIcon(
+                size: Constants.defaultPersonalPageHeaderFooterSize),
+          ),
+          TextSpan(
+            text: ' ${_personalPageInfo.approvalCount} ',
+          ),
+        ],
+        style: TextStyle(
+            color: Colors.grey,
+            fontSize: Constants.defaultPersonalPageHeaderFooterSize),
+      ),
+    );
+  }
+
 }
