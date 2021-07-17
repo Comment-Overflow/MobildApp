@@ -19,95 +19,101 @@ class NotificationButtonList extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Row(
-      mainAxisSize: MainAxisSize.max,
-      crossAxisAlignment: CrossAxisAlignment.center,
-      children: [
-        Expanded(
-          flex: 25,
-          child: GestureDetector(
-            onTap: () {
-              Navigator.push(context, CupertinoPageRoute(builder: (context) {
-                // TODO: ScrollViewPage
-                return HomePage();
-              }));
-            },
-            child: Column(
-              mainAxisSize: MainAxisSize.max,
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: <Widget>[
-                Icon(CupertinoIcons.heart,
-                    size: _buttonSize, color: Colors.black),
-                _gap,
-                Text("赞同", style: _notificationButtonTextStyle),
-              ],
+    return Theme(
+      data: ThemeData(
+        splashColor: Colors.transparent,
+        highlightColor: Colors.transparent,
+      ),
+      child: Row(
+        mainAxisSize: MainAxisSize.max,
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: [
+          Expanded(
+            flex: 25,
+            child: InkWell(
+              onTap: () {
+                Navigator.push(context, CupertinoPageRoute(builder: (context) {
+                  // TODO: ScrollViewPage
+                  return HomePage();
+                }));
+              },
+              child: Column(
+                mainAxisSize: MainAxisSize.max,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: <Widget>[
+                  Icon(CupertinoIcons.heart,
+                      size: _buttonSize, color: Colors.black),
+                  _gap,
+                  Text("赞同", style: _notificationButtonTextStyle),
+                ],
+              ),
             ),
           ),
-        ),
-        Expanded(
-          flex: 25,
-          child: GestureDetector(
-            onTap: () {
-              Navigator.push(context, CupertinoPageRoute(builder: (context) {
-                // TODO: ScrollViewPage
-                return HomePage();
-              }));
-            },
-            child: Column(
-              mainAxisSize: MainAxisSize.max,
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: <Widget>[
-                Icon(CupertinoIcons.text_bubble,
-                    size: _buttonSize, color: Colors.black),
-                _gap,
-                Text("回复", style: _notificationButtonTextStyle),
-              ],
+          Expanded(
+            flex: 25,
+            child: InkWell(
+              onTap: () {
+                Navigator.push(context, CupertinoPageRoute(builder: (context) {
+                  // TODO: ScrollViewPage
+                  return HomePage();
+                }));
+              },
+              child: Column(
+                mainAxisSize: MainAxisSize.max,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: <Widget>[
+                  Icon(CupertinoIcons.text_bubble,
+                      size: _buttonSize, color: Colors.black),
+                  _gap,
+                  Text("回复", style: _notificationButtonTextStyle),
+                ],
+              ),
             ),
           ),
-        ),
-        Expanded(
-          flex: 25,
-          child: GestureDetector(
-            onTap: () {
-              Navigator.push(context, CupertinoPageRoute(builder: (context) {
-                // TODO: ScrollViewPage
-                return HomePage();
-              }));
-            },
-            child: Column(
-              mainAxisSize: MainAxisSize.max,
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: <Widget>[
-                Icon(CupertinoIcons.star,
-                    size: _buttonSize, color: Colors.black),
-                _gap,
-                Text("收藏", style: _notificationButtonTextStyle),
-              ],
+          Expanded(
+            flex: 25,
+            child: InkWell(
+              onTap: () {
+                Navigator.push(context, CupertinoPageRoute(builder: (context) {
+                  // TODO: ScrollViewPage
+                  return HomePage();
+                }));
+              },
+              child: Column(
+                mainAxisSize: MainAxisSize.max,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: <Widget>[
+                  Icon(CupertinoIcons.star,
+                      size: _buttonSize, color: Colors.black),
+                  _gap,
+                  Text("收藏", style: _notificationButtonTextStyle),
+                ],
+              ),
             ),
           ),
-        ),
-        Expanded(
-          flex: 25,
-          child: GestureDetector(
-            onTap: () {
-              Navigator.push(context, CupertinoPageRoute(builder: (context) {
-                // TODO: ScrollViewPage
-                return HomePage();
-              }));
-            },
-            child: Column(
-              mainAxisSize: MainAxisSize.max,
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: <Widget>[
-                CustomStyles.getDefaultUnfilledFollowerIcon(
-                    size: _buttonSize, color: Colors.black),
-                _gap,
-                Text("关注", style: _notificationButtonTextStyle),
-              ],
+          Expanded(
+            flex: 25,
+            child: InkWell(
+              onTap: () {
+                Navigator.push(context, CupertinoPageRoute(builder: (context) {
+                  // TODO: ScrollViewPage
+                  return HomePage();
+                }));
+              },
+              child: Column(
+                mainAxisSize: MainAxisSize.max,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: <Widget>[
+                  CustomStyles.getDefaultUnfilledFollowerIcon(
+                      size: _buttonSize, color: Colors.black),
+                  _gap,
+                  Text("关注", style: _notificationButtonTextStyle),
+                ],
+              ),
             ),
           ),
-        ),
-      ],
+        ],
+      ),
     );
   }
 }

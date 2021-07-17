@@ -1,6 +1,7 @@
 import 'package:comment_overflow/model/post.dart';
 import 'package:comment_overflow/pages/login_page.dart';
 import 'package:comment_overflow/pages/new_post_page.dart';
+import 'package:comment_overflow/pages/notification_page.dart';
 import 'package:comment_overflow/pages/post_page.dart';
 import 'package:comment_overflow/pages/search_page.dart';
 import 'package:comment_overflow/pages/search_result_page.dart';
@@ -15,6 +16,7 @@ class RouteGenerator {
   static const newPostRoute = '/new_post';
   static const loginRoute = '/login';
   static const postRoute = '/post';
+  static const notificationRoute = '/notification';
 
   static Route<dynamic> generateRoute(RouteSettings settings) {
     final args = settings.arguments;
@@ -32,6 +34,8 @@ class RouteGenerator {
       case postRoute:
         return MaterialPageRoute(
           builder: (_) => PostPage(args as Post));
+      case notificationRoute:
+        return MaterialPageRoute(builder: (_) => NotificationPage());
       case homeRoute:
       default:
         return MaterialPageRoute(builder: (_) => PagesContainer());
