@@ -101,7 +101,7 @@ class PostCard extends StatelessWidget {
             RouteGenerator.generateRoute(
               RouteSettings(
                 name: RouteGenerator.postRoute,
-                arguments: posts[0],
+                arguments: posts[0],  // change to postId after impl backend
               )
             )
           );

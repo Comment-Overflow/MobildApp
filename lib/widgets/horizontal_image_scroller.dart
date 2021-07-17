@@ -20,14 +20,14 @@ class _HorizontalImageScrollerState extends State<HorizontalImageScroller> {
         scrollDirection: Axis.horizontal,
         itemCount: widget._assets.length,
       ),
-      height: 100.0,
+      height: 90.0,
     ) : SizedBox.shrink();
   }
 
   Widget _assetItemBuilder(BuildContext _, int index) {
     return Container(
-      height: 60.0,
-      width: 60.0,
+      height: 70.0,
+      width: 70.0,
       margin: const EdgeInsets.symmetric(horizontal: 5.0, vertical: 10.0),
       child: AspectRatio(
         aspectRatio: 1.0,

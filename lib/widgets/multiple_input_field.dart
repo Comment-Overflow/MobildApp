@@ -131,7 +131,7 @@ class MultipleInputField extends StatelessWidget {
   Future<void> _selectAssets() async {
     final List<AssetEntity>? result = await MyImagePicker.pickImage(
         _context,
-        maxAssets: Constants.maxImageNumber - _assets.length,
+        maxAssets: Constants.maxImageNumber,
         selectedAssets: _assets
     );
     if (result != null) {
