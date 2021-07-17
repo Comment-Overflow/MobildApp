@@ -7,6 +7,7 @@ import 'package:comment_overflow/widgets/multiple_input_field.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
+import 'package:like_button/like_button.dart';
 import 'package:wechat_assets_picker/wechat_assets_picker.dart';
 
 class PostPage extends StatefulWidget {
@@ -65,7 +66,7 @@ class _PostPageState extends State<PostPage> {
           onPressed: _pushReply,
           child: CustomStyles.getDefaultReplyIcon(
               size: Constants.defaultFabIconSize, color: Colors.white)),
-      body: CommentCardList(posts[0]),
+      body: CommentCardList(posts[0], this._sortPolicy),
       bottomNavigationBar: BottomAppBar(
         child: Row(
           children: [
