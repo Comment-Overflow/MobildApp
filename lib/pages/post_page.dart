@@ -4,6 +4,7 @@ import 'package:comment_overflow/fake_data/fake_data.dart';
 import 'package:comment_overflow/model/post.dart';
 import 'package:comment_overflow/widgets/comment_card_list.dart';
 import 'package:comment_overflow/widgets/multiple_input_field.dart';
+import 'package:comment_overflow/widgets/star_button.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
@@ -20,7 +21,6 @@ class PostPage extends StatefulWidget {
 
 class _PostPageState extends State<PostPage> {
   var _sortPolicy = SortPolicy.earliest;
-  var _stared = false;
   final List<AssetEntity> _assets = <AssetEntity>[];
   final TextEditingController _replyController = TextEditingController();
 
@@ -101,23 +101,7 @@ class _PostPageState extends State<PostPage> {
                     Text("不赞同", style: CustomStyles.postPageBottomStyle),
                   ],
                 )),
-            TextButton(
-                onPressed: () {
-                  setState(() {
-                    _stared = _stared ? false : true;
-                  });
-                },
-                child: Column(
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    _stared
-                        ? CustomStyles.getDefaultStaredIcon(
-                            size: _bottomIconSize)
-                        : CustomStyles.getDefaultNotStarIcon(
-                            size: _bottomIconSize),
-                    Text("Star", style: CustomStyles.postPageBottomStyle),
-                  ],
-                ))
+            StarButton(initialStared: false, postId: 1, userId: 1),
           ],
           mainAxisAlignment: MainAxisAlignment.spaceAround,
         ),
