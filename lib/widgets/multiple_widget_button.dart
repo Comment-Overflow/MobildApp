@@ -3,12 +3,12 @@ import 'package:flutter/material.dart';
 
 /// The button is composed of a list of widgets arranged vertically.
 /// Tap of the button will trigger a route jump.
-class MultiWidgetButton extends StatelessWidget {
+class MultipleWidgetButton extends StatelessWidget {
 
   final Route _route;
   final List<Widget> _widgets;
 
-  const MultiWidgetButton(this._route, this._widgets, {Key? key})
+  const MultipleWidgetButton(this._route, this._widgets, {Key? key})
       : super(key: key);
 
   @override

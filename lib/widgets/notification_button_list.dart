@@ -1,7 +1,7 @@
 import 'package:comment_overflow/assets/custom_styles.dart';
 import 'package:comment_overflow/pages/home_page.dart';
 import 'package:comment_overflow/utils/route_generator.dart';
-import 'package:comment_overflow/widgets/multi_widget_button.dart';
+import 'package:comment_overflow/widgets/multiple_widget_button.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
@@ -32,7 +32,7 @@ class NotificationButtonList extends StatelessWidget {
         children: [
           Expanded(
             flex: 25,
-            child: MultiWidgetButton(
+            child: MultipleWidgetButton(
               RouteGenerator.generateRoute(RouteSettings(
                 name: RouteGenerator.homeRoute,
               )),
@@ -53,7 +53,7 @@ class NotificationButtonList extends StatelessWidget {
                   return HomePage();
                 }));
               },
-              child: MultiWidgetButton(
+              child: MultipleWidgetButton(
                 RouteGenerator.generateRoute(RouteSettings(
                   name: RouteGenerator.homeRoute,
                 )),
@@ -68,7 +68,7 @@ class NotificationButtonList extends StatelessWidget {
           ),
           Expanded(
             flex: 25,
-            child: MultiWidgetButton(
+            child: MultipleWidgetButton(
               RouteGenerator.generateRoute(RouteSettings(
                 name: RouteGenerator.homeRoute,
               )),
@@ -82,7 +82,7 @@ class NotificationButtonList extends StatelessWidget {
           ),
           Expanded(
             flex: 25,
-            child: MultiWidgetButton(
+            child: MultipleWidgetButton(
               RouteGenerator.generateRoute(RouteSettings(
                 name: RouteGenerator.homeRoute,
               )),

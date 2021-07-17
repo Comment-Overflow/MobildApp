@@ -7,7 +7,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 
-import 'multi_widget_button.dart';
+import 'multiple_widget_button.dart';
 
 class PersonalProfileCard extends StatelessWidget {
   final PersonalPageInfo _personalPageInfo;
@@ -136,7 +136,7 @@ class PersonalProfileCard extends StatelessWidget {
                 Expanded(flex: 15, child: Container()),
                 Expanded(
                   flex: 35,
-                  child: MultiWidgetButton(
+                  child: MultipleWidgetButton(
                     RouteGenerator.generateRoute(RouteSettings(
                       // TODO: following page route
                       name: RouteGenerator.homeRoute,
@@ -156,7 +156,7 @@ class PersonalProfileCard extends StatelessWidget {
                 ),
                 Expanded(
                   flex: 35,
-                  child: MultiWidgetButton(
+                  child: MultipleWidgetButton(
                     RouteGenerator.generateRoute(RouteSettings(
                       // TODO: follower page route
                       name: RouteGenerator.homeRoute,
