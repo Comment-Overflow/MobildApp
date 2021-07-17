@@ -33,7 +33,7 @@ class QuoteCard extends StatelessWidget {
             ),
             _gap,
             Text(
-              this._quote._content,
+              this._quote.content,
               style: CustomStyles.referenceContentStyle,
               maxLines: 2,
               overflow: TextOverflow.ellipsis,
