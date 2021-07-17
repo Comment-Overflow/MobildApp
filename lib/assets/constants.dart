@@ -50,7 +50,7 @@ class Constants {
   static const defaultChatRoomPadding = 10.0;
 
   /// Default personal page header height.
-  static const defaultPersonalPageHeaderHeight = 150.0;
+  static const defaultPersonalPageHeaderHeight = 146.0;
 
   static const defaultPersonalProfileHeight = 222.0;
 
@@ -70,7 +70,7 @@ class Constants {
   static const defaultPersonalPageHeaderHorizontalPadding = 20.0;
 
   /// Default personal page header padding.
-  static const defaultPersonalPageVerticalPadding = 8.0;
+  static const defaultPersonalPageVerticalPadding = 10.0;
 
   /// Max image number of a comment.
   static const maxImageNumber = 9;
@@ -106,4 +106,14 @@ enum MessageType { Text, Image }
 enum ChatterType {
   Me,
   Other,
+}
+
+enum CommentType {
+  Post,
+  Reply,
+}
+
+enum Setting {
+  editInfo,
+  signOut,
 }
