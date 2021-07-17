@@ -1,10 +1,15 @@
 
+import 'package:comment_overflow/assets/constants.dart';
+import 'package:comment_overflow/assets/custom_colors.dart';
+import 'package:comment_overflow/assets/custom_styles.dart';
+import 'package:comment_overflow/utils/my_image_picker.dart';
 import 'package:comment_overflow/widgets/user_avatar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter/widgets.dart';
 import 'package:top_snackbar_flutter/top_snack_bar.dart';
 import 'package:top_snackbar_flutter/custom_snack_bar.dart';
+import 'package:wechat_assets_picker/wechat_assets_picker.dart';
 
 class ProfileSettingPage extends StatefulWidget {
 
@@ -29,13 +34,40 @@ class _ProfileSettingPageState extends State<ProfileSettingPage> {
   String _nickname = "";
   bool _isNicknameValid = true;
   String _gender = "";
-  final _formKey = GlobalKey<FormState>();
   late TextEditingController _introductionController;
   late TextEditingController _nicknameController;
+  final List<AssetEntity> _assets = [];
+
+  static const _itemDivider = Divider(
+    height: 10,
+    thickness: 1,
+  );
+  static const _gap = const SizedBox(height: 5.0);
+
+  Future<void> _selectAssets() async {
+    final List<AssetEntity>? result = await MyImagePicker.pickImage(context,
+        maxAssets: 1, selectedAssets: _assets);
+    if (result != null) {
+      setState(() {
+        _assets.clear();
+        _assets.addAll(List<AssetEntity>.from(result));
+        _userAvatar = UserAvatar(
+            Constants.profileSettingImageSize,
+            image: AssetEntityImageProvider(
+              _assets.first,
+              isOriginal: false
+            ),
+        );
+      });
+    }
+  }
 
   @override
   void initState() {
-    this._userAvatar = UserAvatar(30.0);
+    String _imageUrl = "";
+    //In my opinion, first u should use an url get from userInfo to initiate the userAvatar
+    //then after user upload image from local,recreate the userAvatar via AssetEntityImageProvider
+    this._userAvatar = UserAvatar(Constants.profileSettingImageSize, image: NetworkImage("http://img8.zol.com.cn/bbs/upload/23765/23764201.jpg"));
     this._introduction = "Hi there, this is WindowsXp";
     this._nickname = "WindowsXp";
     this._gender = "男";
@@ -53,6 +85,7 @@ class _ProfileSettingPageState extends State<ProfileSettingPage> {
 
   @override
   Widget build(BuildContext context) {
+
     return Scaffold(
       appBar: new AppBar(
         title: new Text("编辑资料"),
@@ -65,8 +98,7 @@ class _ProfileSettingPageState extends State<ProfileSettingPage> {
           new IconButton(
               icon: Icon(Icons.save),
               onPressed: (){
-                print(_formKey.currentState!.validate());
-                if(_formKey.currentState!.validate()){
+                if(_isNicknameValid && _isIntroductionValid){
                   showTopSnackBar(
                     context,
                     CustomSnackBar.info(
@@ -83,11 +115,15 @@ class _ProfileSettingPageState extends State<ProfileSettingPage> {
 
   Widget _buildBody() {
     return Form(
-      key: _formKey,
       child: ListView(
-        padding: const EdgeInsets.all(10.0),
+        padding: const EdgeInsets.all(15.0),
         children: [
-          _userAvatar,
+          GestureDetector(
+            onTap: _selectAssets,
+            child: _userAvatar,
+          ),
+          _gap,
+          _gap,
           Text(
             "基本资料",
             style: new TextStyle(
@@ -99,52 +135,49 @@ class _ProfileSettingPageState extends State<ProfileSettingPage> {
             mainAxisSize: MainAxisSize.min,
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
-              Expanded(
-                flex: 1,
-                child: Container(),
-              ),
               Text(
                   "昵称",
-                  style: new TextStyle(
-                    fontWeight: FontWeight.bold,
-                    fontSize: 18.0
-                  ),
+                  style: CustomStyles.profileSettingItemTitleStyle,
               ),
               Expanded(
-                  flex: 1,
+                  flex: 2,
                   child: Container(),
               ),
               Expanded(
                 flex: 15,
-                child: Container(
-                  height: 70.0,
-                  child:TextFormField(
+                  child:
+                  TextFormField(
                     controller: _nicknameController,
                     inputFormatters: [
                       new LengthLimitingTextInputFormatter(10),
                     ],
-                    maxLength: 10,
+                    // maxLength: 10,
                     decoration: InputDecoration(
-                      hintText: '昵称（必填）',
+                      hintText: '昵称（不超过10个字）',
                       errorText: _isNicknameValid ? null : "昵称不可为空",
                       border: null,
+                      focusedBorder: InputBorder.none,
+                      enabledBorder: InputBorder.none,
+                      errorBorder: InputBorder.none,
+                      focusedErrorBorder: InputBorder.none,
+                      disabledBorder: InputBorder.none,
                     ),
-                    onFieldSubmitted: (value) {
+                    onChanged: (value) {
                       setState(() {
                         value.isEmpty ? _isNicknameValid = false : _isNicknameValid = true;
                       });
-                    },
+                    }
                   ),
-                ),
+                // ),
               ),
             ],
           ),
+          _itemDivider,
+          _gap,
+          _gap,
           Text(
             "一句话介绍",
-            style: new TextStyle(
-                fontWeight: FontWeight.bold,
-                fontSize: 18.0
-            ),
+            style: CustomStyles.profileSettingItemTitleStyle,
           ),
           TextFormField(
             controller: _introductionController,
@@ -155,24 +188,50 @@ class _ProfileSettingPageState extends State<ProfileSettingPage> {
             minLines: 1,
             maxLines: 3,
             decoration: InputDecoration(
-              border: null,
+              hintText: "不超过30个字",
+              enabledBorder: UnderlineInputBorder(
+                borderSide: BorderSide(color: CustomColors.profileSettingInputGery),
+              ),
+              focusedBorder: UnderlineInputBorder(
+                borderSide: BorderSide(color: CustomColors.profileSettingInputGery),
+              ),
             ),
           ),
-          DropdownButton<String>(
-            value: _gender,
-            onChanged: (String? newValue) {
-              setState(() {
-                _gender = newValue!;
-              });
-            },
-            items: <String>['男', '女', '保密']
-                .map<DropdownMenuItem<String>>((String value) {
-              return DropdownMenuItem<String>(
-                value: value,
-                child: Text(value),
-              );
-            }).toList(),
-          )
+          Row(
+            mainAxisSize: MainAxisSize.min,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              Text(
+                "性别",
+                style: CustomStyles.profileSettingItemTitleStyle
+                ),
+              Expanded(
+                flex: 2,
+                child: Container(),
+              ),
+              Expanded(
+                flex: 15,
+                child:DropdownButtonHideUnderline(
+                  child: DropdownButton<String>(
+                    value: _gender,
+                    onChanged: (String? newValue) {
+                      setState(() {
+                        _gender = newValue!;
+                      });
+                    },
+                    items: <String>['男', '女', '保密']
+                        .map<DropdownMenuItem<String>>((String value) {
+                      return DropdownMenuItem<String>(
+                        value: value,
+                        child: Text(value),
+                      );
+                    }).toList(),
+                  ),
+                ),
+              )
+            ],
+          ),
+          _itemDivider,
         ],
       )
     );
