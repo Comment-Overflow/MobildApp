@@ -34,7 +34,7 @@ class _CommentCardState extends State<CommentCard> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               widget._comment.floor == 0 && widget._title.isNotEmpty
-                ? buildTitle()
+                ? _buildTitle()
                 : SizedBox.shrink(),
               Row(
                 children: [
@@ -73,6 +73,7 @@ class _CommentCardState extends State<CommentCard> {
               Text(
                 widget._comment.content,
               ),
+              _buildImageList(),
               widget._comment.floor > 0
                 ? Column(
                 children: [
@@ -114,7 +115,20 @@ class _CommentCardState extends State<CommentCard> {
     );
   }
 
-  Padding buildTitle() =>
+  Widget _buildImageList() => ListView.builder(
+    itemBuilder: (BuildContext context, int index) => Padding(
+      padding: const EdgeInsets.symmetric(vertical: 5.0, horizontal: 10.0),
+      child: ClipRRect(
+        borderRadius: BorderRadius.circular(8.0),
+        child: Image.network(
+          widget._comment.imageUrl[index],
+          fit: BoxFit.fitWidth,
+        ),
+      ),
+    ),
+  );
+
+  Padding _buildTitle() =>
       Padding(
         padding: const EdgeInsets.only(
           top: Constants.defaultCardPadding / 2,
