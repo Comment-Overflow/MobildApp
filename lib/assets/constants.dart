@@ -50,7 +50,9 @@ class Constants {
   static const defaultChatRoomPadding = 10.0;
 
   /// Default personal page header height.
-  static const defaultPersonalPageHeaderHeight = 160.0;
+  static const defaultPersonalPageHeaderHeight = 150.0;
+
+  static const defaultPersonalProfileHeight = 222.0;
 
   /// Default personal page avatar size.
   static const defaultPersonalPageAvatarSize = 130.0;
@@ -68,7 +70,7 @@ class Constants {
   static const defaultPersonalPageHeaderHorizontalPadding = 20.0;
 
   /// Default personal page header padding.
-  static const defaultPersonalPageHeaderVerticalPadding = 17.0;
+  static const defaultPersonalPageVerticalPadding = 8.0;
 
   /// Max image number of a comment.
   static const maxImageNumber = 9;

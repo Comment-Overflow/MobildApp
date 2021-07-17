@@ -7,4 +7,5 @@ class CustomColors {
   static const chatBubbleBlue = Color(0xFF9ABEF6);
   static const femalePink = Color(0xFFB83563);
   static const maleBlue = Color(0xFF1B86D9);
+  static const lightBlue = Color(0xFF49BAFF);
 }
