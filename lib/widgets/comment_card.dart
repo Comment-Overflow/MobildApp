@@ -1,3 +1,4 @@
+import 'package:comment_overflow/widgets/image_list.dart';
 import 'package:comment_overflow/widgets/quote_card.dart';
 import 'package:flutter/material.dart';
 
@@ -73,7 +74,8 @@ class _CommentCardState extends State<CommentCard> {
               Text(
                 widget._comment.content,
               ),
-              _buildImageList(),
+              _gap,
+              ImageList(widget._comment.imageUrl),
               widget._comment.floor > 0
                 ? Column(
                 children: [
@@ -114,22 +116,6 @@ class _CommentCardState extends State<CommentCard> {
       ),
     );
   }
-
-  Widget _buildImageList() => ListView.builder(
-    physics: const NeverScrollableScrollPhysics(),
-    itemCount: widget._comment.imageUrl.length,
-    shrinkWrap: true,
-    itemBuilder: (BuildContext context, int index) => Padding(
-      padding: const EdgeInsets.symmetric(vertical: 5.0),
-      child: ClipRRect(
-        borderRadius: BorderRadius.circular(8.0),
-        child: Image.network(
-          widget._comment.imageUrl[index],
-          fit: BoxFit.fitWidth,
-        ),
-      ),
-    ),
-  );
 
   Padding _buildTitle() =>
       Padding(
