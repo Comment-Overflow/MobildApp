@@ -6,6 +6,7 @@ import 'package:comment_overflow/utils/my_image_picker.dart';
 import 'package:comment_overflow/utils/route_generator.dart';
 import 'package:comment_overflow/widgets/horizontal_image_scroller.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter/widgets.dart';
 import 'package:wechat_assets_picker/wechat_assets_picker.dart';
 
@@ -20,21 +21,39 @@ class _NewPostPageState extends State<NewPostPage> {
   final _iconSize = Constants.searchBarHeight * 0.8;
   // List of category tags.
   final List<String> _options = tags;
-  // The list of images to upload.
-  final List<AssetEntity> _assets = [];
+
+  // Below are the fields that user inputs.
+  // Title can't be empty, but content can.
   // Index of tag, starting from zero.
   int _idx = 0;
+  // Title of the post.
+  String _title = '';
+  // Content of the post.
+  String _content = '';
+  // The list of images to upload.
+  final List<AssetEntity> _assets = [];
 
   @override
   Widget build(BuildContext context) {
-    print('build');
     final _activeForegroundColor = Theme.of(context).accentColor;
     final _activeBackgroundColor = Theme.of(context).buttonColor;
+    final _iconColor = _activeForegroundColor;
+    final _splashColor = _activeBackgroundColor;
+
+    Future<void> _selectAssets() async {
+      final List<AssetEntity>? result = await MyImagePicker.pickImage(context,
+          maxAssets: Constants.maxImageNumber, selectedAssets: _assets);
+      if (result != null) {
+        setState(() {
+          _assets.clear();
+          _assets.addAll(List<AssetEntity>.from(result));
+        });
+      }
+    }
 
     return Scaffold(
-      appBar: buildAppBar(),
-      body: SingleChildScrollView(
-          child: Column(children: [
+      appBar: buildAppBar(_iconColor, _splashColor),
+      body: Column(children: [
         ChipsChoice<int>.single(
           value: _idx,
           onChanged: (val) => setState(() => _idx = val),
@@ -58,18 +77,21 @@ class _NewPostPageState extends State<NewPostPage> {
               )),
         ),
         Padding(
-            padding: EdgeInsets.only(left: 16.0, right: 16.0),
-            child: Column(children: [
-              Divider(height: 1),
-              buildTitleInputField(_activeForegroundColor),
-              buildContentInputField(_activeForegroundColor),
-            ]))
-      ])),
+          padding: EdgeInsets.only(left: 16.0, right: 16.0),
+          child: Column(mainAxisSize: MainAxisSize.min, children: [
+            Divider(height: 1),
+            buildTitleInputField(_activeForegroundColor),
+          ]),
+        ),
+        Expanded(
+            child: Padding(
+          padding: EdgeInsets.only(left: 16.0, right: 16.0),
+          child: buildContentInputField(_activeForegroundColor),
+        )),
+      ]),
       floatingActionButton: FloatingActionButton(
         mini: true,
-        onPressed: () {
-          _selectAssets(context);
-        },
+        onPressed: _selectAssets,
         child: CustomStyles.getDefaultImageIcon(
             size: Constants.defaultFabIconSize * 0.8, color: Colors.white),
       ),
@@ -77,26 +99,43 @@ class _NewPostPageState extends State<NewPostPage> {
     );
   }
 
-  buildAppBar() => AppBar(
+  buildAppBar(iconColor, iconSplashColor) => AppBar(
         elevation: Constants.defaultAppBarElevation,
         title:
             Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
-          GestureDetector(
-            onTap: () => Navigator.of(context).pushNamedAndRemoveUntil(
+          // Back button.
+          IconButton(
+            padding: EdgeInsets.zero,
+            constraints: BoxConstraints(),
+            splashRadius: _iconSize / 1.3,
+            splashColor: Theme.of(context).buttonColor,
+            icon: CustomStyles.getDefaultBackIcon(
+                size: _iconSize, color: iconColor),
+            onPressed: () => Navigator.of(context).pushNamedAndRemoveUntil(
                 RouteGenerator.homeRoute, (route) => false),
-            child: CustomStyles.getDefaultBackIcon(context, size: _iconSize),
           ),
           Text("发布帖子"),
-          GestureDetector(
-            onTap: () => Navigator.of(context).pushNamedAndRemoveUntil(
-                RouteGenerator.homeRoute, (route) => false),
-            child: CustomStyles.getDefaultSendIcon(context, size: _iconSize),
-          ),
+          // Send icon.
+          IconButton(
+              padding: EdgeInsets.zero,
+              constraints: BoxConstraints(),
+              splashRadius: _iconSize / 1.3,
+              splashColor: Theme.of(context).buttonColor,
+              icon: CustomStyles.getDefaultSendIcon(
+                  size: _iconSize,
+                  color: this._title.isNotEmpty
+                      ? iconColor
+                      : Theme.of(context).disabledColor),
+              onPressed: () {
+                print(this._title);
+                print(this._content);
+              }),
         ]),
         automaticallyImplyLeading: false,
       );
 
   buildTitleInputField(lineColor) => TextField(
+        maxLengthEnforcement: MaxLengthEnforcement.truncateAfterCompositionEnds,
         cursorColor: lineColor,
         maxLength: Constants.postTitleMaximumLength,
         style: CustomStyles.newPostTitleStyle,
@@ -110,6 +149,7 @@ class _NewPostPageState extends State<NewPostPage> {
             ),
           ),
         ),
+        onChanged: (String text) => setState(() => this._title = text),
       );
 
   buildContentInputField(lineColor) => TextField(
@@ -120,16 +160,7 @@ class _NewPostPageState extends State<NewPostPage> {
           border: InputBorder.none,
           hintText: '请输入内容',
         ),
+        expands: true,
+        onChanged: (String text) => this._content = text,
       );
-
-  Future<void> _selectAssets(context) async {
-    final List<AssetEntity>? result = await MyImagePicker.pickImage(context,
-        maxAssets: Constants.maxImageNumber, selectedAssets: _assets);
-    if (result != null) {
-      setState(() {
-        _assets.clear();
-        _assets.addAll(List<AssetEntity>.from(result));
-      });
-    }
-  }
 }
