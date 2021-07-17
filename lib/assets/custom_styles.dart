@@ -79,6 +79,14 @@ class CustomStyles {
     fontWeight: FontWeight.bold,
     fontSize: Constants.defaultPersonalPageHeaderTitleSize,
   );
+  static const personalPageButtonNumberStyle = TextStyle(
+    // fontWeight: FontWeight.bold,
+    fontSize: 23.0,
+  );
+  static const personalPageButtonTextStyle = TextStyle(
+    // fontWeight: FontWeight.bold,
+    fontSize: 15.0,
+  );
 
   /// Default icon for reply with changeable size.
   static Icon getDefaultReplyIcon({size = 14.0, color = Colors.grey}) =>

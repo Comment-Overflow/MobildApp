@@ -33,7 +33,7 @@ final UserCardInfo _userCardInfo = UserCardInfo(
     23567,
     FollowStatus.followedByMe);
 final PersonalPageInfo personalPageInfo = PersonalPageInfo(
-    0, "Gun9niR", "http://img8.zol.com.cn/bbs/upload/23765/23764201.jpg", Sex.male,
+    0, "Gun9nir", "http://img8.zol.com.cn/bbs/upload/23765/23764201.jpg", Sex.male,
     "这是一段三十个字的个人简介！！这是一段三十个字的个人简介！！",
     // "I want a simple life.",
     12, 453, 23567, 21);

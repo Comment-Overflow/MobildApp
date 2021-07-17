@@ -1,7 +1,9 @@
 import 'package:comment_overflow/model/post.dart';
+import 'package:comment_overflow/model/user_info.dart';
 import 'package:comment_overflow/pages/login_page.dart';
 import 'package:comment_overflow/pages/new_post_page.dart';
 import 'package:comment_overflow/pages/notification_page.dart';
+import 'package:comment_overflow/pages/personal_page.dart';
 import 'package:comment_overflow/pages/post_page.dart';
 import 'package:comment_overflow/pages/search_page.dart';
 import 'package:comment_overflow/pages/search_result_page.dart';
@@ -17,6 +19,7 @@ class RouteGenerator {
   static const loginRoute = '/login';
   static const postRoute = '/post';
   static const notificationRoute = '/notification';
+  static const personalRoute = '/personal';
 
   static Route<dynamic> generateRoute(RouteSettings settings) {
     final args = settings.arguments;
@@ -36,6 +39,9 @@ class RouteGenerator {
           builder: (_) => PostPage(args as Post));
       case notificationRoute:
         return MaterialPageRoute(builder: (_) => NotificationPage());
+      case personalRoute:
+        return MaterialPageRoute(
+            builder: (_) => PersonalPage(args as int));
       case homeRoute:
       default:
         return MaterialPageRoute(builder: (_) => PagesContainer());

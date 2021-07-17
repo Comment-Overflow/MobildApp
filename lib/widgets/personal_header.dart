@@ -43,7 +43,7 @@ class PersonalHeader extends StatelessWidget {
           0,
           Constants.defaultPersonalPageHeaderVerticalPadding,
           Constants.defaultPersonalPageHeaderHorizontalPadding,
-          Constants.defaultPersonalPageHeaderVerticalPadding,
+          Constants.defaultPersonalPageHeaderVerticalPadding * 0.1,
         ),
         child: Row(
           mainAxisSize: MainAxisSize.max,
@@ -72,7 +72,7 @@ class PersonalHeader extends StatelessWidget {
                     child: Container(),
                   ),
                   Expanded(
-                    flex: 18,
+                    flex: 22,
                     child: Row(
                       mainAxisSize: MainAxisSize.max,
                       children: [
@@ -97,7 +97,7 @@ class PersonalHeader extends StatelessWidget {
                           endIndent: 0.0,
                           color: Colors.grey.withOpacity(0.5))),
                   Expanded(
-                    flex: 33,
+                    flex: 39,
                     child: Text(
                       _personalPageInfo.brief,
                       overflow: TextOverflow.ellipsis,
@@ -106,7 +106,7 @@ class PersonalHeader extends StatelessWidget {
                     ),
                   ),
                   Expanded(
-                    flex: 40,
+                    flex: 30,
                     child: commentAndApprovalInfo,
                   )
                 ],
