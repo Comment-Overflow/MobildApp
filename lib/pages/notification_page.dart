@@ -17,6 +17,7 @@ class NotificationPage extends StatelessWidget {
           "消息",
           style: CustomStyles.pageTitleStyle,
         ),
+        automaticallyImplyLeading: false,
       ),
       body: Column(
         children: <Widget>[
