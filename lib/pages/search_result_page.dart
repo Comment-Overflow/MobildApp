@@ -85,7 +85,8 @@ class SearchResultPage extends StatelessWidget {
   buildBackIcon(BuildContext context) => GestureDetector(
         onTap: () => Navigator.of(context).pushNamedAndRemoveUntil(
             RouteGenerator.homeRoute, (route) => false),
-        child: CustomStyles.getDefaultBackIcon(context,
-            size: Constants.searchBarHeight * 0.8),
+        child: CustomStyles.getDefaultBackIcon(
+            size: Constants.searchBarHeight * 0.8,
+            color: Theme.of(context).accentColor),
       );
 }

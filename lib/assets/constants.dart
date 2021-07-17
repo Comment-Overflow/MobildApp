@@ -70,6 +70,9 @@ class Constants {
   /// Default personal page header padding.
   static const defaultPersonalPageHeaderVerticalPadding = 17.0;
 
+  /// Default floating action button size.
+  static const defaultFabIconSize = 30.0;
+
   /// Max image number of a comment.
   static const maxImageNumber = 9;
 }

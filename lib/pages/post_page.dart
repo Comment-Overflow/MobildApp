@@ -62,11 +62,9 @@ class _PostPageState extends State<PostPage> {
         centerTitle: true,
       ),
       floatingActionButton: FloatingActionButton(
-        onPressed: _pushReply,
-        child: CustomStyles.getDefaultReplyIcon(
-            size: _bottomIconSize, color: Colors.white
-        )
-      ),
+          onPressed: _pushReply,
+          child: CustomStyles.getDefaultReplyIcon(
+              size: Constants.defaultFabIconSize, color: Colors.white)),
       body: CommentCardList(posts[0]),
       bottomNavigationBar: BottomAppBar(
         child: Row(
@@ -161,17 +159,15 @@ class _PostPageState extends State<PostPage> {
 
   void _pushReply() {
     showModalBottomSheet(
-      isScrollControlled: true, // !important
-      context: context,
-      builder: (_) {
-        return MultipleInputField(
-          context: context,
-          textController: _replyController,
-          assets: _assets,
-          quote: quotes[0],
-        );
-      }
-    );
+        isScrollControlled: true, // !important
+        context: context,
+        builder: (_) {
+          return MultipleInputField(
+            context: context,
+            textController: _replyController,
+            assets: _assets,
+            quote: quotes[0],
+          );
+        });
   }
 }
-
