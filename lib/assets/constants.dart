@@ -77,6 +77,15 @@ class Constants {
 
   /// Max image number of a comment.
   static const maxImageNumber = 9;
+
+  // Categories of posts
+  static const List<String> postCategories = [
+    '校园生活',
+    '学在交大',
+    '文化艺术',
+    '心情驿站',
+    '职业发展'
+  ];
 }
 
 enum FollowStatus {
