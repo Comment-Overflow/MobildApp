@@ -2,9 +2,12 @@ import 'package:chips_choice/chips_choice.dart';
 import 'package:comment_overflow/assets/constants.dart';
 import 'package:comment_overflow/assets/custom_styles.dart';
 import 'package:comment_overflow/fake_data/fake_data.dart';
+import 'package:comment_overflow/utils/my_image_picker.dart';
 import 'package:comment_overflow/utils/route_generator.dart';
+import 'package:comment_overflow/widgets/horizontal_image_scroller.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:wechat_assets_picker/wechat_assets_picker.dart';
 
 class NewPostPage extends StatefulWidget {
   const NewPostPage({Key? key}) : super(key: key);
@@ -15,11 +18,16 @@ class NewPostPage extends StatefulWidget {
 
 class _NewPostPageState extends State<NewPostPage> {
   final _iconSize = Constants.searchBarHeight * 0.8;
+  // List of category tags.
   final List<String> _options = tags;
+  // The list of images to upload.
+  final List<AssetEntity> _assets = [];
+  // Index of tag, starting from zero.
   int _idx = 0;
 
   @override
   Widget build(BuildContext context) {
+    print('build');
     final _activeForegroundColor = Theme.of(context).accentColor;
     final _activeBackgroundColor = Theme.of(context).buttonColor;
 
@@ -59,10 +67,13 @@ class _NewPostPageState extends State<NewPostPage> {
       ])),
       floatingActionButton: FloatingActionButton(
         mini: true,
-        onPressed: () {},
+        onPressed: () {
+          _selectAssets(context);
+        },
         child: CustomStyles.getDefaultImageIcon(
             size: Constants.defaultFabIconSize * 0.8, color: Colors.white),
       ),
+      bottomSheet: HorizontalImageScroller(this._assets),
     );
   }
 
@@ -110,4 +121,15 @@ class _NewPostPageState extends State<NewPostPage> {
           hintText: '请输入内容',
         ),
       );
+
+  Future<void> _selectAssets(context) async {
+    final List<AssetEntity>? result = await MyImagePicker.pickImage(context,
+        maxAssets: Constants.maxImageNumber, selectedAssets: _assets);
+    if (result != null) {
+      setState(() {
+        _assets.clear();
+        _assets.addAll(List<AssetEntity>.from(result));
+      });
+    }
+  }
 }
