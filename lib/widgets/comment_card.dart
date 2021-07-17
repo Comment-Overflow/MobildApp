@@ -116,6 +116,8 @@ class _CommentCardState extends State<CommentCard> {
   }
 
   Widget _buildImageList() => ListView.builder(
+    itemCount: widget._comment.imageUrl.length,
+    shrinkWrap: true,
     itemBuilder: (BuildContext context, int index) => Padding(
       padding: const EdgeInsets.symmetric(vertical: 5.0, horizontal: 10.0),
       child: ClipRRect(
