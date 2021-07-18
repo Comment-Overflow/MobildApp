@@ -1,6 +1,7 @@
 import 'package:comment_overflow/model/message.dart';
 import 'package:comment_overflow/model/user_info.dart';
 import 'package:comment_overflow/utils/my_image_picker.dart';
+import 'package:comment_overflow/widgets/adaptive_refresher.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:comment_overflow/assets/constants.dart';
@@ -37,6 +38,14 @@ class _ChatRoomPageState extends State<ChatRoomPage> {
     super.dispose();
   }
 
+  Future _onRefresh() async {
+    // getRecentChats();
+    print("Chat Room onRefresh");
+    // monitor network fetch
+    return Future.delayed(Duration(milliseconds: 1000));
+    // if failed,use refreshFailed()
+  }
+
   @override
   Widget build(BuildContext context) {
     if (_scrollController.hasClients)
@@ -57,19 +66,24 @@ class _ChatRoomPageState extends State<ChatRoomPage> {
         child: Column(
           children: [
             Expanded(
-              child: ListView.builder(
-                  controller: _scrollController,
-                  reverse: true,
-                  shrinkWrap: true,
-                  padding: EdgeInsets.all(Constants.defaultChatRoomPadding),
-                  itemCount: _messages.length,
-                  itemBuilder: (context, index) {
-                    return Container(
-                      padding: EdgeInsets.symmetric(
-                          vertical: Constants.defaultChatMessagePadding),
-                      child: ChatMessage(_messages[index]),
-                    );
-                  }),
+              child: AdaptiveRefresher(
+                enablePullUp: true,
+                enablePullDown: false,
+                onRefresh: _onRefresh,
+                child: ListView.builder(
+                    controller: _scrollController,
+                    reverse: true,
+                    shrinkWrap: true,
+                    padding: EdgeInsets.all(Constants.defaultChatRoomPadding),
+                    itemCount: _messages.length,
+                    itemBuilder: (context, index) {
+                      return Container(
+                        padding: EdgeInsets.symmetric(
+                            vertical: Constants.defaultChatMessagePadding),
+                        child: ChatMessage(_messages[index]),
+                      );
+                    }),
+              ),
             ),
             _buildTextField(),
           ],

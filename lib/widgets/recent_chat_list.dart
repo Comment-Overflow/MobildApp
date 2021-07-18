@@ -30,7 +30,7 @@ class _RecentChatListState extends State<RecentChatList> {
   }
 
   Future _onRefresh() async {
-    getRecentChats();
+    // getRecentChats();
     print("onRefresh");
     // monitor network fetch
     return Future.delayed(Duration(milliseconds: 1000));
