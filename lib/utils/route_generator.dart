@@ -1,3 +1,4 @@
+import 'package:comment_overflow/assets/constants.dart';
 import 'package:comment_overflow/model/post.dart';
 import 'package:comment_overflow/model/routing_dto/image_gallery_dto.dart';
 import 'package:comment_overflow/model/routing_dto/personal_page_access_dto.dart';
@@ -8,10 +9,14 @@ import 'package:comment_overflow/pages/notification_page.dart';
 import 'package:comment_overflow/pages/personal_page.dart';
 import 'package:comment_overflow/pages/post_page.dart';
 import 'package:comment_overflow/pages/profile_setting_page.dart';
+import 'package:comment_overflow/pages/scroll_view_page.dart';
 import 'package:comment_overflow/pages/search_page.dart';
 import 'package:comment_overflow/pages/search_result_page.dart';
 import 'package:comment_overflow/widgets/image_gallery.dart';
+import 'package:comment_overflow/widgets/my_comment_card_list.dart';
+import 'package:comment_overflow/widgets/notification_card_list.dart';
 import 'package:comment_overflow/widgets/pages_container.dart';
+import 'package:comment_overflow/widgets/post_card_list.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
@@ -26,11 +31,31 @@ class RouteGenerator {
   static const galleryRoute = '/gallery';
   static const notificationRoute = '/notification';
   static const personalRoute = '/personal';
+  static const approveMeRoute = '/approval';
+  static const replyMeRoute = '/comment';
+  static const starMeRoute = '/star';
+  static const followMeRoute = '/follow';
 
   static Route<dynamic> generateRoute(RouteSettings settings) {
     final args = settings.arguments;
 
     switch (settings.name) {
+      case approveMeRoute:
+        return MaterialPageRoute(
+            builder: (_) => ScrollViewPage(
+                NotificationCardList(UserActionType.approval), '赞同'));
+      case replyMeRoute:
+        return MaterialPageRoute(
+            builder: (_) => ScrollViewPage(
+                NotificationCardList(UserActionType.reply), '回复'));
+      case starMeRoute:
+        return MaterialPageRoute(
+            builder: (_) => ScrollViewPage(
+                NotificationCardList(UserActionType.star), '收藏'));
+      case followMeRoute:
+        return MaterialPageRoute(
+            builder: (_) => ScrollViewPage(
+                NotificationCardList(UserActionType.follow), '关注'));
       case loginRoute:
         return MaterialPageRoute(builder: (_) => LoginPage());
       case newPostRoute:

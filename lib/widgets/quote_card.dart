@@ -26,7 +26,7 @@ class QuoteCard extends StatelessWidget {
           mainAxisSize: MainAxisSize.min,
           children: [
             Text(
-              this._quote.userName,
+              this._quote.title,
               style: CustomStyles.referenceUserNameStyle,
               maxLines: 1,
               overflow: TextOverflow.ellipsis,

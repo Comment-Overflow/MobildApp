@@ -130,6 +130,13 @@ enum SortPolicy {
 
 enum NotificationType { approvePost, approveComment, collect, attention, reply }
 
+enum UserActionType {
+  approval,
+  follow,
+  reply,
+  star,
+}
+
 enum MessageType { Text, Image }
 
 enum ChatterType {

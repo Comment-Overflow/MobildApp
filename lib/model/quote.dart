@@ -1,10 +1,11 @@
 class Quote {
-  final String _userName;
+  // Title can be user name, or post title.
+  final String _title;
   final String _content;
 
-  String get userName => _userName;
+  String get title => _title;
 
   String get content => _content;
 
-  Quote(this._userName, this._content);
+  Quote(this._title, this._content);
 }
