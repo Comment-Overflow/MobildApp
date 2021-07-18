@@ -94,8 +94,8 @@ class PersonalProfileCard extends StatelessWidget {
                             mainAxisAlignment: MainAxisAlignment.start,
                             children: [
                               _isSelf
-                                  ? _buildEditButton()
-                                  : _buildFollowAndChatButtons(),
+                                  ? _buildEditButton(context)
+                                  : _buildFollowAndChatButtons(context),
                             ],
                           ),
                         ),
@@ -198,7 +198,7 @@ class PersonalProfileCard extends StatelessWidget {
     );
   }
 
-  Widget _buildFollowAndChatButtons() {
+  Widget _buildFollowAndChatButtons(BuildContext context) {
     return Row(
       mainAxisSize: MainAxisSize.max,
       mainAxisAlignment: MainAxisAlignment.center,
@@ -237,7 +237,7 @@ class PersonalProfileCard extends StatelessWidget {
     );
   }
 
-  Widget _buildEditButton() {
+  Widget _buildEditButton(BuildContext context) {
     return Row(
       mainAxisSize: MainAxisSize.max,
       mainAxisAlignment: MainAxisAlignment.center,
@@ -270,6 +270,7 @@ class PersonalProfileCard extends StatelessWidget {
                 ),
                 onPressed: () {
                   // TODO: edit route.
+                  Navigator.of(context).pushNamed(RouteGenerator.profileSettingRoute);
                 }),
           ),
         ),

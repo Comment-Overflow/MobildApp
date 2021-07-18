@@ -17,13 +17,16 @@ class PostCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final userAndContentColumn = Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        UserAvatarWithName(_post.commentToDisplay.user.userName, 20.0,
+        UserAvatarWithName(_post.commentToDisplay.user.userName, 21.0,
             textStyle: CustomStyles.postContentStyle, gap: 7.0),
+        _gap,
         Text(
           _post.commentToDisplay.content,
           maxLines: 3,
           overflow: TextOverflow.ellipsis,
+          style: CustomStyles.postContentStyle,
         ),
       ],
     );
@@ -97,14 +100,11 @@ class PostCard extends StatelessWidget {
         ),
         onTap: () {
           Navigator.push(
-            context,
-            RouteGenerator.generateRoute(
-              RouteSettings(
+              context,
+              RouteGenerator.generateRoute(RouteSettings(
                 name: RouteGenerator.postRoute,
                 arguments: posts[0],
-              )
-            )
-          );
+              )));
         },
       ),
     );

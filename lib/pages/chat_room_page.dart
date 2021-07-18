@@ -20,7 +20,6 @@ class ChatRoomPage extends StatefulWidget {
 }
 
 class _ChatRoomPageState extends State<ChatRoomPage> {
-
   final List<AssetEntity> _assets = <AssetEntity>[];
   final TextEditingController _textEditingController = TextEditingController();
   ScrollController _scrollController = new ScrollController();
@@ -33,9 +32,9 @@ class _ChatRoomPageState extends State<ChatRoomPage> {
 
   @override
   void dispose() {
-    super.dispose();
     _textEditingController.dispose();
     _scrollController.dispose();
+    super.dispose();
   }
 
   @override
@@ -46,6 +45,7 @@ class _ChatRoomPageState extends State<ChatRoomPage> {
     // }
     return Scaffold(
       appBar: AppBar(
+        elevation: Constants.defaultAppBarElevation,
         title: Text(
           widget.chat.chatter.userName,
           style: CustomStyles.pageTitleStyle,
@@ -128,19 +128,21 @@ class _ChatRoomPageState extends State<ChatRoomPage> {
                   child: Text("发送"),
                   onPressed: () {
                     setState(() {
-                      _messages.insert(0, Message(
-                          MessageType.Text,
-                          DateTime.now(),
-                          UserInfo(0, "Gun9niR",
-                              "http://img8.zol.com.cn/bbs/upload/23765/23764201.jpg"),
-                          UserInfo(1, "xx01cyx",
-                              "http://img8.zol.com.cn/bbs/upload/23765/23764201.jpg"),
-                          true,
-                          _textEditingController.value.text));
+                      _messages.insert(
+                          0,
+                          Message(
+                              MessageType.Text,
+                              DateTime.now(),
+                              UserInfo(0, "Gun9niR",
+                                  "http://img8.zol.com.cn/bbs/upload/23765/23764201.jpg"),
+                              UserInfo(1, "xx01cyx",
+                                  "http://img8.zol.com.cn/bbs/upload/23765/23764201.jpg"),
+                              true,
+                              _textEditingController.value.text));
                     });
                     _textEditingController.clear();
                     _scrollController.animateTo(
-                     0.0,
+                      0.0,
                       curve: Curves.easeOut,
                       duration: const Duration(milliseconds: 300),
                     );

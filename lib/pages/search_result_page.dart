@@ -1,5 +1,6 @@
 import 'package:comment_overflow/assets/constants.dart';
 import 'package:comment_overflow/assets/custom_styles.dart';
+import 'package:comment_overflow/fake_data/fake_data.dart';
 import 'package:comment_overflow/utils/route_generator.dart';
 import 'package:comment_overflow/widgets/search_bar.dart';
 import 'package:comment_overflow/widgets/searched_post_card_list.dart';
@@ -7,10 +8,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 
 class SearchResultPage extends StatelessWidget {
-  static const _tabs = ['综合', '用户', '校园生活', '校园生活', '校园生活'];
+  final _tabs = ['综合', '用户'] + Constants.postCategories;
   final _searchKey;
 
-  const SearchResultPage(this._searchKey, {Key? key}) : super(key: key);
+  SearchResultPage(this._searchKey, {Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -38,10 +39,36 @@ class SearchResultPage extends StatelessWidget {
                       child: SearchedPostCardList(this._searchKey),
                       removeTop: true,
                     ),
-                    Text('热榜'),
-                    Text('热榜'),
-                    Text('热榜'),
-                    Text('热榜'),
+                    MediaQuery.removePadding(
+                      context: context,
+                      child: SearchedPostCardList(this._searchKey),
+                      removeTop: true,
+                    ),
+                    MediaQuery.removePadding(
+                      context: context,
+                      child: SearchedPostCardList(this._searchKey),
+                      removeTop: true,
+                    ),
+                    MediaQuery.removePadding(
+                      context: context,
+                      child: SearchedPostCardList(this._searchKey),
+                      removeTop: true,
+                    ),
+                    MediaQuery.removePadding(
+                      context: context,
+                      child: SearchedPostCardList(this._searchKey),
+                      removeTop: true,
+                    ),
+                    MediaQuery.removePadding(
+                      context: context,
+                      child: SearchedPostCardList(this._searchKey),
+                      removeTop: true,
+                    ),
+                    MediaQuery.removePadding(
+                      context: context,
+                      child: SearchedPostCardList(this._searchKey),
+                      removeTop: true,
+                    ),
                   ],
                   physics: new NeverScrollableScrollPhysics(),
                 ),

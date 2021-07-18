@@ -9,6 +9,7 @@ class CustomStyles {
   static const postTitleStyle = TextStyle(
     fontWeight: FontWeight.bold,
     fontSize: 16.0,
+    height: 1.3,
   );
   static const postFooterStyle = TextStyle(
     color: Colors.grey,
@@ -16,6 +17,7 @@ class CustomStyles {
   );
   static const postContentStyle = TextStyle(
     fontSize: 14.0,
+    height: 1.3,
   );
   static const postPageTitleStyle = TextStyle(
     fontWeight: FontWeight.bold,
@@ -90,6 +92,12 @@ class CustomStyles {
   static const personalPageButtonTextStyle = TextStyle(
     // fontWeight: FontWeight.bold,
     fontSize: 14.0,
+  );
+
+  static const profileSettingItemTitleStyle = TextStyle(
+      color: Colors.blueGrey,
+      fontWeight: FontWeight.normal,
+      fontSize: 18.0
   );
 
   /// Default icon for reply with changeable size.

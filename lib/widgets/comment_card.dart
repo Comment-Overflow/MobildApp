@@ -1,3 +1,6 @@
+import 'package:comment_overflow/widgets/approval_button.dart';
+import 'package:comment_overflow/widgets/disapproval_button.dart';
+import 'package:comment_overflow/widgets/image_list.dart';
 import 'package:comment_overflow/widgets/quote_card.dart';
 import 'package:flutter/material.dart';
 
@@ -19,7 +22,7 @@ class CommentCard extends StatefulWidget {
 
 class _CommentCardState extends State<CommentCard> {
   static const _gap = const SizedBox(height: 5.0);
-  static const _iconSize = 20.0;
+  static const _iconSize = 24.0;
 
   @override
   Widget build(BuildContext context) {
@@ -29,12 +32,18 @@ class _CommentCardState extends State<CommentCard> {
       ),
       child: InkWell(
         child: Padding(
-          padding: EdgeInsets.all(Constants.defaultCardPadding),
+          padding: EdgeInsets.only(
+            left: Constants.defaultCardPadding,
+            right: Constants.defaultCardPadding,
+            top: Constants.defaultCardPadding,
+            bottom: widget._comment.floor == 0 ?
+                Constants.defaultCardPadding : Constants.defaultCardPadding / 4
+          ),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               widget._comment.floor == 0 && widget._title.isNotEmpty
-                ? buildTitle()
+                ? _buildTitle()
                 : SizedBox.shrink(),
               Row(
                 children: [
@@ -73,36 +82,30 @@ class _CommentCardState extends State<CommentCard> {
               Text(
                 widget._comment.content,
               ),
+              _gap,
+              ImageList(widget._comment.imageUrl),
               widget._comment.floor > 0
-                ? Column(
+                ? Row(
+                mainAxisSize: MainAxisSize.min,
                 children: [
-                  _gap,
-                  Row(
-                    mainAxisSize: MainAxisSize.min,
-                    mainAxisAlignment: MainAxisAlignment.end,
-                    children: [
-                      IconButton(
-                        icon: CustomStyles.getDefaultDeleteIcon(size: _iconSize),
-                        onPressed: () => {},
-                      ),
-                      IconButton(
-                        icon: widget._comment.approvalStatus == ApprovalStatus.approve
-                            ? CustomStyles.getDefaultThumbUpIcon(size: _iconSize)
-                            : CustomStyles.getDefaultNotThumbUpIcon(size: _iconSize),
-                        onPressed: _pushLike,
-                      ),
-                      Text(widget._comment.approvalCount.toString()),
-                      IconButton(
-                        icon: widget._comment.approvalStatus == ApprovalStatus.disapprove
-                            ? CustomStyles.getDefaultThumbDownIcon(size: _iconSize)
-                            : CustomStyles.getDefaultNotThumbDownIcon(size: _iconSize),
-                        onPressed: _pushDislike,
-                      ),
-                      IconButton(
-                        icon: CustomStyles.getDefaultReplyIcon(size: _iconSize),
-                        onPressed: _pushReply,
-                      )
-                    ],
+                  IconButton(
+                    icon: CustomStyles.getDefaultDeleteIcon(size: _iconSize),
+                    onPressed: () => {},
+                  ),
+                  ApprovalButton.horizontal(
+                    comment: widget._comment,
+                    userId: 1,
+                    size: _iconSize,
+                  ),
+                  DisapprovalButton(
+                    comment: widget._comment,
+                    userId: 1,
+                    size: _iconSize,
+                    showText: false,
+                  ),
+                  IconButton(
+                    icon: CustomStyles.getDefaultReplyIcon(size: _iconSize),
+                    onPressed: _pushReply,
                   )
                 ],
               )
@@ -114,7 +117,7 @@ class _CommentCardState extends State<CommentCard> {
     );
   }
 
-  Padding buildTitle() =>
+  Padding _buildTitle() =>
       Padding(
         padding: const EdgeInsets.only(
           top: Constants.defaultCardPadding / 2,
@@ -127,36 +130,6 @@ class _CommentCardState extends State<CommentCard> {
           style: CustomStyles.postPageTitleStyle,
         ),
       );
-
-  void _pushLike() {
-    setState(() {
-      switch (widget._comment.approvalStatus) {
-        case ApprovalStatus.none:
-          widget._comment.addApprovals();
-          break;
-        case ApprovalStatus.approve:
-          widget._comment.subApprovals();
-          break;
-        case ApprovalStatus.disapprove:
-          break;
-      }
-    });
-  }
-
-  void _pushDislike() {
-    setState(() {
-      switch (widget._comment.approvalStatus) {
-        case ApprovalStatus.none:
-          widget._comment.subApprovals();
-          break;
-        case ApprovalStatus.disapprove:
-          widget._comment.addApprovals();
-          break;
-        case ApprovalStatus.approve:
-          break;
-      }
-    });
-  }
 
   void _pushReply() {}
 }
