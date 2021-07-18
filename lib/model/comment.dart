@@ -27,7 +27,6 @@ class Comment {
       this._approvalCount, this._approvalStatus, this._imageUrl);
 
   void addApprovals() {
-    ++_approvalCount;
     switch (_approvalStatus) {
       case ApprovalStatus.approve: break;
       case ApprovalStatus.disapprove:
@@ -35,16 +34,17 @@ class Comment {
         break;
       case ApprovalStatus.none:
         _approvalStatus = ApprovalStatus.approve;
+        ++_approvalCount;
         break;
     }
   }
 
   void subApprovals() {
-    --_approvalCount;
     switch (_approvalStatus) {
       case ApprovalStatus.disapprove: break;
       case ApprovalStatus.approve:
         _approvalStatus = ApprovalStatus.none;
+        --_approvalCount;
         break;
       case ApprovalStatus.none:
         _approvalStatus = ApprovalStatus.disapprove;

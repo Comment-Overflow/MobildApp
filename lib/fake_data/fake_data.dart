@@ -45,7 +45,7 @@ final PersonalPageInfo personalPageInfo = PersonalPageInfo(
     21);
 final Quote _quote = Quote("Gun9niR", _content);
 final Comment _approvedComment = Comment(
-    _userInfo, _content, _date, _quote, 0, 500, ApprovalStatus.approve, []);
+    _userInfo, "sadad", _date, _quote, 0, 500, ApprovalStatus.approve, []);
 final Comment _disapprovedComment = Comment(
     _userInfo, _content, _date, _quote, 0, 500, ApprovalStatus.approve, [
   "http://img8.zol.com.cn/bbs/upload/23765/23764201.jpg",
@@ -170,10 +170,10 @@ final users = List<UserCardInfo>.filled(
   ));
 
 final comments = List<Comment>.filled(
-  10,
+  5,
   _noneComment,
   growable: true,
-);
+)..addAll(List<Comment>.filled(5, _approvedComment, growable: true));
 // Tags for posts
 final List<String> tags = ['校园生活', '学在交大', '文化艺术', '心情驿站', '职业发展'];
 

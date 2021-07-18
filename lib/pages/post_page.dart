@@ -2,11 +2,15 @@ import 'package:comment_overflow/assets/constants.dart';
 import 'package:comment_overflow/assets/custom_styles.dart';
 import 'package:comment_overflow/fake_data/fake_data.dart';
 import 'package:comment_overflow/model/post.dart';
+import 'package:comment_overflow/widgets/approval_button.dart';
 import 'package:comment_overflow/widgets/comment_card_list.dart';
+import 'package:comment_overflow/widgets/disapproval_button.dart';
 import 'package:comment_overflow/widgets/multiple_input_field.dart';
+import 'package:comment_overflow/widgets/star_button.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
+import 'package:like_button/like_button.dart';
 import 'package:wechat_assets_picker/wechat_assets_picker.dart';
 
 class PostPage extends StatefulWidget {
@@ -20,7 +24,6 @@ class PostPage extends StatefulWidget {
 
 class _PostPageState extends State<PostPage> {
   var _sortPolicy = SortPolicy.earliest;
-  var _stared = false;
   final List<AssetEntity> _assets = <AssetEntity>[];
   final TextEditingController _replyController = TextEditingController();
 
@@ -65,57 +68,14 @@ class _PostPageState extends State<PostPage> {
           onPressed: _pushReply,
           child: CustomStyles.getDefaultReplyIcon(
               size: Constants.defaultFabIconSize, color: Colors.white)),
-      body: CommentCardList(posts[0]),
+      body: CommentCardList(posts[0], this._sortPolicy),
       bottomNavigationBar: BottomAppBar(
         child: Row(
           children: [
             buildDropDownMenu(),
-            TextButton(
-                onPressed: () {},
-                child: Column(
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    widget._post.commentToDisplay.approvalStatus ==
-                            ApprovalStatus.approve
-                        ? CustomStyles.getDefaultThumbUpIcon(
-                            size: _bottomIconSize)
-                        : CustomStyles.getDefaultNotThumbUpIcon(
-                            size: _bottomIconSize),
-                    Text(widget._post.commentToDisplay.approvalCount.toString(),
-                        style: CustomStyles.postPageBottomStyle),
-                  ],
-                )),
-            TextButton(
-                onPressed: () {},
-                child: Column(
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    widget._post.commentToDisplay.approvalStatus ==
-                            ApprovalStatus.disapprove
-                        ? CustomStyles.getDefaultThumbDownIcon(
-                            size: _bottomIconSize)
-                        : CustomStyles.getDefaultNotThumbDownIcon(
-                            size: _bottomIconSize),
-                    Text("不赞同", style: CustomStyles.postPageBottomStyle),
-                  ],
-                )),
-            TextButton(
-                onPressed: () {
-                  setState(() {
-                    _stared = _stared ? false : true;
-                  });
-                },
-                child: Column(
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    _stared
-                        ? CustomStyles.getDefaultStaredIcon(
-                            size: _bottomIconSize)
-                        : CustomStyles.getDefaultNotStarIcon(
-                            size: _bottomIconSize),
-                    Text("Star", style: CustomStyles.postPageBottomStyle),
-                  ],
-                ))
+            ApprovalButton(comment: widget._post.commentToDisplay, userId: 1),
+            DisapprovalButton(comment: widget._post.commentToDisplay, userId: 1),
+            StarButton(initialStared: false, postId: 1, userId: 1),
           ],
           mainAxisAlignment: MainAxisAlignment.spaceAround,
         ),
