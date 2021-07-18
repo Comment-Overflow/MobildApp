@@ -24,6 +24,7 @@ class UserCard extends StatelessWidget {
       child: Container(
         height: Constants.defaultUserCardHeight,
         child: Card(
+          elevation: Constants.defaultCardElevation,
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.all(Radius.circular(20.0)),
           ),

@@ -28,6 +28,8 @@ class Constants {
 
   static const defaultAppBarElevation = 0.5;
 
+  static const defaultCardElevation = 0.5;
+
   /// Search bar height.
   static const searchBarHeight = 32.0;
 
@@ -109,11 +111,7 @@ class Constants {
     '按热度排序',
   ];
 
-  static const List<String> personalPageTabs = [
-    "我的帖子",
-    "我的回复",
-    "我的收藏"
-  ];
+  static const List<String> personalPageTabs = ["我的帖子", "我的回复", "我的收藏"];
 }
 
 enum FollowStatus {

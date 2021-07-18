@@ -14,7 +14,8 @@ class CommentCard extends StatefulWidget {
   final String _title;
 
   const CommentCard(this._comment, {Key? key, title = ""})
-      : _title = title, super(key: key);
+      : _title = title,
+        super(key: key);
 
   @override
   createState() => _CommentCardState();
@@ -27,24 +28,25 @@ class _CommentCardState extends State<CommentCard> {
   @override
   Widget build(BuildContext context) {
     return Card(
+      elevation: Constants.defaultCardElevation,
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.all(Radius.circular(10.0)),
       ),
       child: InkWell(
         child: Padding(
           padding: EdgeInsets.only(
-            left: Constants.defaultCardPadding,
-            right: Constants.defaultCardPadding,
-            top: Constants.defaultCardPadding,
-            bottom: widget._comment.floor == 0 ?
-                Constants.defaultCardPadding : Constants.defaultCardPadding / 4
-          ),
+              left: Constants.defaultCardPadding,
+              right: Constants.defaultCardPadding,
+              top: Constants.defaultCardPadding,
+              bottom: widget._comment.floor == 0
+                  ? Constants.defaultCardPadding
+                  : Constants.defaultCardPadding / 4),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               widget._comment.floor == 0 && widget._title.isNotEmpty
-                ? _buildTitle()
-                : SizedBox.shrink(),
+                  ? _buildTitle()
+                  : SizedBox.shrink(),
               Row(
                 children: [
                   Expanded(
@@ -62,8 +64,8 @@ class _CommentCardState extends State<CommentCard> {
                   SizedBox(width: 10),
                   Text(
                     widget._comment.floor > 0
-                      ? widget._comment.floorString + "楼"
-                      : "",
+                        ? widget._comment.floorString + "楼"
+                        : "",
                     style: CustomStyles.floorStyle,
                     textAlign: TextAlign.right,
                   ),
@@ -85,31 +87,33 @@ class _CommentCardState extends State<CommentCard> {
               _gap,
               ImageList(widget._comment.imageUrl),
               widget._comment.floor > 0
-                ? Row(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  IconButton(
-                    icon: CustomStyles.getDefaultDeleteIcon(size: _iconSize),
-                    onPressed: () => {},
-                  ),
-                  ApprovalButton.horizontal(
-                    comment: widget._comment,
-                    userId: 1,
-                    size: _iconSize,
-                  ),
-                  DisapprovalButton(
-                    comment: widget._comment,
-                    userId: 1,
-                    size: _iconSize,
-                    showText: false,
-                  ),
-                  IconButton(
-                    icon: CustomStyles.getDefaultReplyIcon(size: _iconSize),
-                    onPressed: _pushReply,
-                  )
-                ],
-              )
-              : SizedBox.shrink(),
+                  ? Row(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        IconButton(
+                          icon: CustomStyles.getDefaultDeleteIcon(
+                              size: _iconSize),
+                          onPressed: () => {},
+                        ),
+                        ApprovalButton.horizontal(
+                          comment: widget._comment,
+                          userId: 1,
+                          size: _iconSize,
+                        ),
+                        DisapprovalButton(
+                          comment: widget._comment,
+                          userId: 1,
+                          size: _iconSize,
+                          showText: false,
+                        ),
+                        IconButton(
+                          icon:
+                              CustomStyles.getDefaultReplyIcon(size: _iconSize),
+                          onPressed: _pushReply,
+                        )
+                      ],
+                    )
+                  : SizedBox.shrink(),
             ],
           ),
         ),
@@ -117,8 +121,7 @@ class _CommentCardState extends State<CommentCard> {
     );
   }
 
-  Padding _buildTitle() =>
-      Padding(
+  Padding _buildTitle() => Padding(
         padding: const EdgeInsets.only(
           top: Constants.defaultCardPadding / 2,
           left: Constants.defaultCardPadding,

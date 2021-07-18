@@ -38,6 +38,7 @@ class NotificationCard extends StatelessWidget {
     }
 
     return Card(
+      elevation: Constants.defaultCardElevation,
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.all(Radius.circular(20.0)),
       ),
@@ -79,6 +80,7 @@ class StarNotificationCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Card(
+        elevation: Constants.defaultCardElevation,
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.all(Radius.circular(20.0)),
         ),
@@ -104,6 +106,7 @@ class ApprovalNotificationCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Card(
+        elevation: Constants.defaultCardElevation,
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.all(Radius.circular(20.0)),
         ),
@@ -128,6 +131,7 @@ class ReplyNotificationCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Card(
+        elevation: Constants.defaultCardElevation,
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.all(Radius.circular(20.0)),
         ),
@@ -154,6 +158,7 @@ class FollowNotificationCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Card(
+        elevation: Constants.defaultCardElevation,
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.all(Radius.circular(20.0)),
         ),

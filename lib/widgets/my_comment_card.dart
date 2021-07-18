@@ -58,6 +58,7 @@ class MyCommentCard extends StatelessWidget {
         : commentContentColumn;
 
     return Card(
+      elevation: Constants.defaultCardElevation,
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.all(Radius.circular(20.0)),
       ),

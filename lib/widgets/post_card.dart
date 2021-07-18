@@ -61,7 +61,7 @@ class PostCard extends StatelessWidget {
             : userAndContentColumn;
 
     return Card(
-      elevation: 0.5,
+      elevation: Constants.defaultCardElevation,
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.all(Radius.circular(20.0)),
       ),
