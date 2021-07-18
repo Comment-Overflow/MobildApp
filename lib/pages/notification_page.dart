@@ -28,6 +28,7 @@ class NotificationPage extends StatelessWidget {
             child:
                 NotificationButtonList(Constants.defaultNotificationButtonSize),
           ),
+          Divider(thickness: 0.8),
           RecentChatList(),
         ],
       ),

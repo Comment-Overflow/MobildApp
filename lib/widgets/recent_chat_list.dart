@@ -5,19 +5,32 @@ import 'package:comment_overflow/fake_data/fake_data.dart';
 import 'package:comment_overflow/model/chat.dart';
 import 'package:comment_overflow/widgets/chat_card.dart';
 
-class RecentChatList extends StatelessWidget {
+class RecentChatList extends StatefulWidget {
+  RecentChatList({Key? key}) : super(key: key);
 
-  late final List<Chat> _recentChats;
+  @override
+  _RecentChatListState createState() => _RecentChatListState();
+}
 
-  RecentChatList({Key? key}) : super(key: key) {
+class _RecentChatListState extends State<RecentChatList> {
+  late List<Chat> _recentChats;
+
+  @override
+  void initState() {
+    super.initState();
+    getRecentChats();
+  }
+
+  void getRecentChats() {
     // TODO: Get cached chats from local file.
     // TODO: Get real chats from server.
-    _recentChats = recentChats;
+    setState(() {
+      _recentChats = recentChats;
+    });
   }
 
   Future _onRefresh() async {
-    // TODO: Get cached chats from local file.
-    // TODO: Get real chats from server.
+    getRecentChats();
     print("onRefresh");
     // monitor network fetch
     return Future.delayed(Duration(milliseconds: 1000));
@@ -28,13 +41,28 @@ class RecentChatList extends StatelessWidget {
     print("onLoading");
     // monitor network fetch
     await Future.delayed(Duration(milliseconds: 1000));
-    // if failed,use loadFailed(),if no data return,use LoadNodata()
+    // if failed,use loadFailed(),if no data return,use LoadNoData()
   }
 
   @override
   Widget build(BuildContext context) {
+    return _recentChats.length == 0 ? _buildNoChatPrompt() : _buildChatList();
+  }
+
+  Widget _buildNoChatPrompt() {
     return Expanded(
-      // TODO: Use gzd's adaptive refresher.
+      child: Center(
+        child: Text("没有消息",
+          style: TextStyle(
+            color: Colors.grey,fontSize: 20.0,
+        ),
+        ),
+      ),
+    );
+  }
+
+  Widget _buildChatList() {
+    return Expanded(
       child: AdaptiveRefresher(
         onRefresh: _onRefresh,
         child: ListView.builder(
@@ -43,8 +71,10 @@ class RecentChatList extends StatelessWidget {
             return ChatCard(_recentChats[index], () {
               // TODO: Delete the chat from local file.
               // TODO: Delete the chat from server. (?)
-              // TODO: Get cached chats from local file.
-              // TODO: Get real chats from server.
+              setState(() {
+                _recentChats.removeAt(index);
+              });
+              getRecentChats();
             });
           },
         ),
