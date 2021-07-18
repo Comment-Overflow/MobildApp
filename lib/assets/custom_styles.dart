@@ -160,7 +160,7 @@ class CustomStyles {
       Icon(CupertinoIcons.person, color: color, size: size);
 
   static Icon getDefaultBackIcon({size = 14.0, color: Colors.grey}) => Icon(
-        Icons.arrow_back_ios,
+        Icons.arrow_back,
         color: color,
         size: size,
       );

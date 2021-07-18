@@ -31,9 +31,8 @@ class _RecentChatListState extends State<RecentChatList> {
 
   Future _onRefresh() async {
     getRecentChats();
-    print("onRefresh");
     // monitor network fetch
-    return Future.delayed(Duration(milliseconds: 1000));
+    return Future.delayed(Duration(seconds: 1));
     // if failed,use refreshFailed()
   }
 
@@ -52,10 +51,12 @@ class _RecentChatListState extends State<RecentChatList> {
   Widget _buildNoChatPrompt() {
     return Expanded(
       child: Center(
-        child: Text("没有消息",
+        child: Text(
+          "没有消息",
           style: TextStyle(
-            color: Colors.grey,fontSize: 20.0,
-        ),
+            color: Colors.grey,
+            fontSize: 20.0,
+          ),
         ),
       ),
     );

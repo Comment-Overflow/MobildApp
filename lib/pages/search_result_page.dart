@@ -86,6 +86,7 @@ class SearchResultPage extends StatelessWidget {
                       automaticallyImplyLeading: false,
                       title: Row(children: [
                         buildBackIcon(context),
+                        SizedBox(width: 8.0),
                         buildSearchBar(context),
                       ]),
                     ),
@@ -114,7 +115,6 @@ class SearchResultPage extends StatelessWidget {
         onTap: () => Navigator.of(context).pushNamedAndRemoveUntil(
             RouteGenerator.homeRoute, (route) => false),
         child: CustomStyles.getDefaultBackIcon(
-            size: Constants.searchBarHeight * 0.8,
-            color: Theme.of(context).accentColor),
+            size: Constants.searchBarHeight * 0.8, color: Colors.black),
       );
 }
