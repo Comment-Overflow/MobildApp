@@ -34,7 +34,7 @@ class NotificationButtonList extends StatelessWidget {
             flex: 25,
             child: MultiWidgetButton(
               RouteGenerator.generateRoute(RouteSettings(
-                name: RouteGenerator.homeRoute,
+                name: RouteGenerator.approveMeRoute,
               )),
               [
                 Icon(CupertinoIcons.heart,
@@ -46,31 +46,23 @@ class NotificationButtonList extends StatelessWidget {
           ),
           Expanded(
             flex: 25,
-            child: InkWell(
-              onTap: () {
-                Navigator.push(context, CupertinoPageRoute(builder: (context) {
-                  // TODO: ScrollViewPage
-                  return HomePage();
-                }));
-              },
-              child: MultiWidgetButton(
-                RouteGenerator.generateRoute(RouteSettings(
-                  name: RouteGenerator.homeRoute,
-                )),
-                [
-                  Icon(CupertinoIcons.text_bubble,
-                      size: _buttonSize, color: Colors.black),
-                  _gap,
-                  Text("回复", style: _notificationButtonTextStyle),
-                ],
-              ),
+            child: MultiWidgetButton(
+              RouteGenerator.generateRoute(RouteSettings(
+                name: RouteGenerator.replyMeRoute,
+              )),
+              [
+                Icon(CupertinoIcons.text_bubble,
+                    size: _buttonSize, color: Colors.black),
+                _gap,
+                Text("回复", style: _notificationButtonTextStyle),
+              ],
             ),
           ),
           Expanded(
             flex: 25,
             child: MultiWidgetButton(
               RouteGenerator.generateRoute(RouteSettings(
-                name: RouteGenerator.homeRoute,
+                name: RouteGenerator.starMeRoute,
               )),
               [
                 Icon(CupertinoIcons.star,
@@ -84,7 +76,7 @@ class NotificationButtonList extends StatelessWidget {
             flex: 25,
             child: MultiWidgetButton(
               RouteGenerator.generateRoute(RouteSettings(
-                name: RouteGenerator.homeRoute,
+                name: RouteGenerator.followMeRoute,
               )),
               [
                 CustomStyles.getDefaultUnfilledFollowerIcon(

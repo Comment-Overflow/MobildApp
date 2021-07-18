@@ -1,6 +1,7 @@
 import 'package:comment_overflow/assets/constants.dart';
 import 'package:comment_overflow/model/quote.dart';
 import 'package:comment_overflow/model/user_info.dart';
+import 'package:comment_overflow/utils/general_utils.dart';
 import 'package:intl/intl.dart';
 
 class Comment {
@@ -15,7 +16,7 @@ class Comment {
 
   String get content => _content;
   DateTime get time => _time;
-  String get timeString => DateFormat("yyyy-MM-dd").format(_time);
+  String get timeString => GeneralUtils.getTimeString(_time);
   Quote? get quote => _quote;
   int get floor => _floor;
   String get floorString => _floor.toString();
@@ -28,7 +29,8 @@ class Comment {
 
   void addApprovals() {
     switch (_approvalStatus) {
-      case ApprovalStatus.approve: break;
+      case ApprovalStatus.approve:
+        break;
       case ApprovalStatus.disapprove:
         _approvalStatus = ApprovalStatus.none;
         break;
@@ -41,7 +43,8 @@ class Comment {
 
   void subApprovals() {
     switch (_approvalStatus) {
-      case ApprovalStatus.disapprove: break;
+      case ApprovalStatus.disapprove:
+        break;
       case ApprovalStatus.approve:
         _approvalStatus = ApprovalStatus.none;
         --_approvalCount;

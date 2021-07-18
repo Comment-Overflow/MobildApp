@@ -6,6 +6,7 @@ import 'package:comment_overflow/model/my_comment.dart';
 import 'package:comment_overflow/model/notification_message.dart';
 import 'package:comment_overflow/model/post.dart';
 import 'package:comment_overflow/model/quote.dart';
+import 'package:comment_overflow/model/user_action_record.dart';
 import 'package:comment_overflow/model/user_info.dart';
 
 const _title = 'Lorem ipsum dolor sit amet, consectetur adipiscing elit';
@@ -43,22 +44,25 @@ final PersonalPageInfo personalPageInfo = PersonalPageInfo(
     453,
     23567,
     21);
-final Quote _quote = Quote("Gun9niR", _content);
-final Comment _approvedComment = Comment(
-    _userInfo, "sadad", _date, _quote, 0, 500, ApprovalStatus.approve, []);
-final Comment _disapprovedComment = Comment(
-    _userInfo, _content, _date, _quote, 0, 500, ApprovalStatus.approve, [
+final Quote _quoteWithUserName = Quote("Gun9niR", _content);
+final Quote _quoteWithPostTitle = Quote(_title, _content);
+
+final Comment _approvedComment = Comment(_userInfo, "sadad", _date,
+    _quoteWithUserName, 0, 500, ApprovalStatus.approve, []);
+final Comment _disapprovedComment = Comment(_userInfo, _content, _date,
+    _quoteWithUserName, 0, 500, ApprovalStatus.approve, [
   "http://img8.zol.com.cn/bbs/upload/23765/23764201.jpg",
   "https://images.unsplash.com/photo-1526512340740-9217d0159da9?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=2677&q=80"
 ]);
-final Comment _noneComment =
-    Comment(_userInfo, _content, _date, _quote, 0, 500, ApprovalStatus.none, [
+final Comment _noneComment = Comment(_userInfo, _content, _date,
+    _quoteWithUserName, 0, 500, ApprovalStatus.none, [
   "https://images.unsplash.com/photo-1526512340740-9217d0159da9?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=2677&q=80"
 ]);
 
 const _comment = 'zhihu sucks, sjtu-zhihu awesome';
 const _type = NotificationType.reply;
 
+// TODO: separate data from UI
 final notifications = List<NotificationMessage>.filled(
   20,
   NotificationMessage(_cyxInfo, 24.0, 7.0, _type,
@@ -201,3 +205,38 @@ List<Message> messages = [
   Message(MessageType.Image, DateTime.now(), _userInfo, _cyxInfo, true,
       "http://img8.zol.com.cn/bbs/upload/23765/23764201.jpg"),
 ];
+
+final approvalRecords = List<ApprovalRecord>.filled(
+    10,
+    ApprovalRecord(
+      _yzyInfo,
+      _date,
+      _quoteWithPostTitle,
+    ));
+
+final starRecords = List<StarRecord>.filled(
+  10,
+  StarRecord(
+    _yzyInfo,
+    _date,
+    _quoteWithPostTitle,
+  ),
+);
+
+final followRecords = List<FollowRecord>.filled(
+  10,
+  FollowRecord(
+    _yzyInfo,
+    _date,
+    FollowStatus.followingMe,
+  ),
+);
+
+final replyRecords = List<ReplyRecord>.filled(
+    10,
+    ReplyRecord(
+      _yzyInfo,
+      _date,
+      _content,
+      _quoteWithPostTitle,
+    ));

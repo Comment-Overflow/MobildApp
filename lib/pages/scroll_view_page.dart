@@ -5,9 +5,7 @@ import 'package:flutter/widgets.dart';
 class ScrollViewPage extends StatelessWidget {
   final Widget _cardList;
   final String _title;
-  final String _backwardRoute;
-  ScrollViewPage(this._cardList, this._title, this._backwardRoute, {Key? key})
-      : super(key: key);
+  ScrollViewPage(this._cardList, this._title, {Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -22,8 +20,7 @@ class ScrollViewPage extends StatelessWidget {
               title: Text(_title),
               leading: IconButton(
                 icon: Icon(Icons.arrow_back),
-                onPressed: () =>
-                    {Navigator.of(context).pushNamed(_backwardRoute)},
+                onPressed: () => {Navigator.of(context).pop()},
               )),
         ],
         body: MediaQuery.removePadding(
