@@ -13,6 +13,7 @@ class SearchPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
+          elevation: Constants.defaultAppBarElevation,
           title: Row(
             children: [
               Expanded(
@@ -43,7 +44,6 @@ class SearchPage extends StatelessWidget {
             ],
           ),
           automaticallyImplyLeading: false,
-          elevation: Constants.defaultAppBarElevation,
         ),
         body: Padding(
           padding: EdgeInsets.all(16.0),
@@ -92,4 +92,3 @@ class SearchPage extends StatelessWidget {
         ));
   }
 }
-

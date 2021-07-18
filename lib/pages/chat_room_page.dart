@@ -7,7 +7,6 @@ import 'package:comment_overflow/widgets/chat_message.dart';
 import 'package:comment_overflow/model/chat.dart';
 
 class ChatRoomPage extends StatefulWidget {
-
   final Chat chat;
 
   const ChatRoomPage(this.chat, {Key? key}) : super(key: key);
@@ -17,26 +16,26 @@ class ChatRoomPage extends StatefulWidget {
 }
 
 class _ChatRoomPageState extends State<ChatRoomPage> {
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        elevation: Constants.defaultAppBarElevation,
         title: Text(
           widget.chat.chatter.userName,
           style: CustomStyles.pageTitleStyle,
         ),
       ),
       body: Container(
-          padding: EdgeInsets.all(Constants.defaultChatRoomPadding),
-          child: Column(
-            children: messages.map((message) =>
-                Container(
-                  padding: EdgeInsets.symmetric(vertical: Constants.defaultChatMessagePadding),
-                  child: ChatMessage(message),
-                )
-            ).toList()
-        ),
+        padding: EdgeInsets.all(Constants.defaultChatRoomPadding),
+        child: Column(
+            children: messages
+                .map((message) => Container(
+                      padding: EdgeInsets.symmetric(
+                          vertical: Constants.defaultChatMessagePadding),
+                      child: ChatMessage(message),
+                    ))
+                .toList()),
       ),
     );
   }
