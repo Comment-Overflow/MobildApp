@@ -118,10 +118,7 @@ class PersonalProfileCard extends StatelessWidget {
                 Expanded(
                   flex: 25,
                   child: MultipleWidgetButton(
-                    RouteGenerator.generateRoute(RouteSettings(
-                      // TODO: following page route
-                      name: RouteGenerator.homeRoute,
-                    )),
+                    RouteGenerator.homeRoute,
                     [
                       Text(
                         getDisplayNumber(_personalPageInfo.followingCount),
@@ -138,10 +135,7 @@ class PersonalProfileCard extends StatelessWidget {
                 Expanded(
                   flex: 25,
                   child: MultipleWidgetButton(
-                    RouteGenerator.generateRoute(RouteSettings(
-                      // TODO: follower page route
-                      name: RouteGenerator.homeRoute,
-                    )),
+                    RouteGenerator.homeRoute,
                     [
                       Text(
                         getDisplayNumber(_personalPageInfo.followerCount),

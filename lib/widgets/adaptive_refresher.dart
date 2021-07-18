@@ -4,10 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 
-class AdaptiveRefresher extends StatelessWidget {
-  final RefreshController _refreshController =
-      RefreshController(initialRefresh: false);
-
+class AdaptiveRefresher extends StatefulWidget {
   final bool enablePullUp;
   final bool enablePullDown;
   final Future Function()? onRefresh;
@@ -16,7 +13,7 @@ class AdaptiveRefresher extends StatelessWidget {
   final Widget? iosRefresh;
   final Widget? iosComplete;
 
-  AdaptiveRefresher({
+  const AdaptiveRefresher({
     Key? key,
     this.enablePullDown: true,
     this.enablePullUp: false,
@@ -28,34 +25,50 @@ class AdaptiveRefresher extends StatelessWidget {
   }) : super(key: key);
 
   @override
+  _AdaptiveRefresherState createState() => _AdaptiveRefresherState();
+}
+
+class _AdaptiveRefresherState extends State<AdaptiveRefresher> {
+  final RefreshController _refreshController =
+      RefreshController(initialRefresh: false);
+
+  @override
+  void didUpdateWidget(covariant AdaptiveRefresher oldWidget) {
+    print('did update');
+    super.didUpdateWidget(oldWidget);
+  }
+
+  @override
+  dispose() {
+    _refreshController.dispose();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return RefreshConfiguration(
       headerTriggerDistance: 60.0,
       child: SmartRefresher(
         controller: _refreshController,
-        enablePullUp: this.enablePullUp,
-        enablePullDown: this.enablePullDown,
+        enablePullUp: widget.enablePullUp,
+        enablePullDown: widget.enablePullDown,
         header: buildAdaptiveHeader(context),
         onRefresh: () async {
-          await this.onRefresh!();
+          await widget.onRefresh!();
           _refreshController.refreshCompleted();
         },
-        onLoading: this.onLoading,
-        child: this.child,
+        onLoading: widget.onLoading,
+        child: widget.child,
       ),
     );
   }
 
   buildAdaptiveHeader(context) => Platform.isIOS
       ? WaterDropHeader(
-          refresh: this.iosRefresh,
-          complete: this.iosComplete,
+          refresh: widget.iosRefresh,
+          complete: widget.iosComplete,
         )
       : MaterialClassicHeader(
           color: Theme.of(context).accentColor,
         );
-
-  refreshCompleted() {
-    _refreshController.refreshCompleted();
-  }
 }
