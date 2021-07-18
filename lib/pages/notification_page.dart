@@ -6,13 +6,13 @@ import 'package:comment_overflow/widgets/notification_button_list.dart';
 import 'package:comment_overflow/widgets/recent_chat_list.dart';
 
 class NotificationPage extends StatelessWidget {
-
   NotificationPage({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        elevation: Constants.defaultAppBarElevation,
         title: Text(
           "消息",
           style: CustomStyles.pageTitleStyle,
@@ -24,9 +24,9 @@ class NotificationPage extends StatelessWidget {
           Container(
             padding: EdgeInsets.symmetric(
                 vertical: Constants.defaultNotificationButtonSize,
-                horizontal: Constants.defaultNotificationButtonSize * 0.35
-            ),
-            child: NotificationButtonList(Constants.defaultNotificationButtonSize),
+                horizontal: Constants.defaultNotificationButtonSize * 0.35),
+            child:
+                NotificationButtonList(Constants.defaultNotificationButtonSize),
           ),
           RecentChatList(),
         ],

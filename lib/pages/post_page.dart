@@ -44,6 +44,7 @@ class _PostPageState extends State<PostPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        elevation: Constants.defaultAppBarElevation,
         leading: GestureDetector(
           onTap: () {
             Navigator.pop(context);
@@ -73,7 +74,8 @@ class _PostPageState extends State<PostPage> {
           children: [
             buildDropDownMenu(),
             ApprovalButton(comment: widget._post.commentToDisplay, userId: 1),
-            DisapprovalButton(comment: widget._post.commentToDisplay, userId: 1),
+            DisapprovalButton(
+                comment: widget._post.commentToDisplay, userId: 1),
             StarButton(initialStared: false, postId: 1, userId: 1),
           ],
           mainAxisAlignment: MainAxisAlignment.spaceAround,

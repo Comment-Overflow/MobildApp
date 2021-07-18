@@ -35,6 +35,7 @@ class _PersonalPageState extends State<PersonalPage> {
 
     return Scaffold(
       appBar: AppBar(
+        elevation: Constants.defaultAppBarElevation,
         title: Text(
           title,
           style: CustomStyles.pageTitleStyle,
@@ -94,7 +95,6 @@ class _PersonalPageState extends State<PersonalPage> {
                 RouteGenerator.loginRoute, (route) => false);
             break;
         }
-        // TODO: edit route and sign out.
       },
       itemBuilder: (BuildContext context) => [
         PopupMenuItem(
