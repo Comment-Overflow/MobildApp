@@ -8,9 +8,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 
 class HomePage extends StatelessWidget {
-  static const _tabs = ['浏览', '推荐', '关注', '校园生活', '校园生活', '校园生活'];
+  final _tabs = ['浏览', '推荐', '关注'] + Constants.postCategories;
 
-  const HomePage({Key? key}) : super(key: key);
+  HomePage({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -41,11 +41,41 @@ class HomePage extends StatelessWidget {
                 child: PostCardList(),
                 removeTop: true,
               ),
-              QuoteCard(quotes[0]),
-              Text('热榜'),
-              Text('热榜'),
-              Text('热榜'),
-              Text('热榜'),
+              MediaQuery.removePadding(
+                context: context,
+                child: PostCardList(),
+                removeTop: true,
+              ),
+              MediaQuery.removePadding(
+                context: context,
+                child: PostCardList(),
+                removeTop: true,
+              ),
+              MediaQuery.removePadding(
+                context: context,
+                child: PostCardList(),
+                removeTop: true,
+              ),
+              MediaQuery.removePadding(
+                context: context,
+                child: PostCardList(),
+                removeTop: true,
+              ),
+              MediaQuery.removePadding(
+                context: context,
+                child: PostCardList(),
+                removeTop: true,
+              ),
+              MediaQuery.removePadding(
+                context: context,
+                child: PostCardList(),
+                removeTop: true,
+              ),
+              MediaQuery.removePadding(
+                context: context,
+                child: PostCardList(),
+                removeTop: true,
+              ),
             ],
           ),
         ));

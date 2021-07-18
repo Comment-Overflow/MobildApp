@@ -10,6 +10,7 @@ import 'package:comment_overflow/widgets/star_button.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
+import 'package:like_button/like_button.dart';
 import 'package:wechat_assets_picker/wechat_assets_picker.dart';
 
 class PostPage extends StatefulWidget {
@@ -64,12 +65,10 @@ class _PostPageState extends State<PostPage> {
         centerTitle: true,
       ),
       floatingActionButton: FloatingActionButton(
-        onPressed: _pushReply,
-        child: CustomStyles.getDefaultReplyIcon(
-            size: _bottomIconSize, color: Colors.white
-        )
-      ),
-      body: CommentCardList(posts[0]),
+          onPressed: _pushReply,
+          child: CustomStyles.getDefaultReplyIcon(
+              size: Constants.defaultFabIconSize, color: Colors.white)),
+      body: CommentCardList(posts[0], this._sortPolicy),
       bottomNavigationBar: BottomAppBar(
         child: Row(
           children: [
@@ -120,17 +119,15 @@ class _PostPageState extends State<PostPage> {
 
   void _pushReply() {
     showModalBottomSheet(
-      isScrollControlled: true, // !important
-      context: context,
-      builder: (_) {
-        return MultipleInputField(
-          context: context,
-          textController: _replyController,
-          assets: _assets,
-          quote: quotes[0],
-        );
-      }
-    );
+        isScrollControlled: true, // !important
+        context: context,
+        builder: (_) {
+          return MultipleInputField(
+            context: context,
+            textController: _replyController,
+            assets: _assets,
+            quote: quotes[0],
+          );
+        });
   }
 }
-

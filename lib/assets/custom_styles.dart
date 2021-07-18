@@ -79,6 +79,14 @@ class CustomStyles {
     fontWeight: FontWeight.bold,
     fontSize: Constants.defaultPersonalPageHeaderTitleSize,
   );
+  static const personalPageButtonNumberStyle = TextStyle(
+    // fontWeight: FontWeight.bold,
+    fontSize: 23.0,
+  );
+  static const personalPageButtonTextStyle = TextStyle(
+    // fontWeight: FontWeight.bold,
+    fontSize: 15.0,
+  );
 
   /// Default icon for reply with changeable size.
   static Icon getDefaultReplyIcon({size = 14.0, color = Colors.grey}) =>
@@ -142,34 +150,49 @@ class CustomStyles {
           {size = 14.0, color = Colors.grey}) =>
       Icon(CupertinoIcons.person, color: color, size: size);
 
-  static Icon getDefaultBackIcon(context, {size = 14.0}) => Icon(
+  static Icon getDefaultBackIcon({size = 14.0, color: Colors.grey}) => Icon(
         Icons.arrow_back_ios,
-        color: Theme.of(context).accentColor,
+        color: color,
         size: size,
       );
 
   /// Default icon for female.
-  static getDefaultFemaleIcon({size = Constants.defaultPersonalPageHeaderTitleSize, color = CustomColors.femalePink}) =>
+  static getDefaultFemaleIcon(
+          {size = Constants.defaultPersonalPageHeaderTitleSize,
+          color = CustomColors.femalePink}) =>
       Icon(Icons.female, color: color, size: size);
 
   /// Default icon for male.
-  static getDefaultMaleIcon({size = Constants.defaultPersonalPageHeaderTitleSize, color = CustomColors.maleBlue}) =>
+  static getDefaultMaleIcon(
+          {size = Constants.defaultPersonalPageHeaderTitleSize,
+          color = CustomColors.maleBlue}) =>
       Icon(Icons.male, color: color, size: size);
 
-  static Icon getDefaultSendIcon(context, {size = 14.0}) => Icon(
+  static Icon getDefaultSendIcon({size = 14.0, color: Colors.grey}) => Icon(
         Icons.send,
-        color: Theme.of(context).accentColor,
+        color: color,
         size: size,
       );
 
   /// Default icon for image.
-  static Icon getDefaultImageIcon({size = 14.0, color = Colors.grey}) =>
+  static Icon getDefaultImageIcon({size = 14.0, color: Colors.grey}) =>
       Icon(Icons.photo, color: color, size: size);
 
   /// Default icon for close.
-  static Icon getDefaultCloseIcon({size = 14.0, color = Colors.grey}) =>
+  static Icon getDefaultCloseIcon({size = 14.0, color: Colors.grey}) =>
       Icon(Icons.close, color: color, size: size);
 
+  static Icon getDefaultMailIcon({size = 22.0, color = Colors.blueAccent}) =>
+      Icon(Icons.mail_outline, color: color, size: size);
+
+  static Icon getDefaultEditIcon({size = 20.0, color = Colors.black}) =>
+      Icon(Icons.edit, color: color, size: size);
+
+  static Icon getDefaultSignOutIcon({size = 20.0, color = Colors.black}) =>
+      Icon(Icons.logout, color: color, size: size);
+
+  static Icon getDefaultRightArrow({size = 14.0, color = Colors.grey}) =>
+      Icon(Icons.keyboard_arrow_right_sharp, color: color, size: size);
 
   static const referenceUserNameStyle = TextStyle(
     fontWeight: FontWeight.bold,

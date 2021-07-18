@@ -4,6 +4,11 @@ import 'package:flutter/material.dart';
 import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
 
 class PagingManager<T> {
+  static const _iosRotatingIndicator = SizedBox(
+    width: 25.0,
+    height: 25.0,
+    child: const CupertinoActivityIndicator(),
+  );
   final _pageSize;
   final PagingController<int, T> _pagingController =
       PagingController(firstPageKey: 0);
@@ -15,7 +20,8 @@ class PagingManager<T> {
   //   getBooks(bookId: 0, page, pageSize);
   // }
   // ```
-  final _customFetchApi;
+  var _customFetchApi;
+  var _wrappedFetchApi;
   // _customItemBuilder should be a function with parameters
   // (context, item, index), and must return a widget displayed as list item
   // such as
@@ -42,14 +48,31 @@ class PagingManager<T> {
   }
 
   PagingManager(this._pageSize, this._customFetchApi, this._customItemBuilder) {
-    _pagingController.addPageRequestListener((pageKey) {
+    this._wrappedFetchApi = (pageKey) {
       _fetchPage(pageKey);
-    });
+    };
+
+    _pagingController.addPageRequestListener(this._wrappedFetchApi);
+  }
+
+  changeCustomFetchApi(newApi) {
+    _pagingController.removePageRequestListener(this._wrappedFetchApi);
+    this._customFetchApi = newApi;
+    this._wrappedFetchApi = (pageKey) {
+      _fetchPage(pageKey);
+    };
+    _pagingController.addPageRequestListener(this._wrappedFetchApi);
+  }
+
+  refresh() {
+    _pagingController.refresh();
   }
 
   dispose() {
-    _disposed = true;
-    _pagingController.dispose();
+    if (_disposed == false) {
+      _disposed = true;
+      _pagingController.dispose();
+    }
   }
 
   Widget getListView({refreshable = true}) {
@@ -69,17 +92,9 @@ class PagingManager<T> {
               _pagingController.refresh();
               return Future.delayed(Duration.zero);
             },
-            iosComplete: buildIosRotatingIndicator(),
+            iosComplete: _iosRotatingIndicator,
             child: listView,
           )
         : listView;
   }
-
-  buildIosRotatingIndicator() => SizedBox(
-        width: 25.0,
-        height: 25.0,
-        child: const CupertinoActivityIndicator(),
-      );
-
-  // buildMaterialRotatingIndicator() =>
 }

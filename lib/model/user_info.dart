@@ -34,14 +34,14 @@ class PersonalPageInfo extends UserInfo {
   final int _commentCount;
   final int _approvalCount;
   final int _followerCount;
-  final int _followedCount;
+  final int _followingCount;
 
   Sex get sex => _sex;
   String get brief => _brief;
   int get commentCount => _commentCount;
   int get approvalCount => _approvalCount;
   int get followerCount => _followerCount;
-  int get followedCount => _followedCount;
+  int get followingCount => _followingCount;
 
   PersonalPageInfo(
       userId,
@@ -52,6 +52,6 @@ class PersonalPageInfo extends UserInfo {
       this._commentCount,
       this._approvalCount,
       this._followerCount,
-      this._followedCount)
+      this._followingCount)
       : super(userId, userName, avatarUrl);
 }
