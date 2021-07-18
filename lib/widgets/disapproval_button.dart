@@ -7,13 +7,19 @@ import 'package:flutter/material.dart';
 class DisapprovalButton extends StatefulWidget {
   final Comment _comment;
   final int _userId;
+  final bool _showText;
+  final double _size;
 
   DisapprovalButton({
     required comment,
     required userId,
+    showText = true,
+    size = 30.0,
     Key? key
   }) : _comment = comment,
         _userId = userId,
+        _showText = showText,
+        _size = size,
         super(key: key);
 
   @override
@@ -21,7 +27,6 @@ class DisapprovalButton extends StatefulWidget {
 }
 
 class _DisapprovalButtonState extends State<DisapprovalButton> {
-  static const _bottomIconSize = 30.0;
 
   @override
   Widget build(BuildContext context) {
@@ -42,9 +47,11 @@ class _DisapprovalButtonState extends State<DisapprovalButton> {
           mainAxisSize: MainAxisSize.min,
           children: [
             widget._comment.approvalStatus == ApprovalStatus.disapprove
-              ? CustomStyles.getDefaultThumbDownIcon(size: _bottomIconSize)
-              : CustomStyles.getDefaultNotThumbDownIcon(size: _bottomIconSize),
-            Text("不赞同", style: CustomStyles.postPageBottomStyle),
+              ? CustomStyles.getDefaultThumbDownIcon(size: widget._size)
+              : CustomStyles.getDefaultNotThumbDownIcon(size: widget._size),
+            widget._showText
+              ? Text("不赞同", style: CustomStyles.postPageBottomStyle)
+              : SizedBox.shrink(),
           ],
         ));
   }

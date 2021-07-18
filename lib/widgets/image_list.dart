@@ -36,6 +36,7 @@ class ImageList extends StatelessWidget {
           child: ExtendedImage.network(
             _imageUrl[index],
             fit: BoxFit.fitWidth,
+            cache: true,
           ),
         )
       ),
@@ -72,6 +73,7 @@ class ImageList extends StatelessWidget {
         child: ExtendedImage.network(
           _imageUrl[index],
           fit: BoxFit.fitWidth,
+          cache: true,
         ),
       ));
     }
