@@ -26,7 +26,7 @@ class _PersonalPageState extends State<PersonalPage> {
     // TODO: Get personalPageInfo using widget.userId
     super.initState();
     // _isSelf = false;
-    _isSelf = _personalPageInfo.userId == currentUserId;
+    _isSelf = widget.userId == currentUserId;
   }
 
   @override

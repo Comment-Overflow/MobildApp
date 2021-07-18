@@ -53,7 +53,6 @@ dependencies:
   provider: ^5.0.0
   toggle_switch: ^1.2.0
   like_button: ^2.0.2
-  
 
 dev_dependencies:
   flutter_test:

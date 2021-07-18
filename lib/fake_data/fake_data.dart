@@ -121,7 +121,7 @@ final searchHistory = List<String>.filled(20, "aaaaaaaaaaaaaaaaaaaaaaaaaaaa");
 final users = List<UserCardInfo>.filled(
   2,
   UserCardInfo(
-    _userInfo.userId,
+    3,
     "江湖骗子",
     _userInfo.avatarUrl,
     "This is a long long long long long long long long long long long description",
@@ -134,7 +134,7 @@ final users = List<UserCardInfo>.filled(
   ..addAll(List<UserCardInfo>.filled(
     2,
     UserCardInfo(
-      _userInfo.userId,
+      4,
       "很长很长很长很长很长很长的用户名",
       _userInfo.avatarUrl,
       "这是一段很长很长很长很长很长很长很长很长很长很长很长很长很长很长的个人描述",
@@ -147,7 +147,7 @@ final users = List<UserCardInfo>.filled(
   ..addAll(List<UserCardInfo>.filled(
     2,
     UserCardInfo(
-      _userInfo.userId,
+      5,
       "xx01cyx",
       _userInfo.avatarUrl,
       "This is a long long long long long long long long long long long description",
