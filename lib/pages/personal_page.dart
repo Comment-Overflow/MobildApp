@@ -10,9 +10,11 @@ import 'package:flutter/material.dart';
 import 'package:toggle_switch/toggle_switch.dart';
 
 class PersonalPage extends StatefulWidget {
-  final int userId;
+  final int _userId;
+  final bool _fromCard;
 
-  const PersonalPage(this.userId, {Key? key}) : super(key: key);
+  const PersonalPage(this._userId, this._fromCard, {Key? key})
+      : super(key: key);
 
   @override
   _PersonalPageState createState() => _PersonalPageState();
@@ -27,7 +29,7 @@ class _PersonalPageState extends State<PersonalPage> {
     // TODO: Get personalPageInfo using widget.userId
     super.initState();
     // _isSelf = false;
-    _isSelf = widget.userId == currentUserId;
+    _isSelf = widget._userId == currentUserId;
   }
 
   @override
@@ -41,12 +43,8 @@ class _PersonalPageState extends State<PersonalPage> {
           title,
           style: CustomStyles.pageTitleStyle,
         ),
-        actions: [
-          _isSelf
-              ? _buildDropDownMenu()
-              : Container()
-        ],
-        automaticallyImplyLeading: false,
+        actions: [_isSelf ? _buildDropDownMenu() : Container()],
+        automaticallyImplyLeading: widget._fromCard,
       ),
       body: NestedScrollView(
         physics: NeverScrollableScrollPhysics(),
