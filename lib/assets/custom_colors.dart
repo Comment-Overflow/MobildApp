@@ -12,7 +12,7 @@ class CustomColors {
   static const profileSettingInputGery = Color(0x1f000000);
   static const messageBoxError = Colors.redAccent;
   static const messageBoxInfo = Colors.blue;
-  static const messageBoxSuccess = Colors.lightBlue;
+  static const messageBoxSuccess = Colors.blueAccent;
   static const messageBoxText = Colors.blueGrey;
   static const lightBlue = Color(0xFF49BAFF);
 }

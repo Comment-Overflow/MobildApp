@@ -34,7 +34,6 @@ class _AdaptiveRefresherState extends State<AdaptiveRefresher> {
 
   @override
   void didUpdateWidget(covariant AdaptiveRefresher oldWidget) {
-    print('did update');
     super.didUpdateWidget(oldWidget);
   }
 
