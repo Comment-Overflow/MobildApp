@@ -46,7 +46,7 @@ class NotificationButtonList extends StatelessWidget {
           ),
           Expanded(
             flex: 25,
-            child: MultiWidgetButton(
+            child: MultipleWidgetButton(
               RouteGenerator.generateRoute(RouteSettings(
                 name: RouteGenerator.replyMeRoute,
               )),
