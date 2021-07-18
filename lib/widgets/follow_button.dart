@@ -15,69 +15,15 @@ class FollowButton extends StatefulWidget {
 }
 
 class _FollowButtonState extends State<FollowButton> {
-  FollowStatus followStatus;
+  FollowStatus _followStatus;
 
-  _FollowButtonState(FollowStatus followStatus) : followStatus = followStatus;
+  _FollowButtonState(FollowStatus followStatus) : _followStatus = followStatus;
 
   @override
   Widget build(BuildContext context) {
-    final Row notFollowedByMeText = Row(
-      mainAxisSize: MainAxisSize.min,
-      children: <Widget>[
-        CustomStyles.getDefaultPlusIcon(),
-        Text("关注", style: TextStyle(color: Colors.blue)),
-      ],
-    );
-
-    final Row followedByMeText = Row(
-      mainAxisSize: MainAxisSize.min,
-      children: <Widget>[
-        CustomStyles.getDefaultTickIcon(),
-        Text(" 已关注", style: TextStyle(color: Colors.white)),
-      ],
-    );
-
-    final Row bidirectionalFollowText = Row(
-      mainAxisSize: MainAxisSize.min,
-      children: <Widget>[
-        CustomStyles.getDefaultBidirectionalFollowIcon(),
-        Text(" 相互关注", style: TextStyle(color: Colors.white)),
-      ],
-    );
-
-    final ButtonStyle addFollowButtonStyle = ButtonStyle(
-      foregroundColor:
-          MaterialStateProperty.all<Color>(Theme.of(context).accentColor),
-      backgroundColor:
-          MaterialStateProperty.all<Color>(Theme.of(context).buttonColor),
-      overlayColor: MaterialStateProperty.resolveWith<Color>(
-        (Set<MaterialState> states) {
-          if (states.contains(MaterialState.focused) ||
-              states.contains(MaterialState.pressed))
-            return Theme.of(context).buttonColor;
-          return Theme.of(context).primaryColor;
-        },
-      ),
-    );
-
-    final ButtonStyle hasFollowedButtonStyle = ButtonStyle(
-      foregroundColor:
-          MaterialStateProperty.all<Color>(Theme.of(context).disabledColor),
-      backgroundColor:
-          MaterialStateProperty.all<Color>(Theme.of(context).disabledColor),
-      overlayColor: MaterialStateProperty.resolveWith<Color>(
-        (Set<MaterialState> states) {
-          if (states.contains(MaterialState.focused) ||
-              states.contains(MaterialState.pressed))
-            return Theme.of(context).buttonColor;
-          return Theme.of(context).primaryColor;
-        },
-      ),
-    );
-
     okCallback() {
       setState(() {
-        followStatus = FollowStatus.none;
+        _followStatus = FollowStatus.none;
       });
       Navigator.of(context).pop();
     }
@@ -86,17 +32,17 @@ class _FollowButtonState extends State<FollowButton> {
       Navigator.of(context).pop();
     }
 
-    return Container(
-      alignment: Alignment.center,
+    return SizedBox(
+      height: Constants.defaultTextButtonHeight,
       child: TextButton(
-        child: followStatus == FollowStatus.followedByMe
-            ? followedByMeText
-            : (followStatus == FollowStatus.both
-                ? bidirectionalFollowText
-                : notFollowedByMeText),
+        child: _followStatus == FollowStatus.followedByMe
+            ? _buildFollowedByMeText()
+            : (_followStatus == FollowStatus.both
+                ? _buildBidirectionalFollowText()
+                : _buildNotFollowedByMeText()),
         onPressed: () {
-          if (followStatus == FollowStatus.followedByMe ||
-              followStatus == FollowStatus.both) {
+          if (_followStatus == FollowStatus.followedByMe ||
+              _followStatus == FollowStatus.both) {
             showDialog(
                 context: context,
                 builder: (context) {
@@ -110,14 +56,89 @@ class _FollowButtonState extends State<FollowButton> {
                 });
           } else {
             setState(() {
-              followStatus = FollowStatus.followedByMe;
+              _followStatus = FollowStatus.followedByMe;
             });
           }
         },
-        style: followStatus == FollowStatus.followedByMe ||
-                followStatus == FollowStatus.both
-            ? hasFollowedButtonStyle
-            : addFollowButtonStyle,
+        style: _followStatus == FollowStatus.followedByMe ||
+                _followStatus == FollowStatus.both
+            ? _buildHasFollowedButtonStyle()
+            : _buildAddFollowButtonStyle(),
+      ),
+    );
+  }
+
+  Widget _buildNotFollowedByMeText() {
+    return Row(
+      mainAxisSize: MainAxisSize.min,
+      children: <Widget>[
+        CustomStyles.getDefaultPlusIcon(),
+        Text("关注",
+            style: TextStyle(
+                fontSize: Constants.defaultButtonTextSize, color: Colors.blue)),
+      ],
+    );
+  }
+
+  Widget _buildFollowedByMeText() {
+    return Row(
+      mainAxisSize: MainAxisSize.min,
+      children: <Widget>[
+        CustomStyles.getDefaultTickIcon(),
+        Text(" 已关注",
+            style: TextStyle(
+                fontSize: Constants.defaultButtonTextSize,
+                color: Colors.white)),
+      ],
+    );
+  }
+
+  Widget _buildBidirectionalFollowText() {
+    return Row(
+      mainAxisSize: MainAxisSize.min,
+      children: <Widget>[
+        CustomStyles.getDefaultBidirectionalFollowIcon(),
+        Text(" 相互关注",
+            style: TextStyle(
+                fontSize: Constants.defaultButtonTextSize,
+                color: Colors.white)),
+      ],
+    );
+  }
+
+  ButtonStyle _buildAddFollowButtonStyle() {
+    return ButtonStyle(
+      padding: MaterialStateProperty.all<EdgeInsetsGeometry>(
+          EdgeInsets.symmetric(horizontal: Constants.defaultTextButtonPadding)),
+      foregroundColor: MaterialStateProperty.all<Color>(Colors.blueAccent),
+      backgroundColor:
+          MaterialStateProperty.all<Color>(Colors.blue.withOpacity(0.12)),
+      overlayColor: MaterialStateProperty.resolveWith<Color>(
+        (Set<MaterialState> states) {
+          if (states.contains(MaterialState.focused) ||
+              states.contains(MaterialState.pressed))
+            return Colors.blue.withOpacity(0.12);
+          return Theme.of(context).primaryColor;
+        },
+      ),
+    );
+  }
+
+  ButtonStyle _buildHasFollowedButtonStyle() {
+    return ButtonStyle(
+      padding: MaterialStateProperty.all<EdgeInsetsGeometry>(
+          EdgeInsets.symmetric(horizontal: Constants.defaultTextButtonPadding)),
+      foregroundColor:
+          MaterialStateProperty.all<Color>(Colors.grey.withOpacity(0.5)),
+      backgroundColor:
+          MaterialStateProperty.all<Color>(Colors.grey.withOpacity(0.5)),
+      overlayColor: MaterialStateProperty.resolveWith<Color>(
+        (Set<MaterialState> states) {
+          if (states.contains(MaterialState.focused) ||
+              states.contains(MaterialState.pressed))
+            return Colors.blue.withOpacity(0.12);
+          return Theme.of(context).primaryColor;
+        },
       ),
     );
   }

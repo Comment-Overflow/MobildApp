@@ -6,7 +6,9 @@ class UserInfo {
   final String _avatarUrl;
 
   int get userId => _userId;
+
   String get userName => _userName;
+
   String get avatarUrl => _avatarUrl;
 
   UserInfo(this._userId, this._userName, this._avatarUrl);
@@ -19,8 +21,11 @@ class UserCardInfo extends UserInfo {
   final FollowStatus _followStatus;
 
   String get brief => _brief;
+
   int get commentCount => _commentCount;
+
   int get followerCount => _followerCount;
+
   FollowStatus get followStatus => _followStatus;
 
   UserCardInfo(userId, userName, avatarUrl, this._brief, this._commentCount,
@@ -28,30 +33,28 @@ class UserCardInfo extends UserInfo {
       : super(userId, userName, avatarUrl);
 }
 
-class PersonalPageInfo extends UserInfo {
+class PersonalPageInfo extends UserCardInfo {
   final Sex _sex;
-  final String _brief;
-  final int _commentCount;
   final int _approvalCount;
-  final int _followerCount;
   final int _followingCount;
 
   Sex get sex => _sex;
-  String get brief => _brief;
-  int get commentCount => _commentCount;
+
   int get approvalCount => _approvalCount;
-  int get followerCount => _followerCount;
+
   int get followingCount => _followingCount;
 
   PersonalPageInfo(
       userId,
       userName,
       avatarUrl,
+      brief,
+      commentCount,
+      followerCount,
+      followStatus,
       this._sex,
-      this._brief,
-      this._commentCount,
       this._approvalCount,
-      this._followerCount,
       this._followingCount)
-      : super(userId, userName, avatarUrl);
+      : super(userId, userName, avatarUrl, brief, commentCount, followerCount,
+            followStatus);
 }

@@ -43,6 +43,9 @@ class Constants {
   /// Default vertical padding of chat message.
   static const defaultChatMessagePadding = 4.0;
 
+  /// Default font size in chat room.
+  static const defaultChatRoomFontSize = 14.0;
+
   /// Default max chat bubble width.
   static const defaultMaxBubbleWidth = 200.0;
 
@@ -61,7 +64,7 @@ class Constants {
   static const defaultPersonalPageAvatarPadding = 5.0;
 
   /// Default sex icon size on personal page.
-  static const defaultPersonalPageHeaderTitleSize = 26.0;
+  static const defaultPersonalPageHeaderTitleSize = 22.5;
 
   /// Default size of personal page header footer text.
   static const defaultPersonalPageHeaderFooterSize = 14.0;
@@ -74,6 +77,12 @@ class Constants {
 
   /// Default floating action button size.
   static const defaultFabIconSize = 30.0;
+
+  static const defaultTextButtonHeight = 28.0;
+
+  static const defaultTextButtonPadding = 8.0;
+
+  static const defaultButtonTextSize = 12.0;
 
   /// Max image number of a comment.
   static const maxImageNumber = 9;
@@ -132,6 +141,5 @@ enum CommentType {
 }
 
 enum Setting {
-  editInfo,
   signOut,
 }

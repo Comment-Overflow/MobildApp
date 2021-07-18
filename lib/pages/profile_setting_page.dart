@@ -75,7 +75,7 @@ class _ProfileSettingPageState extends State<ProfileSettingPage> {
   @override
   void dispose() {
     _introductionController.dispose();
-    _introductionController.dispose();
+    _nicknameController.dispose();
     super.dispose();
   }
 
@@ -87,7 +87,7 @@ class _ProfileSettingPageState extends State<ProfileSettingPage> {
           title: new Text("编辑资料"),
           leading: IconButton(
             icon: Icon(Icons.arrow_back),
-            onPressed: () => {Navigator.of(context).pushNamed('/')},
+            onPressed: () => {Navigator.of(context).pop()},
           ),
           actions: [
             new IconButton(
