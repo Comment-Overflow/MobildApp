@@ -1,13 +1,12 @@
 import 'package:comment_overflow/assets/constants.dart';
 import 'package:comment_overflow/assets/custom_colors.dart';
 import 'package:comment_overflow/assets/custom_styles.dart';
+import 'package:comment_overflow/utils/message_box.dart';
 import 'package:comment_overflow/utils/my_image_picker.dart';
 import 'package:comment_overflow/widgets/user_avatar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter/widgets.dart';
-import 'package:top_snackbar_flutter/top_snack_bar.dart';
-import 'package:top_snackbar_flutter/custom_snack_bar.dart';
 import 'package:wechat_assets_picker/wechat_assets_picker.dart';
 
 class ProfileSettingPage extends StatefulWidget {
@@ -34,6 +33,7 @@ class _ProfileSettingPageState extends State<ProfileSettingPage> {
   late TextEditingController _introductionController;
   late TextEditingController _nicknameController;
   final List<AssetEntity> _assets = [];
+  late MessageBox messageBox;
 
   static const _itemDivider = Divider(
     height: 10,
@@ -75,33 +75,29 @@ class _ProfileSettingPageState extends State<ProfileSettingPage> {
   @override
   void dispose() {
     _introductionController.dispose();
-    _introductionController.dispose();
+    _nicknameController.dispose();
     super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: new AppBar(
-          elevation: Constants.defaultAppBarElevation,
-          title: new Text("编辑资料"),
-          leading: IconButton(
-            icon: Icon(Icons.arrow_back),
-            onPressed: () => {Navigator.of(context).pushNamed('/')},
-          ),
-          actions: [
-            new IconButton(
-                icon: Icon(Icons.save),
-                onPressed: () {
-                  if (_isNicknameValid && _isIntroductionValid) {
-                    showTopSnackBar(
-                      context,
-                      CustomSnackBar.info(
-                        message: "保存成功",
-                      ),
-                    );
-                  }
-                })
+      appBar: new AppBar(
+        title: new Text("编辑资料"),
+        leading: IconButton(icon:Icon(Icons.arrow_back),
+          onPressed: () => {
+            Navigator.of(context).pop()
+          },
+        ),
+        actions: [
+          new IconButton(
+              icon: Icon(Icons.save),
+              onPressed: (){
+                if(_isNicknameValid && _isIntroductionValid){
+                  MessageBox.showToast(msg: "保存成功", messageBoxType: MessageBoxType.Success);
+                  Navigator.of(context).pop();
+                }
+              })
           ],
         ),
         body: _buildBody());
@@ -144,7 +140,6 @@ class _ProfileSettingPageState extends State<ProfileSettingPage> {
                   // maxLength: 10,
                   decoration: InputDecoration(
                     hintText: '昵称（不超过10个字）',
-                    errorText: _isNicknameValid ? null : "昵称不可为空",
                     border: null,
                     focusedBorder: InputBorder.none,
                     enabledBorder: InputBorder.none,
@@ -158,6 +153,9 @@ class _ProfileSettingPageState extends State<ProfileSettingPage> {
                           ? _isNicknameValid = false
                           : _isNicknameValid = true;
                     });
+                    if(!_isNicknameValid){
+                      MessageBox.showToast(msg: "用户名不能为空", messageBoxType: MessageBoxType.Error);
+                    }
                   }),
               // ),
             ),

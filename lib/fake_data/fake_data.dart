@@ -35,14 +35,16 @@ final UserCardInfo _userCardInfo = UserCardInfo(
     FollowStatus.followedByMe);
 final PersonalPageInfo personalPageInfo = PersonalPageInfo(
     0,
+    // "很长的十个字的用户名",
     "Gun9niR",
     "http://img8.zol.com.cn/bbs/upload/23765/23764201.jpg",
-    Sex.male,
     "这是一段三十个字的个人简介！！这是一段三十个字的个人简介！！",
     // "I want a simple life.",
     12,
-    453,
     23567,
+    FollowStatus.none,
+    Sex.male,
+    128538,
     21);
 final Quote _quoteWithUserName = Quote("Gun9niR", _content);
 final Quote _quoteWithPostTitle = Quote(_title, _content);
@@ -123,7 +125,7 @@ final searchHistory = List<String>.filled(20, "aaaaaaaaaaaaaaaaaaaaaaaaaaaa");
 final users = List<UserCardInfo>.filled(
   2,
   UserCardInfo(
-    _userInfo.userId,
+    3,
     "江湖骗子",
     _userInfo.avatarUrl,
     "This is a long long long long long long long long long long long description",
@@ -136,7 +138,7 @@ final users = List<UserCardInfo>.filled(
   ..addAll(List<UserCardInfo>.filled(
     2,
     UserCardInfo(
-      _userInfo.userId,
+      4,
       "很长很长很长很长很长很长的用户名",
       _userInfo.avatarUrl,
       "这是一段很长很长很长很长很长很长很长很长很长很长很长很长很长很长的个人描述",
@@ -149,7 +151,7 @@ final users = List<UserCardInfo>.filled(
   ..addAll(List<UserCardInfo>.filled(
     2,
     UserCardInfo(
-      _userInfo.userId,
+      5,
       "xx01cyx",
       _userInfo.avatarUrl,
       "This is a long long long long long long long long long long long description",
@@ -199,11 +201,11 @@ final recentChats = List<Chat>.filled(
   ));
 
 List<Message> messages = [
-  Message(MessageType.Text, DateTime.now(), _userInfo, _cyxInfo, true,
-      "中午吃啥中午吃啥中午吃啥中午吃啥中午吃啥中午吃啥中午吃啥中午吃啥中午吃啥中午吃啥中午吃啥中午吃啥"),
   Message(MessageType.Text, DateTime.now(), _cyxInfo, _userInfo, true, "好问题"),
   Message(MessageType.Image, DateTime.now(), _userInfo, _cyxInfo, true,
       "http://img8.zol.com.cn/bbs/upload/23765/23764201.jpg"),
+  Message(MessageType.Text, DateTime.now(), _userInfo, _cyxInfo, true,
+      "中午吃啥中午吃啥中午吃啥中午吃啥中午吃啥中午吃啥中午吃啥中午吃啥中午吃啥中午吃啥中午吃啥中午吃啥"),
 ];
 
 final approvalRecords = List<ApprovalRecord>.filled(

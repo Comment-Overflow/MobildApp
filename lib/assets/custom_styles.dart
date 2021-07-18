@@ -53,7 +53,7 @@ class CustomStyles {
 
   static const userNameStyle = TextStyle(
     fontWeight: FontWeight.bold,
-    fontSize: 18,
+    fontSize: 16.5,
   );
   static const userBriefStyle = TextStyle(
     color: Colors.grey,
@@ -81,13 +81,17 @@ class CustomStyles {
     fontWeight: FontWeight.bold,
     fontSize: Constants.defaultPersonalPageHeaderTitleSize,
   );
+  static const personalPageUserBriefStyle = TextStyle(
+    color: Colors.grey,
+    fontSize: 13.5,
+  );
   static const personalPageButtonNumberStyle = TextStyle(
     // fontWeight: FontWeight.bold,
-    fontSize: 23.0,
+    fontSize: 20.0,
   );
   static const personalPageButtonTextStyle = TextStyle(
     // fontWeight: FontWeight.bold,
-    fontSize: 15.0,
+    fontSize: 14.0,
   );
 
   static const profileSettingItemTitleStyle = TextStyle(
@@ -136,16 +140,16 @@ class CustomStyles {
       Icon(Icons.list, color: color, size: size);
 
   /// Default icon for plus.
-  static Icon getDefaultPlusIcon({size = 18.0, color = Colors.blue}) =>
+  static Icon getDefaultPlusIcon({size = 14.0, color = Colors.blue}) =>
       Icon(Icons.add, color: color, size: size);
 
   /// Default icon for tick.
-  static Icon getDefaultTickIcon({size = 18.0, color = Colors.white}) =>
+  static Icon getDefaultTickIcon({size = 14.0, color = Colors.white}) =>
       Icon(Icons.check, color: color, size: size);
 
   /// Default icon for bidirectional following relationship.
   static Icon getDefaultBidirectionalFollowIcon(
-          {size = 16.0, color = Colors.white}) =>
+          {size = 12.0, color = Colors.white}) =>
       Icon(CupertinoIcons.arrow_right_arrow_left, color: color, size: size);
 
   /// Default icon for followers (filled).

@@ -1,6 +1,7 @@
 import 'package:comment_overflow/assets/constants.dart';
 import 'package:comment_overflow/model/post.dart';
 import 'package:comment_overflow/model/routing_dto/image_gallery_dto.dart';
+import 'package:comment_overflow/model/routing_dto/personal_page_access_dto.dart';
 import 'package:comment_overflow/model/user_info.dart';
 import 'package:comment_overflow/pages/login_page.dart';
 import 'package:comment_overflow/pages/new_post_page.dart';
@@ -77,7 +78,10 @@ class RouteGenerator {
       case notificationRoute:
         return MaterialPageRoute(builder: (_) => NotificationPage());
       case personalRoute:
-        return MaterialPageRoute(builder: (_) => PersonalPage(args as int));
+        return MaterialPageRoute(builder: (_) {
+          final arguments = args as PersonalPageAccessDto;
+          return PersonalPage(arguments.userId, arguments.fromCard);
+        });
       case homeRoute:
       default:
         return MaterialPageRoute(builder: (_) => PagesContainer());

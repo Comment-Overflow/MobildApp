@@ -3,8 +3,8 @@ import 'package:comment_overflow/assets/custom_colors.dart';
 import 'package:comment_overflow/assets/custom_styles.dart';
 import 'package:comment_overflow/model/chat.dart';
 import 'package:comment_overflow/pages/chat_room_page.dart';
+import 'package:comment_overflow/utils/utils.dart';
 import 'package:comment_overflow/widgets/user_avatar.dart';
-import 'package:dart_date/dart_date.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
@@ -14,14 +14,6 @@ class ChatCard extends StatelessWidget {
   final VoidCallback _deleteChat;
   const ChatCard(this._chat, this._deleteChat, {Key? key}) : super(key: key);
 
-  String getDisplayTime() {
-    if (_chat.time.isToday)
-      return _chat.time.format('HH:mm');
-    else if (_chat.time.isYesterday)
-      return '昨天';
-    else
-      return _chat.time.format('yyyy-MM-dd');
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -107,7 +99,7 @@ class ChatCard extends StatelessWidget {
                 Expanded(
                   flex: 28,
                   child: Text(
-                    getDisplayTime(),
+                    getDisplayTime(_chat.time),
                     style: CustomStyles.lastChatTimeTextStyle,
                   ),
                 ),

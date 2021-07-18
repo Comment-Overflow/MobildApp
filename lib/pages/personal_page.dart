@@ -10,9 +10,11 @@ import 'package:flutter/material.dart';
 import 'package:toggle_switch/toggle_switch.dart';
 
 class PersonalPage extends StatefulWidget {
-  final int userId;
+  final int _userId;
+  final bool _fromCard;
 
-  const PersonalPage(this.userId, {Key? key}) : super(key: key);
+  const PersonalPage(this._userId, this._fromCard, {Key? key})
+      : super(key: key);
 
   @override
   _PersonalPageState createState() => _PersonalPageState();
@@ -26,7 +28,8 @@ class _PersonalPageState extends State<PersonalPage> {
   void initState() {
     // TODO: Get personalPageInfo using widget.userId
     super.initState();
-    _isSelf = _personalPageInfo.userId == currentUserId;
+    // _isSelf = false;
+    _isSelf = widget._userId == currentUserId;
   }
 
   @override
@@ -40,29 +43,17 @@ class _PersonalPageState extends State<PersonalPage> {
           title,
           style: CustomStyles.pageTitleStyle,
         ),
-        actions: [
-          _isSelf
-              ? _buildDropDownMenu()
-              : IconButton(
-                  icon: CustomStyles.getDefaultMailIcon(),
-                  onPressed: () {
-                    // TODO: add edit page route
-                  })
-        ],
-        automaticallyImplyLeading: false,
+        actions: [_isSelf ? _buildDropDownMenu() : Container()],
+        automaticallyImplyLeading: widget._fromCard,
       ),
       body: NestedScrollView(
         physics: NeverScrollableScrollPhysics(),
         headerSliverBuilder: (context, value) {
           return [
-            SliverAppBar(
-              automaticallyImplyLeading: false,
-              pinned: false,
-              floating: false,
-              collapsedHeight: Constants.defaultPersonalProfileHeight,
-              expandedHeight: Constants.defaultPersonalProfileHeight,
-              backgroundColor: Theme.of(context).scaffoldBackgroundColor,
-              flexibleSpace: PersonalProfileCard(_personalPageInfo),
+            SliverToBoxAdapter(
+              child: Container(
+                  color: Colors.white,
+                  child: PersonalProfileCard(_personalPageInfo, _isSelf)),
             ),
             SliverPersistentHeader(
               floating: true,
@@ -86,28 +77,10 @@ class _PersonalPageState extends State<PersonalPage> {
     return PopupMenuButton<Setting>(
       padding: const EdgeInsets.all(7.0),
       onSelected: (Setting setting) {
-        switch (setting.index) {
-          case 0:
-            Navigator.of(context).pushNamed(RouteGenerator.profileSettingRoute);
-            break;
-          case 1:
-            Navigator.of(context).pushNamedAndRemoveUntil(
-                RouteGenerator.loginRoute, (route) => false);
-            break;
-        }
+        Navigator.of(context).pushNamedAndRemoveUntil(
+            RouteGenerator.loginRoute, (route) => false);
       },
       itemBuilder: (BuildContext context) => [
-        PopupMenuItem(
-          value: Setting.editInfo,
-          child: Row(
-            children: [
-              CustomStyles.getDefaultEditIcon(),
-              SizedBox(width: 10.0),
-              Text("编辑个人资料"),
-            ],
-          ),
-        ),
-        PopupMenuDivider(),
         PopupMenuItem(
           value: Setting.signOut,
           child: Row(
@@ -147,7 +120,7 @@ class PersonalPostHeader extends SliverPersistentHeaderDelegate {
               fontSize: 12.0,
               borderWidth: 0.5,
               borderColor: [Colors.grey.withOpacity(0.8)],
-              activeBgColor: [Theme.of(context).accentColor.withOpacity(0.8)],
+              activeBgColor: [Theme.of(context).accentColor.withOpacity(0.9)],
               activeFgColor: Colors.white,
               inactiveBgColor: Colors.white,
               inactiveFgColor: Colors.grey,
@@ -186,23 +159,11 @@ class PersonalPostHeader extends SliverPersistentHeaderDelegate {
               itemBuilder: (BuildContext context) => [
                 PopupMenuItem(
                   value: 0,
-                  child: Row(
-                    children: [
-                      // CustomStyles.getDefaultEditIcon(),
-                      // SizedBox(width: 10.0),
-                      Text("查看帖子"),
-                    ],
-                  ),
+                  child: Text("查看帖子"),
                 ),
                 PopupMenuItem(
                   value: 1,
-                  child: Row(
-                    children: [
-                      // CustomStyles.getDefaultSignOutIcon(),
-                      // SizedBox(width: 10.0),
-                      Text("查看回复"),
-                    ],
-                  ),
+                  child: Text("查看回复"),
                 ),
               ],
             ),
@@ -222,20 +183,22 @@ class PersonalPostHeader extends SliverPersistentHeaderDelegate {
             vertical: Constants.defaultPersonalPageVerticalPadding * 0.7),
         child: Stack(
           children: [
-            Row(
-              mainAxisSize: MainAxisSize.max,
-              mainAxisAlignment: MainAxisAlignment.center,
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: [
-                Text(
-                  "帖子",
-                  // shrinkOffset.toString(),
-                  style: TextStyle(
-                    fontSize: 22.0,
-                    // fontWeight: FontWeight.bold,
+            Center(
+              child: Row(
+                mainAxisSize: MainAxisSize.max,
+                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  Text(
+                    "帖子",
+                    // shrinkOffset.toString(),
+                    style: TextStyle(
+                      fontSize: 19.0,
+                      // fontWeight: FontWeight.bold,
+                    ),
                   ),
-                ),
-              ],
+                ],
+              ),
             ),
             _onToggle == null ? _buildSelector() : _buildToggle(context),
           ],
