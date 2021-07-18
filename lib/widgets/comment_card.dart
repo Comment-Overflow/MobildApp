@@ -36,7 +36,8 @@ class _CommentCardState extends State<CommentCard> {
             left: Constants.defaultCardPadding,
             right: Constants.defaultCardPadding,
             top: Constants.defaultCardPadding,
-            bottom: Constants.defaultCardPadding / 4
+            bottom: widget._comment.floor == 0 ?
+                Constants.defaultCardPadding : Constants.defaultCardPadding / 4
           ),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
