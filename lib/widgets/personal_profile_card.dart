@@ -88,6 +88,7 @@ class PersonalProfileCard extends StatelessWidget {
                             style: CustomStyles.personalPageUserBriefStyle,
                           ),
                         ),
+                        SizedBox(height: 5.0),
                         Expanded(
                           flex: 35,
                           child: Column(
@@ -107,7 +108,7 @@ class PersonalProfileCard extends StatelessWidget {
           Padding(
             padding: EdgeInsets.fromLTRB(
                 15.0,
-                Constants.defaultPersonalPageVerticalPadding * 0.17,
+                Constants.defaultPersonalPageVerticalPadding * 0.4,
                 15.0,
                 Constants.defaultPersonalPageVerticalPadding * 1.25),
             child: Row(

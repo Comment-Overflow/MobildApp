@@ -13,10 +13,10 @@ class NotificationButtonList extends StatelessWidget {
   NotificationButtonList(this._buttonSize, {Key? key}) : super(key: key) {
     _notificationButtonTextStyle = TextStyle(
       fontSize: _buttonSize * 0.4,
-      fontWeight: FontWeight.bold,
+      fontWeight: FontWeight.w400,
       color: Colors.grey[800],
     );
-    _gap = SizedBox(height: _buttonSize * 0.15);
+    _gap = SizedBox(height: _buttonSize * 0.3);
   }
 
   @override

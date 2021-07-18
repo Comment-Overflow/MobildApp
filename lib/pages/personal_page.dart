@@ -47,6 +47,7 @@ class _PersonalPageState extends State<PersonalPage> {
         ),
         actions: [_isSelf ? _buildDropDownMenu() : Container()],
         automaticallyImplyLeading: widget._fromCard,
+        centerTitle: true,
       ),
       body: DefaultTabController(
         length: 3,

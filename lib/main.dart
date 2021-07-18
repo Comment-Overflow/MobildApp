@@ -21,9 +21,14 @@ class CommentOverflow extends StatelessWidget {
         primaryColor: Colors.white,
         accentColor: Colors.blueAccent,
         textButtonTheme: TextButtonThemeData(
-            style: TextButton.styleFrom(
-          primary: Colors.blueAccent,
-        )),
+          style: ButtonStyle(
+            overlayColor: MaterialStateProperty.all(Colors.transparent),
+            // Remove text button horizontal padding.
+            minimumSize: MaterialStateProperty.all(Size(1, 1)),
+            padding:
+                MaterialStateProperty.all(EdgeInsets.symmetric(vertical: 4.0)),
+          ),
+        ),
         buttonColor: Colors.blue.withOpacity(0.12),
         disabledColor: Colors.grey.withOpacity(0.5),
         secondaryHeaderColor: Colors.grey,

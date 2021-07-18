@@ -3,7 +3,7 @@ import 'package:flutter/widgets.dart';
 
 class CustomColors {
   static const lightGrey = Color(0xFFF6F6F6);
-  static final quoteCardBackground = Colors.grey[300];
+  static final quoteCardBackground = Colors.grey[200];
   static const UnreadChatRed = Color(0xFFD32F2F);
   static const thumbUpPink = Color(0xFFF06292);
   static const chatBubbleBlue = Color(0xFF9ABEF6);

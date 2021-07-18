@@ -15,17 +15,17 @@ class ImageGallery extends StatefulWidget {
   final List<String> imageUrl;
   final Axis scrollDirection;
 
-  ImageGallery({
-    required this.imageUrl,
-    this.loadingBuilder,
-    this.backgroundDecoration,
-    this.minScale,
-    this.maxScale,
-    this.initialIndex = 0,
-    this.scrollDirection = Axis.horizontal,
-    Key? key
-  }) : pageController = PageController(initialPage: initialIndex),
-       super(key: key);
+  ImageGallery(
+      {required this.imageUrl,
+      this.loadingBuilder,
+      this.backgroundDecoration,
+      this.minScale,
+      this.maxScale,
+      this.initialIndex = 0,
+      this.scrollDirection = Axis.horizontal,
+      Key? key})
+      : pageController = PageController(initialPage: initialIndex),
+        super(key: key);
 
   @override
   _ImageGalleryState createState() => _ImageGalleryState();
@@ -40,61 +40,62 @@ class _ImageGalleryState extends State<ImageGallery> {
     return Scaffold(
       appBar: _showBars ? _buildAppBar(context) : null,
       body: Container(
-        decoration: widget.backgroundDecoration,
-        constraints: BoxConstraints.expand(
-          height: MediaQuery.of(context).size.height,
-        ),
-        child: GestureDetector(
-          onTap: () => setState(() {_showBars = !_showBars;}),
-          child: Stack(
-            alignment: Alignment.bottomRight,
-            children: <Widget>[
-              PhotoViewGallery.builder(
-                scrollPhysics: const BouncingScrollPhysics(),
-                builder: _buildItem,
-                itemCount: widget.imageUrl.length,
-                loadingBuilder: widget.loadingBuilder,
-                backgroundDecoration: widget.backgroundDecoration,
-                pageController: widget.pageController,
-                onPageChanged: _onPageChanged,
-                scrollDirection: widget.scrollDirection,
-              ),
-            ],
+          decoration: widget.backgroundDecoration,
+          constraints: BoxConstraints.expand(
+            height: MediaQuery.of(context).size.height,
           ),
-        )
-      ),
+          child: GestureDetector(
+            onTap: () => setState(() {
+              _showBars = !_showBars;
+            }),
+            child: Stack(
+              alignment: Alignment.bottomRight,
+              children: <Widget>[
+                PhotoViewGallery.builder(
+                  scrollPhysics: const BouncingScrollPhysics(),
+                  builder: _buildItem,
+                  itemCount: widget.imageUrl.length,
+                  loadingBuilder: widget.loadingBuilder,
+                  backgroundDecoration: widget.backgroundDecoration,
+                  pageController: widget.pageController,
+                  onPageChanged: _onPageChanged,
+                  scrollDirection: widget.scrollDirection,
+                ),
+              ],
+            ),
+          )),
       bottomNavigationBar: _showBars ? _buildBottomBar() : null,
     );
   }
 
-  AppBar _buildAppBar (BuildContext context) => AppBar(
-    title: Text("Gallery"),
-    leading: GestureDetector(
-      onTap: () {
-        Navigator.pop(context);
-      },
-      child: Icon(Icons.arrow_back),
-    ),
-    actions: <Widget>[
-      Padding(
-        padding: const EdgeInsets.all(Constants.defaultCardPadding / 2),
-        child: ElevatedButton(
-          child: Text("保存"),
-          onPressed: () {},
+  AppBar _buildAppBar(BuildContext context) => AppBar(
+        title: Text("浏览图片"),
+        leading: GestureDetector(
+          onTap: () {
+            Navigator.pop(context);
+          },
+          child: Icon(Icons.arrow_back),
         ),
-      )
-    ],
-  );
+        actions: <Widget>[
+          Padding(
+            padding: const EdgeInsets.all(Constants.defaultCardPadding / 2),
+            child: ElevatedButton(
+              child: Text("保存"),
+              onPressed: () {},
+            ),
+          )
+        ],
+      );
 
-  BottomAppBar _buildBottomBar () => BottomAppBar(
-    child: Container(
-      padding: const EdgeInsets.all(20.0),
-      child: Text(
-        "Image ${currentIndex + 1} / ${widget.imageUrl.length}",
-        style: CustomStyles.userNameStyle,
-      ),
-    ),
-  );
+  BottomAppBar _buildBottomBar() => BottomAppBar(
+        child: Container(
+          padding: const EdgeInsets.all(20.0),
+          child: Text(
+            "第 ${currentIndex + 1} / ${widget.imageUrl.length} 张图片",
+            style: CustomStyles.userNameStyle,
+          ),
+        ),
+      );
 
   void _onPageChanged(int index) {
     setState(() {

@@ -7,7 +7,7 @@ import 'package:comment_overflow/assets/custom_colors.dart';
 
 class MessageBox {
   static const MethodChannel _channel =
-  const MethodChannel('PonnamKarthik/fluttertoast');
+      const MethodChannel('PonnamKarthik/fluttertoast');
 
   static Future<bool?> cancel() async {
     bool? res = await _channel.invokeMethod("cancel");
@@ -22,9 +22,9 @@ class MessageBox {
     webBgColor: "linear-gradient(to right, #00b09b, #96c93d)",
     webPosition: "right",
   }) async {
-    Color textColor = Colors.black;
+    Color textColor = Colors.white;
     late Color backgroundColor;
-    switch (messageBoxType){
+    switch (messageBoxType) {
       case MessageBoxType.Info:
         backgroundColor = CustomColors.messageBoxInfo;
         break;
@@ -37,7 +37,7 @@ class MessageBox {
     }
     String toast = "short";
 
-    String gravityToast = "top";
+    String gravityToast = "center";
 
     final Map<String, dynamic> params = <String, dynamic>{
       'msg': msg,

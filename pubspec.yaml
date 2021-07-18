@@ -48,7 +48,7 @@ dependencies:
   flutter_login:
     git:
       url: https://github.com/Gun9niR/flutter_login.git
-      ref: 63f952a84e5e51ee4342352b39e18a13975a03e2
+      ref: d4fb5e90aa6ce2f366444248763f225b47ffbe12
   wechat_assets_picker: ^5.5.8
   extended_image: ^4.1.0
   provider: ^5.0.0

@@ -18,7 +18,7 @@ class Constants {
   static const defaultAvatarInCommentSize = 24.0;
 
   /// Default size of buttons in notification page.
-  static const defaultNotificationButtonSize = 38.0;
+  static const defaultNotificationButtonSize = 32.0;
 
   /// Default size height of a chat card.
   static const defaultChatCardHeight = 80.0;
