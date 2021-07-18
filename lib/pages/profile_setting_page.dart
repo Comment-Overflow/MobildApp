@@ -7,7 +7,6 @@ import 'package:comment_overflow/widgets/user_avatar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter/widgets.dart';
-import 'package:fluttertoast/fluttertoast.dart';
 import 'package:wechat_assets_picker/wechat_assets_picker.dart';
 
 class ProfileSettingPage extends StatefulWidget {
@@ -87,7 +86,7 @@ class _ProfileSettingPageState extends State<ProfileSettingPage> {
         title: new Text("编辑资料"),
         leading: IconButton(icon:Icon(Icons.arrow_back),
           onPressed: () => {
-            Navigator.of(context).pushNamed('/')
+            Navigator.of(context).pop()
           },
         ),
         actions: [
@@ -96,7 +95,7 @@ class _ProfileSettingPageState extends State<ProfileSettingPage> {
               onPressed: (){
                 if(_isNicknameValid && _isIntroductionValid){
                   MessageBox.showToast(msg: "保存成功", messageBoxType: MessageBoxType.Success);
-                  Navigator.of(context).pushNamed('/');
+                  Navigator.of(context).pop();
                 }
               })
           ],
