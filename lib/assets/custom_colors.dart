@@ -1,3 +1,4 @@
+import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 
 class CustomColors {
@@ -8,4 +9,8 @@ class CustomColors {
   static const femalePink = Color(0xFFB83563);
   static const maleBlue = Color(0xFF1B86D9);
   static const profileSettingInputGery = Color(0x1f000000);
+  static const messageBoxError = Colors.redAccent;
+  static const messageBoxInfo = Colors.blue;
+  static const messageBoxSuccess = Colors.lightBlue;
+  static const messageBoxText = Colors.blueGrey;
 }

@@ -2,13 +2,13 @@
 import 'package:comment_overflow/assets/constants.dart';
 import 'package:comment_overflow/assets/custom_colors.dart';
 import 'package:comment_overflow/assets/custom_styles.dart';
+import 'package:comment_overflow/utils/message_box.dart';
 import 'package:comment_overflow/utils/my_image_picker.dart';
 import 'package:comment_overflow/widgets/user_avatar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter/widgets.dart';
-import 'package:top_snackbar_flutter/top_snack_bar.dart';
-import 'package:top_snackbar_flutter/custom_snack_bar.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:wechat_assets_picker/wechat_assets_picker.dart';
 
 class ProfileSettingPage extends StatefulWidget {
@@ -37,6 +37,7 @@ class _ProfileSettingPageState extends State<ProfileSettingPage> {
   late TextEditingController _introductionController;
   late TextEditingController _nicknameController;
   final List<AssetEntity> _assets = [];
+  late MessageBox messageBox;
 
   static const _itemDivider = Divider(
     height: 10,
@@ -99,12 +100,8 @@ class _ProfileSettingPageState extends State<ProfileSettingPage> {
               icon: Icon(Icons.save),
               onPressed: (){
                 if(_isNicknameValid && _isIntroductionValid){
-                  showTopSnackBar(
-                    context,
-                    CustomSnackBar.info(
-                      message: "保存成功",
-                    ),
-                  );
+                  MessageBox.showToast(msg: "保存成功", messageBoxType: MessageBoxType.Success);
+                  Navigator.of(context).pushNamed('/');
                 }
               })
           ],
@@ -154,7 +151,6 @@ class _ProfileSettingPageState extends State<ProfileSettingPage> {
                     // maxLength: 10,
                     decoration: InputDecoration(
                       hintText: '昵称（不超过10个字）',
-                      errorText: _isNicknameValid ? null : "昵称不可为空",
                       border: null,
                       focusedBorder: InputBorder.none,
                       enabledBorder: InputBorder.none,
@@ -163,6 +159,17 @@ class _ProfileSettingPageState extends State<ProfileSettingPage> {
                       disabledBorder: InputBorder.none,
                     ),
                     onChanged: (value) {
+                      if(value.isEmpty){
+                        Fluttertoast.showToast(
+                            msg: "修改成功",
+                            toastLength: Toast.LENGTH_SHORT,
+                            gravity: ToastGravity.TOP,
+                            timeInSecForIosWeb: 1,
+                            backgroundColor: Colors.grey,
+                            textColor: Colors.black,
+                            fontSize: 16.0
+                        );
+                      }
                       setState(() {
                         value.isEmpty ? _isNicknameValid = false : _isNicknameValid = true;
                       });
