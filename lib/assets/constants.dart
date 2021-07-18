@@ -78,6 +78,9 @@ class Constants {
   /// Max image number of a comment.
   static const maxImageNumber = 9;
 
+  /// image size of UserAvatar for profile setting page
+  static const profileSettingImageSize = 130.0;
+
   /// Default nine-pattern spacing.
   static const defaultNinePatternSpacing = 6.0;
 

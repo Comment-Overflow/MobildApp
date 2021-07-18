@@ -88,6 +88,12 @@ class CustomStyles {
     fontSize: 15.0,
   );
 
+  static const profileSettingItemTitleStyle = TextStyle(
+      color: Colors.blueGrey,
+      fontWeight: FontWeight.normal,
+      fontSize: 18.0
+  );
+
   /// Default icon for reply with changeable size.
   static Icon getDefaultReplyIcon({size = 14.0, color = Colors.grey}) =>
       Icon(Icons.chat_outlined, color: color, size: size);
