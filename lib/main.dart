@@ -26,7 +26,7 @@ class CommentOverflow extends StatelessWidget {
             // Remove text button horizontal padding.
             minimumSize: MaterialStateProperty.all(Size(1, 1)),
             padding:
-                MaterialStateProperty.all(EdgeInsets.symmetric(vertical: 4.0)),
+                MaterialStateProperty.all(EdgeInsets.symmetric(vertical: 6.0)),
           ),
         ),
         buttonColor: Colors.blue.withOpacity(0.12),
