@@ -1,4 +1,5 @@
 import 'package:comment_overflow/model/post.dart';
+import 'package:comment_overflow/model/routing_dto/image_gallery_dto.dart';
 import 'package:comment_overflow/model/user_info.dart';
 import 'package:comment_overflow/pages/login_page.dart';
 import 'package:comment_overflow/pages/new_post_page.dart';
@@ -7,6 +8,7 @@ import 'package:comment_overflow/pages/personal_page.dart';
 import 'package:comment_overflow/pages/post_page.dart';
 import 'package:comment_overflow/pages/search_page.dart';
 import 'package:comment_overflow/pages/search_result_page.dart';
+import 'package:comment_overflow/widgets/image_gallery.dart';
 import 'package:comment_overflow/widgets/pages_container.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -18,6 +20,7 @@ class RouteGenerator {
   static const newPostRoute = '/new_post';
   static const loginRoute = '/login';
   static const postRoute = '/post';
+  static const galleryRoute = '/gallery';
   static const notificationRoute = '/notification';
   static const personalRoute = '/personal';
 
@@ -37,6 +40,12 @@ class RouteGenerator {
       case postRoute:
         return MaterialPageRoute(
           builder: (_) => PostPage(args as Post));
+      case galleryRoute:
+        return MaterialPageRoute(
+            builder: (_) => ImageGallery(
+              imageUrl: (args as ImageGalleryDto).imageUrl,
+              initialIndex: (args).index,
+            ));
       case notificationRoute:
         return MaterialPageRoute(builder: (_) => NotificationPage());
       case personalRoute:

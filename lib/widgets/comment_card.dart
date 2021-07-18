@@ -1,3 +1,4 @@
+import 'package:comment_overflow/widgets/image_list.dart';
 import 'package:comment_overflow/widgets/quote_card.dart';
 import 'package:flutter/material.dart';
 
@@ -34,7 +35,7 @@ class _CommentCardState extends State<CommentCard> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               widget._comment.floor == 0 && widget._title.isNotEmpty
-                ? buildTitle()
+                ? _buildTitle()
                 : SizedBox.shrink(),
               Row(
                 children: [
@@ -73,6 +74,8 @@ class _CommentCardState extends State<CommentCard> {
               Text(
                 widget._comment.content,
               ),
+              _gap,
+              ImageList(widget._comment.imageUrl),
               widget._comment.floor > 0
                 ? Column(
                 children: [
@@ -114,7 +117,7 @@ class _CommentCardState extends State<CommentCard> {
     );
   }
 
-  Padding buildTitle() =>
+  Padding _buildTitle() =>
       Padding(
         padding: const EdgeInsets.only(
           top: Constants.defaultCardPadding / 2,
