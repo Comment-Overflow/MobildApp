@@ -34,14 +34,16 @@ final UserCardInfo _userCardInfo = UserCardInfo(
     FollowStatus.followedByMe);
 final PersonalPageInfo personalPageInfo = PersonalPageInfo(
     0,
+    // "很长的十个字的用户名",
     "Gun9niR",
     "http://img8.zol.com.cn/bbs/upload/23765/23764201.jpg",
-    Sex.male,
     "这是一段三十个字的个人简介！！这是一段三十个字的个人简介！！",
     // "I want a simple life.",
     12,
-    453,
     23567,
+    FollowStatus.none,
+    Sex.male,
+    128538,
     21);
 final Quote _quote = Quote("Gun9niR", _content);
 final Comment _approvedComment = Comment(
@@ -195,9 +197,9 @@ final recentChats = List<Chat>.filled(
   ));
 
 List<Message> messages = [
-  Message(MessageType.Text, DateTime.now(), _userInfo, _cyxInfo, true,
-      "中午吃啥中午吃啥中午吃啥中午吃啥中午吃啥中午吃啥中午吃啥中午吃啥中午吃啥中午吃啥中午吃啥中午吃啥"),
   Message(MessageType.Text, DateTime.now(), _cyxInfo, _userInfo, true, "好问题"),
   Message(MessageType.Image, DateTime.now(), _userInfo, _cyxInfo, true,
       "http://img8.zol.com.cn/bbs/upload/23765/23764201.jpg"),
+  Message(MessageType.Text, DateTime.now(), _userInfo, _cyxInfo, true,
+      "中午吃啥中午吃啥中午吃啥中午吃啥中午吃啥中午吃啥中午吃啥中午吃啥中午吃啥中午吃啥中午吃啥中午吃啥"),
 ];

@@ -2,6 +2,8 @@ import 'package:comment_overflow/assets/constants.dart';
 import 'package:comment_overflow/assets/custom_styles.dart';
 import 'package:comment_overflow/model/user_info.dart';
 import 'package:comment_overflow/utils/route_generator.dart';
+import 'package:comment_overflow/utils/utils.dart';
+import 'package:comment_overflow/widgets/follow_button.dart';
 import 'package:comment_overflow/widgets/user_avatar.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -11,9 +13,10 @@ import 'multiple_widget_button.dart';
 
 class PersonalProfileCard extends StatelessWidget {
   final PersonalPageInfo _personalPageInfo;
+  final bool _isSelf;
   final Widget _gap = const SizedBox(height: 2);
 
-  const PersonalProfileCard(this._personalPageInfo, {Key? key})
+  const PersonalProfileCard(this._personalPageInfo, this._isSelf, {Key? key})
       : super(key: key);
 
   @override
@@ -37,15 +40,12 @@ class PersonalProfileCard extends StatelessWidget {
                 children: [
                   Expanded(
                     flex: 40,
-                    child: Container(
-                      // padding: EdgeInsets.symmetric(horizontal: Constants.defaultPersonalPageAvatarPadding),
-                      child: Column(
-                        mainAxisSize: MainAxisSize.max,
-                        mainAxisAlignment: MainAxisAlignment.start,
-                        children: [
-                          UserAvatar(Constants.defaultPersonalPageAvatarSize),
-                        ],
-                      ),
+                    child: Column(
+                      mainAxisSize: MainAxisSize.max,
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      children: [
+                        UserAvatar(Constants.defaultPersonalPageAvatarSize),
+                      ],
                     ),
                   ),
                   Expanded(
@@ -55,11 +55,7 @@ class PersonalProfileCard extends StatelessWidget {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Expanded(
-                          flex: 2,
-                          child: Container(),
-                        ),
-                        Expanded(
-                          flex: 22,
+                          flex: 24,
                           child: Row(
                             mainAxisSize: MainAxisSize.max,
                             children: [
@@ -78,80 +74,122 @@ class PersonalProfileCard extends StatelessWidget {
                           ),
                         ),
                         Expanded(
-                            flex: 9,
+                            flex: 8,
                             child: Divider(
                                 height: 0.5,
                                 endIndent: 0.0,
                                 color: Colors.grey.withOpacity(0.5))),
                         Expanded(
-                          flex: 40,
+                          flex: 34,
                           child: Text(
                             _personalPageInfo.brief,
                             overflow: TextOverflow.ellipsis,
                             maxLines: 3,
-                            style: CustomStyles.userBriefStyle,
+                            style: CustomStyles.personalPageUserBriefStyle,
                           ),
                         ),
                         Expanded(
-                          flex: 27,
-                          child: _buildCommentAndApprovalInfo(),
-                        )
+                          flex: 34,
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.start,
+                            children: [
+                              _isSelf
+                                  ? _buildEditButton()
+                                  : _buildFollowAndChatButtons(),
+                            ],
+                          ),
+                        ),
                       ],
                     ),
                   ),
                 ],
               )),
-          Container(
-            padding: EdgeInsets.fromLTRB(
-                0, 0, 0, Constants.defaultPersonalPageVerticalPadding),
-            child: Row(
-              mainAxisSize: MainAxisSize.max,
-              mainAxisAlignment: MainAxisAlignment.center,
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: [
-                Expanded(flex: 15, child: Container()),
-                Expanded(
-                  flex: 35,
-                  child: MultipleWidgetButton(
-                    RouteGenerator.generateRoute(RouteSettings(
-                      // TODO: following page route
-                      name: RouteGenerator.homeRoute,
-                    )),
-                    [
-                      Text(
-                        _personalPageInfo.followingCount.toString(),
-                        style: CustomStyles.personalPageButtonNumberStyle,
-                      ),
-                      _gap,
-                      Text(
-                        '关注',
-                        style: CustomStyles.personalPageButtonTextStyle,
-                      ),
-                    ],
+          Padding(
+            padding: EdgeInsets.only(
+                bottom: Constants.defaultPersonalPageVerticalPadding),
+            child: Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 15.0),
+              child: Row(
+                mainAxisSize: MainAxisSize.max,
+                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  Expanded(
+                    flex: 25,
+                    child: MultipleWidgetButton(
+                      RouteGenerator.generateRoute(RouteSettings(
+                        // TODO: following page route
+                        name: RouteGenerator.homeRoute,
+                      )),
+                      [
+                        Text(
+                          getDisplayNumber(_personalPageInfo.followingCount),
+                          style: CustomStyles.personalPageButtonNumberStyle,
+                        ),
+                        _gap,
+                        Text(
+                          '关注',
+                          style: CustomStyles.personalPageButtonTextStyle,
+                        ),
+                      ],
+                    ),
                   ),
-                ),
-                Expanded(
-                  flex: 35,
-                  child: MultipleWidgetButton(
-                    RouteGenerator.generateRoute(RouteSettings(
-                      // TODO: follower page route
-                      name: RouteGenerator.homeRoute,
-                    )),
-                    [
-                      Text(
-                        _personalPageInfo.followerCount.toString(),
-                        style: CustomStyles.personalPageButtonNumberStyle,
-                      ),
-                      _gap,
-                      Text(
-                        '粉丝',
-                        style: CustomStyles.personalPageButtonTextStyle,
-                      ),
-                    ],
+                  Expanded(
+                    flex: 25,
+                    child: MultipleWidgetButton(
+                      RouteGenerator.generateRoute(RouteSettings(
+                        // TODO: follower page route
+                        name: RouteGenerator.homeRoute,
+                      )),
+                      [
+                        Text(
+                          getDisplayNumber(_personalPageInfo.followerCount),
+                          style: CustomStyles.personalPageButtonNumberStyle,
+                        ),
+                        _gap,
+                        Text(
+                          '粉丝',
+                          style: CustomStyles.personalPageButtonTextStyle,
+                        ),
+                      ],
+                    ),
                   ),
-                ),
-                Expanded(flex: 15, child: Container()),
-              ],
+                  Expanded(
+                    flex: 25,
+                    child: MultipleWidgetButton(
+                      null,
+                      [
+                        Text(
+                          getDisplayNumber(_personalPageInfo.commentCount),
+                          style: CustomStyles.personalPageButtonNumberStyle,
+                        ),
+                        _gap,
+                        Text(
+                          '发帖',
+                          style: CustomStyles.personalPageButtonTextStyle,
+                        ),
+                      ],
+                    ),
+                  ),
+                  Expanded(
+                    flex: 25,
+                    child: MultipleWidgetButton(
+                      null,
+                      [
+                        Text(
+                          getDisplayNumber(_personalPageInfo.approvalCount),
+                          style: CustomStyles.personalPageButtonNumberStyle,
+                        ),
+                        _gap,
+                        Text(
+                          '获赞',
+                          style: CustomStyles.personalPageButtonTextStyle,
+                        ),
+                      ],
+                    ),
+                  ),
+                ],
+              ),
             ),
           ),
           // Divider(),
@@ -160,30 +198,82 @@ class PersonalProfileCard extends StatelessWidget {
     );
   }
 
-  _buildCommentAndApprovalInfo() {
-    return RichText(
-      text: TextSpan(
-        children: [
-          WidgetSpan(
-            child: CustomStyles.getDefaultReplyIcon(
-                size: Constants.defaultPersonalPageHeaderFooterSize),
+  Widget _buildFollowAndChatButtons() {
+    return Row(
+      mainAxisSize: MainAxisSize.max,
+      mainAxisAlignment: MainAxisAlignment.center,
+      crossAxisAlignment: CrossAxisAlignment.center,
+      children: [
+        Expanded(
+          child: Padding(
+            padding: const EdgeInsets.only(right: 4.0),
+            child: FollowButton(
+                _personalPageInfo.userName, _personalPageInfo.followStatus),
           ),
-          TextSpan(
-            text: ' ${_personalPageInfo.commentCount}   ',
+        ),
+        Expanded(
+          child: Padding(
+            padding: const EdgeInsets.only(left: 4.0),
+            child: SizedBox(
+              height: Constants.defaultTextButtonHeight,
+              child: TextButton(
+                  style: ButtonStyle(
+                      padding: MaterialStateProperty.all<EdgeInsetsGeometry>(
+                          EdgeInsets.symmetric(
+                              horizontal: Constants.defaultTextButtonPadding)),
+                      side: MaterialStateProperty.all<BorderSide>(
+                          BorderSide(color: Colors.blue, width: 0.7))),
+                  child: Text("私信",
+                      style: TextStyle(
+                          fontSize: Constants.defaultButtonTextSize,
+                          color: Colors.blue)),
+                  onPressed: () {
+                    // TODO: chat room route.
+                  }),
+            ),
           ),
-          WidgetSpan(
-            child: CustomStyles.getDefaultThumbUpIcon(
-                size: Constants.defaultPersonalPageHeaderFooterSize),
-          ),
-          TextSpan(
-            text: ' ${_personalPageInfo.approvalCount} ',
-          ),
-        ],
-        style: TextStyle(
-            color: Colors.grey,
-            fontSize: Constants.defaultPersonalPageHeaderFooterSize),
-      ),
+        ),
+      ],
     );
   }
 
+  Widget _buildEditButton() {
+    return Row(
+      mainAxisSize: MainAxisSize.max,
+      mainAxisAlignment: MainAxisAlignment.center,
+      crossAxisAlignment: CrossAxisAlignment.center,
+      children: [
+        Expanded(
+          child: SizedBox(
+            height: Constants.defaultTextButtonHeight,
+            child: TextButton(
+                style: ButtonStyle(
+                    padding: MaterialStateProperty.all<EdgeInsetsGeometry>(
+                        EdgeInsets.symmetric(
+                            horizontal: Constants.defaultTextButtonPadding)),
+                    backgroundColor:
+                        MaterialStateProperty.all<Color>(Colors.blueAccent)),
+                child: Row(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    Padding(
+                      padding: const EdgeInsets.only(right: 4.0),
+                      child: CustomStyles.getDefaultEditIcon(
+                          size: Constants.defaultButtonTextSize,
+                          color: Colors.white),
+                    ),
+                    Text("编辑个人资料",
+                        style: TextStyle(
+                            fontSize: Constants.defaultButtonTextSize,
+                            color: Colors.white)),
+                  ],
+                ),
+                onPressed: () {
+                  // TODO: edit route.
+                }),
+          ),
+        ),
+      ],
+    );
+  }
 }

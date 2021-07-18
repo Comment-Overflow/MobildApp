@@ -5,7 +5,7 @@ import 'package:flutter/material.dart';
 /// Tap of the button will trigger a route jump.
 class MultipleWidgetButton extends StatelessWidget {
 
-  final Route _route;
+  final Route? _route;
   final List<Widget> _widgets;
 
   const MultipleWidgetButton(this._route, this._widgets, {Key? key})
@@ -15,7 +15,8 @@ class MultipleWidgetButton extends StatelessWidget {
   Widget build(BuildContext context) {
     return InkWell(
       onTap: () {
-        Navigator.push(context, _route);
+        if (_route != null)
+          Navigator.push(context, _route!);
       },
       child: Column(
         mainAxisSize: MainAxisSize.max,

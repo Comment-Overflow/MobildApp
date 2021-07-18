@@ -69,11 +69,11 @@ class UserCard extends StatelessWidget {
                       ),
                     ),
                     Expanded(
-                      flex: 5,
+                      flex: 8,
                       child: Container(),
                     ),
                     Expanded(
-                      flex: 28,
+                      flex: 25,
                       child: RichText(
                         text: TextSpan(
                           children: [
@@ -104,9 +104,11 @@ class UserCard extends StatelessWidget {
               ),
               Expanded(
                 flex: 29,
-                child: FollowButton(
-                  _userCardInfo.userName,
-                  _userCardInfo.followStatus,
+                child: Center(
+                  child: FollowButton(
+                    _userCardInfo.userName,
+                    _userCardInfo.followStatus,
+                  ),
                 ),
               ),
             ],
