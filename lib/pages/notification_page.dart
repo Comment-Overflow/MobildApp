@@ -17,7 +17,9 @@ class NotificationPage extends StatelessWidget {
         title: Text(
           "消息",
           style: CustomStyles.pageTitleStyle,
+          textAlign: TextAlign.center,
         ),
+        centerTitle: true,
         automaticallyImplyLeading: false,
       ),
       body: NestedScrollView(

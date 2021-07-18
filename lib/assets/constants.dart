@@ -18,7 +18,7 @@ class Constants {
   static const defaultAvatarInCommentSize = 24.0;
 
   /// Default size of buttons in notification page.
-  static const defaultNotificationButtonSize = 38.0;
+  static const defaultNotificationButtonSize = 32.0;
 
   /// Default size height of a chat card.
   static const defaultChatCardHeight = 80.0;
@@ -27,6 +27,8 @@ class Constants {
   static const defaultChatListAvatarSize = 65.0;
 
   static const defaultAppBarElevation = 0.5;
+
+  static const defaultCardElevation = 0.5;
 
   /// Search bar height.
   static const searchBarHeight = 32.0;
@@ -113,11 +115,7 @@ class Constants {
     '按热度排序',
   ];
 
-  static const List<String> personalPageTabs = [
-    "我的帖子",
-    "我的回复",
-    "我的收藏"
-  ];
+  static const List<String> personalPageTabs = ["我的帖子", "我的回复", "我的收藏"];
 }
 
 enum FollowStatus {

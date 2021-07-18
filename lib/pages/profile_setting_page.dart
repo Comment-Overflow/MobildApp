@@ -20,7 +20,7 @@ class ProfileSettingPage extends StatefulWidget {
   ProfileSettingPage({Key? key}) : super(key: key);
 
   @override
-  createState() => new _ProfileSettingPageState();
+  createState() => _ProfileSettingPageState();
 }
 
 class _ProfileSettingPageState extends State<ProfileSettingPage> {
@@ -82,22 +82,30 @@ class _ProfileSettingPageState extends State<ProfileSettingPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: new AppBar(
-        title: new Text("编辑资料"),
-        leading: IconButton(icon:Icon(Icons.arrow_back),
-          onPressed: () => {
-            Navigator.of(context).pop()
-          },
-        ),
-        actions: [
-          new IconButton(
-              icon: Icon(Icons.save),
-              onPressed: (){
-                if(_isNicknameValid && _isIntroductionValid){
-                  MessageBox.showToast(msg: "保存成功", messageBoxType: MessageBoxType.Success);
-                  Navigator.of(context).pop();
-                }
-              })
+        appBar: AppBar(
+          elevation: Constants.defaultAppBarElevation,
+          title: Text("编辑资料"),
+          leading: IconButton(
+            icon: Icon(Icons.arrow_back),
+            onPressed: () => {Navigator.of(context).pop()},
+          ),
+          actions: [
+            IconButton(
+                icon: Icon(Icons.save),
+                onPressed: () {
+                  if (_isNicknameValid && _isIntroductionValid) {
+                    MessageBox.showToast(
+                        msg: "保存成功", messageBoxType: MessageBoxType.Success);
+                    Navigator.of(context).pop();
+                  } else if (!_isNicknameValid) {
+                    MessageBox.showToast(
+                        msg: "用户名不能为空", messageBoxType: MessageBoxType.Error);
+                  } else {
+                    MessageBox.showToast(
+                        msg: "请输入有效的自我介绍",
+                        messageBoxType: MessageBoxType.Error);
+                  }
+                })
           ],
         ),
         body: _buildBody());
@@ -106,7 +114,7 @@ class _ProfileSettingPageState extends State<ProfileSettingPage> {
   Widget _buildBody() {
     return Form(
         child: ListView(
-      padding: const EdgeInsets.all(15.0),
+      padding: const EdgeInsets.all(20.0),
       children: [
         GestureDetector(
           onTap: _selectAssets,
@@ -114,9 +122,11 @@ class _ProfileSettingPageState extends State<ProfileSettingPage> {
         ),
         _gap,
         _gap,
+        _gap,
+        _gap,
         Text(
           "基本资料",
-          style: new TextStyle(fontWeight: FontWeight.bold, fontSize: 30.0),
+          style: TextStyle(fontWeight: FontWeight.bold, fontSize: 24.0),
         ),
         Row(
           mainAxisSize: MainAxisSize.min,
@@ -135,7 +145,7 @@ class _ProfileSettingPageState extends State<ProfileSettingPage> {
               child: TextFormField(
                   controller: _nicknameController,
                   inputFormatters: [
-                    new LengthLimitingTextInputFormatter(10),
+                    LengthLimitingTextInputFormatter(10),
                   ],
                   // maxLength: 10,
                   decoration: InputDecoration(
@@ -153,9 +163,6 @@ class _ProfileSettingPageState extends State<ProfileSettingPage> {
                           ? _isNicknameValid = false
                           : _isNicknameValid = true;
                     });
-                    if(!_isNicknameValid){
-                      MessageBox.showToast(msg: "用户名不能为空", messageBoxType: MessageBoxType.Error);
-                    }
                   }),
               // ),
             ),
@@ -171,7 +178,7 @@ class _ProfileSettingPageState extends State<ProfileSettingPage> {
         TextFormField(
           controller: _introductionController,
           inputFormatters: [
-            new LengthLimitingTextInputFormatter(30),
+            LengthLimitingTextInputFormatter(30),
           ],
           maxLength: 30,
           minLines: 1,
@@ -202,9 +209,9 @@ class _ProfileSettingPageState extends State<ProfileSettingPage> {
               child: DropdownButtonHideUnderline(
                 child: DropdownButton<String>(
                   value: _gender,
-                  onChanged: (String? newValue) {
+                  onChanged: (String? Value) {
                     setState(() {
-                      _gender = newValue!;
+                      _gender = Value!;
                     });
                   },
                   items: <String>['男', '女', '保密']

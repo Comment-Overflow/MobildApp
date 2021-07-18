@@ -24,7 +24,7 @@ class CustomStyles {
     fontSize: 24.0,
   );
   static const postPageBottomStyle = TextStyle(
-    fontSize: 15.0,
+    fontSize: 14.0,
     color: Colors.grey,
   );
   static const commentContentStyle = TextStyle(
@@ -43,12 +43,12 @@ class CustomStyles {
 
   static const dateStyle = TextStyle(
     fontWeight: FontWeight.w300,
-    fontSize: 12,
+    fontSize: 13,
     color: Colors.grey,
   );
   static const floorStyle = TextStyle(
     fontWeight: FontWeight.normal,
-    fontSize: 12,
+    fontSize: 13,
   );
 
   static const userNameStyle = TextStyle(
@@ -74,7 +74,7 @@ class CustomStyles {
   );
 
   static const pageTitleStyle = TextStyle(
-    fontWeight: FontWeight.bold,
+    fontWeight: FontWeight.normal,
   );
 
   static const personalPageUserNameStyle = TextStyle(
@@ -95,11 +95,11 @@ class CustomStyles {
   );
 
   static const profileSettingItemTitleStyle = TextStyle(
-      color: Colors.blueGrey, fontWeight: FontWeight.normal, fontSize: 18.0);
+      color: Colors.blueGrey, fontWeight: FontWeight.normal, fontSize: 16.0);
 
   /// Default icon for reply with changeable size.
   static Icon getDefaultReplyIcon({size = 14.0, color = Colors.grey}) =>
-      Icon(Icons.chat_outlined, color: color, size: size);
+      Icon(CupertinoIcons.text_bubble, color: color, size: size);
 
   /// Default icon for thumb up.
   static getDefaultThumbUpIcon({size = 14.0, color = Colors.pinkAccent}) =>
@@ -185,7 +185,7 @@ class CustomStyles {
 
   /// Default icon for image.
   static Icon getDefaultImageIcon({size = 14.0, color: Colors.grey}) =>
-      Icon(Icons.photo, color: color, size: size);
+      Icon(CupertinoIcons.photo, color: color, size: size);
 
   /// Default icon for close.
   static Icon getDefaultCloseIcon({size = 14.0, color: Colors.grey}) =>

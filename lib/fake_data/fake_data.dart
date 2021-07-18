@@ -56,9 +56,20 @@ final Comment _disapprovedComment = Comment(_userInfo, _content, _date,
   "http://img8.zol.com.cn/bbs/upload/23765/23764201.jpg",
   "https://images.unsplash.com/photo-1526512340740-9217d0159da9?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=2677&q=80"
 ]);
-final Comment _noneComment = Comment(_userInfo, _content, _date,
+
+final Comment _firstFloorComment = Comment(_userInfo, _content, _date,
     _quoteWithUserName, 0, 500, ApprovalStatus.none, [
-  "https://images.unsplash.com/photo-1526512340740-9217d0159da9?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=2677&q=80"
+  "https://images.unsplash.com/photo-1526512340740-9217d0159da9?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=2677&q=80",
+  "http://img8.zol.com.cn/bbs/upload/23765/23764201.jpg",
+  "http://img8.zol.com.cn/bbs/upload/23765/23764201.jpg",
+  "http://img8.zol.com.cn/bbs/upload/23765/23764201.jpg",
+]);
+final Comment _noneComment = Comment(_userInfo, _content, _date,
+    _quoteWithUserName, 1, 500, ApprovalStatus.none, [
+  "https://images.unsplash.com/photo-1526512340740-9217d0159da9?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=2677&q=80",
+  "http://img8.zol.com.cn/bbs/upload/23765/23764201.jpg",
+  "http://img8.zol.com.cn/bbs/upload/23765/23764201.jpg",
+  "http://img8.zol.com.cn/bbs/upload/23765/23764201.jpg",
 ]);
 
 const _comment = 'zhihu sucks, sjtu-zhihu awesome';
@@ -175,11 +186,11 @@ final users = List<UserCardInfo>.filled(
     growable: true,
   ));
 
-final comments = List<Comment>.filled(
-  5,
-  _noneComment,
-  growable: true,
-)..addAll(List<Comment>.filled(5, _approvedComment, growable: true));
+final comments = [_firstFloorComment]..addAll(List<Comment>.filled(
+    5,
+    _noneComment,
+    growable: true,
+  )..addAll(List<Comment>.filled(5, _approvedComment, growable: true)));
 // Tags for posts
 final List<String> tags = ['校园生活', '学在交大', '文化艺术', '心情驿站', '职业发展'];
 

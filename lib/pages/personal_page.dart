@@ -46,7 +46,8 @@ class _PersonalPageState extends State<PersonalPage> {
           style: CustomStyles.pageTitleStyle,
         ),
         actions: [_isSelf ? _buildDropDownMenu() : Container()],
-        automaticallyImplyLeading: widget._fromCard
+        automaticallyImplyLeading: widget._fromCard,
+        centerTitle: true,
       ),
       body: DefaultTabController(
         length: Constants.personalPageTabs.length,

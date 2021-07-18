@@ -27,7 +27,7 @@ class _PostPageState extends State<PostPage> {
   final TextEditingController _replyController = TextEditingController();
 
   static const _iconSize = 20.0;
-  static const _bottomIconSize = 30.0;
+  static const _bottomIconSize = 24.0;
 
   String getPolicyName(SortPolicy policy) {
     switch (policy) {
@@ -73,10 +73,19 @@ class _PostPageState extends State<PostPage> {
         child: Row(
           children: [
             buildDropDownMenu(),
-            ApprovalButton(comment: widget._post.commentToDisplay, userId: 1),
+            ApprovalButton(
+                comment: widget._post.commentToDisplay,
+                userId: 1,
+                size: _bottomIconSize),
             DisapprovalButton(
-                comment: widget._post.commentToDisplay, userId: 1),
-            StarButton(initialStared: false, postId: 1, userId: 1),
+                comment: widget._post.commentToDisplay,
+                userId: 1,
+                size: _bottomIconSize),
+            StarButton(
+                initialStared: false,
+                postId: 1,
+                userId: 1,
+                size: _bottomIconSize),
           ],
           mainAxisAlignment: MainAxisAlignment.spaceAround,
         ),
