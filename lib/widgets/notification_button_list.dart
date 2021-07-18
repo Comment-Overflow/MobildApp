@@ -33,9 +33,7 @@ class NotificationButtonList extends StatelessWidget {
           Expanded(
             flex: 25,
             child: MultipleWidgetButton(
-              RouteGenerator.generateRoute(RouteSettings(
-                name: RouteGenerator.approveMeRoute,
-              )),
+              RouteGenerator.approveMeRoute,
               [
                 Icon(CupertinoIcons.heart,
                     size: _buttonSize, color: Colors.black),
@@ -47,9 +45,7 @@ class NotificationButtonList extends StatelessWidget {
           Expanded(
             flex: 25,
             child: MultipleWidgetButton(
-              RouteGenerator.generateRoute(RouteSettings(
-                name: RouteGenerator.replyMeRoute,
-              )),
+              RouteGenerator.replyMeRoute,
               [
                 Icon(CupertinoIcons.text_bubble,
                     size: _buttonSize, color: Colors.black),
@@ -61,9 +57,7 @@ class NotificationButtonList extends StatelessWidget {
           Expanded(
             flex: 25,
             child: MultipleWidgetButton(
-              RouteGenerator.generateRoute(RouteSettings(
-                name: RouteGenerator.starMeRoute,
-              )),
+              RouteGenerator.starMeRoute,
               [
                 Icon(CupertinoIcons.star,
                     size: _buttonSize, color: Colors.black),
@@ -75,9 +69,7 @@ class NotificationButtonList extends StatelessWidget {
           Expanded(
             flex: 25,
             child: MultipleWidgetButton(
-              RouteGenerator.generateRoute(RouteSettings(
-                name: RouteGenerator.followMeRoute,
-              )),
+              RouteGenerator.followMeRoute,
               [
                 CustomStyles.getDefaultUnfilledFollowerIcon(
                     size: _buttonSize, color: Colors.black),

@@ -18,7 +18,7 @@ class QuoteCard extends StatelessWidget {
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.all(Radius.circular(10.0)),
       ),
-      color: CustomColors.lightGrey,
+      color: CustomColors.quoteCardBackground,
       child: Padding(
         padding: EdgeInsets.all(Constants.defaultCardPadding),
         child: Column(

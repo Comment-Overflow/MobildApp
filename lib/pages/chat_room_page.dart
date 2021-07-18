@@ -127,19 +127,21 @@ class _ChatRoomPageState extends State<ChatRoomPage> {
                 child: ElevatedButton(
                   child: Text("发送"),
                   onPressed: () {
-                    setState(() {
-                      _messages.insert(
-                          0,
-                          Message(
-                              MessageType.Text,
-                              DateTime.now(),
-                              UserInfo(0, "Gun9niR",
-                                  "http://img8.zol.com.cn/bbs/upload/23765/23764201.jpg"),
-                              UserInfo(1, "xx01cyx",
-                                  "http://img8.zol.com.cn/bbs/upload/23765/23764201.jpg"),
-                              true,
-                              _textEditingController.value.text));
-                    });
+                    if (_textEditingController.value.text.isNotEmpty) {
+                      setState(() {
+                        _messages.insert(
+                            0,
+                            Message(
+                                MessageType.Text,
+                                DateTime.now(),
+                                UserInfo(0, "Gun9niR",
+                                    "http://img8.zol.com.cn/bbs/upload/23765/23764201.jpg"),
+                                UserInfo(1, "xx01cyx",
+                                    "http://img8.zol.com.cn/bbs/upload/23765/23764201.jpg"),
+                                true,
+                                _textEditingController.value.text));
+                      });
+                    }
                     _textEditingController.clear();
                     _scrollController.animateTo(
                       0.0,
