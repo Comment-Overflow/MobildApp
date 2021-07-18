@@ -12,36 +12,56 @@ import 'comment_card.dart';
 class CommentCardList extends StatefulWidget {
   /// Can't be accessed in initializer, try to find new way.
   final Post _post;
+  // Sorting policy
+  final SortPolicy _sortPolicy;
 
-  final PagingManager<Comment> _pagingManager;
+  CommentCardList(this._post, this._sortPolicy, {Key? key}) : super(key: key);
 
-  CommentCardList(this._post, {Key? key})
+  @override
+  _CommentCardListState createState() =>
+      _CommentCardListState(this._post.title, this._sortPolicy);
+}
+
+class _CommentCardListState extends State<CommentCardList> {
+  PagingManager<Comment> _pagingManager;
+
+  _CommentCardListState(title, sortPolicy)
       : _pagingManager = PagingManager(Constants.defaultPageSize,
             (page, pageSize) {
+          print('fetch $page with original policy');
           return Future.delayed(
-            const Duration(seconds: 1),
+            const Duration(milliseconds: 300),
             () => comments.sublist(
                 page * pageSize, min((page + 1) * pageSize, comments.length)),
           );
         },
             (context, item, index) => index == 0
-                ? CommentCard(item, title: _post.title)
-                : CommentCard(item)),
-        super(key: key);
+                ? CommentCard(item, title: title)
+                : CommentCard(item));
 
   @override
-  _CommentCardListState createState() => _CommentCardListState();
-}
+  void didUpdateWidget(CommentCardList oldWidget) {
+    _pagingManager.changeCustomFetchApi((page, pageSize) {
+      print('fetch $page with changed policy');
+      return Future.delayed(
+        const Duration(milliseconds: 300),
+        () => comments.sublist(
+            page * pageSize, min((page + 1) * pageSize, comments.length)),
+      );
+    });
 
-class _CommentCardListState extends State<CommentCardList> {
+    super.didUpdateWidget(oldWidget);
+  }
+
   @override
   void dispose() {
+    _pagingManager.dispose();
     super.dispose();
-    widget._pagingManager.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
-    return widget._pagingManager.getListView();
+    _pagingManager.refresh();
+    return _pagingManager.getListView();
   }
 }

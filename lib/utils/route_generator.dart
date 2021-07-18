@@ -1,10 +1,15 @@
 import 'package:comment_overflow/model/post.dart';
+import 'package:comment_overflow/model/routing_dto/image_gallery_dto.dart';
+import 'package:comment_overflow/model/user_info.dart';
 import 'package:comment_overflow/pages/login_page.dart';
 import 'package:comment_overflow/pages/new_post_page.dart';
+import 'package:comment_overflow/pages/notification_page.dart';
+import 'package:comment_overflow/pages/personal_page.dart';
 import 'package:comment_overflow/pages/post_page.dart';
 import 'package:comment_overflow/pages/profile_setting_page.dart';
 import 'package:comment_overflow/pages/search_page.dart';
 import 'package:comment_overflow/pages/search_result_page.dart';
+import 'package:comment_overflow/widgets/image_gallery.dart';
 import 'package:comment_overflow/widgets/pages_container.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -17,6 +22,9 @@ class RouteGenerator {
   static const loginRoute = '/login';
   static const postRoute = '/post';
   static const profileSettingRoute = '/profile_setting';
+  static const galleryRoute = '/gallery';
+  static const notificationRoute = '/notification';
+  static const personalRoute = '/personal';
 
   static Route<dynamic> generateRoute(RouteSettings settings) {
     final args = settings.arguments;
@@ -37,6 +45,17 @@ class RouteGenerator {
       case profileSettingRoute:
         return MaterialPageRoute(
             builder: (_) => ProfileSettingPage());
+      case galleryRoute:
+        return MaterialPageRoute(
+            builder: (_) => ImageGallery(
+              imageUrl: (args as ImageGalleryDto).imageUrl,
+              initialIndex: (args).index,
+            ));
+      case notificationRoute:
+        return MaterialPageRoute(builder: (_) => NotificationPage());
+      case personalRoute:
+        return MaterialPageRoute(
+            builder: (_) => PersonalPage(args as int));
       case homeRoute:
       default:
         return MaterialPageRoute(builder: (_) => PagesContainer());
