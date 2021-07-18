@@ -39,10 +39,9 @@ class _ChatRoomPageState extends State<ChatRoomPage> {
 
   @override
   Widget build(BuildContext context) {
-    // if (_scrollController.hasClients) {
-    //   print(_scrollController.position.maxScrollExtent);
-    //   _scrollController.jumpTo(_scrollController.position.maxScrollExtent);
-    // }
+    if (_scrollController.hasClients)
+      _scrollController.jumpTo(_scrollController.position.maxScrollExtent);
+
     return Scaffold(
       appBar: AppBar(
         elevation: Constants.defaultAppBarElevation,
@@ -127,6 +126,7 @@ class _ChatRoomPageState extends State<ChatRoomPage> {
                 child: ElevatedButton(
                   child: Text("发送"),
                   onPressed: () {
+                    // TODO: Implement sending message.
                     setState(() {
                       _messages.insert(
                           0,

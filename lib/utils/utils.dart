@@ -1,12 +1,14 @@
 import 'package:dart_date/dart_date.dart';
 
-/// Convert DateTime to String displayed by Comment Overflow. Eliminate verbose
-/// information based on [time].
+/// Convert DateTime to String displayed by most pages of Comment
+/// Overflow. Eliminate verbose information based on [time].
 String getDisplayTime(DateTime time) {
   if (time.isToday)
     return time.format('HH:mm');
   else if (time.isYesterday)
     return '昨天';
+  else if (time.isThisYear)
+    return time.format('MM-dd');
   else
     return time.format('yyyy-MM-dd');
 }
@@ -21,5 +23,17 @@ String getDisplayNumber(int number) {
     int thousand = (number / 1000).floor();
     return thousand.toString() + '.' + hundred.toString() + 'k';
   }
+}
+
+/// Convert DateTime to String displayed in chat room.
+String getChatTime(DateTime time) {
+  if (time.isToday)
+    return time.format('HH:mm');
+  else if (time.isYesterday)
+    return '昨天 ' + time.format('HH:mm');
+  else if (time.isThisYear)
+    return time.format('MM-dd HH:mm');
+  else
+    return time.format('yyyy-MM-dd HH:mm');
 }
 
