@@ -28,7 +28,6 @@ class _CommentCardListState extends State<CommentCardList> {
   _CommentCardListState(title, sortPolicy)
       : _pagingManager = PagingManager(Constants.defaultPageSize,
             (page, pageSize) {
-          print('fetch $page with original policy');
           return Future.delayed(
             const Duration(milliseconds: 300),
             () => comments.sublist(
@@ -42,7 +41,6 @@ class _CommentCardListState extends State<CommentCardList> {
   @override
   void didUpdateWidget(CommentCardList oldWidget) {
     _pagingManager.changeCustomFetchApi((page, pageSize) {
-      print('fetch $page with changed policy');
       return Future.delayed(
         const Duration(milliseconds: 300),
         () => comments.sublist(

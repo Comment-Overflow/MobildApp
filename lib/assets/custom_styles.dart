@@ -95,10 +95,7 @@ class CustomStyles {
   );
 
   static const profileSettingItemTitleStyle = TextStyle(
-      color: Colors.blueGrey,
-      fontWeight: FontWeight.normal,
-      fontSize: 18.0
-  );
+      color: Colors.blueGrey, fontWeight: FontWeight.normal, fontSize: 18.0);
 
   /// Default icon for reply with changeable size.
   static Icon getDefaultReplyIcon({size = 14.0, color = Colors.grey}) =>
@@ -106,22 +103,22 @@ class CustomStyles {
 
   /// Default icon for thumb up.
   static getDefaultThumbUpIcon({size = 14.0, color = Colors.pinkAccent}) =>
-      Icon(Icons.favorite, color: color, size: size);
+      Icon(CupertinoIcons.heart_fill, color: color, size: size);
 
   /// Default icon for not thumb up.
   static getDefaultNotThumbUpIcon({size = 14.0, color = Colors.grey}) =>
-      Icon(Icons.favorite_border, color: color, size: size);
+      Icon(CupertinoIcons.heart, color: color, size: size);
 
   static getDefaultThumbDownIcon({size = 14.0, color = Colors.black87}) =>
-      Icon(Icons.thumb_down, color: color, size: size);
+      Icon(CupertinoIcons.hand_thumbsdown_fill, color: color, size: size);
 
   /// Default icon for not thumb up.
   static getDefaultNotThumbDownIcon({size = 14.0, color = Colors.grey}) =>
-      Icon(Icons.thumb_down_outlined, color: color, size: size);
+      Icon(CupertinoIcons.hand_thumbsdown, color: color, size: size);
 
   /// Default icon for delete.
   static getDefaultDeleteIcon({size = 14.0, color = Colors.grey}) =>
-      Icon(Icons.delete_forever, color: color, size: size);
+      Icon(CupertinoIcons.trash, color: color, size: size);
 
   /// Default icon for drop down menu.
   static getDefaultArrowDownIcon({size = 14.0, color = Colors.black87}) =>
@@ -129,15 +126,15 @@ class CustomStyles {
 
   /// Default icon for star.
   static getDefaultStaredIcon({size = 14.0, color = Colors.amberAccent}) =>
-      Icon(Icons.star, color: color, size: size);
+      Icon(CupertinoIcons.star_fill, color: color, size: size);
 
   /// Default icon for not star.
   static getDefaultNotStarIcon({size = 14.0, color = Colors.grey}) =>
-      Icon(Icons.star_border, color: color, size: size);
+      Icon(CupertinoIcons.star, color: color, size: size);
 
   /// Default icon for list.
   static getDefaultListIcon({size = 14.0, color = Colors.grey}) =>
-      Icon(Icons.list, color: color, size: size);
+      Icon(CupertinoIcons.list_bullet, color: color, size: size);
 
   /// Default icon for plus.
   static Icon getDefaultPlusIcon({size = 14.0, color = Colors.blue}) =>
