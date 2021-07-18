@@ -2,6 +2,7 @@ import 'package:comment_overflow/assets/constants.dart';
 import 'package:comment_overflow/assets/custom_styles.dart';
 import 'package:comment_overflow/fake_data/fake_data.dart';
 import 'package:comment_overflow/model/user_info.dart';
+import 'package:comment_overflow/utils/route_generator.dart';
 import 'package:comment_overflow/widgets/personal_profile_card.dart';
 import 'package:comment_overflow/widgets/post_card_list.dart';
 import 'package:flutter/cupertino.dart';
@@ -84,6 +85,15 @@ class _PersonalPageState extends State<PersonalPage> {
     return PopupMenuButton<Setting>(
       padding: const EdgeInsets.all(7.0),
       onSelected: (Setting setting) {
+        switch (setting.index) {
+          case 0:
+            Navigator.of(context).pushNamed(RouteGenerator.profileSettingRoute);
+            break;
+          case 1:
+            Navigator.of(context).pushNamedAndRemoveUntil(
+                RouteGenerator.loginRoute, (route) => false);
+            break;
+        }
         // TODO: edit route and sign out.
       },
       itemBuilder: (BuildContext context) => [
