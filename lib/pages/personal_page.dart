@@ -46,10 +46,10 @@ class _PersonalPageState extends State<PersonalPage> {
           style: CustomStyles.pageTitleStyle,
         ),
         actions: [_isSelf ? _buildDropDownMenu() : Container()],
-        automaticallyImplyLeading: widget._fromCard,
+        automaticallyImplyLeading: widget._fromCard
       ),
       body: DefaultTabController(
-        length: 3,
+        length: Constants.personalPageTabs.length,
         child: NestedScrollView(
           physics: NeverScrollableScrollPhysics(),
           headerSliverBuilder: (context, value) {

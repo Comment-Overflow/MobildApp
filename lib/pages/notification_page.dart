@@ -1,3 +1,4 @@
+import 'package:comment_overflow/widgets/adaptive_refresher.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:comment_overflow/assets/constants.dart';
@@ -19,19 +20,33 @@ class NotificationPage extends StatelessWidget {
         ),
         automaticallyImplyLeading: false,
       ),
-      body: Column(
-        children: <Widget>[
-          Container(
-            padding: EdgeInsets.symmetric(
-                vertical: Constants.defaultNotificationButtonSize * 0.7,
-                horizontal: Constants.defaultNotificationButtonSize * 0.35),
-            child:
-                NotificationButtonList(Constants.defaultNotificationButtonSize),
-          ),
-          Divider(height: 0.1, thickness: 0.8),
-          RecentChatList(),
-        ],
+      body: NestedScrollView(
+        physics: NeverScrollableScrollPhysics(),
+        headerSliverBuilder: (context, value) {
+          return [
+            SliverToBoxAdapter(
+                child: Container(
+              color: Colors.white,
+              child: Container(
+                padding: EdgeInsets.symmetric(
+                    vertical: Constants.defaultNotificationButtonSize * 0.7,
+                    horizontal: Constants.defaultNotificationButtonSize * 0.35),
+                child: NotificationButtonList(
+                    Constants.defaultNotificationButtonSize),
+              ),
+            )),
+          ];
+        },
+        body: Container(child: RecentChatList()),
       ),
     );
+  }
+
+  Future _onRefresh() async {
+    // getRecentChats();
+    print("Notification Page onRefresh");
+    // monitor network fetch
+    return Future.delayed(Duration(milliseconds: 1000));
+    // if failed,use refreshFailed()
   }
 }
