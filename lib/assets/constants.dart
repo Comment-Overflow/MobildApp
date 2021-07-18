@@ -53,9 +53,7 @@ class Constants {
   static const defaultChatRoomPadding = 10.0;
 
   /// Default personal page header height.
-  static const defaultPersonalPageHeaderHeight = 146.0;
-
-  static const defaultPersonalProfileHeight = 222.0;
+  static const defaultPersonalPageHeaderHeight = 150.0;
 
   /// Default personal page avatar size.
   static const defaultPersonalPageAvatarSize = 130.0;
@@ -103,6 +101,19 @@ class Constants {
     '心情驿站',
     '职业发展'
   ];
+
+  // Texts of sorter in personal page
+  static const List<String> sorterTexts = [
+    '按时间排序',
+    '按时间排序',
+    '按热度排序',
+  ];
+
+  static const List<String> personalPageTabs = [
+    "我的帖子",
+    "我的回复",
+    "我的收藏"
+  ];
 }
 
 enum FollowStatus {
@@ -145,7 +156,9 @@ enum ChatterType {
 }
 
 enum MessageBoxType {
-  Info, Error, Success,
+  Info,
+  Error,
+  Success,
 }
 
 enum CommentType {
