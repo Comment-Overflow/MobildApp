@@ -30,7 +30,8 @@ class _RecentChatListState extends State<RecentChatList> {
   }
 
   Future _onRefresh() async {
-    getRecentChats();
+    // getRecentChats();
+    print("onRefresh");
     // monitor network fetch
     return Future.delayed(Duration(seconds: 1));
     // if failed,use refreshFailed()
@@ -49,36 +50,30 @@ class _RecentChatListState extends State<RecentChatList> {
   }
 
   Widget _buildNoChatPrompt() {
-    return Expanded(
-      child: Center(
-        child: Text(
-          "没有消息",
-          style: TextStyle(
-            color: Colors.grey,
-            fontSize: 20.0,
-          ),
-        ),
+    return Center(
+      child: Text("没有消息",
+        style: TextStyle(
+          color: Colors.grey,fontSize: 20.0,
+      ),
       ),
     );
   }
 
   Widget _buildChatList() {
-    return Expanded(
-      child: AdaptiveRefresher(
-        onRefresh: _onRefresh,
-        child: ListView.builder(
-          itemCount: _recentChats.length,
-          itemBuilder: (BuildContext context, int index) {
-            return ChatCard(_recentChats[index], () {
-              // TODO: Delete the chat from local file.
-              // TODO: Delete the chat from server. (?)
-              setState(() {
-                _recentChats.removeAt(index);
-              });
-              getRecentChats();
+    return AdaptiveRefresher(
+      onRefresh: _onRefresh,
+      child: ListView.builder(
+        itemCount: _recentChats.length,
+        itemBuilder: (BuildContext context, int index) {
+          return ChatCard(_recentChats[index], () {
+            // TODO: Delete the chat from local file.
+            // TODO: Delete the chat from server. (?)
+            setState(() {
+              _recentChats.removeAt(index);
             });
-          },
-        ),
+            getRecentChats();
+          });
+        },
       ),
     );
   }

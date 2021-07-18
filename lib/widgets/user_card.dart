@@ -4,8 +4,10 @@ import 'package:comment_overflow/model/routing_dto/personal_page_access_dto.dart
 import 'package:comment_overflow/model/user_info.dart';
 import 'package:comment_overflow/utils/route_generator.dart';
 import 'package:comment_overflow/widgets/follow_button.dart';
+import 'package:comment_overflow/widgets/user_avatar.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/rendering.dart';
 
 class UserCard extends StatelessWidget {
   final UserCardInfo _userCardInfo;
@@ -14,6 +16,8 @@ class UserCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final Widget verticalGap = SizedBox(height: 2.0);
+
     return InkWell(
       onTap: () {
         Navigator.of(context).push(RouteGenerator.generateRoute(RouteSettings(
@@ -21,43 +25,33 @@ class UserCard extends StatelessWidget {
           arguments: PersonalPageAccessDto(_userCardInfo.userId, true),
         )));
       },
-      child: Container(
-        height: Constants.defaultUserCardHeight,
-        child: Card(
-          elevation: Constants.defaultCardElevation,
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.all(Radius.circular(20.0)),
-          ),
-          child: Container(
-            width: MediaQuery.of(context).size.width,
+      child: Card(
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.all(Radius.circular(20.0)),
+        ),
+        child: Padding(
             padding: EdgeInsets.all(Constants.defaultCardPadding),
             child: Row(
-              mainAxisSize: MainAxisSize.max,
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: <Widget>[
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
                 Expanded(
                   flex: 15,
-                  child: Container(
-                    width: 55.0,
-                    height: 55.0,
-                    child: CircleAvatar(
-                      backgroundImage: NetworkImage(
-                          "http://img8.zol.com.cn/bbs/upload/23765/23764201.jpg"),
-                    ),
-                  ),
+                  child: UserAvatar(55.0),
                 ),
                 Expanded(
-                  flex: 3,
+                  flex: 4,
                   child: Container(),
                 ),
                 Expanded(
-                  flex: 51,
+                  flex: 50,
                   child: Column(
+                    mainAxisAlignment: MainAxisAlignment.start,
                     mainAxisSize: MainAxisSize.max,
                     crossAxisAlignment: CrossAxisAlignment.start,
-                    children: <Widget>[
-                      Expanded(
-                        flex: 36,
+                    children: [
+                      ConstrainedBox(
+                        constraints: BoxConstraints(minHeight: 20.0),
                         child: Text(
                           _userCardInfo.userName,
                           overflow: TextOverflow.ellipsis,
@@ -65,12 +59,9 @@ class UserCard extends StatelessWidget {
                           style: CustomStyles.userNameStyle,
                         ),
                       ),
-                      Expanded(
-                        flex: 3,
-                        child: Container(),
-                      ),
-                      Expanded(
-                        flex: 28,
+                      verticalGap,
+                      ConstrainedBox(
+                        constraints: BoxConstraints(minHeight: 18.0),
                         child: Text(
                           _userCardInfo.brief,
                           overflow: TextOverflow.ellipsis,
@@ -78,31 +69,25 @@ class UserCard extends StatelessWidget {
                           style: CustomStyles.userBriefStyle,
                         ),
                       ),
-                      Expanded(
-                        flex: 8,
-                        child: Container(),
-                      ),
-                      Expanded(
-                        flex: 25,
-                        child: RichText(
-                          text: TextSpan(
-                            children: [
-                              WidgetSpan(
-                                child: CustomStyles.getDefaultReplyIcon(),
-                              ),
-                              TextSpan(
-                                text: ' ${_userCardInfo.commentCount}   ',
-                              ),
-                              WidgetSpan(
-                                child:
-                                    CustomStyles.getDefaultFilledFollowerIcon(),
-                              ),
-                              TextSpan(
-                                text: ' ${_userCardInfo.followerCount} ',
-                              ),
-                            ],
-                            style: CustomStyles.postFooterStyle,
-                          ),
+                      verticalGap,
+                      RichText(
+                        text: TextSpan(
+                          children: [
+                            WidgetSpan(
+                              child: CustomStyles.getDefaultReplyIcon(),
+                            ),
+                            TextSpan(
+                              text: ' ${_userCardInfo.commentCount}   ',
+                            ),
+                            WidgetSpan(
+                              child:
+                                  CustomStyles.getDefaultFilledFollowerIcon(),
+                            ),
+                            TextSpan(
+                              text: ' ${_userCardInfo.followerCount} ',
+                            ),
+                          ],
+                          style: CustomStyles.postFooterStyle,
                         ),
                       ),
                     ],
@@ -113,18 +98,12 @@ class UserCard extends StatelessWidget {
                   child: Container(),
                 ),
                 Expanded(
-                  flex: 29,
-                  child: Center(
-                    child: FollowButton(
-                      _userCardInfo.userName,
-                      _userCardInfo.followStatus,
-                    ),
-                  ),
-                ),
+                    flex: 29,
+                    child: Center(
+                        child: FollowButton(_userCardInfo.userName,
+                            _userCardInfo.followStatus)))
               ],
-            ),
-          ),
-        ),
+            )),
       ),
     );
   }

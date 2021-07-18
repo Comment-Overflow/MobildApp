@@ -213,4 +213,9 @@ class CustomStyles {
   static const newPostTitleStyle = TextStyle(
     fontSize: 17.0,
   );
+
+  static const chatMessageTimeStyle = TextStyle(
+    fontSize: 11.0,
+    color: Colors.grey
+  );
 }

@@ -50,7 +50,7 @@ class _PersonalPageState extends State<PersonalPage> {
         centerTitle: true,
       ),
       body: DefaultTabController(
-        length: 3,
+        length: Constants.personalPageTabs.length,
         child: NestedScrollView(
           physics: NeverScrollableScrollPhysics(),
           headerSliverBuilder: (context, value) {

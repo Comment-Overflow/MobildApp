@@ -84,6 +84,10 @@ class Constants {
 
   static const defaultButtonTextSize = 12.0;
 
+  static const chatTimeHorizontalPadding = 8.0;
+
+  static const chatTimeVerticalPadding = 3.0;
+
   /// Max image number of a comment.
   static const maxImageNumber = 9;
 
