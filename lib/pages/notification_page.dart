@@ -23,12 +23,12 @@ class NotificationPage extends StatelessWidget {
         children: <Widget>[
           Container(
             padding: EdgeInsets.symmetric(
-                vertical: Constants.defaultNotificationButtonSize,
+                vertical: Constants.defaultNotificationButtonSize * 0.7,
                 horizontal: Constants.defaultNotificationButtonSize * 0.35),
             child:
                 NotificationButtonList(Constants.defaultNotificationButtonSize),
           ),
-          Divider(thickness: 0.8),
+          Divider(height: 0.1, thickness: 0.8),
           RecentChatList(),
         ],
       ),
