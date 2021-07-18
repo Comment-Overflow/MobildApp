@@ -14,14 +14,16 @@ class ScrollViewPage extends StatelessWidget {
         floatHeaderSlivers: true,
         headerSliverBuilder: (context, value) => [
           SliverAppBar(
-              pinned: true,
-              floating: true,
-              elevation: Constants.defaultAppBarElevation,
-              title: Text(_title),
-              leading: IconButton(
-                icon: Icon(Icons.arrow_back),
-                onPressed: () => {Navigator.of(context).pop()},
-              )),
+            pinned: true,
+            floating: true,
+            elevation: Constants.defaultAppBarElevation,
+            title: Text(_title),
+            leading: IconButton(
+              icon: Icon(Icons.arrow_back),
+              onPressed: () => {Navigator.of(context).pop()},
+            ),
+            centerTitle: true,
+          ),
         ],
         body: MediaQuery.removePadding(
           context: context,

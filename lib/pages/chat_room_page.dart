@@ -139,6 +139,10 @@ class _ChatRoomPageState extends State<ChatRoomPage> {
                 padding: EdgeInsets.only(right: 5.0),
                 child: ElevatedButton(
                   child: Text("发送"),
+                  style: ButtonStyle(
+                    backgroundColor: MaterialStateProperty.all(
+                        Theme.of(context).accentColor),
+                  ),
                   onPressed: () {
                     if (_textEditingController.value.text.isNotEmpty) {
                       setState(() {

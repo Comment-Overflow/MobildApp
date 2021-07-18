@@ -49,7 +49,7 @@ class MessageBox {
       'fontSize': Constants.messageBoxFontSize,
       'webShowClose': webShowClose,
       'webBgColor': webBgColor,
-      'webPosition': webPosition
+      'webPosition': webPosition,
     };
 
     bool? res = await _channel.invokeMethod('showToast', params);

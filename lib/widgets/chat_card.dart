@@ -14,7 +14,6 @@ class ChatCard extends StatelessWidget {
   final VoidCallback _deleteChat;
   const ChatCard(this._chat, this._deleteChat, {Key? key}) : super(key: key);
 
-
   @override
   Widget build(BuildContext context) {
     Widget? unreadPrompt = _chat.unreadCount == 0
@@ -97,7 +96,7 @@ class ChatCard extends StatelessWidget {
                   child: Container(),
                 ),
                 Expanded(
-                  flex: 28,
+                  flex: 40,
                   child: Text(
                     getDisplayTime(_chat.time),
                     style: CustomStyles.lastChatTimeTextStyle,

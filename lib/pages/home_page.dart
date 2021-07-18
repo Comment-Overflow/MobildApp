@@ -23,7 +23,7 @@ class HomePage extends StatelessWidget {
               automaticallyImplyLeading: false,
               pinned: true,
               floating: true,
-              elevation: 0.5,
+              elevation: Constants.defaultAppBarElevation,
               title: Row(
                 children: [
                   buildSearchBar(context),
