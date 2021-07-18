@@ -90,6 +90,8 @@ class Constants {
   /// image size of UserAvatar for profile setting page
   static const profileSettingImageSize = 130.0;
 
+  static const messageBoxFontSize = 16.0;
+
   /// Default nine-pattern spacing.
   static const defaultNinePatternSpacing = 6.0;
 
@@ -133,6 +135,10 @@ enum MessageType { Text, Image }
 enum ChatterType {
   Me,
   Other,
+}
+
+enum MessageBoxType {
+  Info, Error, Success,
 }
 
 enum CommentType {
