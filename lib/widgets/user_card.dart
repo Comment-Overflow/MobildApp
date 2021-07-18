@@ -1,5 +1,6 @@
 import 'package:comment_overflow/assets/constants.dart';
 import 'package:comment_overflow/assets/custom_styles.dart';
+import 'package:comment_overflow/model/routing_dto/personal_page_access_dto.dart';
 import 'package:comment_overflow/model/user_info.dart';
 import 'package:comment_overflow/utils/route_generator.dart';
 import 'package:comment_overflow/widgets/follow_button.dart';
@@ -15,11 +16,10 @@ class UserCard extends StatelessWidget {
   Widget build(BuildContext context) {
     return InkWell(
       onTap: () {
-        Navigator.of(context).push(
-            RouteGenerator.generateRoute(RouteSettings(
-              name: RouteGenerator.personalRoute,
-              arguments: _userCardInfo.userId,
-            )));
+        Navigator.of(context).push(RouteGenerator.generateRoute(RouteSettings(
+          name: RouteGenerator.personalRoute,
+          arguments: PersonalPageAccessDto(_userCardInfo.userId, true),
+        )));
       },
       child: Container(
         height: Constants.defaultUserCardHeight,
@@ -28,10 +28,7 @@ class UserCard extends StatelessWidget {
             borderRadius: BorderRadius.all(Radius.circular(20.0)),
           ),
           child: Container(
-            width: MediaQuery
-                .of(context)
-                .size
-                .width,
+            width: MediaQuery.of(context).size.width,
             padding: EdgeInsets.all(Constants.defaultCardPadding),
             child: Row(
               mainAxisSize: MainAxisSize.max,
@@ -97,7 +94,7 @@ class UserCard extends StatelessWidget {
                               ),
                               WidgetSpan(
                                 child:
-                                CustomStyles.getDefaultFilledFollowerIcon(),
+                                    CustomStyles.getDefaultFilledFollowerIcon(),
                               ),
                               TextSpan(
                                 text: ' ${_userCardInfo.followerCount} ',

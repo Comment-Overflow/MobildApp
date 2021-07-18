@@ -15,7 +15,12 @@ class PagesContainer extends StatefulWidget {
 
 class _PagesContainerState extends State<PagesContainer> {
   int _index = 0;
-  final _pages = <Widget> [HomePage(), NotificationPage(), PersonalPage(currentUserId)];
+  final _pages = <Widget>[
+    HomePage(),
+    NotificationPage(),
+    // TODO: Get real current user id.
+    PersonalPage(currentUserId, false)
+  ];
 
   @override
   Widget build(BuildContext context) {
