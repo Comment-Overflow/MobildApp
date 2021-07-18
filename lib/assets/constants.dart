@@ -50,7 +50,9 @@ class Constants {
   static const defaultChatRoomPadding = 10.0;
 
   /// Default personal page header height.
-  static const defaultPersonalPageHeaderHeight = 200.0;
+  static const defaultPersonalPageHeaderHeight = 146.0;
+
+  static const defaultPersonalProfileHeight = 222.0;
 
   /// Default personal page avatar size.
   static const defaultPersonalPageAvatarSize = 130.0;
@@ -68,13 +70,25 @@ class Constants {
   static const defaultPersonalPageHeaderHorizontalPadding = 20.0;
 
   /// Default personal page header padding.
-  static const defaultPersonalPageHeaderVerticalPadding = 17.0;
+  static const defaultPersonalPageVerticalPadding = 10.0;
+
+  /// Default floating action button size.
+  static const defaultFabIconSize = 30.0;
 
   /// Max image number of a comment.
   static const maxImageNumber = 9;
 
   /// Default nine-pattern spacing.
   static const defaultNinePatternSpacing = 6.0;
+
+  // Categories of posts
+  static const List<String> postCategories = [
+    '校园生活',
+    '学在交大',
+    '文化艺术',
+    '心情驿站',
+    '职业发展'
+  ];
 }
 
 enum FollowStatus {
@@ -107,4 +121,14 @@ enum MessageType { Text, Image }
 enum ChatterType {
   Me,
   Other,
+}
+
+enum CommentType {
+  Post,
+  Reply,
+}
+
+enum Setting {
+  editInfo,
+  signOut,
 }
