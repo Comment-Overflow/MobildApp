@@ -23,6 +23,7 @@ class PersonalPage extends StatefulWidget {
 class _PersonalPageState extends State<PersonalPage> {
   PersonalPageInfo _personalPageInfo = personalPageInfo;
   bool _isSelf = false;
+  SortPolicy _policy = SortPolicy.hottest;
 
   @override
   void initState() {
@@ -30,6 +31,7 @@ class _PersonalPageState extends State<PersonalPage> {
     super.initState();
     // _isSelf = false;
     _isSelf = widget._userId == currentUserId;
+    print(_isSelf);
   }
 
   @override
@@ -46,32 +48,98 @@ class _PersonalPageState extends State<PersonalPage> {
         actions: [_isSelf ? _buildDropDownMenu() : Container()],
         automaticallyImplyLeading: widget._fromCard,
       ),
-      body: NestedScrollView(
-        physics: NeverScrollableScrollPhysics(),
-        headerSliverBuilder: (context, value) {
-          return [
-            SliverToBoxAdapter(
-              child: Container(
-                  color: Colors.white,
-                  child: PersonalProfileCard(_personalPageInfo, _isSelf)),
-            ),
-            SliverPersistentHeader(
-              floating: true,
-              pinned: true,
-              delegate: _isSelf
-                  ? PersonalPostHeader(onSelect: _onSelect)
-                  : PersonalPostHeader(onToggle: _onToggle),
-            )
-          ];
-        },
-        body: Container(child: PostCardList()),
+      body: DefaultTabController(
+        length: 3,
+        child: NestedScrollView(
+          physics: NeverScrollableScrollPhysics(),
+          headerSliverBuilder: (context, value) {
+            return [
+              SliverToBoxAdapter(
+                child: Container(
+                    color: Colors.white,
+                    child: PersonalProfileCard(_personalPageInfo, _isSelf)),
+              ),
+              SliverPersistentHeader(
+                floating: true,
+                pinned: true,
+                delegate: _isSelf
+                    ? TabBarHeader()
+                    : PersonalPostHeader(onToggle: _onToggle),
+              ),
+            ];
+          },
+          body: Container(child: PostCardList()),
+        ),
       ),
+      bottomNavigationBar:
+          _isSelf ? SafeArea(child: _buildSorter()) : Container(height: 0),
     );
   }
 
-  void _onToggle(int index) {}
+  void _onToggle(int index) {
+    // TODO: Implement onToggle.
+    switch (index) {
+      case 0:
+        setState(() {
+          _policy = SortPolicy.hottest;
+        });
+        break;
+      case 1:
+        setState(() {
+          _policy = SortPolicy.latest;
+        });
+        break;
+    }
+  }
 
-  void _onSelect(int index) {}
+  void _onSort(SortPolicy policy) {
+    setState(() {
+      _policy = policy;
+    });
+  }
+
+  Widget _buildSorter() {
+    return Container(
+      height: 32.0,
+      padding: EdgeInsets.symmetric(horizontal: 15.0),
+      child: Center(
+        child: Row(
+          mainAxisSize: MainAxisSize.max,
+          mainAxisAlignment: MainAxisAlignment.start,
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            PopupMenuButton<SortPolicy>(
+              onSelected: _onSort,
+              child: Row(
+                children: [
+                  CustomStyles.getDefaultListIcon(),
+                  Padding(
+                    padding: const EdgeInsets.only(left: 4.0),
+                    child: Text(
+                      Constants.sorterTexts[_policy.index],
+                      style: TextStyle(
+                        color: Colors.grey,
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+              itemBuilder: (BuildContext context) => [
+                PopupMenuItem(
+                  value: SortPolicy.hottest,
+                  child: Text(Constants.sorterTexts[SortPolicy.hottest.index]),
+                ),
+                PopupMenuItem(
+                  value: SortPolicy.latest,
+                  child: Text(Constants.sorterTexts[SortPolicy.latest.index]),
+                ),
+              ],
+            ),
+          ],
+        ),
+      ),
+    );
+  }
 
   Widget _buildDropDownMenu() {
     return PopupMenuButton<Setting>(
@@ -96,13 +164,35 @@ class _PersonalPageState extends State<PersonalPage> {
   }
 }
 
+class TabBarHeader extends SliverPersistentHeaderDelegate {
+  final TabBar _tabBar = TabBar(
+    tabs: Constants.personalPageTabs.map((e) => Tab(text: e)).toList(),
+    isScrollable: false,
+  );
+
+  @override
+  Widget build(
+      BuildContext context, double shrinkOffset, bool overlapsContent) {
+    return Container(
+        color: Theme.of(context).scaffoldBackgroundColor, child: _tabBar);
+  }
+
+  @override
+  double get maxExtent => _tabBar.preferredSize.height;
+
+  @override
+  double get minExtent => _tabBar.preferredSize.height;
+
+  @override
+  bool shouldRebuild(covariant SliverPersistentHeaderDelegate oldDelegate) {
+    return false;
+  }
+}
+
 class PersonalPostHeader extends SliverPersistentHeaderDelegate {
   final void Function(int)? _onToggle;
-  final void Function(int)? _onSelect;
 
-  const PersonalPostHeader({onToggle, onSelect})
-      : _onToggle = onToggle,
-        _onSelect = onSelect;
+  const PersonalPostHeader({onToggle, onSelect}) : _onToggle = onToggle;
 
   Widget _buildToggle(BuildContext context) {
     return Container(
@@ -134,75 +224,34 @@ class PersonalPostHeader extends SliverPersistentHeaderDelegate {
     );
   }
 
-  Widget _buildSelector() {
-    return Container(
-      padding: EdgeInsets.symmetric(horizontal: 10.0),
-      child: Center(
-        child: Row(
-          mainAxisSize: MainAxisSize.max,
-          mainAxisAlignment: MainAxisAlignment.end,
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: [
-            PopupMenuButton<int>(
-              onSelected: _onSelect,
-              child: Row(
-                children: [
-                  Text(
-                    "查看全部",
-                    style: TextStyle(
-                      color: Colors.grey,
-                    ),
-                  ),
-                  CustomStyles.getDefaultRightArrow(),
-                ],
-              ),
-              itemBuilder: (BuildContext context) => [
-                PopupMenuItem(
-                  value: 0,
-                  child: Text("查看帖子"),
-                ),
-                PopupMenuItem(
-                  value: 1,
-                  child: Text("查看回复"),
-                ),
-              ],
-            ),
-          ],
-        ),
-      ),
-    );
-  }
-
   @override
   Widget build(
       BuildContext context, double shrinkOffset, bool overlapsContent) {
     return Container(
-      child: Container(
-        color: Theme.of(context).scaffoldBackgroundColor,
-        padding: EdgeInsets.symmetric(
-            vertical: Constants.defaultPersonalPageVerticalPadding * 0.7),
-        child: Stack(
-          children: [
-            Center(
-              child: Row(
-                mainAxisSize: MainAxisSize.max,
-                mainAxisAlignment: MainAxisAlignment.center,
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
-                  Text(
-                    "帖子",
-                    // shrinkOffset.toString(),
-                    style: TextStyle(
-                      fontSize: 19.0,
-                      // fontWeight: FontWeight.bold,
-                    ),
+      color: Theme.of(context).scaffoldBackgroundColor,
+      padding: EdgeInsets.symmetric(
+          vertical: Constants.defaultPersonalPageVerticalPadding * 0.7),
+      child: Stack(
+        children: [
+          Center(
+            child: Row(
+              mainAxisSize: MainAxisSize.max,
+              mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                Text(
+                  "帖子",
+                  // shrinkOffset.toString(),
+                  style: TextStyle(
+                    fontSize: 19.0,
+                    // fontWeight: FontWeight.bold,
                   ),
-                ],
-              ),
+                ),
+              ],
             ),
-            _onToggle == null ? _buildSelector() : _buildToggle(context),
-          ],
-        ),
+          ),
+          _buildToggle(context),
+        ],
       ),
     );
   }
