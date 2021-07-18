@@ -7,13 +7,31 @@ import 'package:flutter/material.dart';
 class ApprovalButton extends StatefulWidget {
   final Comment _comment;
   final int _userId;
+  final bool _showCount;
+  final double _size;
 
   ApprovalButton({
     required comment,
     required userId,
+    showCount = true,
+    size = 30.0,
     Key? key
   }) : _comment = comment,
         _userId = userId,
+        _showCount = showCount,
+        _size = size,
+        super(key: key);
+
+  ApprovalButton.horizontal({
+    required comment,
+    required userId,
+    showCount = false,
+    size = 30.0,
+    Key? key
+  }) : _comment = comment,
+        _userId = userId,
+        _showCount = showCount,
+        _size = size,
         super(key: key);
 
   @override
@@ -21,7 +39,6 @@ class ApprovalButton extends StatefulWidget {
 }
 
 class _ApprovalButtonState extends State<ApprovalButton> {
-  static const _bottomIconSize = 30.0;
 
   @override
   Widget build(BuildContext context) {
@@ -38,15 +55,27 @@ class _ApprovalButtonState extends State<ApprovalButton> {
           }
           /// Send request here
         },
-        child: Column(
+        child: widget._showCount? Column(
           mainAxisSize: MainAxisSize.min,
           children: [
             widget._comment.approvalStatus == ApprovalStatus.approve
-              ? CustomStyles.getDefaultThumbUpIcon(size: _bottomIconSize)
-              : CustomStyles.getDefaultNotThumbUpIcon(size: _bottomIconSize),
-            Text(widget._comment.approvalCount.toString(),
-                style: CustomStyles.postPageBottomStyle),
+              ? CustomStyles.getDefaultThumbUpIcon(size: widget._size)
+              : CustomStyles.getDefaultNotThumbUpIcon(size: widget._size),
+            Text(
+              widget._comment.approvalCount.toString(),
+              style: CustomStyles.postPageBottomStyle)
           ],
-        ));
+        ) : Row(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            widget._comment.approvalStatus == ApprovalStatus.approve
+                ? CustomStyles.getDefaultThumbUpIcon(size: widget._size)
+                : CustomStyles.getDefaultNotThumbUpIcon(size: widget._size),
+            Text(
+                widget._comment.approvalCount.toString(),
+                style: CustomStyles.postPageBottomStyle)
+          ],
+        )
+    );
   }
 }
