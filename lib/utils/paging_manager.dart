@@ -1,25 +1,40 @@
+import 'package:comment_overflow/widgets/adaptive_refresher.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
 
 class PagingManager<T> {
-
+  static const _iosRotatingIndicator = SizedBox(
+    width: 25.0,
+    height: 25.0,
+    child: const CupertinoActivityIndicator(),
+  );
   final _pageSize;
   final PagingController<int, T> _pagingController =
-  PagingController(firstPageKey: 0);
+      PagingController(firstPageKey: 0);
   // _customApi must be wrapped with a function with parameters
   // (pageKey, pageSize), such as
+  //
+  // ```dart
   // (page, pageSize) => {
   //   getBooks(bookId: 0, page, pageSize);
   // }
-  final _customFetchApi;
+  // ```
+  var _customFetchApi;
+  var _wrappedFetchApi;
   // _customItemBuilder should be a function with parameters
   // (context, item, index), and must return a widget displayed as list item
+  // such as
   final _customItemBuilder;
+  // Check prevent manipulation of paging controller after disposal.
+  bool _disposed = false;
 
   Future<void> _fetchPage(int pageKey) async {
     try {
       final newItems = await _customFetchApi(pageKey ~/ _pageSize, _pageSize);
+      if (this._disposed) {
+        return;
+      }
       final isLastPage = newItems.length < _pageSize;
       if (isLastPage) {
         _pagingController.appendLastPage(newItems);
@@ -33,27 +48,53 @@ class PagingManager<T> {
   }
 
   PagingManager(this._pageSize, this._customFetchApi, this._customItemBuilder) {
-    _pagingController.addPageRequestListener((pageKey) {
+    this._wrappedFetchApi = (pageKey) {
       _fetchPage(pageKey);
-    });
+    };
+
+    _pagingController.addPageRequestListener(this._wrappedFetchApi);
+  }
+
+  changeCustomFetchApi(newApi) {
+    _pagingController.removePageRequestListener(this._wrappedFetchApi);
+    this._customFetchApi = newApi;
+    this._wrappedFetchApi = (pageKey) {
+      _fetchPage(pageKey);
+    };
+    _pagingController.addPageRequestListener(this._wrappedFetchApi);
+  }
+
+  refresh() {
+    _pagingController.refresh();
   }
 
   dispose() {
-    _pagingController.dispose();
+    if (_disposed == false) {
+      _disposed = true;
+      _pagingController.dispose();
+    }
   }
 
-  RefreshIndicator getListView() =>
-    RefreshIndicator(
-      child: PagedListView<int, T>(
-        pagingController: _pagingController,
-        builderDelegate: PagedChildBuilderDelegate<T>(
-          animateTransitions: true,
-          transitionDuration: const Duration(milliseconds: 500),
-          itemBuilder: _customItemBuilder,
-        ),
-      ),
-      onRefresh: () => Future.sync(
-        () => _pagingController.refresh(),
+  Widget getListView({refreshable = true}) {
+    PagedListView<int, T> listView = PagedListView<int, T>(
+      pagingController: _pagingController,
+      builderDelegate: PagedChildBuilderDelegate<T>(
+        animateTransitions: true,
+        transitionDuration: const Duration(milliseconds: 200),
+        itemBuilder: _customItemBuilder,
+        firstPageProgressIndicatorBuilder: (_) => Container(),
       ),
     );
+
+    return refreshable
+        ? AdaptiveRefresher(
+            onRefresh: () {
+              _pagingController.refresh();
+              return Future.delayed(Duration.zero);
+            },
+            iosComplete: _iosRotatingIndicator,
+            child: listView,
+          )
+        : listView;
+  }
 }

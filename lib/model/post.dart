@@ -1,24 +1,19 @@
+import 'package:comment_overflow/model/comment.dart';
+
 class Post {
+  final int _postId;
+  final String _title;
+  final int _commentCount;
+  final int _approvalCount;
+  // Depending on whether the comment is displayed as post or comment.
+  final Comment _commentToDisplay;
 
-  final _title;
-  final _author;
-  final _content;
-  final _numOfApprovals;
-  final _numOfComments;
-  final _date;
+  int get postId => _postId;
+  String get title => _title;
+  int get commentCount => _commentCount;
+  int get approvalCount => _approvalCount;
+  Comment get commentToDisplay => _commentToDisplay;
 
-  get title => _title;
-
-  get author => _author;
-
-  get content => _content;
-
-  get numOfApprovals => _numOfApprovals;
-
-  get numOfComments => _numOfComments;
-
-  get date => _date;
-
-  Post(this._title, this._author, this._content, this._numOfApprovals,
-      this._numOfComments, this._date);
+  Post(this._postId, this._title, this._commentCount, this._approvalCount,
+      this._commentToDisplay);
 }

@@ -44,3 +44,18 @@ app.*.map.json
 /android/app/debug
 /android/app/profile
 /android/app/release
+
+# pubspec
+pubspec.lock
+
+# IOS signing configuration
+/ios/Runner.xcworkspace
+/ios/Runner.xcodeproj/project.pbxproj
+/ios/Runner/Runner.entitlements
+/ios/build
+/ios/Podfile
+/ios/Podfile.lock
+/ios/Flutter/Debug.xcconfig
+/ios/Flutter/Release.xcconfig
+/ios/Runner.xcworkspace/contents.xcworkspacedata
+
