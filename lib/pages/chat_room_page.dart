@@ -48,9 +48,6 @@ class _ChatRoomPageState extends State<ChatRoomPage> {
 
   @override
   Widget build(BuildContext context) {
-    if (_scrollController.hasClients)
-      _scrollController.jumpTo(_scrollController.position.maxScrollExtent);
-
     return Scaffold(
       appBar: AppBar(
         elevation: Constants.defaultAppBarElevation,
