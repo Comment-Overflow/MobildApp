@@ -6,15 +6,19 @@ import 'package:flutter/material.dart';
 class MultipleWidgetButton extends StatelessWidget {
   final String? _routeName;
   final List<Widget> _widgets;
+  final _arguments;
 
-  const MultipleWidgetButton(this._routeName, this._widgets, {Key? key})
-      : super(key: key);
+  const MultipleWidgetButton(this._routeName, this._widgets,
+      {Key? key, arguments})
+      : this._arguments = arguments,
+        super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return InkWell(
       onTap: () {
-        if (_routeName != null) Navigator.pushNamed(context, _routeName!);
+        if (_routeName != null)
+          Navigator.pushNamed(context, _routeName!, arguments: this._arguments);
       },
       child: Column(
         mainAxisSize: MainAxisSize.max,

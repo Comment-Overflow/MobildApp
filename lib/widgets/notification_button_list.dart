@@ -69,7 +69,7 @@ class NotificationButtonList extends StatelessWidget {
           Expanded(
             flex: 25,
             child: MultipleWidgetButton(
-              RouteGenerator.followMeRoute,
+              RouteGenerator.followMeNotificationRoute,
               [
                 CustomStyles.getDefaultUnfilledFollowerIcon(
                     size: _buttonSize, color: Colors.black),
