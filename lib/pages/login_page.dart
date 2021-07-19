@@ -43,8 +43,18 @@ class LoginPage extends StatelessWidget {
         Navigator.of(context).pushReplacementNamed(RouteGenerator.homeRoute);
       },
       theme: LoginTheme(
+        // Gradient background color.
+        pageColorLight: Theme.of(context).accentColor,
+        pageColorDark: Colors.lightBlueAccent,
         primaryColor: Theme.of(context).accentColor,
         titleStyle: TextStyle(),
+        cardTheme: CardTheme(
+          elevation: 3,
+        ),
+        buttonTheme:
+            LoginButtonTheme(elevation: 2, backgroundColor: Colors.blue[400]),
+        accentColor: Colors.blue[400],
+        authButtonPadding: EdgeInsets.only(top: 15.0, bottom: 5.0),
       ),
       onRecoverPassword: _recoverPassword,
     );
