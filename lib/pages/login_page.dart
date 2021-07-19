@@ -44,16 +44,19 @@ class LoginPage extends StatelessWidget {
       },
       theme: LoginTheme(
         // Gradient background color.
-        pageColorLight: Theme.of(context).accentColor,
-        pageColorDark: Colors.lightBlueAccent,
-        primaryColor: Theme.of(context).accentColor,
-        titleStyle: TextStyle(),
+        pageColorLight: Color(0xFF77ACF1),
+        pageColorDark: Color(0xFF0500B6),
+        primaryColor: Color(0xFF3F84DE),
+        titleStyle: TextStyle(
+          color: Colors.white,
+        ),
         cardTheme: CardTheme(
           elevation: 3,
         ),
+
         buttonTheme:
-            LoginButtonTheme(elevation: 2, backgroundColor: Colors.blue[400]),
-        accentColor: Colors.blue[400],
+            LoginButtonTheme(elevation: 2, backgroundColor: Color(0xFF3F84DE)),
+        accentColor: Color(0xff4557cd),
         authButtonPadding: EdgeInsets.only(top: 15.0, bottom: 5.0),
       ),
       onRecoverPassword: _recoverPassword,
