@@ -12,21 +12,12 @@ import 'package:flutter_slidable/flutter_slidable.dart';
 class ChatCard extends StatelessWidget {
   final Chat _chat;
   final VoidCallback _deleteChat;
+  final double _horizontalGap = 10.0;
+
   const ChatCard(this._chat, this._deleteChat, {Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    Widget? unreadPrompt = _chat.unreadCount == 0
-        ? Container(height: 0, width: 0)
-        : CircleAvatar(
-            radius: 9.0,
-            backgroundColor: CustomColors.UnreadChatRed,
-            child: Text(
-              _chat.unreadCount.toString(),
-              style: CustomStyles.unreadChatTextStyle,
-            ),
-          );
-
     Container card = Container(
       padding: EdgeInsets.fromLTRB(
           Constants.defaultCardPadding * 0.4,
@@ -36,72 +27,60 @@ class ChatCard extends StatelessWidget {
       height: Constants.defaultChatCardHeight,
       child: Row(
         mainAxisSize: MainAxisSize.max,
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: <Widget>[
+        mainAxisAlignment: MainAxisAlignment.start,
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: [
+          UserAvatar(Constants.defaultChatListAvatarSize),
+          SizedBox(width: _horizontalGap),
           Expanded(
-            flex: 20,
-            child: UserAvatar(Constants.defaultChatListAvatarSize),
-          ),
-          Expanded(
-            flex: 59,
             child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: <Widget>[
-                Expanded(
-                  flex: 10,
-                  child: Container(),
-                ),
-                Expanded(
-                  flex: 45,
-                  child: Text(
-                    _chat.chatter.userName,
-                    overflow: TextOverflow.ellipsis,
-                    maxLines: 1,
-                    style: CustomStyles.userNameStyle,
-                  ),
-                ),
-                Expanded(
-                  flex: 5,
-                  child: Container(),
-                ),
-                Expanded(
-                  flex: 40,
-                  child: Text(
-                    _chat.lastMessage,
-                    overflow: TextOverflow.ellipsis,
-                    maxLines: 1,
-                    style: CustomStyles.lastMessageTextStyle,
-                  ),
-                ),
-              ],
-            ),
-          ),
-          Expanded(
-            flex: 1,
-            child: Container(),
-          ),
-          Expanded(
-            flex: 20,
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.end,
+              mainAxisSize: MainAxisSize.min,
               mainAxisAlignment: MainAxisAlignment.center,
-              children: <Widget>[
-                Expanded(
-                  flex: 12,
-                  child: Container(),
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                Row(
+                  mainAxisSize: MainAxisSize.max,
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Text(
+                      _chat.chatter.userName,
+                      overflow: TextOverflow.ellipsis,
+                      maxLines: 1,
+                      style: TextStyle(
+                        fontWeight: FontWeight.bold,
+                        fontSize: Constants.chatListBaselineSize,
+                      ),
+                    ),
+                    _buildUnreadPrompt(),
+                  ],
                 ),
-                Expanded(flex: 50, child: unreadPrompt),
-                Expanded(
-                  flex: 10,
-                  child: Container(),
-                ),
-                Expanded(
-                  flex: 40,
-                  child: Text(
-                    getDisplayTime(_chat.time),
-                    style: CustomStyles.lastChatTimeTextStyle,
-                  ),
-                ),
+                SizedBox(height: Constants.chatListBaselineSize * 0.4),
+                Row(
+                  mainAxisSize: MainAxisSize.max,
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    Expanded(
+                      child: Text(
+                        _chat.lastMessage,
+                        overflow: TextOverflow.ellipsis,
+                        maxLines: 1,
+                        style: TextStyle(
+                          fontSize: Constants.chatListBaselineSize * 0.9,
+                          color: Colors.grey,
+                        ),
+                      ),
+                    ),
+                    SizedBox(height: _horizontalGap),
+                    Text(
+                      getDisplayTime(_chat.time),
+                      style: TextStyle(
+                        fontSize: Constants.chatListBaselineSize * 0.7,
+                        color: Colors.grey,
+                      ),
+                    ),
+                  ],
+                )
               ],
             ),
           ),
@@ -117,7 +96,7 @@ class ChatCard extends StatelessWidget {
         },
         child: Slidable(
           actionPane: SlidableDrawerActionPane(),
-          actionExtentRatio: 0.25,
+          actionExtentRatio: 0.22,
           child: card,
           secondaryActions: <Widget>[
             IconSlideAction(
@@ -128,5 +107,22 @@ class ChatCard extends StatelessWidget {
             ),
           ],
         ));
+  }
+
+  Widget _buildUnreadPrompt() {
+    return _chat.unreadCount == 0
+        ? Container(height: 0, width: 0)
+        : CircleAvatar(
+            radius: Constants.chatListBaselineSize / 2,
+            backgroundColor: CustomColors.UnreadChatRed,
+            child: Text(
+              _chat.unreadCount.toString(),
+              style: TextStyle(
+                fontSize: Constants.chatListBaselineSize * 0.8,
+                fontWeight: FontWeight.bold,
+                color: Colors.white,
+              ),
+            ),
+          );
   }
 }

@@ -59,20 +59,6 @@ class CustomStyles {
     color: Colors.grey,
   );
 
-  static const lastMessageTextStyle = TextStyle(
-    fontSize: 16,
-    color: Colors.grey,
-  );
-  static const unreadChatTextStyle = TextStyle(
-    fontSize: 13,
-    fontWeight: FontWeight.bold,
-    color: Colors.white,
-  );
-  static const lastChatTimeTextStyle = TextStyle(
-    fontSize: 12,
-    color: Colors.grey,
-  );
-
   static const pageTitleStyle = TextStyle(
     fontWeight: FontWeight.normal,
   );
