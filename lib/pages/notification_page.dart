@@ -1,13 +1,29 @@
+import 'package:comment_overflow/fake_data/fake_data.dart';
+import 'package:comment_overflow/model/chat.dart';
 import 'package:comment_overflow/widgets/adaptive_refresher.dart';
+import 'package:comment_overflow/widgets/chat_card.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:comment_overflow/assets/constants.dart';
 import 'package:comment_overflow/assets/custom_styles.dart';
 import 'package:comment_overflow/widgets/notification_button_list.dart';
-import 'package:comment_overflow/widgets/recent_chat_list.dart';
+import 'package:flutter/rendering.dart';
 
-class NotificationPage extends StatelessWidget {
+class NotificationPage extends StatefulWidget {
   NotificationPage({Key? key}) : super(key: key);
+
+  @override
+  _NotificationPageState createState() => _NotificationPageState();
+}
+
+class _NotificationPageState extends State<NotificationPage> {
+  late List<Chat> _recentChats;
+
+  @override
+  void initState() {
+    super.initState();
+    _getRecentChats();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -22,10 +38,10 @@ class NotificationPage extends StatelessWidget {
         centerTitle: true,
         automaticallyImplyLeading: false,
       ),
-      body: NestedScrollView(
-        physics: NeverScrollableScrollPhysics(),
-        headerSliverBuilder: (context, value) {
-          return [
+      body: AdaptiveRefresher(
+        onRefresh: _onRefresh,
+        child: CustomScrollView(
+          slivers: <Widget>[
             SliverToBoxAdapter(
                 child: Container(
               color: Colors.white,
@@ -37,11 +53,19 @@ class NotificationPage extends StatelessWidget {
                     Constants.defaultNotificationButtonSize),
               ),
             )),
-          ];
-        },
-        body: Container(child: RecentChatList()),
+            _recentChats.length == 0 ? _buildNoChatPrompt() : _buildChatList(),
+          ],
+        ),
       ),
     );
+  }
+
+  void _getRecentChats() {
+    // TODO: Get cached chats from local file.
+    // TODO: Get real chats from server.
+    setState(() {
+      _recentChats = recentChats;
+    });
   }
 
   Future _onRefresh() async {
@@ -50,5 +74,38 @@ class NotificationPage extends StatelessWidget {
     // monitor network fetch
     return Future.delayed(Duration(milliseconds: 1000));
     // if failed,use refreshFailed()
+  }
+
+  Widget _buildNoChatPrompt() {
+    return SliverFillRemaining(
+      hasScrollBody: false,
+      child: Center(
+        child: Text(
+          "没有消息",
+          style: TextStyle(
+            color: Colors.grey,
+            fontSize: 20.0,
+          ),
+        ),
+      ),
+    );
+  }
+
+  Widget _buildChatList() {
+    return SliverList(
+      delegate: SliverChildBuilderDelegate(
+        (BuildContext context, int index) {
+          return ChatCard(recentChats[index], () {
+            // TODO: Delete the chat from local file.
+            // TODO: Delete the chat from server. (?)
+            setState(() {
+              _recentChats.removeAt(index);
+            });
+            _getRecentChats();
+          });
+        },
+        childCount: recentChats.length,
+      ),
+    );
   }
 }

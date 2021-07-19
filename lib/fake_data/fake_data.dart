@@ -201,13 +201,13 @@ final recentChats = List<Chat>.filled(
 )
   ..addAll(List<Chat>.filled(
     3,
-    Chat(_cyxInfo, "You look good today", DateTime(2021, 7, 14, 21, 3), 0),
+    Chat(_cyxInfo, "Very long long long long long long long long message",
+        DateTime(2021, 7, 18, 21, 3), 0),
     growable: true,
   ))
   ..addAll(List<Chat>.filled(
     3,
-    Chat(_cyxInfo, "Very long long long long long long long long message",
-        DateTime(2021), 3),
+    Chat(_cyxInfo, "很长很长很长很长很长很长很长很长很长很长很长很长很长的中文消息", DateTime(2020), 3),
     growable: true,
   ));
 
