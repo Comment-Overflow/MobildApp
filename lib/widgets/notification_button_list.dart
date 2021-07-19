@@ -12,7 +12,7 @@ class NotificationButtonList extends StatelessWidget {
 
   NotificationButtonList(this._buttonSize, {Key? key}) : super(key: key) {
     _notificationButtonTextStyle = TextStyle(
-      fontSize: _buttonSize * 0.4,
+      fontSize: _buttonSize * 0.47,
       fontWeight: FontWeight.w400,
       color: Colors.grey[800],
     );

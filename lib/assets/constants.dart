@@ -24,7 +24,7 @@ class Constants {
   static const defaultChatCardHeight = 80.0;
 
   /// Default size of chat avatar.
-  static const defaultChatListAvatarSize = 65.0;
+  static const defaultChatListAvatarSize = 60.0;
 
   static const defaultAppBarElevation = 0.5;
 
@@ -35,6 +35,8 @@ class Constants {
 
   /// Maximum characters for post title.
   static const postTitleMaximumLength = 30;
+
+  static const chatListBaselineSize = 15.8;
 
   /// Default size of avatar in chat room.
   static const defaultChatRoomAvatarSize = 50.0;
