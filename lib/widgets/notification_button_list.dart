@@ -12,7 +12,7 @@ class NotificationButtonList extends StatelessWidget {
 
   NotificationButtonList(this._buttonSize, {Key? key}) : super(key: key) {
     _notificationButtonTextStyle = TextStyle(
-      fontSize: _buttonSize * 0.4,
+      fontSize: _buttonSize * 0.5,
       fontWeight: FontWeight.w400,
       color: Colors.grey[800],
     );
@@ -69,7 +69,7 @@ class NotificationButtonList extends StatelessWidget {
           Expanded(
             flex: 25,
             child: MultipleWidgetButton(
-              RouteGenerator.followMeRoute,
+              RouteGenerator.followMeNotificationRoute,
               [
                 CustomStyles.getDefaultUnfilledFollowerIcon(
                     size: _buttonSize, color: Colors.black),

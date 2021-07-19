@@ -1,5 +1,6 @@
 import 'package:comment_overflow/assets/constants.dart';
 import 'package:comment_overflow/assets/custom_styles.dart';
+import 'package:comment_overflow/model/routing_dto/user_name_id_dto.dart';
 import 'package:comment_overflow/model/user_info.dart';
 import 'package:comment_overflow/utils/route_generator.dart';
 import 'package:comment_overflow/utils/utils.dart';
@@ -119,7 +120,7 @@ class PersonalProfileCard extends StatelessWidget {
                 Expanded(
                   flex: 25,
                   child: MultipleWidgetButton(
-                    RouteGenerator.homeRoute,
+                    RouteGenerator.followersRoute,
                     [
                       Text(
                         getDisplayNumber(_personalPageInfo.followingCount),
@@ -131,12 +132,14 @@ class PersonalProfileCard extends StatelessWidget {
                         style: CustomStyles.personalPageButtonTextStyle,
                       ),
                     ],
+                    arguments: UserNameIdDto(_personalPageInfo.userId,
+                        this._isSelf ? '我' : _personalPageInfo.userName),
                   ),
                 ),
                 Expanded(
                   flex: 25,
                   child: MultipleWidgetButton(
-                    RouteGenerator.homeRoute,
+                    RouteGenerator.fansRoute,
                     [
                       Text(
                         getDisplayNumber(_personalPageInfo.followerCount),
@@ -148,6 +151,8 @@ class PersonalProfileCard extends StatelessWidget {
                         style: CustomStyles.personalPageButtonTextStyle,
                       ),
                     ],
+                    arguments: UserNameIdDto(_personalPageInfo.userId,
+                        this._isSelf ? '我' : _personalPageInfo.userName),
                   ),
                 ),
                 Expanded(
