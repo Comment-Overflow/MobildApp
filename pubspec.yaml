@@ -20,6 +20,7 @@ version: 1.0.0+1
 environment:
   sdk: ">=2.12.0 <3.0.0"
 
+
 dependencies:
   flutter:
     sdk: flutter
@@ -56,6 +57,8 @@ dependencies:
   like_button: ^2.0.2
   fluttertoast: ^8.0.7
   scroll_to_index: ^2.0.0
+  stomp_dart_client: ^0.4.3
+  flutter_dotenv: ^5.0.0
 
 dev_dependencies:
   flutter_test:
@@ -82,6 +85,9 @@ flutter:
 
   # For details regarding adding assets from package dependencies, see
   # https://flutter.dev/assets-and-images/#from-packages
+
+  assets:
+    - .env
 
   # To add custom fonts to your application, add a fonts section here,
   # in this "flutter" section. Each entry in this list should have a
