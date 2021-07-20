@@ -2,6 +2,7 @@ import 'package:comment_overflow/widgets/adaptive_refresher.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
+import 'package:scroll_to_index/scroll_to_index.dart';
 
 class PagingManager<T> {
   static const _iosRotatingIndicator = SizedBox(
@@ -10,8 +11,15 @@ class PagingManager<T> {
     child: const CupertinoActivityIndicator(),
   );
   final _pageSize;
+  late final AutoScrollController _autoScrollController = AutoScrollController(
+    viewportBoundaryGetter: () => Rect.fromLTRB(0, 0, 0, 10.0),
+    axis: Axis.vertical,
+  );
+
+  // late final _onAutoScroll;
   final PagingController<int, T> _pagingController =
       PagingController(firstPageKey: 0);
+
   // _customApi must be wrapped with a function with parameters
   // (pageKey, pageSize), such as
   //
@@ -22,10 +30,12 @@ class PagingManager<T> {
   // ```
   var _customFetchApi;
   var _wrappedFetchApi;
+
   // _customItemBuilder should be a function with parameters
   // (context, item, index), and must return a widget displayed as list item
   // such as
-  final _customItemBuilder;
+  final Widget Function(BuildContext, dynamic, int) _customItemBuilder;
+
   // Check prevent manipulation of paging controller after disposal.
   bool _disposed = false;
 
@@ -72,16 +82,23 @@ class PagingManager<T> {
     if (_disposed == false) {
       _disposed = true;
       _pagingController.dispose();
+      _autoScrollController.dispose();
     }
   }
 
   Widget getListView({refreshable = true}) {
     PagedListView<int, T> listView = PagedListView<int, T>(
+      scrollController: _autoScrollController,
       pagingController: _pagingController,
       builderDelegate: PagedChildBuilderDelegate<T>(
         animateTransitions: true,
         transitionDuration: const Duration(milliseconds: 200),
-        itemBuilder: _customItemBuilder,
+        itemBuilder: (context, item, index) => AutoScrollTag(
+          key: ValueKey(index),
+          controller: _autoScrollController,
+          index: index,
+          child: _customItemBuilder(context, item, index),
+        ),
         firstPageProgressIndicatorBuilder: (_) => Container(),
       ),
     );
@@ -96,5 +113,12 @@ class PagingManager<T> {
             child: listView,
           )
         : listView;
+  }
+
+  /// Do not support highlight here.
+  /// Need to do highlight job outside PagingManager.
+  Future scrollToIndex(int index) async {
+    await _autoScrollController.scrollToIndex(index,
+        preferPosition: AutoScrollPosition.middle);
   }
 }

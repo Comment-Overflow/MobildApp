@@ -15,4 +15,5 @@ class CustomColors {
   static const messageBoxSuccess = Colors.blueAccent;
   static const messageBoxText = Colors.blueGrey;
   static const lightBlue = Color(0xFF49BAFF);
+  static const highlightBlue = Color(0xFFD4E3FF);
 }

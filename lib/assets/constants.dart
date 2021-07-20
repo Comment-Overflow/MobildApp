@@ -101,6 +101,8 @@ class Constants {
   /// Default nine-pattern spacing.
   static const defaultNinePatternSpacing = 6.0;
 
+  static const defaultHighlightTime = 2000;
+
   // Categories of posts
   static const List<String> postCategories = [
     '校园生活',
