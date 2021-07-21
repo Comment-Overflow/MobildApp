@@ -1,4 +1,7 @@
+import 'package:comment_overflow/service/auth_service.dart';
 import 'package:comment_overflow/utils/route_generator.dart';
+import 'package:comment_overflow/utils/storage_util.dart';
+import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_login/flutter_login.dart';
 
@@ -8,6 +11,28 @@ const users = const {
 
 class LoginPage extends StatelessWidget {
   Duration get loginTime => Duration(milliseconds: 2250);
+
+  Future<String> _login(LoginData data) async {
+    try {
+      final response = await AuthService.login(data.name, data.password);
+      final int userId = response.extra['userId'];
+      final String token = response.extra['token'];
+      await StorageUtil().storage.write(key: 'userId', value: userId as String);
+      await StorageUtil().storage.write(key: 'token', value: token);
+      return '';
+    } on DioError catch (e) {
+      return e.message;
+    }
+  }
+
+  Future<String> _signUp(LoginData data) async {
+    try {
+      await AuthService.register(data.name, data.password);
+      return '';
+    } on DioError catch (e) {
+      return e.message;
+    }
+  }
 
   Future<String> _authUser(LoginData data) {
     return Future.delayed(loginTime).then((_) {
@@ -38,7 +63,7 @@ class LoginPage extends StatelessWidget {
       messages: buildMessages(),
       hideForgotPasswordButton: true,
       onLogin: _authUser,
-      onSignup: _authUser,
+      onSignup: _signUp,
       onSubmitAnimationCompleted: () {
         Navigator.of(context).pushReplacementNamed(RouteGenerator.homeRoute);
       },
