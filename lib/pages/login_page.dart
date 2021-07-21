@@ -11,12 +11,13 @@ class LoginPage extends StatelessWidget {
   Future<String> _login(LoginData data) async {
     try {
       final response = await AuthService.login(data.name, data.password);
-      final int userId = response.extra['userId'];
-      final String token = response.extra['token'];
-      await StorageUtil().storage.write(key: 'userId', value: userId as String);
+      final String token = response.data;
       await StorageUtil().storage.write(key: 'token', value: token);
       return '';
     } on DioError catch (e) {
+      if (e.response?.data == null) {
+        return '网络连接异常!';
+      }
       return e.response?.data as String;
     }
   }
@@ -26,6 +27,9 @@ class LoginPage extends StatelessWidget {
       await AuthService.register(data.name, data.password);
       return '';
     } on DioError catch (e) {
+      if (e.response?.data == null) {
+        return '网络连接异常!';
+      }
       return e.response?.data as String;
     }
   }
