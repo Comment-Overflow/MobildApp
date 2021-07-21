@@ -5,10 +5,6 @@ import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_login/flutter_login.dart';
 
-const users = const {
-  '123@123.com': '123456',
-};
-
 class LoginPage extends StatelessWidget {
   Duration get loginTime => Duration(milliseconds: 2250);
 
@@ -21,7 +17,7 @@ class LoginPage extends StatelessWidget {
       await StorageUtil().storage.write(key: 'token', value: token);
       return '';
     } on DioError catch (e) {
-      return e.message;
+      return e.response?.data as String;
     }
   }
 
@@ -30,28 +26,13 @@ class LoginPage extends StatelessWidget {
       await AuthService.register(data.name, data.password);
       return '';
     } on DioError catch (e) {
-      return e.message;
+      return e.response?.data as String;
     }
-  }
-
-  Future<String> _authUser(LoginData data) {
-    return Future.delayed(loginTime).then((_) {
-      if (!users.containsKey(data.name)) {
-        return '用户不存在!';
-      }
-      if (users[data.name] != data.password) {
-        return '密码不匹配!';
-      }
-      return '';
-    });
   }
 
   Future<String> _recoverPassword(String name) {
     print('Name: $name');
     return Future.delayed(loginTime).then((_) {
-      if (!users.containsKey(name)) {
-        return 'User not exists';
-      }
       return '';
     });
   }
@@ -62,7 +43,7 @@ class LoginPage extends StatelessWidget {
       title: '有可奉告',
       messages: buildMessages(),
       hideForgotPasswordButton: true,
-      onLogin: _authUser,
+      onLogin: _login,
       onSignup: _signUp,
       onSubmitAnimationCompleted: () {
         Navigator.of(context).pushReplacementNamed(RouteGenerator.homeRoute);
