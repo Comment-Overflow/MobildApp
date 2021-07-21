@@ -59,6 +59,8 @@ dependencies:
   scroll_to_index: ^2.0.0
   stomp_dart_client: ^0.4.3
   flutter_dotenv: ^5.0.0
+  dio: ^4.0.0
+  flutter_secure_storage: ^4.2.0
 
 dev_dependencies:
   flutter_test:
