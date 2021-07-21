@@ -1,32 +1,38 @@
+import 'package:comment_overflow/service/auth_service.dart';
 import 'package:comment_overflow/utils/route_generator.dart';
+import 'package:comment_overflow/utils/storage_util.dart';
+import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_login/flutter_login.dart';
-
-const users = const {
-  '123@123.com': '123456',
-};
 
 class LoginPage extends StatelessWidget {
   Duration get loginTime => Duration(milliseconds: 2250);
 
-  Future<String> _authUser(LoginData data) {
-    return Future.delayed(loginTime).then((_) {
-      if (!users.containsKey(data.name)) {
-        return '用户不存在!';
-      }
-      if (users[data.name] != data.password) {
-        return '密码不匹配!';
-      }
+  Future<String> _login(LoginData data) async {
+    try {
+      final response = await AuthService.login(data.name, data.password);
+      final int userId = response.extra['userId'];
+      final String token = response.extra['token'];
+      await StorageUtil().storage.write(key: 'userId', value: userId as String);
+      await StorageUtil().storage.write(key: 'token', value: token);
       return '';
-    });
+    } on DioError catch (e) {
+      return e.response?.data as String;
+    }
+  }
+
+  Future<String> _signUp(LoginData data) async {
+    try {
+      await AuthService.register(data.name, data.password);
+      return '';
+    } on DioError catch (e) {
+      return e.response?.data as String;
+    }
   }
 
   Future<String> _recoverPassword(String name) {
     print('Name: $name');
     return Future.delayed(loginTime).then((_) {
-      if (!users.containsKey(name)) {
-        return 'User not exists';
-      }
       return '';
     });
   }
@@ -37,8 +43,8 @@ class LoginPage extends StatelessWidget {
       title: '有可奉告',
       messages: buildMessages(),
       hideForgotPasswordButton: true,
-      onLogin: _authUser,
-      onSignup: _authUser,
+      onLogin: _login,
+      onSignup: _signUp,
       onSubmitAnimationCompleted: () {
         Navigator.of(context).pushReplacementNamed(RouteGenerator.homeRoute);
       },

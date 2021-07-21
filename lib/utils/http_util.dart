@@ -12,7 +12,7 @@ class HttpUtil {
   }
 
   final options = BaseOptions(
-    baseUrl: 'http://10.200.41.89:8088',
+    baseUrl: 'http://10.166.174.32:8088',
     connectTimeout: 5000,
     receiveTimeout: 3000,
   );
