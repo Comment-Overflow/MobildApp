@@ -3,6 +3,7 @@ import 'package:comment_overflow/assets/custom_styles.dart';
 import 'package:comment_overflow/fake_data/fake_data.dart';
 import 'package:comment_overflow/model/user_info.dart';
 import 'package:comment_overflow/utils/route_generator.dart';
+import 'package:comment_overflow/utils/storage_util.dart';
 import 'package:comment_overflow/widgets/personal_profile_card.dart';
 import 'package:comment_overflow/widgets/post_card_list.dart';
 import 'package:flutter/cupertino.dart';
@@ -145,7 +146,9 @@ class _PersonalPageState extends State<PersonalPage> {
   Widget _buildDropDownMenu() {
     return PopupMenuButton<Setting>(
       padding: const EdgeInsets.all(7.0),
-      onSelected: (Setting setting) {
+      onSelected: (Setting setting) async {
+        await StorageUtil().storage.delete(key: Constants.userId);
+        await StorageUtil().storage.delete(key: Constants.token);
         Navigator.of(context).pushNamedAndRemoveUntil(
             RouteGenerator.loginRoute, (route) => false);
       },
