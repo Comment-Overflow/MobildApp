@@ -3,6 +3,7 @@ import 'package:comment_overflow/assets/constants.dart';
 import 'package:comment_overflow/model/response_dto/login_dto.dart';
 import 'package:comment_overflow/service/auth_service.dart';
 import 'package:comment_overflow/utils/route_generator.dart';
+import 'package:comment_overflow/utils/socket_util.dart';
 import 'package:comment_overflow/utils/storage_util.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
@@ -30,6 +31,7 @@ class _LoginPageState extends State<LoginPage>
       await StorageUtil()
           .storage
           .write(key: Constants.userId, value: loginDTO.userId.toString());
+      SocketUtil();
       return '';
     } on DioError catch (e) {
       if (e.response?.data == null) {

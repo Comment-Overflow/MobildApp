@@ -158,7 +158,7 @@ enum UserActionType {
   star,
 }
 
-enum MessageType { Text, Image }
+enum MessageType { Text, Image, TemporaryImage }
 
 enum ChatterType {
   Me,
