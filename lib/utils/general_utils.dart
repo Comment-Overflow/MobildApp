@@ -53,6 +53,6 @@ class GeneralUtils {
   static Future<int> getCurrentUserId() async {
     String? userId = await StorageUtil().storage.read(key: Constants.userId);
     if (userId == null) throw UserUnauthorizedException();
-    return userId as int;
+    return int.parse(userId);
   }
 }

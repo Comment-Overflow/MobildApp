@@ -72,7 +72,7 @@ class ChatCard extends StatelessWidget {
                     ),
                     SizedBox(height: _horizontalGap),
                     Text(
-                      GeneralUtils.getTimeString(_chat.time),
+                      GeneralUtils.getDefaultTimeString(_chat.time),
                       style: TextStyle(
                         fontSize: Constants.chatListBaselineSize * 0.7,
                         color: Colors.grey,

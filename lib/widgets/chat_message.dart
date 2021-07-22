@@ -1,6 +1,7 @@
 import 'package:bubble/bubble.dart';
 import 'package:comment_overflow/assets/custom_styles.dart';
-import 'package:comment_overflow/utils/utils.dart';
+import 'package:comment_overflow/utils/general_utils.dart';
+import 'package:comment_overflow/utils/socket_util.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:comment_overflow/assets/constants.dart';
@@ -32,6 +33,12 @@ class ChatMessageState extends State<ChatMessage> {
   ChatMessageState(this._message);
 
   @override
+  void initState() {
+    super.initState();
+    // SocketUtil().sendMessage(widget.key as GlobalKey<ChatMessageState>);
+  }
+
+  @override
   Widget build(BuildContext context) {
     if (widget._type == ChatterType.Me)
       return Row(
@@ -58,15 +65,17 @@ class ChatMessageState extends State<ChatMessage> {
                 color: CustomColors.chatBubbleBlue,
                 child: _buildContent(),
               ),
-              Padding(
-                padding: const EdgeInsets.only(
-                    top: Constants.chatTimeVerticalPadding,
-                    right: Constants.chatTimeHorizontalPadding),
-                child: Text(
-                  getChatTime(widget._message.time),
-                  style: CustomStyles.chatMessageTimeStyle,
-                ),
-              ),
+              widget._message.time == null
+                  ? Container()
+                  : Padding(
+                      padding: const EdgeInsets.only(
+                          top: Constants.chatTimeVerticalPadding,
+                          right: Constants.chatTimeHorizontalPadding),
+                      child: Text(
+                        GeneralUtils.getChatTimeString(widget._message.time!),
+                        style: CustomStyles.chatMessageTimeStyle,
+                      ),
+                    ),
             ],
           ),
           Container(
@@ -98,12 +107,14 @@ class ChatMessageState extends State<ChatMessage> {
                 nip: BubbleNip.leftTop,
                 child: _buildContent(),
               ),
+              widget._message.time == null
+                  ? Container() :
               Padding(
                 padding: const EdgeInsets.only(
                     top: Constants.chatTimeVerticalPadding,
                     left: Constants.chatTimeHorizontalPadding),
                 child: Text(
-                  getChatTime(widget._message.time),
+                  GeneralUtils.getChatTimeString(widget._message.time!),
                   style: CustomStyles.chatMessageTimeStyle,
                 ),
               ),
