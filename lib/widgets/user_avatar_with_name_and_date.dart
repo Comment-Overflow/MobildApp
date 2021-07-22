@@ -72,7 +72,7 @@ class UserAvatarWithNameAndDate extends StatelessWidget {
             )),
             _verticalGap,
             Text(
-              GeneralUtils.getTimeString(this._time),
+              GeneralUtils.getDefaultTimeString(this._time),
               style: TextStyle(
                 fontSize: 14.0,
                 color: Colors.grey,
