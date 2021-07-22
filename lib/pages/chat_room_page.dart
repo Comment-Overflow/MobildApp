@@ -149,9 +149,9 @@ class _ChatRoomPageState extends State<ChatRoomPage> {
                                 MessageType.Text,
                                 DateTime.now(),
                                 UserInfo(0, "Gun9niR",
-                                    "http://img8.zol.com.cn/bbs/upload/23765/23764201.jpg"),
+                                    avatarUrl: "http://img8.zol.com.cn/bbs/upload/23765/23764201.jpg"),
                                 UserInfo(1, "xx01cyx",
-                                    "http://img8.zol.com.cn/bbs/upload/23765/23764201.jpg"),
+                                    avatarUrl: "http://img8.zol.com.cn/bbs/upload/23765/23764201.jpg"),
                                 true,
                                 _textEditingController.value.text));
                       });

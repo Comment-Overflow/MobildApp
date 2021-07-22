@@ -41,7 +41,7 @@ class UserAvatarWithNameAndDate extends StatelessWidget {
     return Row(
       mainAxisSize: MainAxisSize.min,
       children: [
-        UserAvatar(this.avatarSize, image: NetworkImage(_userInfo.avatarUrl)),
+        UserAvatar(this.avatarSize, image: _userInfo.avatarUrl == null ? null : NetworkImage(_userInfo.avatarUrl!)),
         _horizontalGap,
         Column(
           crossAxisAlignment: CrossAxisAlignment.start,

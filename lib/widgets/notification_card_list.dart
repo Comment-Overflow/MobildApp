@@ -1,9 +1,13 @@
+import 'dart:convert';
 import 'dart:math';
 
 import 'package:comment_overflow/assets/constants.dart';
 import 'package:comment_overflow/fake_data/fake_data.dart';
+import 'package:comment_overflow/model/user_action_record.dart';
+import 'package:comment_overflow/utils/http_util.dart';
 import 'package:comment_overflow/utils/paging_manager.dart';
 import 'package:comment_overflow/widgets/notification_card.dart';
+import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 
@@ -43,15 +47,26 @@ class _NotificationCardListState extends State<NotificationCardList> {
         break;
     }
 
+    // this._pagingManager =
+    //     PagingManager(Constants.defaultNotificationPageSize, (page, pageSize) async {
+    //       Response response = await HttpUtil().dio.get('/notifications/approvals', queryParameters: {
+    //         'page': page, 'pageSize': pageSize
+    //       });
+    //       var jsonArray = response.data as List;
+    //       return jsonArray.map((json) => ApprovalRecord.fromJson(json)).toList();
+    //     }, _itemBuilder);
     this._pagingManager =
         PagingManager(Constants.defaultNotificationPageSize, (page, pageSize) {
-      return Future.delayed(
-        const Duration(seconds: 1),
-        () => _dataList.sublist(
-            page * pageSize, min((page + 1) * pageSize, _dataList.length)),
-      );
-    }, _itemBuilder);
+          return Future.delayed(
+            const Duration(seconds: 1),
+                () => _dataList.sublist(
+                page * pageSize, min((page + 1) * pageSize, _dataList.length)),
+          );
+        }, _itemBuilder);
   }
+  }
+
+
 
   @override
   dispose() {

@@ -12,6 +12,14 @@ class ApprovalRecord {
   Quote get approvedComment => _approvedComment;
 
   ApprovalRecord(this._userInfo, this._time, this._approvedComment);
+  factory ApprovalRecord.fromJson(dynamic json){
+    int timeStamp = json['timestamp'] as int;
+    return ApprovalRecord(
+        UserInfo(json['fromUserUserId'] as int, json['fromUserUserName'] as String),
+        DateTime.fromMillisecondsSinceEpoch(timeStamp),
+        Quote(json['commentPostTitle'] as String, json['commentContent'] as String)
+    );
+  }
 }
 
 class ReplyRecord {
