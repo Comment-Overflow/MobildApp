@@ -2,8 +2,8 @@ import 'package:comment_overflow/assets/constants.dart';
 import 'package:comment_overflow/assets/custom_styles.dart';
 import 'package:comment_overflow/model/routing_dto/user_name_id_dto.dart';
 import 'package:comment_overflow/model/user_info.dart';
+import 'package:comment_overflow/utils/general_utils.dart';
 import 'package:comment_overflow/utils/route_generator.dart';
-import 'package:comment_overflow/utils/utils.dart';
 import 'package:comment_overflow/widgets/follow_button.dart';
 import 'package:comment_overflow/widgets/user_avatar.dart';
 import 'package:flutter/cupertino.dart';
@@ -123,7 +123,7 @@ class PersonalProfileCard extends StatelessWidget {
                     RouteGenerator.followersRoute,
                     [
                       Text(
-                        getDisplayNumber(_personalPageInfo.followingCount),
+                      GeneralUtils.getDefaultNumberString(_personalPageInfo.followingCount),
                         style: CustomStyles.personalPageButtonNumberStyle,
                       ),
                       _gap,
@@ -142,7 +142,7 @@ class PersonalProfileCard extends StatelessWidget {
                     RouteGenerator.fansRoute,
                     [
                       Text(
-                        getDisplayNumber(_personalPageInfo.followerCount),
+                        GeneralUtils.getDefaultNumberString(_personalPageInfo.followerCount),
                         style: CustomStyles.personalPageButtonNumberStyle,
                       ),
                       _gap,
@@ -161,7 +161,7 @@ class PersonalProfileCard extends StatelessWidget {
                     null,
                     [
                       Text(
-                        getDisplayNumber(_personalPageInfo.commentCount),
+                        GeneralUtils.getDefaultNumberString(_personalPageInfo.commentCount),
                         style: CustomStyles.personalPageButtonNumberStyle,
                       ),
                       _gap,
@@ -178,7 +178,7 @@ class PersonalProfileCard extends StatelessWidget {
                     null,
                     [
                       Text(
-                        getDisplayNumber(_personalPageInfo.approvalCount),
+                        GeneralUtils.getDefaultNumberString(_personalPageInfo.approvalCount),
                         style: CustomStyles.personalPageButtonNumberStyle,
                       ),
                       _gap,

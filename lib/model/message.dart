@@ -6,8 +6,8 @@ class Message {
   final DateTime _time;
   final UserInfo _sender;
   final UserInfo _receiver;
-  final bool _hasRead;
-  final String _content;
+  final bool _hasSent;
+  final dynamic _content;
 
   MessageType get type => _type;
 
@@ -17,10 +17,10 @@ class Message {
 
   UserInfo get receiver => _receiver;
 
-  bool get hasRead => _hasRead;
+  bool get hasSent => _hasSent;
 
-  String get content => _content;
+  dynamic get content => _content;
 
-  Message(this._type, this._time, this._sender, this._receiver, this._hasRead,
+  Message(this._type, this._time, this._sender, this._receiver, this._hasSent,
       this._content);
 }
