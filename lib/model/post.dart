@@ -16,4 +16,12 @@ class Post {
 
   Post(this._postId, this._title, this._commentCount, this._approvalCount,
       this._commentToDisplay);
+
+  factory Post.fromJson(dynamic json) => Post(
+    json['id'] as int,
+    json['title'] as String,
+    json['commentCount'] as int,
+    json['hostComment']['approvalCount'] as int,
+    Comment.fromJson(json['hostComment'])
+  );
 }

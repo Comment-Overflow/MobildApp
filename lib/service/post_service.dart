@@ -8,4 +8,9 @@ class PostService {
         .dio
         .post('/post', data: await newPost.formData());
   }
+  static Future<Response> getPost(int postId) async {
+    return await HttpUtil()
+        .dio
+        .get('/post', queryParameters: {'postId': postId});
+  }
 }

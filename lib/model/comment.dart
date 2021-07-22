@@ -25,6 +25,20 @@ class Comment {
 
   Comment(this.user, this._content, this._time, this._quote, this._floor,
       this._approvalCount, this._approvalStatus, this._imageUrl);
+  
+  factory Comment.fromJson(dynamic json) {
+    var _imageList = json['imageUrl'];
+    return Comment(
+        UserInfo.fromJson(json['userInfo']),
+        json['content'] as String,
+        DateTime.parse(json['time'] as String),
+        (json['quoteId'] as int) == 0 ? null : Quote.fromJson(json['quoteDTO']),
+        json['floor'] as int,
+        json['approvalCount'] as int,
+        ApprovalStatus.none,
+        _imageList == null ? [] : List.from(_imageList)
+    );
+  }
 
   void addApprovals() {
     switch (_approvalStatus) {

@@ -12,6 +12,11 @@ class UserInfo {
   String get avatarUrl => _avatarUrl;
 
   UserInfo(this._userId, this._userName, this._avatarUrl);
+  factory UserInfo.fromJson(dynamic json) => UserInfo(
+      json['id'] as int,
+      json['userName'] as String,
+      json['avatarUrl'] as String
+  );
 }
 
 class UserCardInfo extends UserInfo {
