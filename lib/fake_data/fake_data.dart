@@ -46,8 +46,8 @@ final PersonalPageInfo personalPageInfo = PersonalPageInfo(
     Sex.male,
     128538,
     21);
-final Quote _quoteWithUserName = Quote("Gun9niR", _content);
-final Quote _quoteWithPostTitle = Quote(_title, _content);
+final Quote _quoteWithUserName = Quote("Gun9niR", "aa");
+final Quote _quoteWithPostTitle = Quote("Gun9niR", "aa");
 
 final Comment _approvedComment = Comment(_userInfo, "sadad", _date,
     _quoteWithUserName, 0, 500, ApprovalStatus.approve, []);

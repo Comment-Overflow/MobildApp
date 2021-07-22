@@ -10,67 +10,6 @@ import 'package:flutter/widgets.dart';
 
 import 'follow_button.dart';
 
-class NotificationCard extends StatelessWidget {
-  final NotificationMessage _notificationMessage;
-
-  NotificationCard(this._notificationMessage, {Key? key}) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    String typeContent = "";
-    switch (_notificationMessage.type) {
-      case NotificationType.approvePost:
-        typeContent = "赞同了你的帖子${_notificationMessage.title}";
-        break;
-      case NotificationType.approveComment:
-        typeContent =
-            "赞同了你在帖子${_notificationMessage.title}中的发言${_notificationMessage.comment}";
-        break;
-      case NotificationType.reply:
-        typeContent =
-            "回复了你的帖子${_notificationMessage.title}:${_notificationMessage.comment}";
-        break;
-      case NotificationType.attention:
-        typeContent = "收藏了你的帖子${_notificationMessage.title}";
-        break;
-      default:
-        typeContent = "关注了你";
-    }
-
-    return Card(
-      elevation: Constants.defaultCardElevation,
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.all(Radius.circular(20.0)),
-      ),
-      child: InkWell(
-        child: Padding(
-          padding: EdgeInsets.all(Constants.defaultCardPadding),
-          child:
-              Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-            Row(
-              mainAxisSize: MainAxisSize.max,
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: [
-                UserAvatar(_notificationMessage.imageSize,
-                    image: _notificationMessage.image),
-                SizedBox(width: _notificationMessage.gap),
-                Expanded(
-                    child: Text(
-                  _notificationMessage.userInfo.title + typeContent,
-                  style: _notificationMessage.textStyle,
-                  maxLines: 2,
-                  overflow: TextOverflow.ellipsis,
-                )),
-              ],
-            ),
-          ]),
-        ),
-        onTap: () => {},
-      ),
-    );
-  }
-}
-
 class StarNotificationCard extends StatelessWidget {
   static const _gap = SizedBox(height: 5.0);
   final StarRecord _starRecord;
@@ -91,7 +30,14 @@ class StarNotificationCard extends StatelessWidget {
               UserAvatarWithNameAndDate(
                   _starRecord.userInfo, _starRecord.time, UserActionType.star),
               _gap,
-              QuoteCard(_starRecord.starredPost),
+              Row(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  Expanded(
+                    child: QuoteCard(_starRecord.starredPost),
+                  ),
+                ],
+              ),
             ])));
   }
 }
@@ -117,7 +63,14 @@ class ApprovalNotificationCard extends StatelessWidget {
               UserAvatarWithNameAndDate(_approvalRecord.userInfo,
                   _approvalRecord.time, UserActionType.approval),
               _gap,
-              QuoteCard(_approvalRecord.approvedComment),
+              Row(
+                mainAxisSize: MainAxisSize.min,
+                children: <Widget>[
+                  Expanded(
+                    child: QuoteCard(_approvalRecord.approvedComment),
+                  ),
+                ],
+              ),
             ])));
   }
 }
@@ -144,7 +97,14 @@ class ReplyNotificationCard extends StatelessWidget {
               _gap,
               Text(_replyRecord.content, style: CustomStyles.postContentStyle),
               _gap,
-              QuoteCard(_replyRecord.repliedQuote),
+              Row(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  Expanded(
+                    child: QuoteCard(_replyRecord.repliedQuote),
+                  ),
+                ],
+              ),
             ])));
   }
 }
