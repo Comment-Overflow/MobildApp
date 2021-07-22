@@ -1,6 +1,5 @@
 import 'package:comment_overflow/utils/storage_util.dart';
 import 'package:dio/dio.dart';
-import 'package:flutter_dotenv/flutter_dotenv.dart';
 
 class HttpUtil {
   // Singleton method.

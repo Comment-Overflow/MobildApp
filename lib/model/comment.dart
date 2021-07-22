@@ -2,7 +2,6 @@ import 'package:comment_overflow/assets/constants.dart';
 import 'package:comment_overflow/model/quote.dart';
 import 'package:comment_overflow/model/user_info.dart';
 import 'package:comment_overflow/utils/general_utils.dart';
-import 'package:intl/intl.dart';
 
 class Comment {
   final UserInfo user;
