@@ -1,7 +1,9 @@
 import 'package:comment_overflow/utils/route_generator.dart';
+import 'package:comment_overflow/utils/storage_util.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 
 void main() async {
   // Disable landscape mode.
@@ -20,6 +22,18 @@ class CommentOverflow extends StatelessWidget {
     return MaterialApp(
       title: '有可奉告',
       theme: ThemeData(
+        primarySwatch: MaterialColor(Colors.blueAccent.value, const {
+          50: Colors.blueAccent,
+          100: Colors.blueAccent,
+          200: Colors.blueAccent,
+          300: Colors.blueAccent,
+          400: Colors.blueAccent,
+          500: Colors.blueAccent,
+          600: Colors.blueAccent,
+          700: Colors.blueAccent,
+          800: Colors.blueAccent,
+          900: Colors.blueAccent,
+        }),
         primaryColor: Colors.white,
         accentColor: Colors.blueAccent,
         textButtonTheme: TextButtonThemeData(

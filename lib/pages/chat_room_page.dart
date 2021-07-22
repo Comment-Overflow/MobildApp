@@ -1,5 +1,6 @@
 import 'package:comment_overflow/model/message.dart';
 import 'package:comment_overflow/model/user_info.dart';
+import 'package:comment_overflow/utils/general_utils.dart';
 import 'package:comment_overflow/utils/my_image_picker.dart';
 import 'package:comment_overflow/widgets/adaptive_refresher.dart';
 import 'package:flutter/cupertino.dart';
@@ -8,20 +9,19 @@ import 'package:comment_overflow/assets/constants.dart';
 import 'package:comment_overflow/assets/custom_styles.dart';
 import 'package:comment_overflow/fake_data/fake_data.dart';
 import 'package:comment_overflow/widgets/chat_message.dart';
-import 'package:comment_overflow/model/chat.dart';
 import 'package:wechat_assets_picker/wechat_assets_picker.dart';
 
 class ChatRoomPage extends StatefulWidget {
-  final Chat chat;
+  final UserInfo _chatter;
 
-  const ChatRoomPage(this.chat, {Key? key}) : super(key: key);
+  ChatRoomPage(this._chatter, {Key? key}) : super(key: key);
 
   @override
   _ChatRoomPageState createState() => _ChatRoomPageState();
 }
 
 class _ChatRoomPageState extends State<ChatRoomPage> {
-  final List<AssetEntity> _assets = <AssetEntity>[];
+  late final UserInfo _currentUser;
   final TextEditingController _textEditingController = TextEditingController();
   ScrollController _scrollController = new ScrollController();
   List<Message> _messages = messages;
@@ -29,6 +29,7 @@ class _ChatRoomPageState extends State<ChatRoomPage> {
   @override
   void initState() {
     super.initState();
+    _getCurrentUserInfo();
   }
 
   @override
@@ -38,21 +39,13 @@ class _ChatRoomPageState extends State<ChatRoomPage> {
     super.dispose();
   }
 
-  Future _onRefresh() async {
-    // getRecentChats();
-    print("Chat Room onRefresh");
-    // monitor network fetch
-    return Future.delayed(Duration(milliseconds: 1000));
-    // if failed,use refreshFailed()
-  }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         elevation: Constants.defaultAppBarElevation,
         title: Text(
-          widget.chat.chatter.userName,
+          widget._chatter.userName,
           style: CustomStyles.pageTitleStyle,
         ),
       ),
@@ -74,10 +67,13 @@ class _ChatRoomPageState extends State<ChatRoomPage> {
                     padding: EdgeInsets.all(Constants.defaultChatRoomPadding),
                     itemCount: _messages.length,
                     itemBuilder: (context, index) {
+                      GlobalKey<ChatMessageState> messageKey = GlobalKey();
+                      ChatMessage chatMessage =
+                          ChatMessage(_messages[index], key: messageKey);
                       return Container(
                         padding: EdgeInsets.symmetric(
                             vertical: Constants.defaultChatMessagePadding),
-                        child: ChatMessage(_messages[index]),
+                        child: chatMessage,
                       );
                     }),
               ),
@@ -115,17 +111,7 @@ class _ChatRoomPageState extends State<ChatRoomPage> {
                       contentPadding: EdgeInsets.all(10.0),
                       suffixIcon: IconButton(
                         icon: CustomStyles.getDefaultImageIcon(size: 24.0),
-                        onPressed: () async {
-                          final List<AssetEntity>? result =
-                              await MyImagePicker.pickImage(context,
-                                  maxAssets: Constants.maxImageNumber,
-                                  selectedAssets: _assets);
-                          if (result != null) {
-                            _assets.clear();
-                            _assets.addAll(List<AssetEntity>.from(result));
-                          }
-                          FocusScope.of(context).previousFocus();
-                        },
+                        onPressed: _onSendImage,
                       ),
                     ),
                     textCapitalization: TextCapitalization.sentences,
@@ -141,27 +127,9 @@ class _ChatRoomPageState extends State<ChatRoomPage> {
                         Theme.of(context).accentColor),
                   ),
                   onPressed: () {
-                    if (_textEditingController.value.text.isNotEmpty) {
-                      setState(() {
-                        _messages.insert(
-                            0,
-                            Message(
-                                MessageType.Text,
-                                DateTime.now(),
-                                UserInfo(0, "Gun9niR",
-                                    avatarUrl: "http://img8.zol.com.cn/bbs/upload/23765/23764201.jpg"),
-                                UserInfo(1, "xx01cyx",
-                                    avatarUrl: "http://img8.zol.com.cn/bbs/upload/23765/23764201.jpg"),
-                                true,
-                                _textEditingController.value.text));
-                      });
-                    }
+                    _onSendText();
                     _textEditingController.clear();
-                    _scrollController.animateTo(
-                      0.0,
-                      curve: Curves.easeOut,
-                      duration: const Duration(milliseconds: 300),
-                    );
+                    _scrollToBottom();
                   },
                 ),
               )
@@ -171,4 +139,64 @@ class _ChatRoomPageState extends State<ChatRoomPage> {
       ),
     );
   }
+
+  void _scrollToBottom() {
+    _scrollController.animateTo(
+      0.0,
+      curve: Curves.easeOut,
+      duration: const Duration(milliseconds: 300),
+    );
+  }
+
+  void _getCurrentUserInfo() async {
+    // TODO: Get current UserInfo.
+    int currentUserId = await GeneralUtils.getCurrentUserId();
+    setState(() {
+      _currentUser = UserInfo(0, '123@123.com',
+          avatarUrl: 'http://img8.zol.com.cn/bbs/upload/23765/23764201.jpg');
+    });
+  }
+
+  Future _onRefresh() async {
+    // getRecentChats();
+    print("Chat Room onRefresh");
+    // monitor network fetch
+    return Future.delayed(Duration(milliseconds: 1000));
+    // if failed,use refreshFailed()
+  }
+
+  Future _onSendText() async {
+    if (_textEditingController.value.text.isNotEmpty) {
+      Message message = Message(MessageType.Text, null, _currentUser,
+          widget._chatter, _textEditingController.value.text);
+      setState(() {
+        _messages.insert(0, message);
+      });
+    }
+  }
+
+  Future _onSendImage() async {
+    final List<AssetEntity>? result = await MyImagePicker.pickImage(context,
+        maxAssets: Constants.maxImageNumber);
+
+    if (result != null) {
+      List<AssetEntity> assets = List<AssetEntity>.from(result);
+      for (AssetEntity asset in assets) {
+        _messages.insert(
+            0,
+            Message(
+                MessageType.TemporaryImage,
+                DateTime.now(),
+                UserInfo(0, "Gun9niR",
+                    avatarUrl: "http://img8.zol.com.cn/bbs/upload/23765/23764201.jpg"),
+                UserInfo(1, "xx01cyx",
+                    avatarUrl: "http://img8.zol.com.cn/bbs/upload/23765/23764201.jpg"),
+                await asset.file));
+      }
+      _scrollToBottom();
+    }
+    FocusScope.of(context).previousFocus();
+  }
+
+  _addOneMessage() {}
 }

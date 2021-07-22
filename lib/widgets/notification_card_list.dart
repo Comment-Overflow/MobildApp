@@ -64,7 +64,6 @@ class _NotificationCardListState extends State<NotificationCardList> {
           );
         }, _itemBuilder);
   }
-  }
 
 
 

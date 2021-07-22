@@ -120,6 +120,10 @@ class Constants {
   ];
 
   static const List<String> personalPageTabs = ["我的帖子", "我的回复", "我的收藏"];
+
+  static const String token = 'token';
+
+  static const String userId = 'userid';
 }
 
 enum FollowStatus {
@@ -154,7 +158,7 @@ enum UserActionType {
   star,
 }
 
-enum MessageType { Text, Image }
+enum MessageType { Text, Image, TemporaryImage }
 
 enum ChatterType {
   Me,

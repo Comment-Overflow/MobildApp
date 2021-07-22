@@ -2,7 +2,6 @@ import 'package:comment_overflow/assets/constants.dart';
 import 'package:comment_overflow/model/quote.dart';
 import 'package:comment_overflow/model/user_info.dart';
 import 'package:comment_overflow/utils/general_utils.dart';
-import 'package:intl/intl.dart';
 
 class Comment {
   final UserInfo user;
@@ -16,7 +15,7 @@ class Comment {
 
   String get content => _content;
   DateTime get time => _time;
-  String get timeString => GeneralUtils.getTimeString(_time);
+  String get timeString => GeneralUtils.getDefaultTimeString(_time);
   Quote? get quote => _quote;
   int get floor => _floor;
   String get floorString => _floor.toString();

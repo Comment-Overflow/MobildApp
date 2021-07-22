@@ -15,4 +15,8 @@ class AuthService {
         .dio
         .post('/users', data: {'email': email, 'password': password});
   }
+
+  static Future<Response> autoLogin() async {
+    return await HttpUtil().dio.get('/sessions');
+  }
 }
