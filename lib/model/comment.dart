@@ -15,7 +15,7 @@ class Comment {
 
   String get content => _content;
   DateTime get time => _time;
-  String get timeString => GeneralUtils.getTimeString(_time);
+  String get timeString => GeneralUtils.getDefaultTimeString(_time);
   Quote? get quote => _quote;
   int get floor => _floor;
   String get floorString => _floor.toString();

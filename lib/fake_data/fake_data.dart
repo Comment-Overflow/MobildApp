@@ -212,10 +212,10 @@ final recentChats = List<Chat>.filled(
   ));
 
 List<Message> messages = [
-  Message(MessageType.Text, DateTime.now(), _cyxInfo, _userInfo, true, "好问题"),
-  Message(MessageType.Image, DateTime.now(), _userInfo, _cyxInfo, true,
+  Message(MessageType.Text, DateTime.now(), _cyxInfo, _userInfo, "好问题"),
+  Message(MessageType.Image, DateTime.now(), _userInfo, _cyxInfo,
       "http://img8.zol.com.cn/bbs/upload/23765/23764201.jpg"),
-  Message(MessageType.Text, DateTime.now(), _userInfo, _cyxInfo, true,
+  Message(MessageType.Text, DateTime.now(), _userInfo, _cyxInfo,
       "中午吃啥中午吃啥中午吃啥中午吃啥中午吃啥中午吃啥中午吃啥中午吃啥中午吃啥中午吃啥中午吃啥中午吃啥"),
 ];
 

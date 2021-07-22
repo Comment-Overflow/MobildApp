@@ -1,9 +1,8 @@
 import 'package:comment_overflow/assets/constants.dart';
 import 'package:comment_overflow/assets/custom_colors.dart';
-import 'package:comment_overflow/assets/custom_styles.dart';
 import 'package:comment_overflow/model/chat.dart';
 import 'package:comment_overflow/pages/chat_room_page.dart';
-import 'package:comment_overflow/utils/utils.dart';
+import 'package:comment_overflow/utils/general_utils.dart';
 import 'package:comment_overflow/widgets/user_avatar.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -73,7 +72,7 @@ class ChatCard extends StatelessWidget {
                     ),
                     SizedBox(height: _horizontalGap),
                     Text(
-                      getDisplayTime(_chat.time),
+                      GeneralUtils.getDefaultTimeString(_chat.time),
                       style: TextStyle(
                         fontSize: Constants.chatListBaselineSize * 0.7,
                         color: Colors.grey,
@@ -91,7 +90,7 @@ class ChatCard extends StatelessWidget {
     return GestureDetector(
         onTap: () {
           Navigator.push(context, CupertinoPageRoute(builder: (context) {
-            return ChatRoomPage(_chat);
+            return ChatRoomPage(_chat.chatter);
           }));
         },
         child: Slidable(
