@@ -2,9 +2,12 @@ import 'package:chips_choice/chips_choice.dart';
 import 'package:comment_overflow/assets/constants.dart';
 import 'package:comment_overflow/assets/custom_styles.dart';
 import 'package:comment_overflow/fake_data/fake_data.dart';
+import 'package:comment_overflow/model/request_dto/new_post_dto.dart';
+import 'package:comment_overflow/service/post_service.dart';
 import 'package:comment_overflow/utils/my_image_picker.dart';
 import 'package:comment_overflow/utils/route_generator.dart';
 import 'package:comment_overflow/widgets/horizontal_image_scroller.dart';
+import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter/widgets.dart';
@@ -32,6 +35,8 @@ class _NewPostPageState extends State<NewPostPage> {
   String _content = '';
   // The list of images to upload.
   final List<AssetEntity> _assets = [];
+
+  List<String> _tags = ["LIFE", "STUDY", "ART", "MOOD", "CAREER"];
 
   @override
   Widget build(BuildContext context) {
@@ -129,6 +134,7 @@ class _NewPostPageState extends State<NewPostPage> {
               onPressed: () {
                 print(this._title);
                 print(this._content);
+                _pushSend();
               }),
         ]),
         automaticallyImplyLeading: false,
@@ -163,4 +169,24 @@ class _NewPostPageState extends State<NewPostPage> {
         expands: true,
         onChanged: (String text) => this._content = text,
       );
+
+  void _pushSend() {
+    _post();
+  }
+
+  Future<void> _post() async {
+    final dto = NewPostDTO(
+        tag: tags[_idx],
+        title: _title,
+        content: _content,
+        assets: _assets
+    );
+    try {
+      final response = await PostService.postPost(dto);
+      print(response.data());
+    } on DioError catch (e) {
+      print(e.message);
+    }
+  }
+
 }

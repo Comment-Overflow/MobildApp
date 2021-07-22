@@ -1,6 +1,5 @@
 import 'package:comment_overflow/utils/storage_util.dart';
 import 'package:dio/dio.dart';
-import 'package:flutter_dotenv/flutter_dotenv.dart';
 
 class HttpUtil {
   // Singleton method.
@@ -12,7 +11,7 @@ class HttpUtil {
   }
 
   final options = BaseOptions(
-    baseUrl: 'http://10.166.174.32:8088',
+    baseUrl: 'localhost:8088',
     connectTimeout: 5000,
     receiveTimeout: 3000,
   );
