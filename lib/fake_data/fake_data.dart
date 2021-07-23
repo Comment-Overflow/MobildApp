@@ -46,8 +46,8 @@ final PersonalPageInfo personalPageInfo = PersonalPageInfo(
     Sex.male,
     128538,
     21);
-final Quote _quoteWithUserName = Quote("Gun9niR", "aa");
-final Quote _quoteWithPostTitle = Quote("Gun9niR", "aa");
+final Quote _quoteWithUserName = Quote("Gun9niR", "aa", 2);
+final Quote _quoteWithPostTitle = Quote("Gun9niR", "aa", 5);
 
 final Comment _approvedComment = Comment(_userInfo, "sadad", _date,
     _quoteWithUserName, 0, 500, ApprovalStatus.approve, []);
@@ -126,7 +126,7 @@ final posts = List<Post>.filled(
 
 final quotes = List<Quote>.filled(
   20,
-  Quote(_author, _content),
+  Quote(_author, _content, 6),
   growable: true,
 );
 

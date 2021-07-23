@@ -22,7 +22,7 @@ class NewPostDTO {
   Future<List<MultipartFile>> _transport(List<AssetEntity> assets) async {
     var list = <MultipartFile>[];
     for (AssetEntity entity in assets) {
-      list.add(MultipartFile.fromBytes((await entity.file)!.readAsBytesSync()));
+      list.add(MultipartFile.fromFileSync((await entity.file)!.path));
     }
     return list;
   }
