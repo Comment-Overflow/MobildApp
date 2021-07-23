@@ -34,6 +34,16 @@ class ReplyRecord {
   Quote get repliedQuote => _repliedQuote;
 
   ReplyRecord(this._userInfo, this._time, this._content, this._repliedQuote);
+
+  factory ReplyRecord.fromJson(dynamic json){
+    int timestamp = json['timestamp'] as int;
+    return ReplyRecord(
+        UserInfo(json['fromUserUserId'] as int, json['fromUserUserName'] as String),
+        DateTime.fromMillisecondsSinceEpoch(timestamp),
+        json['commentContent'] as String,
+        Quote(json['postTitle'] as String, json['postHostCommentContent'] as String)
+    );
+  }
 }
 
 class FollowRecord {
@@ -42,10 +52,22 @@ class FollowRecord {
   FollowStatus _followStatus;
 
   UserInfo get userInfo => _userInfo;
-  FollowRecord(this._userInfo, this._time, this._followStatus);
   DateTime get time => _time;
-
   FollowStatus get followStatus => _followStatus;
+
+  FollowRecord(this._userInfo, this._time, this._followStatus);
+
+  factory FollowRecord.fromJson(dynamic json){
+    int timestamp = json['timestamp'] as int;
+    var followStatus = FollowStatus.followingMe;
+    bool isMutual = json['isMutual'] as bool;
+    if(isMutual) followStatus = FollowStatus.both;
+    return FollowRecord(
+        UserInfo(json['fromUserUserId'] as int, json['fromUserUserName'] as String),
+        DateTime.fromMillisecondsSinceEpoch(timestamp),
+        followStatus
+    );
+  }
 }
 
 class StarRecord {
@@ -58,4 +80,13 @@ class StarRecord {
   DateTime get time => _time;
 
   Quote get starredPost => _starredPost;
+
+  factory StarRecord.fromJson(dynamic json){
+    int timeStamp = json['timestamp'] as int;
+    return StarRecord(
+        UserInfo(json['fromUserUserId'] as int, json['fromUserUserName'] as String),
+        DateTime.fromMillisecondsSinceEpoch(timeStamp),
+        Quote(json['postTitle'] as String, json['postHostCommentContent'] as String)
+    );
+  }
 }
