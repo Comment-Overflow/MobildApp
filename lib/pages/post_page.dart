@@ -1,21 +1,25 @@
+import 'dart:convert';
+
 import 'package:comment_overflow/assets/constants.dart';
 import 'package:comment_overflow/assets/custom_styles.dart';
 import 'package:comment_overflow/fake_data/fake_data.dart';
 import 'package:comment_overflow/model/post.dart';
+import 'package:comment_overflow/service/post_service.dart';
 import 'package:comment_overflow/widgets/approval_button.dart';
 import 'package:comment_overflow/widgets/comment_card_list.dart';
 import 'package:comment_overflow/widgets/disapproval_button.dart';
 import 'package:comment_overflow/widgets/multiple_input_field.dart';
 import 'package:comment_overflow/widgets/star_button.dart';
+import 'package:dio/dio.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:wechat_assets_picker/wechat_assets_picker.dart';
 
 class PostPage extends StatefulWidget {
-  final Post _post;
+  final int _postId;
 
-  const PostPage(this._post, {Key? key}) : super(key: key);
+  const PostPage(this._postId, {Key? key}) : super(key: key);
 
   @override
   _PostPageState createState() => _PostPageState();
@@ -28,6 +32,10 @@ class _PostPageState extends State<PostPage> {
 
   static const _iconSize = 20.0;
   static const _bottomIconSize = 24.0;
+
+  Future<Response> _getPostContent() async {
+    return PostService.getPost(widget._postId);
+  }
 
   String getPolicyName(SortPolicy policy) {
     switch (policy) {
@@ -42,54 +50,9 @@ class _PostPageState extends State<PostPage> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        elevation: Constants.defaultAppBarElevation,
-        leading: GestureDetector(
-          onTap: () {
-            Navigator.pop(context);
-          },
-          child: Icon(Icons.arrow_back),
-        ),
-        title: Text("帖子 ${widget._post.postId.toString()}"),
-        actions: <Widget>[
-          IconButton(
-            icon: CustomStyles.getDefaultDeleteIcon(size: _iconSize),
-            tooltip: 'Delete this Post',
-            onPressed: () {
-              ScaffoldMessenger.of(context).showSnackBar(
-                  const SnackBar(content: Text("Post has been deleted.")));
-            },
-          )
-        ],
-        centerTitle: true,
-      ),
-      floatingActionButton: FloatingActionButton(
-          onPressed: _pushReply,
-          child: CustomStyles.getDefaultReplyIcon(
-              size: Constants.defaultFabIconSize, color: Colors.white)),
-      body: CommentCardList(posts[0], this._sortPolicy),
-      bottomNavigationBar: BottomAppBar(
-        child: Row(
-          children: [
-            buildDropDownMenu(),
-            ApprovalButton(
-                comment: widget._post.commentToDisplay,
-                userId: 1,
-                size: _bottomIconSize),
-            DisapprovalButton(
-                comment: widget._post.commentToDisplay,
-                userId: 1,
-                size: _bottomIconSize),
-            StarButton(
-                initialStared: false,
-                postId: 1,
-                userId: 1,
-                size: _bottomIconSize),
-          ],
-          mainAxisAlignment: MainAxisAlignment.spaceAround,
-        ),
-      ),
+    return FutureBuilder(
+      future: _getPostContent(),
+      builder: _buildFuture
     );
   }
 
@@ -125,6 +88,73 @@ class _PostPageState extends State<PostPage> {
                 child: Text("最热回复"),
               ),
             ]);
+  }
+
+  Widget _buildFuture(BuildContext context, AsyncSnapshot snapshot) {
+    switch (snapshot.connectionState) {
+      case ConnectionState.none:
+        return Text("还没有开始网络请求");
+      case ConnectionState.active:
+      case ConnectionState.waiting:
+        return Text("正在进行网络请求");
+      case ConnectionState.done:
+        return snapshot.hasError
+          ? Text("请求出错: ${snapshot.error}")
+          : _buildPostPage(context, snapshot);
+    }
+  }
+
+  Widget _buildPostPage(BuildContext context, AsyncSnapshot snapshot) {
+    var _post = Post.fromJson((snapshot.data as Response).data['post']);
+    return Scaffold(
+      appBar: AppBar(
+        elevation: Constants.defaultAppBarElevation,
+        leading: GestureDetector(
+          onTap: () {
+            Navigator.pop(context);
+          },
+          child: Icon(Icons.arrow_back),
+        ),
+        title: Text("帖子 ${_post.postId.toString()}"),
+        actions: <Widget>[
+          IconButton(
+            icon: CustomStyles.getDefaultDeleteIcon(size: _iconSize),
+            tooltip: 'Delete this Post',
+            onPressed: () {
+              ScaffoldMessenger.of(context).showSnackBar(
+                  const SnackBar(content: Text("Post has been deleted.")));
+            },
+          )
+        ],
+        centerTitle: true,
+      ),
+      floatingActionButton: FloatingActionButton(
+          onPressed: _pushReply,
+          child: CustomStyles.getDefaultReplyIcon(
+              size: Constants.defaultFabIconSize, color: Colors.white)),
+      body: CommentCardList(_post, this._sortPolicy),
+      bottomNavigationBar: BottomAppBar(
+        child: Row(
+          children: [
+            buildDropDownMenu(),
+            ApprovalButton(
+                comment: _post.commentToDisplay,
+                userId: 1,
+                size: _bottomIconSize),
+            DisapprovalButton(
+                comment: _post.commentToDisplay,
+                userId: 1,
+                size: _bottomIconSize),
+            StarButton(
+                initialStared: false,
+                postId: 1,
+                userId: 1,
+                size: _bottomIconSize),
+          ],
+          mainAxisAlignment: MainAxisAlignment.spaceAround,
+        ),
+      ),
+    );
   }
 
   void _pushReply() {

@@ -81,7 +81,7 @@ class RouteGenerator {
         return MaterialPageRoute(
             builder: (_) => SearchResultPage(args as String));
       case postRoute:
-        return MaterialPageRoute(builder: (_) => PostPage(args as Post));
+        return MaterialPageRoute(builder: (_) => PostPage(args as int));
       case profileSettingRoute:
         return MaterialPageRoute(builder: (_) => ProfileSettingPage());
       case galleryRoute:
