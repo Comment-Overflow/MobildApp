@@ -6,19 +6,26 @@ import 'package:flutter/widgets.dart';
 import 'constants.dart';
 
 class CustomStyles {
+  static const highlightedColor = Colors.deepOrangeAccent;
   static const postTitleStyle = TextStyle(
+    color: Colors.black,
     fontWeight: FontWeight.bold,
     fontSize: 16.0,
     height: 1.3,
   );
+  static final highlightedPostTitleStyle =
+      postTitleStyle.copyWith(color: highlightedColor);
   static const postFooterStyle = TextStyle(
     color: Colors.grey,
     fontSize: 13.0,
   );
   static const postContentStyle = TextStyle(
+    color: Colors.black,
     fontSize: 14.0,
     height: 1.3,
   );
+  static final highlightedPostContentStyle =
+      postContentStyle.copyWith(color: highlightedColor);
   static const postPageTitleStyle = TextStyle(
     fontWeight: FontWeight.bold,
     fontSize: 24.0,
@@ -200,8 +207,6 @@ class CustomStyles {
     fontSize: 17.0,
   );
 
-  static const chatMessageTimeStyle = TextStyle(
-    fontSize: 11.0,
-    color: Colors.grey
-  );
+  static const chatMessageTimeStyle =
+      TextStyle(fontSize: 11.0, color: Colors.grey);
 }
