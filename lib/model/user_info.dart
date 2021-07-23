@@ -3,15 +3,15 @@ import 'package:comment_overflow/assets/constants.dart';
 class UserInfo {
   final int _userId;
   final String _userName;
-  final String _avatarUrl;
+  final String? avatarUrl;
 
   int get userId => _userId;
 
   String get userName => _userName;
 
-  String get avatarUrl => _avatarUrl;
+  // String get avatarUrl => _avatarUrl;
 
-  UserInfo(this._userId, this._userName, this._avatarUrl);
+  UserInfo(this._userId, this._userName, {this.avatarUrl});
 }
 
 class UserCardInfo extends UserInfo {
@@ -30,7 +30,7 @@ class UserCardInfo extends UserInfo {
 
   UserCardInfo(userId, userName, avatarUrl, this._brief, this._commentCount,
       this._followerCount, this._followStatus)
-      : super(userId, userName, avatarUrl);
+      : super(userId, userName, avatarUrl: avatarUrl);
 }
 
 class PersonalPageInfo extends UserCardInfo {

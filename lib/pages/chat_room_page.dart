@@ -153,7 +153,7 @@ class _ChatRoomPageState extends State<ChatRoomPage> {
     int currentUserId = await GeneralUtils.getCurrentUserId();
     setState(() {
       _currentUser = UserInfo(0, '123@123.com',
-          'http://img8.zol.com.cn/bbs/upload/23765/23764201.jpg');
+          avatarUrl: 'http://img8.zol.com.cn/bbs/upload/23765/23764201.jpg');
     });
   }
 
@@ -188,9 +188,9 @@ class _ChatRoomPageState extends State<ChatRoomPage> {
                 MessageType.TemporaryImage,
                 DateTime.now(),
                 UserInfo(0, "Gun9niR",
-                    "http://img8.zol.com.cn/bbs/upload/23765/23764201.jpg"),
+                    avatarUrl: "http://img8.zol.com.cn/bbs/upload/23765/23764201.jpg"),
                 UserInfo(1, "xx01cyx",
-                    "http://img8.zol.com.cn/bbs/upload/23765/23764201.jpg"),
+                    avatarUrl: "http://img8.zol.com.cn/bbs/upload/23765/23764201.jpg"),
                 await asset.file));
       }
       _scrollToBottom();
