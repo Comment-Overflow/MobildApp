@@ -88,7 +88,7 @@ class PagingManager<T> {
 
   Widget getListView({refreshable = true}) {
     PagedListView<int, T> listView = PagedListView<int, T>(
-      scrollController: _autoScrollController,
+      // scrollController: _autoScrollController,
       pagingController: _pagingController,
       builderDelegate: PagedChildBuilderDelegate<T>(
         animateTransitions: true,

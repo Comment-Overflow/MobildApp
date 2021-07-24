@@ -1,7 +1,11 @@
+import 'dart:io';
+
 import 'package:comment_overflow/assets/constants.dart';
 import 'package:comment_overflow/assets/custom_styles.dart';
+import 'package:comment_overflow/model/routing_dto/private_chat_page_access_dto.dart';
 import 'package:comment_overflow/model/routing_dto/user_name_id_dto.dart';
 import 'package:comment_overflow/model/user_info.dart';
+import 'package:comment_overflow/pages/private_chat_page.dart';
 import 'package:comment_overflow/utils/general_utils.dart';
 import 'package:comment_overflow/utils/route_generator.dart';
 import 'package:comment_overflow/widgets/follow_button.dart';
@@ -123,7 +127,8 @@ class PersonalProfileCard extends StatelessWidget {
                     RouteGenerator.followersRoute,
                     [
                       Text(
-                      GeneralUtils.getDefaultNumberString(_personalPageInfo.followingCount),
+                        GeneralUtils.getDefaultNumberString(
+                            _personalPageInfo.followingCount),
                         style: CustomStyles.personalPageButtonNumberStyle,
                       ),
                       _gap,
@@ -142,7 +147,8 @@ class PersonalProfileCard extends StatelessWidget {
                     RouteGenerator.fansRoute,
                     [
                       Text(
-                        GeneralUtils.getDefaultNumberString(_personalPageInfo.followerCount),
+                        GeneralUtils.getDefaultNumberString(
+                            _personalPageInfo.followerCount),
                         style: CustomStyles.personalPageButtonNumberStyle,
                       ),
                       _gap,
@@ -161,7 +167,8 @@ class PersonalProfileCard extends StatelessWidget {
                     null,
                     [
                       Text(
-                        GeneralUtils.getDefaultNumberString(_personalPageInfo.commentCount),
+                        GeneralUtils.getDefaultNumberString(
+                            _personalPageInfo.commentCount),
                         style: CustomStyles.personalPageButtonNumberStyle,
                       ),
                       _gap,
@@ -178,7 +185,8 @@ class PersonalProfileCard extends StatelessWidget {
                     null,
                     [
                       Text(
-                        GeneralUtils.getDefaultNumberString(_personalPageInfo.approvalCount),
+                        GeneralUtils.getDefaultNumberString(
+                            _personalPageInfo.approvalCount),
                         style: CustomStyles.personalPageButtonNumberStyle,
                       ),
                       _gap,
@@ -217,19 +225,25 @@ class PersonalProfileCard extends StatelessWidget {
             child: SizedBox(
               height: Constants.defaultTextButtonHeight,
               child: TextButton(
-                  style: ButtonStyle(
-                      padding: MaterialStateProperty.all<EdgeInsetsGeometry>(
-                          EdgeInsets.symmetric(
-                              horizontal: Constants.defaultTextButtonPadding)),
-                      side: MaterialStateProperty.all<BorderSide>(
-                          BorderSide(color: Colors.blue, width: 0.7))),
-                  child: Text("私信",
-                      style: TextStyle(
-                          fontSize: Constants.defaultButtonTextSize,
-                          color: Colors.blue)),
-                  onPressed: () {
-                    // TODO: chat room route.
-                  }),
+                style: ButtonStyle(
+                    padding: MaterialStateProperty.all<EdgeInsetsGeometry>(
+                        EdgeInsets.symmetric(
+                            horizontal: Constants.defaultTextButtonPadding)),
+                    side: MaterialStateProperty.all<BorderSide>(
+                        BorderSide(color: Colors.blue, width: 0.7))),
+                child: Text("私信",
+                    style: TextStyle(
+                        fontSize: Constants.defaultButtonTextSize,
+                        color: Colors.blue)),
+                onPressed: () {
+                  Navigator.of(context).pushNamed(
+                      RouteGenerator.privateChatRoute,
+                      arguments: UserInfo(
+                          Platform.isIOS ? 1 : 2,
+                          _personalPageInfo.userName,
+                          _personalPageInfo.avatarUrl));
+                },
+              ),
             ),
           ),
         ),

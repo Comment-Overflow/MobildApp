@@ -1,8 +1,13 @@
+import 'dart:io';
+
 import 'package:comment_overflow/assets/constants.dart';
 import 'package:comment_overflow/assets/custom_colors.dart';
 import 'package:comment_overflow/model/chat.dart';
-import 'package:comment_overflow/pages/chat_room_page.dart';
+import 'package:comment_overflow/model/routing_dto/private_chat_page_access_dto.dart';
+import 'package:comment_overflow/model/user_info.dart';
+import 'package:comment_overflow/pages/private_chat_page.dart';
 import 'package:comment_overflow/utils/general_utils.dart';
+import 'package:comment_overflow/utils/route_generator.dart';
 import 'package:comment_overflow/widgets/user_avatar.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -89,9 +94,9 @@ class ChatCard extends StatelessWidget {
 
     return GestureDetector(
         onTap: () {
-          Navigator.push(context, CupertinoPageRoute(builder: (context) {
-            return ChatRoomPage(_chat.chatter);
-          }));
+          Navigator.of(context).pushNamed(RouteGenerator.privateChatRoute,
+              arguments: UserInfo(Platform.isIOS ? 1 : 2,
+                  _chat.chatter.userName, _chat.chatter.avatarUrl));
         },
         child: Slidable(
           actionPane: SlidableDrawerActionPane(),

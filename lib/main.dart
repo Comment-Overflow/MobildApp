@@ -1,9 +1,12 @@
+import 'package:comment_overflow/providers/current_chat.dart';
+import 'package:comment_overflow/providers/recent_chats.dart';
 import 'package:comment_overflow/utils/route_generator.dart';
 import 'package:comment_overflow/utils/storage_util.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
+import 'package:provider/provider.dart';
 
 void main() async {
   // Disable landscape mode.
@@ -12,7 +15,10 @@ void main() async {
       [DeviceOrientation.portraitUp, DeviceOrientation.portraitDown]);
   await dotenv.load(fileName: ".env");
 
-  runApp(CommentOverflow());
+  runApp(MultiProvider(providers: [
+    ChangeNotifierProvider(create: (_) => RecentChats()),
+    ChangeNotifierProvider(create: (_) => CurrentChat()),
+  ], child: CommentOverflow()));
 }
 
 class CommentOverflow extends StatelessWidget {

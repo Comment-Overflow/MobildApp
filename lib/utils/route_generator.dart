@@ -9,15 +9,14 @@ import 'package:comment_overflow/pages/new_post_page.dart';
 import 'package:comment_overflow/pages/notification_page.dart';
 import 'package:comment_overflow/pages/personal_page.dart';
 import 'package:comment_overflow/pages/post_page.dart';
+import 'package:comment_overflow/pages/private_chat_page.dart';
 import 'package:comment_overflow/pages/profile_setting_page.dart';
 import 'package:comment_overflow/pages/scroll_view_page.dart';
 import 'package:comment_overflow/pages/search_page.dart';
 import 'package:comment_overflow/pages/search_result_page.dart';
 import 'package:comment_overflow/widgets/image_gallery.dart';
-import 'package:comment_overflow/widgets/my_comment_card_list.dart';
 import 'package:comment_overflow/widgets/notification_card_list.dart';
 import 'package:comment_overflow/widgets/pages_container.dart';
-import 'package:comment_overflow/widgets/post_card_list.dart';
 import 'package:comment_overflow/widgets/searched_user_card_list.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -36,6 +35,7 @@ class RouteGenerator {
   static const approveMeRoute = '/approval';
   static const replyMeRoute = '/comment';
   static const starMeRoute = '/star';
+  static const privateChatRoute = 'private_chat';
 
   /// Shows the list of notification when other users have followed me.
   static const followMeNotificationRoute = '/follow';
@@ -97,6 +97,10 @@ class RouteGenerator {
           final arguments = args as PersonalPageAccessDto;
           return PersonalPage(arguments.userId, arguments.fromCard);
         });
+      case privateChatRoute:
+        return MaterialPageRoute(
+          settings: settings,
+            builder: (_) => PrivateChatPage(args as UserInfo));
       case homeRoute:
       default:
         return MaterialPageRoute(builder: (_) => PagesContainer());

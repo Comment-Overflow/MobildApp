@@ -66,6 +66,7 @@ class _LoginPageState extends State<LoginPage>
         await StorageUtil()
             .storage
             .write(key: Constants.userId, value: loginDTO.userId.toString());
+        SocketUtil();
         return true;
       } on DioError {
         // Stop auto login.

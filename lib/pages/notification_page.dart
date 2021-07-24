@@ -1,5 +1,6 @@
 import 'package:comment_overflow/fake_data/fake_data.dart';
 import 'package:comment_overflow/model/chat.dart';
+import 'package:comment_overflow/providers/recent_chats.dart';
 import 'package:comment_overflow/widgets/adaptive_refresher.dart';
 import 'package:comment_overflow/widgets/chat_card.dart';
 import 'package:flutter/cupertino.dart';
@@ -8,6 +9,7 @@ import 'package:comment_overflow/assets/constants.dart';
 import 'package:comment_overflow/assets/custom_styles.dart';
 import 'package:comment_overflow/widgets/notification_button_list.dart';
 import 'package:flutter/rendering.dart';
+import 'package:provider/provider.dart';
 
 class NotificationPage extends StatefulWidget {
   NotificationPage({Key? key}) : super(key: key);
@@ -92,15 +94,14 @@ class _NotificationPageState extends State<NotificationPage> {
   }
 
   Widget _buildChatList() {
+    List<Chat> recentChats = context.watch<RecentChats>().recentChats;
     return SliverList(
       delegate: SliverChildBuilderDelegate(
         (BuildContext context, int index) {
           return ChatCard(recentChats[index], () {
             // TODO: Delete the chat from local file.
             // TODO: Delete the chat from server. (?)
-            setState(() {
-              _recentChats.removeAt(index);
-            });
+            context.read<RecentChats>().removeAt(index);
             _getRecentChats();
           });
         },

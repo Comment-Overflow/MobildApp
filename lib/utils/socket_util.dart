@@ -1,19 +1,18 @@
-import 'dart:developer';
+import 'dart:convert';
+import 'dart:io';
 import 'dart:typed_data';
 
 import 'package:comment_overflow/assets/constants.dart';
 import 'package:comment_overflow/exceptions/user_unauthorized_exception.dart';
 import 'package:comment_overflow/model/message.dart';
+import 'package:comment_overflow/model/user_info.dart';
 import 'package:comment_overflow/utils/general_utils.dart';
-import 'package:comment_overflow/utils/storage_util.dart';
 import 'package:comment_overflow/widgets/chat_message.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:stomp_dart_client/stomp.dart';
 import 'package:stomp_dart_client/stomp_config.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:stomp_dart_client/stomp_frame.dart';
-import 'package:uuid/uuid.dart';
-import 'package:uuid/uuid_util.dart';
 
 // TODO: Catch the exception.
 
@@ -26,90 +25,114 @@ class SocketUtil {
   }
 
   late final StompClient _stompClient;
-  dynamic _unsubscribeChat;
+  late void Function(Message)? onReceiveMessage;
 
   SocketUtil._privateConstructor() {
     _initStompClient();
   }
 
-  void _initStompClient() async {
+  Future<void> _initStompClient() async {
     String token = await GeneralUtils.getCurrentToken();
 
     _stompClient = StompClient(
       config: StompConfig(
         url: '${dotenv.env['SOCKET_BASE_URL']!}/chat',
         onConnect: _onConnect,
+        onDisconnect: (frame) {
+          print('STOMP client disconnected.');
+        },
         onWebSocketError: (dynamic error) => print(error.toString()),
         stompConnectHeaders: {'Authorization': token},
         webSocketConnectHeaders: {'Authorization': token},
       ),
     );
+
     _stompClient.activate();
   }
 
-  void _onConnect(StompFrame stompFrame) async {
+  Future<void> _onConnect(StompFrame _) async {
     print('Connected to ${dotenv.env['SOCKET_BASE_URL']!}/chat');
     String token = await GeneralUtils.getCurrentToken();
     int userId = await GeneralUtils.getCurrentUserId();
 
-    try {
-      _unsubscribeChat = _stompClient.subscribe(
-          destination: '/user/${userId.toString()}/queue/private',
-          headers: {'Authorization': token},
-          callback: (frame) {
-            print('Subscription received a message.');
-            print(frame.command);
-            print(frame.body);
-            for (String key in frame.headers.keys) {
-              print(key + ' ' + frame.headers[key]!);
-            }
-            // TODO:
-            //  For image message:
-            //  1. Send back url via socket and then get the image
-            //     from the server.
-            //  2. Send back byte array directly via socket.
-            // _onReceiveMessage(frame.body);
-          });
-    } catch (e, s) {
-      print(s);
-    }
+    _stompClient.subscribe(
+        destination: '/user/${userId.toString()}/queue/private',
+        headers: {'Authorization': token},
+        callback: (frame) {
+          print('Subscription received a message.');
+          print('The command is ${frame.command}');
+          print('The message is ${frame.body}');
+          print('======Headers======');
+          for (String key in frame.headers.keys) {
+            print(key + ' ' + frame.headers[key]!);
+          }
+          print('===================');
+
+          Message message = _messageConverter(frame.body!);
+          if (onReceiveMessage != null) onReceiveMessage!(message);
+
+          // TODO:
+          //  For image message:
+          //  1. Send back url via socket and then get the image
+          //     from the server.
+          //  2. Send back byte array directly via socket.
+          // _onReceiveMessage(frame.body);
+        });
   }
 
-  Future<void> sendMessage(GlobalKey<ChatMessageState> messageKey) async {
-    _stompClient.subscribe(
-        destination: '/user/queue/sent/${messageKey.toString()}',
-        callback: (frame) {
-          if (frame.body == 'success')
-            messageKey.currentState!.finishSending();
-          else
-            throw UserUnauthorizedException();
-        });
-
-    Message message = messageKey.currentState!.message;
+  Future<void> sendMessage(Message message, void Function(String) onMessageSent) async {
     String token = await GeneralUtils.getCurrentToken();
 
-    Map<String, String> headers = {
-      'Authorization': token,
-      'ReceiverId': message.receiver.toString(),
-      'MessageKey': messageKey.toString(),
-    };
+    _stompClient.subscribe(
+        destination: '/notify/${message.uuid!}',
+        headers: {'Authorization': token},
+        callback: (frame) {
+          print(frame.body);
+          if (frame.body == 'error')
+            throw UserUnauthorizedException();
+          onMessageSent(frame.body!);
+        });
 
-    if (message.type == MessageType.Text)
+    if (message.type == MessageType.Text) {
       _stompClient.send(
         destination: '/commentOverflow/chat/text',
-        headers: headers,
-        body: message.content,
+        headers: {'Authorization': token},
+        body: json.encode({
+          'uuid': message.uuid!,
+          'senderId': message.sender.userId,
+          'receiverId': message.receiver.userId,
+          'content': message.content
+        }),
       );
-    else
+    } else
       _stompClient.send(
         destination: 'commentOverflow/chat/image',
-        headers: headers,
+        headers: {
+          'Authorization': token,
+          'UUID': message.uuid!,
+          'SenderId': message.sender.userId.toString(),
+          'ReceiverId': message.receiver.userId.toString(),
+        },
         binaryBody: message.content as Uint8List,
       );
   }
 
+  Message _messageConverter(String frameBody) {
+    RegExp contentExp = new RegExp(r"content=(.*?)\)");
+    RegExp timeExp = new RegExp(r"time=([\d\s-:]+)");
+    String? textMessageContent = contentExp.firstMatch(frameBody)!.group(1);
+    String? timeStr = timeExp.firstMatch(frameBody)!.group(1);
+    return Message(
+        MessageType.Text,
+        UserInfo(Platform.isIOS ? 1 : 2, "aaa",
+            "http://img8.zol.com.cn/bbs/upload/23765/23764201.jpg"),
+        UserInfo(Platform.isIOS ? 2 : 1, "bbb",
+            "http://img8.zol.com.cn/bbs/upload/23765/23764201.jpg"),
+        textMessageContent, time: DateTime.parse(timeStr!));
+  }
+
   void dispose() {
-    _unsubscribeChat();
+    // _unsubscribeChat();
     _stompClient.deactivate();
   }
 }
