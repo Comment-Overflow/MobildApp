@@ -5,8 +5,7 @@ import 'package:comment_overflow/model/user_info.dart';
 import 'package:flutter/cupertino.dart';
 
 class RecentChats extends ChangeNotifier {
-  static final UserInfo _cyxInfo = UserInfo(
-      1, "xx01cyx", "http://img8.zol.com.cn/bbs/upload/23765/23764201.jpg");
+  static final UserInfo _cyxInfo = UserInfo(1, "xx01cyx");
 
   final List<Chat> _recentChats = List<Chat>.filled(
     3,

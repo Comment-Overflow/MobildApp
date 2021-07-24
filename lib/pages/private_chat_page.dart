@@ -2,7 +2,6 @@ import 'dart:io';
 
 import 'package:comment_overflow/model/message.dart';
 import 'package:comment_overflow/model/user_info.dart';
-import 'package:comment_overflow/providers/current_chat.dart';
 import 'package:comment_overflow/utils/general_utils.dart';
 import 'package:comment_overflow/utils/my_image_picker.dart';
 import 'package:comment_overflow/utils/socket_util.dart';
@@ -16,7 +15,6 @@ import 'package:comment_overflow/widgets/chat_message.dart';
 import 'package:uuid/uuid.dart';
 import 'package:uuid/uuid_util.dart';
 import 'package:wechat_assets_picker/wechat_assets_picker.dart';
-import 'package:provider/provider.dart';
 
 class PrivateChatPage extends StatefulWidget {
   final UserInfo _chatter;
@@ -28,8 +26,8 @@ class PrivateChatPage extends StatefulWidget {
 }
 
 class PrivateChatPageState extends State<PrivateChatPage> {
-  late final UserInfo _currentUser = UserInfo(Platform.isIOS ? 2 : 1,
-      '123@123.com', 'http://img8.zol.com.cn/bbs/upload/23765/23764201.jpg');
+  late final UserInfo _currentUser =
+      UserInfo(Platform.isIOS ? 2 : 1, '123@123.com');
   final TextEditingController _textEditingController = TextEditingController();
   ScrollController _scrollController = new ScrollController();
   List<Message> _messages = messages;

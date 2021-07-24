@@ -6,6 +6,6 @@ class PostService {
   static Future<Response> postPost(NewPostDTO newPost) async {
     return await HttpUtil()
         .dio
-        .post('/post', data: newPost.formData());
+        .post('/post', data: await newPost.formData());
   }
 }

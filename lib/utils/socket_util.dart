@@ -80,7 +80,8 @@ class SocketUtil {
         });
   }
 
-  Future<void> sendMessage(Message message, void Function(String) onMessageSent) async {
+  Future<void> sendMessage(
+      Message message, void Function(String) onMessageSent) async {
     String token = await GeneralUtils.getCurrentToken();
 
     _stompClient.subscribe(
@@ -88,8 +89,7 @@ class SocketUtil {
         headers: {'Authorization': token},
         callback: (frame) {
           print(frame.body);
-          if (frame.body == 'error')
-            throw UserUnauthorizedException();
+          if (frame.body == 'error') throw UserUnauthorizedException();
           onMessageSent(frame.body!);
         });
 
@@ -122,13 +122,9 @@ class SocketUtil {
     RegExp timeExp = new RegExp(r"time=([\d\s-:]+)");
     String? textMessageContent = contentExp.firstMatch(frameBody)!.group(1);
     String? timeStr = timeExp.firstMatch(frameBody)!.group(1);
-    return Message(
-        MessageType.Text,
-        UserInfo(Platform.isIOS ? 1 : 2, "aaa",
-            "http://img8.zol.com.cn/bbs/upload/23765/23764201.jpg"),
-        UserInfo(Platform.isIOS ? 2 : 1, "bbb",
-            "http://img8.zol.com.cn/bbs/upload/23765/23764201.jpg"),
-        textMessageContent, time: DateTime.parse(timeStr!));
+    return Message(MessageType.Text, UserInfo(Platform.isIOS ? 1 : 2, "aaa"),
+        UserInfo(Platform.isIOS ? 2 : 1, "bbb"), textMessageContent,
+        time: DateTime.parse(timeStr!));
   }
 
   void dispose() {

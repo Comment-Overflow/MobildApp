@@ -1,7 +1,9 @@
 import 'package:after_layout/after_layout.dart';
 import 'package:comment_overflow/assets/constants.dart';
+import 'package:comment_overflow/model/message.dart';
 import 'package:comment_overflow/model/response_dto/login_dto.dart';
 import 'package:comment_overflow/service/auth_service.dart';
+import 'package:comment_overflow/utils/message_box.dart';
 import 'package:comment_overflow/utils/route_generator.dart';
 import 'package:comment_overflow/utils/socket_util.dart';
 import 'package:comment_overflow/utils/storage_util.dart';
@@ -31,7 +33,7 @@ class _LoginPageState extends State<LoginPage>
       await StorageUtil()
           .storage
           .write(key: Constants.userId, value: loginDTO.userId.toString());
-      SocketUtil();
+      await StorageUtil().storage.delete(key: Constants.emailToken);
       return '';
     } on DioError catch (e) {
       if (e.response?.data == null) {
@@ -42,8 +44,11 @@ class _LoginPageState extends State<LoginPage>
   }
 
   Future<String> _signUp(LoginData data) async {
+    String? emailToken =
+        await StorageUtil().storage.read(key: Constants.emailToken);
     try {
-      await AuthService.register(data.name, data.password);
+      await AuthService.register(
+          data.name, data.password, data.emailConfirmation, emailToken);
       return '';
     } on DioError catch (e) {
       if (e.response?.data == null) {
@@ -83,6 +88,18 @@ class _LoginPageState extends State<LoginPage>
     });
   }
 
+  _sendEmail(email) async {
+    try {
+      final Response response = await AuthService.sendEmailConfirmation(email);
+      StorageUtil()
+          .storage
+          .write(key: Constants.emailToken, value: response.data);
+    } on DioError {}
+
+    MessageBox.showToast(
+        msg: "验证邮件已发送!", messageBoxType: MessageBoxType.Success);
+  }
+
   @override
   Widget build(BuildContext context) {
     return FlutterLogin(
@@ -111,6 +128,8 @@ class _LoginPageState extends State<LoginPage>
           accentColor: Colors.blueAccent,
           authButtonPadding: EdgeInsets.only(top: 15.0, bottom: 5.0)),
       onRecoverPassword: _recoverPassword,
+      emailRetryInterval: 30,
+      onSend: _sendEmail,
     );
   }
 
@@ -120,6 +139,9 @@ class _LoginPageState extends State<LoginPage>
         confirmPasswordHint: '确认密码',
         loginButton: '登录',
         signupButton: '注册',
+        flushbarTitleError: '出错啦',
+        flushbarTitleSuccess: '成功',
+        signUpSuccess: '注册成功!',
       );
 
   @override

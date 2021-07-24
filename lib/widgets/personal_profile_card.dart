@@ -239,9 +239,7 @@ class PersonalProfileCard extends StatelessWidget {
                   Navigator.of(context).pushNamed(
                       RouteGenerator.privateChatRoute,
                       arguments: UserInfo(
-                          Platform.isIOS ? 1 : 2,
-                          _personalPageInfo.userName,
-                          _personalPageInfo.avatarUrl));
+                          Platform.isIOS ? 1 : 2, _personalPageInfo.userName));
                 },
               ),
             ),

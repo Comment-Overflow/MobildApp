@@ -18,13 +18,13 @@ const int currentUserId = 0;
 
 final _date = DateTime(2020);
 final UserInfo _userInfo = UserInfo(
-    0, "Gun9niR", "http://img8.zol.com.cn/bbs/upload/23765/23764201.jpg");
+    0, "Gun9niR", avatarUrl: "http://img8.zol.com.cn/bbs/upload/23765/23764201.jpg");
 final UserInfo _cyxInfo = UserInfo(
-    1, "xx01cyx", "http://img8.zol.com.cn/bbs/upload/23765/23764201.jpg");
+    1, "xx01cyx", avatarUrl: "http://img8.zol.com.cn/bbs/upload/23765/23764201.jpg");
 final UserInfo _yzyInfo = UserInfo(
-    2, "JolyneFr", "http://img8.zol.com.cn/bbs/upload/23765/23764201.jpg");
+    2, "JolyneFr", avatarUrl: "http://img8.zol.com.cn/bbs/upload/23765/23764201.jpg");
 final UserInfo _wxpInfo = UserInfo(
-    3, "WindowsXp", "http://img8.zol.com.cn/bbs/upload/23765/23764201.jpg");
+    3, "WindowsXp", avatarUrl: "http://img8.zol.com.cn/bbs/upload/23765/23764201.jpg");
 final UserCardInfo _userCardInfo = UserCardInfo(
     _userInfo.userId,
     _userInfo.userName,
@@ -46,8 +46,8 @@ final PersonalPageInfo personalPageInfo = PersonalPageInfo(
     Sex.male,
     128538,
     21);
-final Quote _quoteWithUserName = Quote("Gun9niR", _content);
-final Quote _quoteWithPostTitle = Quote(_title, _content);
+final Quote _quoteWithUserName = Quote("Gun9niR", "aa");
+final Quote _quoteWithPostTitle = Quote("Gun9niR", "aa");
 
 final Comment _approvedComment = Comment(_userInfo, "sadad", _date,
     _quoteWithUserName, 0, 500, ApprovalStatus.approve, []);
