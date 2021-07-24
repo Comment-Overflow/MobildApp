@@ -103,6 +103,8 @@ class Constants {
 
   static const defaultHighlightTime = 2000;
 
+  static const maxSearchHistory = 20;
+
   // Categories of posts
   static const List<String> postCategories = [
     '校园生活',
@@ -126,6 +128,8 @@ class Constants {
   static const String token = 'token';
 
   static const String userId = 'userid';
+
+  static const String searchHistory = 'searchHistory';
 }
 
 enum FollowStatus {

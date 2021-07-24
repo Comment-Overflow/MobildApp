@@ -130,9 +130,6 @@ final quotes = List<Quote>.filled(
   growable: true,
 );
 
-// Max length 20.
-final searchHistory = List<String>.filled(20, "aaaaaaaaaaaaaaaaaaaaaaaaaaaa");
-
 final users = List<UserCardInfo>.filled(
   2,
   UserCardInfo(
