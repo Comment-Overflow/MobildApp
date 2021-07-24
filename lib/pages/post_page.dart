@@ -138,6 +138,7 @@ class _PostPageState extends State<PostPage> {
         context: context,
         builder: (_) {
           return MultipleInputField(
+            postId: widget._post.postId,
             context: context,
             textController: _replyController,
             assets: _assets,

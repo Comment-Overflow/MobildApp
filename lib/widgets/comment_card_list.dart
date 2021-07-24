@@ -41,8 +41,8 @@ class _CommentCardListState extends State<CommentCardList> {
           return commentObjJson.map((e) => Comment.fromJson(e)).toList();
         },
             (context, item, index) => index == 0
-                ? CommentCard(item, title: post.title)
-                : CommentCard(item));
+                ? CommentCard(item, post.postId, title: post.title)
+                : CommentCard(item, post.postId));
 
   @override
   void didUpdateWidget(CommentCardList oldWidget) {

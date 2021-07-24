@@ -1,4 +1,5 @@
 import 'package:comment_overflow/model/request_dto/comments_query_dto.dart';
+import 'package:comment_overflow/model/request_dto/new_comment_dto.dart';
 import 'package:comment_overflow/model/request_dto/new_post_dto.dart';
 import 'package:comment_overflow/model/request_dto/post_query_dto.dart';
 import 'package:comment_overflow/utils/http_util.dart';
@@ -24,5 +25,10 @@ class PostService {
     return await HttpUtil()
         .dio
         .get('/posts', queryParameters: query.getData());
+  }
+  static Future<Response> postComment(NewCommentDTO newComment) async {
+    return await HttpUtil()
+        .dio
+        .post('/comment', data: await newComment.formData());
   }
 }

@@ -1,4 +1,5 @@
 import 'package:comment_overflow/assets/custom_colors.dart';
+import 'package:comment_overflow/model/quote.dart';
 import 'package:comment_overflow/widgets/approval_button.dart';
 import 'package:comment_overflow/widgets/disapproval_button.dart';
 import 'package:comment_overflow/widgets/image_list.dart';
@@ -10,13 +11,17 @@ import 'package:comment_overflow/model/comment.dart';
 import 'package:comment_overflow/assets/custom_styles.dart';
 import 'package:comment_overflow/widgets/user_avatar_with_name.dart';
 import 'package:flutter/widgets.dart';
+import 'package:wechat_assets_picker/wechat_assets_picker.dart';
+
+import 'multiple_input_field.dart';
 
 class CommentCard extends StatefulWidget {
   final Comment _comment;
+  final int _postId;
   final String _title;
   final bool _highlight;
 
-  const CommentCard(this._comment, {Key? key, title = "", highlight = false})
+  const CommentCard(this._comment, this._postId, {Key? key, title = "", highlight = false})
       : _title = title,
         _highlight = highlight,
         super(key: key);
@@ -32,6 +37,9 @@ class _CommentCardState extends State<CommentCard>
 
   late AnimationController _animationController;
   late Animation _colorTween;
+
+  final List<AssetEntity> _assets = <AssetEntity>[];
+  final TextEditingController _replyController = TextEditingController();
 
   @override
   void initState() {
@@ -174,5 +182,18 @@ class _CommentCardState extends State<CommentCard>
         ),
       );
 
-  void _pushReply() {}
+  void _pushReply() {
+    showModalBottomSheet(
+      isScrollControlled: true, // !important
+      context: context,
+      builder: (_) {
+        return MultipleInputField(
+          postId: widget._postId,
+          context: context,
+          textController: _replyController,
+          assets: _assets,
+          quote: Quote.fromComment(widget._comment),
+        );
+      });
+  }
 }
