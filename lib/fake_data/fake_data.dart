@@ -98,6 +98,7 @@ final posts = List<Post>.filled(
     500,
     300,
     _approvedComment,
+    false
   ),
   growable: true,
 )
@@ -109,6 +110,7 @@ final posts = List<Post>.filled(
       500,
       700,
       _disapprovedComment,
+      false
     ),
     growable: true,
   ))
@@ -120,6 +122,7 @@ final posts = List<Post>.filled(
       500,
       1000,
       _noneComment,
+      false
     ),
     growable: true,
   ));

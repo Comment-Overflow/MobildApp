@@ -87,7 +87,9 @@ class PostCard extends StatelessWidget {
                     text: ' ${_post.commentCount} · ',
                   ),
                   WidgetSpan(
-                    child: CustomStyles.getDefaultThumbUpIcon(),
+                    child: _post.commentToDisplay.approvalStatus == ApprovalStatus.approve
+                      ? CustomStyles.getDefaultThumbUpIcon()
+                      : CustomStyles.getDefaultNotThumbUpIcon(),
                   ),
                   TextSpan(
                     text:
@@ -104,7 +106,7 @@ class PostCard extends StatelessWidget {
               context,
               RouteGenerator.generateRoute(RouteSettings(
                 name: RouteGenerator.postRoute,
-                arguments: 3,
+                arguments: _post,
               )));
         },
       ),

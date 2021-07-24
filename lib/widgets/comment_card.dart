@@ -84,7 +84,8 @@ class _CommentCardState extends State<CommentCard>
                       child: UserAvatarWithName(
                         widget._comment.user.userName,
                         Constants.defaultAvatarInCommentSize,
-                        image: NetworkImage(widget._comment.user.avatarUrl),
+                        image: widget._comment.user.avatarUrl == null ?
+                            null : NetworkImage(widget._comment.user.avatarUrl),
                       ),
                     ),
                     Text(
