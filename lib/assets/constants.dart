@@ -185,3 +185,5 @@ enum CommentType {
 enum Setting {
   signOut,
 }
+
+enum PostTag { Life, Study, Art, Mood, Career }
