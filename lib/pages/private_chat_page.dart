@@ -76,7 +76,7 @@ class PrivateChatPageState extends State<PrivateChatPage> {
               child: _messages.length == 0
                   ? Container()
                   : AdaptiveRefresher(
-                      enablePullUp: true,
+                      enablePullUp: _currentPageNumber < _totalPageNumber,
                       enablePullDown: false,
                       onLoading: _onLoading,
                       child: ListView.builder(
