@@ -4,6 +4,7 @@ import 'package:comment_overflow/model/user_info.dart';
 import 'package:comment_overflow/utils/general_utils.dart';
 
 class Comment {
+  final int _id;
   final UserInfo user;
   final String _content;
   final DateTime _time;
@@ -13,6 +14,7 @@ class Comment {
   ApprovalStatus _approvalStatus;
   List<String> _imageUrl;
 
+  int get id => _id;
   String get content => _content;
   DateTime get time => _time;
   String get timeString => GeneralUtils.getDefaultTimeString(_time);
@@ -23,8 +25,23 @@ class Comment {
   ApprovalStatus get approvalStatus => _approvalStatus;
   List<String> get imageUrl => _imageUrl;
 
-  Comment(this.user, this._content, this._time, this._quote, this._floor,
+  Comment(this._id, this.user, this._content, this._time, this._quote, this._floor,
       this._approvalCount, this._approvalStatus, this._imageUrl);
+  
+  factory Comment.fromJson(dynamic json) {
+    var _imageList = json['imageUrl'];
+    return Comment(
+        json['id'] as int,
+        UserInfo.fromJson(json['userInfo']),
+        json['content'] as String,
+        DateTime.parse(json['time'] as String),
+        (json['quoteId'] as int) == 0 ? null : Quote.fromJson(json['quoteDTO']),
+        json['floor'] as int,
+        json['approvalCount'] as int,
+        ApprovalStatus.none,
+        _imageList == null ? [] : List.from(_imageList)
+    );
+  }
 
   void addApprovals() {
     switch (_approvalStatus) {
