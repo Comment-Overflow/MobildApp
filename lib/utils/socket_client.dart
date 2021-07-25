@@ -6,30 +6,29 @@ import 'package:comment_overflow/assets/constants.dart';
 import 'package:comment_overflow/exceptions/user_unauthorized_exception.dart';
 import 'package:comment_overflow/model/message.dart';
 import 'package:comment_overflow/model/user_info.dart';
+import 'package:comment_overflow/utils/recent_chats_provider.dart';
 import 'package:comment_overflow/utils/general_utils.dart';
-import 'package:comment_overflow/widgets/chat_message.dart';
+import 'package:comment_overflow/utils/global_utils.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:stomp_dart_client/stomp.dart';
 import 'package:stomp_dart_client/stomp_config.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:stomp_dart_client/stomp_frame.dart';
+import 'package:provider/provider.dart';
 
 // TODO: Catch the exception.
 
-class SocketUtil {
+class SocketClient {
   // Singleton method.
-  static SocketUtil _instance = SocketUtil._privateConstructor();
+  factory SocketClient() => _instance;
+  static SocketClient _instance = SocketClient._privateConstructor();
 
-  factory SocketUtil() {
-    return _instance;
+  SocketClient._privateConstructor() {
+    _initStompClient();
   }
 
   late final StompClient _stompClient;
-  late void Function(Message)? onReceiveMessage;
-
-  SocketUtil._privateConstructor() {
-    _initStompClient();
-  }
+  void Function(Message)? onReceiveMessage = null;
 
   Future<void> _initStompClient() async {
     String token = await GeneralUtils.getCurrentToken();
@@ -59,24 +58,18 @@ class SocketUtil {
         destination: '/user/${userId.toString()}/queue/private',
         headers: {'Authorization': token},
         callback: (frame) {
-          print('Subscription received a message.');
-          print('The command is ${frame.command}');
-          print('The message is ${frame.body}');
-          print('======Headers======');
-          for (String key in frame.headers.keys) {
-            print(key + ' ' + frame.headers[key]!);
-          }
-          print('===================');
-
-          Message message = _messageConverter(frame.body!);
+          Message message = Message.fromJson(jsonDecode(frame.body!));
           if (onReceiveMessage != null) onReceiveMessage!(message);
+          else {
+            BuildContext context = GlobalUtils.navKey!.currentContext!;
+            context.read<RecentChatsProvider>().updateUnread(message.sender, message.content, message.time!);
+          }
 
           // TODO:
           //  For image message:
           //  1. Send back url via socket and then get the image
           //     from the server.
           //  2. Send back byte array directly via socket.
-          // _onReceiveMessage(frame.body);
         });
   }
 
@@ -88,7 +81,6 @@ class SocketUtil {
         destination: '/notify/${message.uuid!}',
         headers: {'Authorization': token},
         callback: (frame) {
-          print(frame.body);
           if (frame.body == 'error') throw UserUnauthorizedException();
           onMessageSent(frame.body!);
         });
@@ -115,16 +107,6 @@ class SocketUtil {
         },
         binaryBody: message.content as Uint8List,
       );
-  }
-
-  Message _messageConverter(String frameBody) {
-    RegExp contentExp = new RegExp(r"content=(.*?)\)");
-    RegExp timeExp = new RegExp(r"time=([\d\s-:]+)");
-    String? textMessageContent = contentExp.firstMatch(frameBody)!.group(1);
-    String? timeStr = timeExp.firstMatch(frameBody)!.group(1);
-    return Message(MessageType.Text, UserInfo(Platform.isIOS ? 1 : 2, "aaa"),
-        UserInfo(Platform.isIOS ? 2 : 1, "bbb"), textMessageContent,
-        time: DateTime.parse(timeStr!));
   }
 
   void dispose() {

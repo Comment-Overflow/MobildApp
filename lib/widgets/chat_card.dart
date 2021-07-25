@@ -7,11 +7,13 @@ import 'package:comment_overflow/model/routing_dto/private_chat_page_access_dto.
 import 'package:comment_overflow/model/user_info.dart';
 import 'package:comment_overflow/pages/private_chat_page.dart';
 import 'package:comment_overflow/utils/general_utils.dart';
+import 'package:comment_overflow/utils/recent_chats_provider.dart';
 import 'package:comment_overflow/utils/route_generator.dart';
 import 'package:comment_overflow/widgets/user_avatar.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
+import 'package:provider/provider.dart';
 
 class ChatCard extends StatelessWidget {
   final Chat _chat;
@@ -94,9 +96,10 @@ class ChatCard extends StatelessWidget {
 
     return GestureDetector(
         onTap: () {
-          Navigator.of(context).pushNamed(RouteGenerator.privateChatRoute,
-              arguments:
-                  UserInfo(Platform.isIOS ? 1 : 2, _chat.chatter.userName));
+          UserInfo chatter =
+              UserInfo(Platform.isIOS ? 1 : 2, _chat.chatter.userName);
+          Navigator.of(context)
+              .pushNamed(RouteGenerator.privateChatRoute, arguments: chatter);
         },
         child: Slidable(
           actionPane: SlidableDrawerActionPane(),

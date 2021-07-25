@@ -4,7 +4,8 @@ import 'package:comment_overflow/model/message.dart';
 import 'package:comment_overflow/model/user_info.dart';
 import 'package:comment_overflow/service/message_service.dart';
 import 'package:comment_overflow/utils/my_image_picker.dart';
-import 'package:comment_overflow/utils/socket_util.dart';
+import 'package:comment_overflow/utils/recent_chats_provider.dart';
+import 'package:comment_overflow/utils/socket_client.dart';
 import 'package:comment_overflow/widgets/adaptive_refresher.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/cupertino.dart';
@@ -15,6 +16,7 @@ import 'package:comment_overflow/widgets/chat_message.dart';
 import 'package:uuid/uuid.dart';
 import 'package:uuid/uuid_util.dart';
 import 'package:wechat_assets_picker/wechat_assets_picker.dart';
+import 'package:provider/provider.dart';
 
 class PrivateChatPage extends StatefulWidget {
   final UserInfo _chatter;
@@ -41,13 +43,16 @@ class PrivateChatPageState extends State<PrivateChatPage> {
   void initState() {
     print('Enter private chat channel with user ${widget._chatter.userId}');
     super.initState();
-    SocketUtil().onReceiveMessage = _onReceiveMessage;
+    SocketClient().onReceiveMessage = _onReceiveMessage;
     _getChatHistory();
+    WidgetsBinding.instance!.addPostFrameCallback((_) {
+      context.read<RecentChatsProvider>().updateRead(widget._chatter);
+    });
   }
 
   @override
   void dispose() async {
-    SocketUtil().onReceiveMessage = null;
+    SocketClient().onReceiveMessage = null;
     _textEditingController.dispose();
     _scrollController.dispose();
     super.dispose();
@@ -168,7 +173,6 @@ class PrivateChatPageState extends State<PrivateChatPage> {
     Response<dynamic> response = await MessageService.getChatHistory(
         widget._chatter.userId, _currentPageNumber);
     List messagesResponse = response.data['content'] as List;
-    print(response.data['totalPages'] as int);
     setState(() {
       if (_currentPageNumber == 0)
         _totalPageNumber = response.data['totalPages'] as int;
@@ -180,8 +184,7 @@ class PrivateChatPageState extends State<PrivateChatPage> {
   }
 
   Future _onLoading() async {
-    if (_currentPageNumber < _totalPageNumber)
-      _getChatHistory();
+    if (_currentPageNumber < _totalPageNumber) _getChatHistory();
   }
 
   Future _onSendText() async {
@@ -194,13 +197,11 @@ class PrivateChatPageState extends State<PrivateChatPage> {
         _messages.insert(0, message);
         _messageMap.putIfAbsent(messageId, () => message);
       });
-      SocketUtil().sendMessage(message, (frameBody) {
+      SocketClient().sendMessage(message, (frameBody) {
         setState(() {
           Message sentMessage = _messageMap[messageId]!;
           sentMessage.isSending = false;
-          RegExp exp = new RegExp(r"time=([\d\s-:]+)");
-          String? timeStr = exp.firstMatch(frameBody)!.group(1);
-          sentMessage.time = DateTime.parse(timeStr!);
+          sentMessage.time = DateTime.parse(frameBody);
         });
       });
     }
@@ -222,7 +223,7 @@ class PrivateChatPageState extends State<PrivateChatPage> {
         setState(() {
           _messages.insert(0, message);
         });
-        SocketUtil().sendMessage(message, (frameBody) {
+        SocketClient().sendMessage(message, (frameBody) {
           setState(() {
             _messageMap[messageId]!.isSending = false;
           });
@@ -237,6 +238,9 @@ class PrivateChatPageState extends State<PrivateChatPage> {
     setState(() {
       _messages.insert(0, message);
     });
+    context
+        .read<RecentChatsProvider>()
+        .updateLastMessageRead(widget._chatter, message.content, message.time!);
     _scrollToBottom();
   }
 }

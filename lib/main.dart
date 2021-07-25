@@ -1,4 +1,5 @@
-import 'package:comment_overflow/providers/recent_chats.dart';
+import 'package:comment_overflow/utils/recent_chats_provider.dart';
+import 'package:comment_overflow/utils/global_utils.dart';
 import 'package:comment_overflow/utils/route_generator.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -13,7 +14,7 @@ void main() async {
   await dotenv.load(fileName: ".env");
 
   runApp(MultiProvider(providers: [
-    ChangeNotifierProvider(create: (_) => RecentChats()),
+    ChangeNotifierProvider(create: (_) => RecentChatsProvider()),
   ], child: CommentOverflow()));
 }
 
@@ -53,6 +54,7 @@ class CommentOverflow extends StatelessWidget {
       ),
       initialRoute: RouteGenerator.loginRoute,
       onGenerateRoute: RouteGenerator.generateRoute,
+      navigatorKey: GlobalUtils.navKey,
     );
   }
 }

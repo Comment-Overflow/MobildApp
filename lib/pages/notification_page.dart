@@ -1,6 +1,6 @@
 import 'package:comment_overflow/fake_data/fake_data.dart';
 import 'package:comment_overflow/model/chat.dart';
-import 'package:comment_overflow/providers/recent_chats.dart';
+import 'package:comment_overflow/utils/recent_chats_provider.dart';
 import 'package:comment_overflow/widgets/adaptive_refresher.dart';
 import 'package:comment_overflow/widgets/chat_card.dart';
 import 'package:flutter/cupertino.dart';
@@ -19,12 +19,17 @@ class NotificationPage extends StatefulWidget {
 }
 
 class _NotificationPageState extends State<NotificationPage> {
-  late List<Chat> _recentChats;
 
   @override
   void initState() {
     super.initState();
-    _getRecentChats();
+    print("Notification page init state.");
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+    print("Notification page disposed.");
   }
 
   @override
@@ -55,20 +60,13 @@ class _NotificationPageState extends State<NotificationPage> {
                     Constants.defaultNotificationButtonSize),
               ),
             )),
-            _recentChats.length == 0 ? _buildNoChatPrompt() : _buildChatList(),
+            context.watch<RecentChatsProvider>().recentChats.length == 0 ? _buildNoChatPrompt() : _buildChatList(),
           ],
         ),
       ),
     );
   }
 
-  void _getRecentChats() {
-    // TODO: Get cached chats from local file.
-    // TODO: Get real chats from server.
-    setState(() {
-      _recentChats = recentChats;
-    });
-  }
 
   Future _onRefresh() async {
     // getRecentChats();
@@ -94,15 +92,14 @@ class _NotificationPageState extends State<NotificationPage> {
   }
 
   Widget _buildChatList() {
-    List<Chat> recentChats = context.watch<RecentChats>().recentChats;
+    List<Chat> recentChats = context.watch<RecentChatsProvider>().recentChats;
     return SliverList(
       delegate: SliverChildBuilderDelegate(
         (BuildContext context, int index) {
           return ChatCard(recentChats[index], () {
             // TODO: Delete the chat from local file.
             // TODO: Delete the chat from server. (?)
-            context.read<RecentChats>().removeAt(index);
-            _getRecentChats();
+            context.read<RecentChatsProvider>().removeAt(index);
           });
         },
         childCount: recentChats.length,

@@ -31,7 +31,6 @@ class Message {
         ? MessageType.Text
         : MessageType.Image;
     DateTime time = DateTime.parse(json['time'] as String);
-    print(json['time'] as String);
     return Message(
         messageType,
         UserInfo.fromJson(json['minimalSenderInfo']),
