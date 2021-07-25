@@ -1,6 +1,7 @@
 import 'package:comment_overflow/assets/constants.dart';
 import 'package:comment_overflow/assets/custom_colors.dart';
 import 'package:comment_overflow/assets/custom_styles.dart';
+import 'package:comment_overflow/service/profile_setting_service.dart';
 import 'package:comment_overflow/utils/message_box.dart';
 import 'package:comment_overflow/utils/my_image_picker.dart';
 import 'package:comment_overflow/widgets/user_avatar.dart';
@@ -8,14 +9,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter/widgets.dart';
 import 'package:wechat_assets_picker/wechat_assets_picker.dart';
+import 'package:dio/dio.dart';
 
 class ProfileSettingPage extends StatefulWidget {
-  // final UserAvatar previousUserAvatar;
-  // final String _previousIntroduction;
-  // final String _previousNickname;
-  // final String _previousGender;
-  // we can't pass the initial value through constructor
-  // my suggestion is initiating them in createState()
 
   ProfileSettingPage({Key? key}) : super(key: key);
 
@@ -24,14 +20,15 @@ class ProfileSettingPage extends StatefulWidget {
 }
 
 class _ProfileSettingPageState extends State<ProfileSettingPage> {
-  late UserAvatar _userAvatar;
-  String _introduction = "";
+  UserAvatar _userAvatar = UserAvatar(Constants.profileSettingImageSize);
+  String _brief = "";
   bool _isIntroductionValid = true;
-  String _nickname = "";
-  bool _isNicknameValid = true;
-  String _gender = "";
-  late TextEditingController _introductionController;
-  late TextEditingController _nicknameController;
+  String _userName = "";
+  bool _isUserNameValid = true;
+  bool _isUserAvatarChanged = false;
+  String _gender = "保密";
+  late TextEditingController _briefController;
+  late TextEditingController _userNameController;
   final List<AssetEntity> _assets = [];
   late MessageBox messageBox;
 
@@ -44,7 +41,9 @@ class _ProfileSettingPageState extends State<ProfileSettingPage> {
   Future<void> _selectAssets() async {
     final List<AssetEntity>? result = await MyImagePicker.pickImage(context,
         maxAssets: 1, selectedAssets: _assets);
+    print(result?.length);
     if (result != null) {
+      _isUserAvatarChanged = true;
       setState(() {
         _assets.clear();
         _assets.addAll(List<AssetEntity>.from(result));
@@ -56,26 +55,50 @@ class _ProfileSettingPageState extends State<ProfileSettingPage> {
     }
   }
 
+  Future<MultipartFile> _transport(AssetEntity asset) async {
+    return MultipartFile.fromFileSync((await asset.file)!.path);
+  }
+
+  Future<FormData> formData() async => FormData.fromMap({
+    "userName": _userNameController.text,
+    "brief": _briefController.text,
+    "avatar": _isUserAvatarChanged ? await _transport(_assets.first) : null,
+    "gender": _gender
+  });
+
   @override
   void initState() {
-    String _imageUrl = "";
-    //In my opinion, first u should use an url get from userInfo to initiate the userAvatar
-    //then after user upload image from local,recreate the userAvatar via AssetEntityImageProvider
-    this._userAvatar = UserAvatar(Constants.profileSettingImageSize,
-        image: NetworkImage(
-            "http://img8.zol.com.cn/bbs/upload/23765/23764201.jpg"));
-    this._introduction = "Hi there, this is WindowsXp";
-    this._nickname = "WindowsXp";
-    this._gender = "男";
+    ValueSetter callback = (dynamic json) => this.setState(() {
+      String? _imageUrl = json['avatarUrl'] == null ? null : json['avatarUrl'] as String;
+      this._userAvatar = UserAvatar(Constants.profileSettingImageSize,
+          image: _imageUrl == null ? null : NetworkImage(_imageUrl)
+      );
+      this._brief = json['brief'] as String;
+      this._userName = json['userName'] as String;
+      switch(json['gender'] as String){
+        case "MALE":
+          this._gender = "男";
+          break;
+        case "FEMALE":
+          this._gender = "女";
+          break;
+        case "SECRET":
+          this._gender = "保密";
+          break;
+      }
+      _userNameController = TextEditingController(text: this._userName);
+      _briefController = TextEditingController(text: this._brief);
+    });
+    ProfileSettingService.getProfile("/profiles", callback);
     super.initState();
-    _introductionController = TextEditingController(text: this._introduction);
-    _nicknameController = TextEditingController(text: this._nickname);
+    _userNameController = TextEditingController();
+    _briefController = TextEditingController();
   }
 
   @override
   void dispose() {
-    _introductionController.dispose();
-    _nicknameController.dispose();
+    _briefController.dispose();
+    _userNameController.dispose();
     super.dispose();
   }
 
@@ -92,12 +115,25 @@ class _ProfileSettingPageState extends State<ProfileSettingPage> {
           actions: [
             IconButton(
                 icon: Icon(Icons.save),
-                onPressed: () {
-                  if (_isNicknameValid && _isIntroductionValid) {
-                    MessageBox.showToast(
-                        msg: "保存成功", messageBoxType: MessageBoxType.Success);
-                    Navigator.of(context).pop();
-                  } else if (!_isNicknameValid) {
+                onPressed: () async {
+                  if (_isUserNameValid && _isIntroductionValid) {
+                    bool errorFlag = false;
+                    try{
+                      print(_userNameController.text);
+                      print(_briefController.text);
+                      final response = await ProfileSettingService.putProfile("/profiles", (await formData()));
+                    } on DioError catch(e) {
+                      errorFlag = true;
+                      print(e.message);
+                      MessageBox.showToast(
+                          msg: "网络错误", messageBoxType: MessageBoxType.Error);
+                    }
+                    if(!errorFlag) {
+                      MessageBox.showToast(
+                          msg: "保存成功", messageBoxType: MessageBoxType.Success);
+                      Navigator.of(context).pop();
+                    }
+                  } else if (!_isUserNameValid) {
                     MessageBox.showToast(
                         msg: "用户名不能为空", messageBoxType: MessageBoxType.Error);
                   } else {
@@ -143,7 +179,7 @@ class _ProfileSettingPageState extends State<ProfileSettingPage> {
             Expanded(
               flex: 15,
               child: TextFormField(
-                  controller: _nicknameController,
+                  controller: _userNameController,
                   inputFormatters: [
                     LengthLimitingTextInputFormatter(10),
                   ],
@@ -160,8 +196,8 @@ class _ProfileSettingPageState extends State<ProfileSettingPage> {
                   onChanged: (value) {
                     setState(() {
                       value.isEmpty
-                          ? _isNicknameValid = false
-                          : _isNicknameValid = true;
+                          ? _isUserNameValid = false
+                          : _isUserNameValid = true;
                     });
                   }),
               // ),
@@ -176,7 +212,7 @@ class _ProfileSettingPageState extends State<ProfileSettingPage> {
           style: CustomStyles.profileSettingItemTitleStyle,
         ),
         TextFormField(
-          controller: _introductionController,
+          controller: _briefController,
           inputFormatters: [
             LengthLimitingTextInputFormatter(30),
           ],
