@@ -16,10 +16,12 @@ class ApprovalRecord {
     int timeStamp = json['timestamp'] as int;
     return ApprovalRecord(
         UserInfo(
-            json['fromUserUserId'] as int, json['fromUserUserName'] as String),
+            json['fromUserUserId'] as int, json['fromUserUserName'] as String, avatarUrl: json['fromUserAvatarUrl'] as String),
         DateTime.fromMillisecondsSinceEpoch(timeStamp),
-        Quote(json['commentId'] as int, json['commentPostTitle'] as String,
-            json['commentContent'] as String, json['commentFloor' as int]));
+        Quote(json['commentId'] as int,
+              json['commentPostTitle'] as String,
+              json['commentContent'] as String,
+              json['commentFloor'] as int));
   }
 }
 
@@ -40,7 +42,7 @@ class ReplyRecord {
     int timestamp = json['timestamp'] as int;
     return ReplyRecord(
         UserInfo(
-            json['fromUserUserId'] as int, json['fromUserUserName'] as String),
+            json['fromUserUserId'] as int, json['fromUserUserName'] as String, avatarUrl: json['fromUserAvatarUrl'] as String),
         DateTime.fromMillisecondsSinceEpoch(timestamp),
         json['commentContent'] as String,
         Quote(
