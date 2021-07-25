@@ -1,10 +1,12 @@
+import 'dart:convert';
+
 import 'package:comment_overflow/assets/constants.dart';
-import 'package:comment_overflow/fake_data/fake_data.dart';
 import 'package:comment_overflow/utils/route_generator.dart';
+import 'package:comment_overflow/utils/storage_util.dart';
 import 'package:comment_overflow/widgets/search_bar.dart';
+import 'package:comment_overflow/widgets/search_history_grid.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
-import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 
 class SearchPage extends StatelessWidget {
   const SearchPage({Key? key}) : super(key: key);
@@ -19,6 +21,7 @@ class SearchPage extends StatelessWidget {
               Expanded(
                 child: SearchBar(
                   onSearch: (text) {
+                    appendSearchHistory(text);
                     Navigator.of(context).pushNamed(
                         RouteGenerator.searchResultRoute,
                         arguments: text);
@@ -47,48 +50,30 @@ class SearchPage extends StatelessWidget {
         ),
         body: Padding(
           padding: EdgeInsets.all(16.0),
-          child: Column(children: [
-            Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
-              Text(
-                "搜索历史",
-                style: TextStyle(
-                  fontWeight: FontWeight.w500,
-                  fontSize: 16.0,
-                ),
-              ),
-              GestureDetector(
-                onTap: () {
-                  Navigator.of(context).pop();
-                },
-                child: Icon(
-                  Icons.delete_outline,
-                  size: 18.0,
-                  color: Colors.grey[500],
-                ),
-              )
-            ]),
-            SizedBox(height: 10.0),
-            Expanded(
-              child: NotificationListener<OverscrollIndicatorNotification>(
-                  onNotification: (overScroll) {
-                    overScroll.disallowGlow();
-                    return true;
-                  },
-                  child: StaggeredGridView.count(
-                    crossAxisCount: 2,
-                    mainAxisSpacing: 5.0,
-                    staggeredTiles: searchHistory
-                        .map<StaggeredTile>((_) => StaggeredTile.fit(1))
-                        .toList(),
-                    children: searchHistory
-                        .map((String text) => Padding(
-                            padding: EdgeInsets.only(right: 4.0),
-                            child: Text(text,
-                                maxLines: 1, overflow: TextOverflow.ellipsis)))
-                        .toList(),
-                  )),
-            ),
-          ]),
+          child: FutureBuilder(
+              future: StorageUtil().storage.read(key: Constants.searchHistory),
+              builder: (BuildContext context, AsyncSnapshot snapshot) {
+                return snapshot.connectionState == ConnectionState.done
+                    ? SearchHistoryGrid(
+                        snapshot.data == null ? [] : jsonDecode(snapshot.data))
+                    : Container();
+              }),
         ));
+  }
+
+  /// Flutter secure storage cannot store array directly, so just store
+  /// serialized array.
+  static appendSearchHistory(text) async {
+    String? searchHistoryStr =
+        await StorageUtil().storage.read(key: Constants.searchHistory);
+    List searchHistory =
+        searchHistoryStr == null ? [] : jsonDecode(searchHistoryStr);
+    if (searchHistory.length == Constants.maxSearchHistory) {
+      searchHistory.removeLast();
+    }
+    searchHistory.insert(0, text);
+    StorageUtil()
+        .storage
+        .write(key: Constants.searchHistory, value: jsonEncode(searchHistory));
   }
 }

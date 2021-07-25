@@ -1,8 +1,12 @@
 import 'package:comment_overflow/assets/constants.dart';
 import 'package:comment_overflow/assets/custom_styles.dart';
+import 'package:comment_overflow/model/comment.dart';
 import 'package:comment_overflow/model/quote.dart';
+import 'package:comment_overflow/model/request_dto/new_comment_dto.dart';
+import 'package:comment_overflow/service/post_service.dart';
 import 'package:comment_overflow/utils/my_image_picker.dart';
 import 'package:comment_overflow/widgets/quote_card.dart';
+import 'package:dio/dio.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:wechat_assets_picker/wechat_assets_picker.dart';
@@ -20,6 +24,8 @@ class MultipleInputField extends StatelessWidget {
 
   /// Quote of this reply. (if any)
   final Quote? _quote;
+
+  final int _postId;
 
   /*
     Usage:
@@ -42,16 +48,18 @@ class MultipleInputField extends StatelessWidget {
   ================================================
   */
 
-  MultipleInputField(
-      {@required context,
-      @required textController,
-      @required assets,
-      quote,
+  MultipleInputField({
+    required BuildContext context,
+    required TextEditingController textController,
+    required List<AssetEntity> assets,
+    required int postId,
+    Quote? quote,
       Key? key})
       : _context = context,
         _controller = textController,
         _assets = assets,
         _quote = quote,
+        _postId = postId,
         super(key: key);
 
   @override
@@ -93,7 +101,7 @@ class MultipleInputField extends StatelessWidget {
                   padding: EdgeInsets.only(right: 5.0),
                   child: ElevatedButton(
                     child: Text("发送"),
-                    onPressed: () {},
+                    onPressed: _pushSend,
                   ),
                 )
               ],
@@ -126,6 +134,25 @@ class MultipleInputField extends StatelessWidget {
         autofocus: true,
       ),
     ));
+  }
+
+  void _pushSend() {
+    _postComment();
+  }
+
+  Future<void> _postComment() async {
+    final dto = NewCommentDTO(
+        postId: _postId,
+        quoteId: _quote == null ? 0 : _quote!.commentId,
+        content: _controller.text,
+        assets: _assets
+    );
+    try {
+      final response = await PostService.postComment(dto);
+      print(response);
+    } on DioError catch (e) {
+      print(e.message);
+    }
   }
 
   Future<void> _selectAssets() async {

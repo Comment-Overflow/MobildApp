@@ -12,13 +12,14 @@ class ApprovalRecord {
   Quote get approvedComment => _approvedComment;
 
   ApprovalRecord(this._userInfo, this._time, this._approvedComment);
-  factory ApprovalRecord.fromJson(dynamic json){
+  factory ApprovalRecord.fromJson(dynamic json) {
     int timeStamp = json['timestamp'] as int;
     return ApprovalRecord(
-        UserInfo(json['fromUserUserId'] as int, json['fromUserUserName'] as String),
+        UserInfo(
+            json['fromUserUserId'] as int, json['fromUserUserName'] as String),
         DateTime.fromMillisecondsSinceEpoch(timeStamp),
-        Quote(json['commentPostTitle'] as String, json['commentContent'] as String)
-    );
+        Quote(json['commentId'] as int, json['commentPostTitle'] as String,
+            json['commentContent'] as String, json['commentFloor' as int]));
   }
 }
 
@@ -35,14 +36,18 @@ class ReplyRecord {
 
   ReplyRecord(this._userInfo, this._time, this._content, this._repliedQuote);
 
-  factory ReplyRecord.fromJson(dynamic json){
+  factory ReplyRecord.fromJson(dynamic json) {
     int timestamp = json['timestamp'] as int;
     return ReplyRecord(
-        UserInfo(json['fromUserUserId'] as int, json['fromUserUserName'] as String),
+        UserInfo(
+            json['fromUserUserId'] as int, json['fromUserUserName'] as String),
         DateTime.fromMillisecondsSinceEpoch(timestamp),
         json['commentContent'] as String,
-        Quote(json['postTitle'] as String, json['postHostCommentContent'] as String)
-    );
+        Quote(
+            json['postHostCommentId'] as int,
+            json['postTitle'] as String,
+            json['postHostCommentContent'] as String,
+            json['postHostCommentFloor'] as int));
   }
 }
 
@@ -57,16 +62,16 @@ class FollowRecord {
 
   FollowRecord(this._userInfo, this._time, this._followStatus);
 
-  factory FollowRecord.fromJson(dynamic json){
+  factory FollowRecord.fromJson(dynamic json) {
     int timestamp = json['timestamp'] as int;
     var followStatus = FollowStatus.followingMe;
     bool isMutual = json['isMutual'] as bool;
-    if(isMutual) followStatus = FollowStatus.both;
+    if (isMutual) followStatus = FollowStatus.both;
     return FollowRecord(
-        UserInfo(json['fromUserUserId'] as int, json['fromUserUserName'] as String),
+        UserInfo(
+            json['fromUserUserId'] as int, json['fromUserUserName'] as String),
         DateTime.fromMillisecondsSinceEpoch(timestamp),
-        followStatus
-    );
+        followStatus);
   }
 }
 
@@ -81,12 +86,16 @@ class StarRecord {
 
   Quote get starredPost => _starredPost;
 
-  factory StarRecord.fromJson(dynamic json){
+  factory StarRecord.fromJson(dynamic json) {
     int timeStamp = json['timestamp'] as int;
     return StarRecord(
-        UserInfo(json['fromUserUserId'] as int, json['fromUserUserName'] as String),
+        UserInfo(
+            json['fromUserUserId'] as int, json['fromUserUserName'] as String),
         DateTime.fromMillisecondsSinceEpoch(timeStamp),
-        Quote(json['postTitle'] as String, json['postHostCommentContent'] as String)
-    );
+        Quote(
+            json['postHostCommentId'] as int,
+            json['postTitle'] as String,
+            json['postHostCommentContent'] as String,
+            json['postHostCommentFloor'] as int));
   }
 }
