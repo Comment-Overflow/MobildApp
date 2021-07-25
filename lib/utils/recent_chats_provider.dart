@@ -11,18 +11,7 @@ class RecentChats extends ChangeNotifier {
     3,
     Chat(_cyxInfo, "Hi", DateTime.now(), 2),
     growable: true,
-  )
-    ..addAll(List<Chat>.filled(
-      3,
-      Chat(_cyxInfo, "Very long long long long long long long long message",
-          DateTime(2021, 7, 18, 21, 3), 0),
-      growable: true,
-    ))
-    ..addAll(List<Chat>.filled(
-      3,
-      Chat(_cyxInfo, "很长很长很长很长很长很长很长很长很长很长很长很长很长的中文消息", DateTime(2020), 3),
-      growable: true,
-    ));
+  );
 
   UnmodifiableListView<Chat> get recentChats =>
       UnmodifiableListView(_recentChats);
