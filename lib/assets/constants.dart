@@ -103,6 +103,9 @@ class Constants {
 
   static const defaultHighlightTime = 2000;
 
+  /// Default page size when getting chat history from backend.
+  static const defaultHTTPChatHistoryPageSize = 15;
+
   // Categories of posts
   static const List<String> postCategories = [
     '校园生活',

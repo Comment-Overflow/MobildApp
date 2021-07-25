@@ -2,15 +2,15 @@ import 'dart:io';
 
 import 'package:comment_overflow/model/message.dart';
 import 'package:comment_overflow/model/user_info.dart';
-import 'package:comment_overflow/utils/general_utils.dart';
+import 'package:comment_overflow/service/message_service.dart';
 import 'package:comment_overflow/utils/my_image_picker.dart';
 import 'package:comment_overflow/utils/socket_util.dart';
 import 'package:comment_overflow/widgets/adaptive_refresher.dart';
+import 'package:dio/dio.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:comment_overflow/assets/constants.dart';
 import 'package:comment_overflow/assets/custom_styles.dart';
-import 'package:comment_overflow/fake_data/fake_data.dart';
 import 'package:comment_overflow/widgets/chat_message.dart';
 import 'package:uuid/uuid.dart';
 import 'package:uuid/uuid_util.dart';
@@ -30,8 +30,10 @@ class PrivateChatPageState extends State<PrivateChatPage> {
       UserInfo(Platform.isIOS ? 2 : 1, '123@123.com');
   final TextEditingController _textEditingController = TextEditingController();
   ScrollController _scrollController = new ScrollController();
-  List<Message> _messages = messages;
+  List<Message> _messages = [];
   Map<String, Message> _messageMap = Map<String, Message>();
+  int _currentPageNumber = 0;
+  int _totalPageNumber = 0;
 
   final Uuid _uuid = Uuid(options: {'grng': UuidUtil.cryptoRNG});
 
@@ -39,8 +41,8 @@ class PrivateChatPageState extends State<PrivateChatPage> {
   void initState() {
     print('Enter private chat channel with user ${widget._chatter.userId}');
     super.initState();
-    _getCurrentUserInfo();
     SocketUtil().onReceiveMessage = _onReceiveMessage;
+    _getChatHistory();
   }
 
   @override
@@ -76,7 +78,7 @@ class PrivateChatPageState extends State<PrivateChatPage> {
                   : AdaptiveRefresher(
                       enablePullUp: true,
                       enablePullDown: false,
-                      onRefresh: _onRefresh,
+                      onLoading: _onLoading,
                       child: ListView.builder(
                           controller: _scrollController,
                           reverse: true,
@@ -162,17 +164,24 @@ class PrivateChatPageState extends State<PrivateChatPage> {
     );
   }
 
-  void _getCurrentUserInfo() async {
-    // TODO: Get current UserInfo.
-    int currentUserId = await GeneralUtils.getCurrentUserId();
+  Future _getChatHistory() async {
+    Response<dynamic> response = await MessageService.getChatHistory(
+        widget._chatter.userId, _currentPageNumber);
+    List messagesResponse = response.data['content'] as List;
+    print(response.data['totalPages'] as int);
+    setState(() {
+      if (_currentPageNumber == 0)
+        _totalPageNumber = response.data['totalPages'] as int;
+      _currentPageNumber++;
+      for (Map messageJson in messagesResponse) {
+        _messages.add(Message.fromJson(messageJson));
+      }
+    });
   }
 
-  Future _onRefresh() async {
-    // getRecentChats();
-    print("Chat Room onRefresh");
-    // monitor network fetch
-    return Future.delayed(Duration(milliseconds: 1000));
-    // if failed,use refreshFailed()
+  Future _onLoading() async {
+    if (_currentPageNumber < _totalPageNumber)
+      _getChatHistory();
   }
 
   Future _onSendText() async {

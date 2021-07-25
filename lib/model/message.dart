@@ -8,7 +8,7 @@ class Message {
   final UserInfo _sender;
   final UserInfo _receiver;
   final dynamic _content;
-  bool isSending = true;
+  bool isSending;
 
   String? get uuid => _uuid;
 
@@ -20,7 +20,24 @@ class Message {
 
   dynamic get content => _content;
 
-  Message(this._type, this._sender, this._receiver, this._content, {uuid, time})
+  Message(this._type, this._sender, this._receiver, this._content,
+      {uuid, time, isSending = true})
       : _uuid = uuid,
-        time = time;
+        time = time,
+        isSending = isSending;
+
+  factory Message.fromJson(dynamic json) {
+    MessageType messageType = ((json['type'] as String) == 'TEXT')
+        ? MessageType.Text
+        : MessageType.Image;
+    DateTime time = DateTime.parse(json['time'] as String);
+    print(json['time'] as String);
+    return Message(
+        messageType,
+        UserInfo.fromJson(json['minimalSenderInfo']),
+        UserInfo.fromJson(json['minimalReceiverInfo']),
+        json['content'] as String,
+        time: time,
+        isSending: false);
+  }
 }
