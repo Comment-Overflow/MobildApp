@@ -11,7 +11,7 @@ class MessageService {
       'userId': currentUserId,
       'chatterId': chatterId,
       'pageNum': pageNumber,
-      'pageSize': Constants.defaultHTTPChatHistoryPageSize,
+      'pageSize': Constants.HTTPChatHistoryPage,
     });
   }
 }

@@ -103,8 +103,11 @@ class Constants {
 
   static const defaultHighlightTime = 2000;
 
+
   /// Default page size when getting chat history from backend.
-  static const defaultHTTPChatHistoryPageSize = 15;
+  static const HTTPChatHistoryPage = 15;
+
+  static const maxSearchHistory = 20;
 
   // Categories of posts
   static const List<String> postCategories = [
@@ -129,6 +132,8 @@ class Constants {
   static const String token = 'token';
 
   static const String userId = 'userid';
+
+  static const String searchHistory = 'searchHistory';
 }
 
 enum FollowStatus {
