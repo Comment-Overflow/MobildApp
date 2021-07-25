@@ -1,13 +1,9 @@
-import 'dart:convert';
-import 'dart:math';
-
 import 'package:comment_overflow/assets/constants.dart';
 import 'package:comment_overflow/fake_data/fake_data.dart';
 import 'package:comment_overflow/model/user_action_record.dart';
-import 'package:comment_overflow/utils/http_util.dart';
+import 'package:comment_overflow/service/notification_service.dart';
 import 'package:comment_overflow/utils/paging_manager.dart';
 import 'package:comment_overflow/widgets/notification_card.dart';
-import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 
@@ -34,10 +30,7 @@ class _NotificationCardListState extends State<NotificationCardList> {
         _itemBuilder = (context, item, index) => ApprovalNotificationCard(item);
         this._pagingManager =
             PagingManager(Constants.defaultNotificationPageSize, (page, pageSize) async {
-              Response response = await HttpUtil().dio.get('/notifications/approvals', queryParameters: {
-                'page': page, 'pageSize': pageSize
-              });
-              var jsonArray = response.data as List;
+              var jsonArray = (await NotificationService.getNotification(page, pageSize, "/notifications/approvals")).data as List;
               return jsonArray.map((json) => ApprovalRecord.fromJson(json)).toList();
             }, _itemBuilder);
         break;
@@ -46,10 +39,7 @@ class _NotificationCardListState extends State<NotificationCardList> {
         _itemBuilder = (context, item, index) => ReplyNotificationCard(item);
         this._pagingManager =
             PagingManager(Constants.defaultNotificationPageSize, (page, pageSize) async {
-              Response response = await HttpUtil().dio.get('/notifications/replies', queryParameters: {
-                'page': page, 'pageSize': pageSize
-              });
-              var jsonArray = response.data as List;
+              var jsonArray = (await NotificationService.getNotification(page, pageSize, "/notifications/replies")).data as List;
               return jsonArray.map((json) => ReplyRecord.fromJson(json)).toList();
             }, _itemBuilder);
         break;
@@ -58,10 +48,7 @@ class _NotificationCardListState extends State<NotificationCardList> {
         _itemBuilder = (context, item, index) => StarNotificationCard(item);
         this._pagingManager =
             PagingManager(Constants.defaultNotificationPageSize, (page, pageSize) async {
-              Response response = await HttpUtil().dio.get('/notifications/stars', queryParameters: {
-                'page': page, 'pageSize': pageSize
-              });
-              var jsonArray = response.data as List;
+              var jsonArray = (await NotificationService.getNotification(page, pageSize, "/notifications/stars")).data as List;
               return jsonArray.map((json) => StarRecord.fromJson(json)).toList();
             }, _itemBuilder);
         break;
@@ -70,10 +57,7 @@ class _NotificationCardListState extends State<NotificationCardList> {
         _itemBuilder = (context, item, index) => FollowNotificationCard(item);
         this._pagingManager =
             PagingManager(Constants.defaultNotificationPageSize, (page, pageSize) async {
-              Response response = await HttpUtil().dio.get('/notifications/followers', queryParameters: {
-                'page': page, 'pageSize': pageSize
-              });
-              var jsonArray = response.data as List;
+              var jsonArray = (await NotificationService.getNotification(page, pageSize, "/notifications/followers")).data as List;
               return jsonArray.map((json) => FollowRecord.fromJson(json)).toList();
             }, _itemBuilder);
         break;
