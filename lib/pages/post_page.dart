@@ -68,27 +68,32 @@ class _PostPageState extends State<PostPage> {
           onPressed: _pushReply,
           child: CustomStyles.getDefaultReplyIcon(
               size: Constants.defaultFabIconSize, color: Colors.white)),
-      body: CommentCardList(posts[0], this._sortPolicy),
-      bottomNavigationBar: BottomAppBar(
-        child: Row(
-          children: [
-            buildDropDownMenu(),
-            ApprovalButton(
-                comment: widget._post.commentToDisplay,
-                userId: 1,
-                size: _bottomIconSize),
-            DisapprovalButton(
-                comment: widget._post.commentToDisplay,
-                userId: 1,
-                size: _bottomIconSize),
-            StarButton(
-                initialStared: false,
-                postId: 1,
-                userId: 1,
-                size: _bottomIconSize),
-          ],
-          mainAxisAlignment: MainAxisAlignment.spaceAround,
-        ),
+      body: CommentCardList(widget._post, this._sortPolicy),
+      bottomNavigationBar: StatefulBuilder(
+          builder: (BuildContext context, StateSetter bottomSetter) {
+            int _usrId = widget._post.commentToDisplay.user.userId;
+            return BottomAppBar(
+              child: Row(
+                children: [
+                  buildDropDownMenu(),
+                  ApprovalButton(
+                      comment: widget._post.commentToDisplay,
+                      userId: _usrId,
+                      size: _bottomIconSize),
+                  DisapprovalButton(
+                      comment: widget._post.commentToDisplay,
+                      userId: _usrId,
+                      size: _bottomIconSize),
+                  StarButton(
+                      initialStared: widget._post.isStarred,
+                      postId: widget._post.postId,
+                      userId: _usrId,
+                      size: _bottomIconSize),
+                ],
+                mainAxisAlignment: MainAxisAlignment.spaceAround,
+              ),
+            );
+          }
       ),
     );
   }
@@ -133,10 +138,11 @@ class _PostPageState extends State<PostPage> {
         context: context,
         builder: (_) {
           return MultipleInputField(
+            postId: widget._post.postId,
             context: context,
             textController: _replyController,
             assets: _assets,
-            quote: quotes[0],
+            quote: null,
           );
         });
   }

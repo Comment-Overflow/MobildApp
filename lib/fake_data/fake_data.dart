@@ -46,25 +46,25 @@ final PersonalPageInfo personalPageInfo = PersonalPageInfo(
     Sex.male,
     128538,
     21);
-final Quote _quoteWithUserName = Quote("Gun9niR", "aa");
-final Quote _quoteWithPostTitle = Quote("Gun9niR", "aa");
+final Quote _quoteWithUserName = Quote(4, "Gun9niR", "aa", 2);
+final Quote _quoteWithPostTitle = Quote(5, "Gun9niR", "aa", 5);
 
-final Comment _approvedComment = Comment(_userInfo, "sadad", _date,
+final Comment _approvedComment = Comment(6, _userInfo, "sadad", _date,
     _quoteWithUserName, 0, 500, ApprovalStatus.approve, []);
-final Comment _disapprovedComment = Comment(_userInfo, _content, _date,
+final Comment _disapprovedComment = Comment(7, _userInfo, _content, _date,
     _quoteWithUserName, 0, 500, ApprovalStatus.approve, [
   "http://img8.zol.com.cn/bbs/upload/23765/23764201.jpg",
   "https://images.unsplash.com/photo-1526512340740-9217d0159da9?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=2677&q=80"
 ]);
 
-final Comment _firstFloorComment = Comment(_userInfo, _content, _date,
+final Comment _firstFloorComment = Comment(8, _userInfo, _content, _date,
     _quoteWithUserName, 0, 500, ApprovalStatus.none, [
   "https://images.unsplash.com/photo-1526512340740-9217d0159da9?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=2677&q=80",
   "http://img8.zol.com.cn/bbs/upload/23765/23764201.jpg",
   "http://img8.zol.com.cn/bbs/upload/23765/23764201.jpg",
   "http://img8.zol.com.cn/bbs/upload/23765/23764201.jpg",
 ]);
-final Comment _noneComment = Comment(_userInfo, _content, _date,
+final Comment _noneComment = Comment(9, _userInfo, _content, _date,
     _quoteWithUserName, 1, 500, ApprovalStatus.none, [
   "https://images.unsplash.com/photo-1526512340740-9217d0159da9?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=2677&q=80",
   "http://img8.zol.com.cn/bbs/upload/23765/23764201.jpg",
@@ -98,6 +98,7 @@ final posts = List<Post>.filled(
     500,
     300,
     _approvedComment,
+    false
   ),
   growable: true,
 )
@@ -109,6 +110,7 @@ final posts = List<Post>.filled(
       500,
       700,
       _disapprovedComment,
+      false
     ),
     growable: true,
   ))
@@ -120,13 +122,14 @@ final posts = List<Post>.filled(
       500,
       1000,
       _noneComment,
+      false
     ),
     growable: true,
   ));
 
 final quotes = List<Quote>.filled(
   20,
-  Quote(_author, _content),
+  Quote(10, _author, _content, 6),
   growable: true,
 );
 

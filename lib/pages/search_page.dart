@@ -21,7 +21,7 @@ class SearchPage extends StatelessWidget {
               Expanded(
                 child: SearchBar(
                   onSearch: (text) {
-                    _appendSearchHistory(text);
+                    appendSearchHistory(text);
                     Navigator.of(context).pushNamed(
                         RouteGenerator.searchResultRoute,
                         arguments: text);
@@ -63,7 +63,7 @@ class SearchPage extends StatelessWidget {
 
   /// Flutter secure storage cannot store array directly, so just store
   /// serialized array.
-  void _appendSearchHistory(text) async {
+  static appendSearchHistory(text) async {
     String? searchHistoryStr =
         await StorageUtil().storage.read(key: Constants.searchHistory);
     List searchHistory =
