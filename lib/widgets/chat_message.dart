@@ -121,7 +121,7 @@ class ChatMessage extends StatelessWidget {
         width: Constants.defaultMaxBubbleWidth,
       );
     else
-      return Image.memory(
+      return Image.file(
         _message.content,
         fit: BoxFit.scaleDown,
         width: Constants.defaultMaxBubbleWidth,

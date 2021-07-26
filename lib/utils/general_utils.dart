@@ -1,5 +1,6 @@
 import 'package:comment_overflow/assets/constants.dart';
 import 'package:comment_overflow/exceptions/user_unauthorized_exception.dart';
+import 'package:comment_overflow/model/message.dart';
 import 'package:comment_overflow/utils/storage_util.dart';
 import 'package:dart_date/dart_date.dart';
 
@@ -68,5 +69,12 @@ class GeneralUtils {
       default:
         return FollowStatus.none;
     }
+  }
+
+  /// Get the message content to display in chat card.
+  static String getLastMessageContent(Message message) {
+      MessageType type = message.type;
+      return type == MessageType.Text ? message.content : Constants
+          .imageLastMessage;
   }
 }

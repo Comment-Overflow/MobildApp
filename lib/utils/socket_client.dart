@@ -63,17 +63,12 @@ class SocketClient {
             onReceiveMessage!(message);
             updateChat(message.sender.userId);
           } else {
+            String content = GeneralUtils.getLastMessageContent(message);
             BuildContext context = GlobalUtils.navKey!.currentContext!;
             context
                 .read<RecentChatsProvider>()
-                .updateUnread(message.sender, message.content, message.time!);
+                .updateLastMessageUnread(message.sender, content, message.time!);
           }
-
-          // TODO:
-          //  For image message:
-          //  1. Send back url via socket and then get the image
-          //     from the server.
-          //  2. Send back byte array directly via socket.
         });
   }
 
@@ -100,17 +95,7 @@ class SocketClient {
           'content': message.content
         }),
       );
-    } else
-      _stompClient.send(
-        destination: '/comment-overflow/chat/image',
-        headers: {
-          'Authorization': token,
-          'UUID': message.uuid!,
-          'SenderId': message.sender.userId.toString(),
-          'ReceiverId': message.receiver.userId.toString(),
-        },
-        binaryBody: message.content as Uint8List,
-      );
+    }
   }
 
   Future<void> updateChat(int chatterId) async {

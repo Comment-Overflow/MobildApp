@@ -73,7 +73,7 @@ class RecentChatsProvider extends ChangeNotifier {
     notifyListeners();
   }
 
-  void updateUnread(UserInfo chatter, String lastMessageContent, DateTime time) {
+  void updateLastMessageUnread(UserInfo chatter, String lastMessageContent, DateTime time) {
     GlobalUtils.mutex.protect(() async {
       Chat? chat = _chatMap[chatter.userId];
       if (chat == null) {
@@ -85,14 +85,6 @@ class RecentChatsProvider extends ChangeNotifier {
         chat.time = time;
         chat.unreadCount++;
       }
-    });
-    notifyListeners();
-  }
-
-  void updateLastMessage(int chatterId, String lastMessageContent) {
-    GlobalUtils.mutex.protect(() async {
-      Chat? chat = _chatMap[chatterId];
-      if (chat != null) chat.lastMessageContent = lastMessageContent;
     });
     notifyListeners();
   }

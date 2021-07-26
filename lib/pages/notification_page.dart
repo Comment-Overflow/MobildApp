@@ -1,4 +1,3 @@
-import 'package:comment_overflow/fake_data/fake_data.dart';
 import 'package:comment_overflow/model/chat.dart';
 import 'package:comment_overflow/service/chat_service.dart';
 import 'package:comment_overflow/utils/recent_chats_provider.dart';
@@ -24,9 +23,7 @@ class _NotificationPageState extends State<NotificationPage> {
   @override
   void initState() {
     super.initState();
-    // WidgetsBinding.instance!.addPostFrameCallback((_) {
-      _getRecentChats();
-    // });
+    _getRecentChats();
     print("Notification page init state.");
   }
 

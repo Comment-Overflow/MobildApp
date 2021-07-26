@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:comment_overflow/model/message.dart';
 import 'package:comment_overflow/model/user_info.dart';
 import 'package:comment_overflow/service/chat_service.dart';
+import 'package:comment_overflow/utils/general_utils.dart';
 import 'package:comment_overflow/utils/my_image_picker.dart';
 import 'package:comment_overflow/utils/recent_chats_provider.dart';
 import 'package:comment_overflow/utils/socket_client.dart';
@@ -204,8 +205,9 @@ class PrivateChatPageState extends State<PrivateChatPage> {
           sentMessage.isSending = false;
           sentMessage.time = DateTime.parse(frameBody);
         });
+        String content = GeneralUtils.getLastMessageContent(message);
         context.read<RecentChatsProvider>().updateLastMessageRead(
-            widget._chatter, message.content, message.time!);
+            widget._chatter, content, message.time!);
       });
     }
     _textEditingController.clear();
@@ -220,8 +222,9 @@ class PrivateChatPageState extends State<PrivateChatPage> {
       List<AssetEntity> assets = List<AssetEntity>.from(result);
       for (AssetEntity asset in assets) {
         String messageId = _uuid.v4();
+        print((await asset.file)!.path);
         Message message = Message(MessageType.TemporaryImage, _currentUser,
-            widget._chatter, await asset.originBytes,
+            widget._chatter, (await asset.file)!,
             uuid: messageId);
         setState(() {
           _messages.insert(0, message);
@@ -241,9 +244,10 @@ class PrivateChatPageState extends State<PrivateChatPage> {
     setState(() {
       _messages.insert(0, message);
     });
+    String content = GeneralUtils.getLastMessageContent(message);
     context
         .read<RecentChatsProvider>()
-        .updateLastMessageRead(widget._chatter, message.content, message.time!);
+        .updateLastMessageRead(widget._chatter, content, message.time!);
     _scrollToBottom();
   }
 }

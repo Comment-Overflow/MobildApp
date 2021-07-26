@@ -134,6 +134,8 @@ class Constants {
   static const String userId = 'userid';
 
   static const String searchHistory = 'searchHistory';
+
+  static const String imageLastMessage = '[图片]';
 }
 
 enum FollowStatus {

@@ -24,6 +24,7 @@ class _LoginPageState extends State<LoginPage> {
   Future<String> _login(LoginData data) async {
     try {
       final response = await AuthService.login(data.name, data.password);
+      SocketClient();
       Map<String, dynamic> loginDTOMap = response.data;
       final LoginDTO loginDTO = LoginDTO.fromJson(loginDTOMap);
       await StorageUtil()
@@ -118,5 +119,6 @@ class _LoginPageState extends State<LoginPage> {
         flushbarTitleError: '出错啦',
         flushbarTitleSuccess: '成功',
         signUpSuccess: '注册成功!',
+        confirmPasswordError: '密码不匹配!',
       );
 }

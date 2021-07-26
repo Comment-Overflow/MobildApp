@@ -23,6 +23,8 @@ class _IntroPageState extends State<IntroPage>
     if (token != null) {
       try {
         final response = await AuthService.autoLogin();
+        // Rejected by interceptor.
+        if (response.data.runtimeType == String) return false;
         final LoginDTO loginDTO = LoginDTO.fromJson(response.data);
         await StorageUtil()
             .storage
@@ -43,7 +45,7 @@ class _IntroPageState extends State<IntroPage>
   @override
   Widget build(BuildContext context) {
     // TODO: Change intro content.
-    return Scaffold(body: Container());
+    return Scaffold(body: Center(child: Text('放个图标！')));
   }
 
   @override
