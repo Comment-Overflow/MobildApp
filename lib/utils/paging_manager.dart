@@ -104,6 +104,9 @@ class PagingManager<T> {
           child: _customItemBuilder(context, item, index),
         ),
         firstPageProgressIndicatorBuilder: (_) => Container(),
+        noItemsFoundIndicatorBuilder: (_) => Container(
+          decoration: BoxDecoration(color: Colors.black),
+        ),
       ),
     );
 

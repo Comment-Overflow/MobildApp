@@ -1,8 +1,6 @@
 import 'package:comment_overflow/assets/constants.dart';
-import 'package:comment_overflow/fake_data/fake_data.dart';
 import 'package:comment_overflow/utils/route_generator.dart';
 import 'package:comment_overflow/widgets/post_card_list.dart';
-import 'package:comment_overflow/widgets/quote_card.dart';
 import 'package:comment_overflow/widgets/search_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
@@ -16,67 +14,69 @@ class HomePage extends StatelessWidget {
   Widget build(BuildContext context) {
     return DefaultTabController(
         length: _tabs.length,
-        child: NestedScrollView(
-          floatHeaderSlivers: true,
-          headerSliverBuilder: (context, value) => [
-            SliverAppBar(
-              automaticallyImplyLeading: false,
-              pinned: true,
-              floating: true,
-              elevation: Constants.defaultAppBarElevation,
-              title: Row(
-                children: [
-                  buildSearchBar(context),
-                  SizedBox(width: 15.0),
-                  buildAddButton(context),
-                ],
-              ),
-              bottom: buildTabBar(),
-            ),
-          ],
-          body: TabBarView(
-            children: [
-              MediaQuery.removePadding(
-                context: context,
-                child: PostCardList(),
-                removeTop: true,
-              ),
-              MediaQuery.removePadding(
-                context: context,
-                child: PostCardList(),
-                removeTop: true,
-              ),
-              MediaQuery.removePadding(
-                context: context,
-                child: PostCardList(),
-                removeTop: true,
-              ),
-              MediaQuery.removePadding(
-                context: context,
-                child: PostCardList(),
-                removeTop: true,
-              ),
-              MediaQuery.removePadding(
-                context: context,
-                child: PostCardList(),
-                removeTop: true,
-              ),
-              MediaQuery.removePadding(
-                context: context,
-                child: PostCardList(),
-                removeTop: true,
-              ),
-              MediaQuery.removePadding(
-                context: context,
-                child: PostCardList(),
-                removeTop: true,
-              ),
-              MediaQuery.removePadding(
-                context: context,
-                child: PostCardList(),
-                removeTop: true,
+        child: SafeArea(
+          child: NestedScrollView(
+            floatHeaderSlivers: true,
+            headerSliverBuilder: (context, value) => [
+              SliverAppBar(
+                automaticallyImplyLeading: false,
+                pinned: true,
+                floating: true,
+                elevation: Constants.defaultAppBarElevation,
+                title: Row(
+                  children: [
+                    buildSearchBar(context),
+                    SizedBox(width: 15.0),
+                    buildAddButton(context),
+                  ],
+                ),
+                bottom: buildTabBar(),
               ),
             ],
+            body: TabBarView(
+              children: [
+                MediaQuery.removePadding(
+                  context: context,
+                  child: PostCardList(),
+                  removeTop: true,
+                ),
+                MediaQuery.removePadding(
+                  context: context,
+                  child: PostCardList(),
+                  removeTop: true,
+                ),
+                MediaQuery.removePadding(
+                  context: context,
+                  child: PostCardList(),
+                  removeTop: true,
+                ),
+                MediaQuery.removePadding(
+                  context: context,
+                  child: PostCardList(),
+                  removeTop: true,
+                ),
+                MediaQuery.removePadding(
+                  context: context,
+                  child: PostCardList(),
+                  removeTop: true,
+                ),
+                MediaQuery.removePadding(
+                  context: context,
+                  child: PostCardList(),
+                  removeTop: true,
+                ),
+                MediaQuery.removePadding(
+                  context: context,
+                  child: PostCardList(),
+                  removeTop: true,
+                ),
+                MediaQuery.removePadding(
+                  context: context,
+                  child: PostCardList(),
+                  removeTop: true,
+                ),
+              ],
+            ),
           ),
         ));
   }

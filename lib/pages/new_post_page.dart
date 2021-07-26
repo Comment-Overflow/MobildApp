@@ -131,11 +131,13 @@ class _NewPostPageState extends State<NewPostPage> {
                   color: this._title.isNotEmpty
                       ? iconColor
                       : Theme.of(context).disabledColor),
-              onPressed: () {
-                print(this._title);
-                print(this._content);
-                _pushSend();
-              }),
+              onPressed: this._title.isNotEmpty
+                  ? () {
+                      print(this._title);
+                      print(this._content);
+                      _pushSend();
+                    }
+                  : null),
         ]),
         automaticallyImplyLeading: false,
       );
@@ -176,11 +178,7 @@ class _NewPostPageState extends State<NewPostPage> {
 
   Future<void> _post() async {
     final dto = NewPostDTO(
-        tag: _tags[_idx],
-        title: _title,
-        content: _content,
-        assets: _assets
-    );
+        tag: _tags[_idx], title: _title, content: _content, assets: _assets);
     try {
       final response = await PostService.postPost(dto);
       print(response);
@@ -188,5 +186,4 @@ class _NewPostPageState extends State<NewPostPage> {
       print(e.message);
     }
   }
-
 }
