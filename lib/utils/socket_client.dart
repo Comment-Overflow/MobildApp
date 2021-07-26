@@ -59,10 +59,14 @@ class SocketClient {
         headers: {'Authorization': token},
         callback: (frame) {
           Message message = Message.fromJson(jsonDecode(frame.body!));
-          if (onReceiveMessage != null) onReceiveMessage!(message);
-          else {
+          if (onReceiveMessage != null) {
+            onReceiveMessage!(message);
+            updateChat(message.sender.userId);
+          } else {
             BuildContext context = GlobalUtils.navKey!.currentContext!;
-            context.read<RecentChatsProvider>().updateUnread(message.sender, message.content, message.time!);
+            context
+                .read<RecentChatsProvider>()
+                .updateUnread(message.sender, message.content, message.time!);
           }
 
           // TODO:
@@ -87,7 +91,7 @@ class SocketClient {
 
     if (message.type == MessageType.Text) {
       _stompClient.send(
-        destination: '/commentOverflow/chat/text',
+        destination: '/comment-overflow/chat/text',
         headers: {'Authorization': token},
         body: json.encode({
           'uuid': message.uuid!,
@@ -98,7 +102,7 @@ class SocketClient {
       );
     } else
       _stompClient.send(
-        destination: 'commentOverflow/chat/image',
+        destination: '/comment-overflow/chat/image',
         headers: {
           'Authorization': token,
           'UUID': message.uuid!,
@@ -109,8 +113,17 @@ class SocketClient {
       );
   }
 
+  Future<void> updateChat(int chatterId) async {
+    String token = await GeneralUtils.getCurrentToken();
+    int userId = await GeneralUtils.getCurrentUserId();
+    _stompClient.send(destination: '/comment-overflow/chat/update', headers: {
+      'Authorization': token,
+      'UserId': userId.toString(),
+      'ChatterId': chatterId.toString(),
+    });
+  }
+
   void dispose() {
-    // _unsubscribeChat();
     _stompClient.deactivate();
   }
 }

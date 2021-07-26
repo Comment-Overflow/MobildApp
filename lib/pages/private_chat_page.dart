@@ -2,7 +2,7 @@ import 'dart:io';
 
 import 'package:comment_overflow/model/message.dart';
 import 'package:comment_overflow/model/user_info.dart';
-import 'package:comment_overflow/service/message_service.dart';
+import 'package:comment_overflow/service/chat_service.dart';
 import 'package:comment_overflow/utils/my_image_picker.dart';
 import 'package:comment_overflow/utils/recent_chats_provider.dart';
 import 'package:comment_overflow/utils/socket_client.dart';
@@ -44,6 +44,7 @@ class PrivateChatPageState extends State<PrivateChatPage> {
     print('Enter private chat channel with user ${widget._chatter.userId}');
     super.initState();
     SocketClient().onReceiveMessage = _onReceiveMessage;
+    SocketClient().updateChat(widget._chatter.userId);
     _getChatHistory();
     WidgetsBinding.instance!.addPostFrameCallback((_) {
       context.read<RecentChatsProvider>().updateRead(widget._chatter);
@@ -170,7 +171,7 @@ class PrivateChatPageState extends State<PrivateChatPage> {
   }
 
   Future _getChatHistory() async {
-    Response<dynamic> response = await MessageService.getChatHistory(
+    Response<dynamic> response = await ChatService.getChatHistory(
         widget._chatter.userId, _currentPageNumber);
     List messagesResponse = response.data['content'] as List;
     setState(() {
@@ -203,6 +204,8 @@ class PrivateChatPageState extends State<PrivateChatPage> {
           sentMessage.isSending = false;
           sentMessage.time = DateTime.parse(frameBody);
         });
+        context.read<RecentChatsProvider>().updateLastMessageRead(
+            widget._chatter, message.content, message.time!);
       });
     }
     _textEditingController.clear();

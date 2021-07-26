@@ -1,8 +1,10 @@
 import 'package:comment_overflow/fake_data/fake_data.dart';
 import 'package:comment_overflow/model/chat.dart';
+import 'package:comment_overflow/service/chat_service.dart';
 import 'package:comment_overflow/utils/recent_chats_provider.dart';
 import 'package:comment_overflow/widgets/adaptive_refresher.dart';
 import 'package:comment_overflow/widgets/chat_card.dart';
+import 'package:dio/dio.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:comment_overflow/assets/constants.dart';
@@ -19,10 +21,12 @@ class NotificationPage extends StatefulWidget {
 }
 
 class _NotificationPageState extends State<NotificationPage> {
-
   @override
   void initState() {
     super.initState();
+    // WidgetsBinding.instance!.addPostFrameCallback((_) {
+      _getRecentChats();
+    // });
     print("Notification page init state.");
   }
 
@@ -60,20 +64,18 @@ class _NotificationPageState extends State<NotificationPage> {
                     Constants.defaultNotificationButtonSize),
               ),
             )),
-            context.watch<RecentChatsProvider>().recentChats.length == 0 ? _buildNoChatPrompt() : _buildChatList(),
+            context.watch<RecentChatsProvider>().recentChats.length == 0
+                ? _buildNoChatPrompt()
+                : _buildChatList(),
           ],
         ),
       ),
     );
   }
 
-
   Future _onRefresh() async {
-    // getRecentChats();
     print("Notification Page onRefresh");
-    // monitor network fetch
-    return Future.delayed(Duration(milliseconds: 1000));
-    // if failed,use refreshFailed()
+    _getRecentChats();
   }
 
   Widget _buildNoChatPrompt() {
@@ -105,5 +107,18 @@ class _NotificationPageState extends State<NotificationPage> {
         childCount: recentChats.length,
       ),
     );
+  }
+
+  Future _getRecentChats() async {
+    Response<dynamic> response = await ChatService.getRecentChats();
+    List chatsResponse = response.data as List;
+    List<Chat> recentChats = [];
+    Map<int, Chat> chatMap = Map();
+    for (Map chatResponse in chatsResponse) {
+      Chat chat = Chat.fromJson(chatResponse);
+      recentChats.add(chat);
+      chatMap.putIfAbsent(chat.chatter.userId, () => chat);
+    }
+    context.read<RecentChatsProvider>().updateAll(recentChats, chatMap);
   }
 }

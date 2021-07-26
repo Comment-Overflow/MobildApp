@@ -68,7 +68,7 @@ class ChatCard extends StatelessWidget {
                   children: [
                     Expanded(
                       child: Text(
-                        _chat.lastMessage,
+                        _chat.lastMessageContent,
                         overflow: TextOverflow.ellipsis,
                         maxLines: 1,
                         style: TextStyle(

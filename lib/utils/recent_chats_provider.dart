@@ -1,8 +1,10 @@
+import 'dart:async';
 import 'dart:collection';
 import 'dart:io';
 
 import 'package:comment_overflow/model/chat.dart';
 import 'package:comment_overflow/model/user_info.dart';
+import 'package:comment_overflow/utils/global_utils.dart';
 import 'package:flutter/cupertino.dart';
 
 class RecentChatsProvider extends ChangeNotifier {
@@ -12,73 +14,96 @@ class RecentChatsProvider extends ChangeNotifier {
 
   // final Map<int, Chat> _chatMap = {_chatterId: _mockChat};
   // List<Chat> _recentChats = [_mockChat];
-  final Map<int, Chat> _chatMap = Map();
+  Map<int, Chat> _chatMap = Map();
   List<Chat> _recentChats = [];
 
   UnmodifiableListView<Chat> get recentChats =>
       UnmodifiableListView(_recentChats);
 
+  // All operations are atomic.
 
   void add(Chat chat) {
-    _chatMap.putIfAbsent(chat.chatter.userId, () => chat);
-    _recentChats.add(chat);
+    GlobalUtils.mutex.protect(() async {
+      _chatMap.putIfAbsent(chat.chatter.userId, () => chat);
+      _recentChats.add(chat);
+    });
     notifyListeners();
   }
 
   void removeAt(int index) {
-    Chat chat = _recentChats[index];
-    _chatMap.remove(chat.chatter.userId);
-    _recentChats.removeAt(index);
+    GlobalUtils.mutex.protect(() async {
+      Chat chat = _recentChats[index];
+      _chatMap.remove(chat.chatter.userId);
+      _recentChats.removeAt(index);
+    });
     notifyListeners();
   }
 
-  void updateAll(List<Chat> chats) {
-    _recentChats = chats;
+  void updateAll(List<Chat> chats, Map<int, Chat> chatMap) {
+    GlobalUtils.mutex.protect(() async {
+      _recentChats = chats;
+      _chatMap = chatMap;
+    });
+    notifyListeners();
   }
 
   void updateRead(UserInfo chatter) {
-    print("enter update");
-    Chat? chat = _chatMap[chatter.userId];
-    if (chat != null) {
-      print("updating");
-      chat.unreadCount = 0;
-    }
+    GlobalUtils.mutex.protect(() async {
+      Chat? chat = _chatMap[chatter.userId];
+      if (chat != null)
+        chat.unreadCount = 0;
+    });
     notifyListeners();
   }
 
-  void updateLastMessageRead(UserInfo chatter, String lastMessage, DateTime time) {
-    Chat? chat = _chatMap[chatter.userId];
-    if (chat == null) {
-      print("SSS");
-      Chat newChat = Chat(chatter, lastMessage, time, 0);
-      _chatMap.putIfAbsent(chatter.userId, () => newChat);
-      _recentChats.add(newChat);
-    } else {
-      print("AAA");
-      chat.lastMessage = lastMessage;
-      chat.time = time;
-      chat.unreadCount = 0;
-    }
+  void updateLastMessageRead(
+      UserInfo chatter, String lastMessageContent, DateTime time) {
+    GlobalUtils.mutex.protect(() async {
+      Chat? chat = _chatMap[chatter.userId];
+      if (chat == null) {
+        Chat newChat = Chat(chatter, lastMessageContent, time, 0);
+        _chatMap.putIfAbsent(chatter.userId, () => newChat);
+        _recentChats.add(newChat);
+      } else {
+        chat.lastMessageContent = lastMessageContent;
+        chat.time = time;
+        chat.unreadCount = 0;
+      }
+    });
     notifyListeners();
   }
 
-  void updateUnread(UserInfo chatter, String lastMessage, DateTime time) {
-    Chat? chat = _chatMap[chatter.userId];
-    if (chat == null) {
-      Chat newChat = Chat(chatter, lastMessage, time, 1);
-      _chatMap.putIfAbsent(chatter.userId, () => newChat);
-      _recentChats.add(newChat);
-    } else {
-      chat.lastMessage = lastMessage;
-      chat.time = time;
-      chat.unreadCount++;
-    }
+  void updateUnread(UserInfo chatter, String lastMessageContent, DateTime time) {
+    GlobalUtils.mutex.protect(() async {
+      Chat? chat = _chatMap[chatter.userId];
+      if (chat == null) {
+        Chat newChat = Chat(chatter, lastMessageContent, time, 1);
+        _chatMap.putIfAbsent(chatter.userId, () => newChat);
+        _recentChats.add(newChat);
+      } else {
+        chat.lastMessageContent = lastMessageContent;
+        chat.time = time;
+        chat.unreadCount++;
+      }
+    });
     notifyListeners();
   }
 
-  void updateLastMessage(int chatterId, String lastMessage) {
-    Chat? chat = _chatMap[chatterId];
-    if (chat != null) chat.lastMessage = lastMessage;
+  void updateLastMessage(int chatterId, String lastMessageContent) {
+    GlobalUtils.mutex.protect(() async {
+      Chat? chat = _chatMap[chatterId];
+      if (chat != null) chat.lastMessageContent = lastMessageContent;
+    });
     notifyListeners();
+  }
+
+  void _makeLatestMessage(int chatterId) {
+    GlobalUtils.mutex.protect(() async {
+      Chat? chat = _chatMap[chatterId];
+      if (chat != null) {
+        _recentChats.remove(chat);
+        _recentChats.insert(0, chat);
+      }
+    });
   }
 }
