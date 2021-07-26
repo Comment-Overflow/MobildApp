@@ -59,9 +59,14 @@ class CustomStyles {
   );
 
   static const userNameStyle = TextStyle(
+    color: Colors.black,
     fontWeight: FontWeight.bold,
     fontSize: 16.5,
   );
+
+  static final highlightedUserNameStyle =
+      userNameStyle.copyWith(color: highlightedColor);
+
   static const userBriefStyle = TextStyle(
     color: Colors.grey,
   );
