@@ -1,4 +1,5 @@
 import 'package:comment_overflow/widgets/adaptive_refresher.dart';
+import 'package:empty_widget/empty_widget.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
@@ -40,6 +41,30 @@ class PagingManager<T> {
   bool _disposed = false;
   // Should the list be able to auto scroll.
   bool _enableAutoScroll;
+  // Title for empty indicator.
+  String? _emptyIndicatorTitle;
+  String? _emptyIndicatorSubtitle;
+
+  PagingManager(this._pageSize, this._customFetchApi, this._customItemBuilder,
+      {enableAutoScroll = false, emptyIndicatorTitle, emptyIndicatorSubtitle})
+      : this._enableAutoScroll = enableAutoScroll,
+        this._emptyIndicatorTitle = emptyIndicatorTitle,
+        this._emptyIndicatorSubtitle = emptyIndicatorSubtitle {
+    this._wrappedFetchApi = (pageKey) {
+      _fetchPage(pageKey);
+    };
+
+    _pagingController.addPageRequestListener(this._wrappedFetchApi);
+  }
+
+  changeCustomFetchApi(newApi) {
+    _pagingController.removePageRequestListener(this._wrappedFetchApi);
+    this._customFetchApi = newApi;
+    this._wrappedFetchApi = (pageKey) {
+      _fetchPage(pageKey);
+    };
+    _pagingController.addPageRequestListener(this._wrappedFetchApi);
+  }
 
   Future<void> _fetchPage(int pageKey) async {
     try {
@@ -59,25 +84,6 @@ class PagingManager<T> {
     }
   }
 
-  PagingManager(this._pageSize, this._customFetchApi, this._customItemBuilder,
-      {enableAutoScroll = false})
-      : this._enableAutoScroll = enableAutoScroll {
-    this._wrappedFetchApi = (pageKey) {
-      _fetchPage(pageKey);
-    };
-
-    _pagingController.addPageRequestListener(this._wrappedFetchApi);
-  }
-
-  changeCustomFetchApi(newApi) {
-    _pagingController.removePageRequestListener(this._wrappedFetchApi);
-    this._customFetchApi = newApi;
-    this._wrappedFetchApi = (pageKey) {
-      _fetchPage(pageKey);
-    };
-    _pagingController.addPageRequestListener(this._wrappedFetchApi);
-  }
-
   refresh() {
     _pagingController.refresh();
   }
@@ -90,6 +96,8 @@ class PagingManager<T> {
     }
   }
 
+  /// Refreshable means can user refresh by swiping down the screen.
+  /// Refreshing programmatically is always doable.
   Widget getListView({refreshable = true}) {
     PagedListView<int, T> listView = PagedListView<int, T>(
       scrollController: _enableAutoScroll ? _autoScrollController : null,
@@ -107,6 +115,7 @@ class PagingManager<T> {
             : (context, item, index) =>
                 _customItemBuilder(context, item, index),
         firstPageProgressIndicatorBuilder: (_) => Container(),
+        noItemsFoundIndicatorBuilder: (_) => buildEmptyWidget(),
       ),
     );
 
@@ -128,4 +137,23 @@ class PagingManager<T> {
     await _autoScrollController.scrollToIndex(index,
         preferPosition: AutoScrollPosition.middle);
   }
+
+  buildEmptyWidget() => Container(
+      height: 1,
+      padding: EdgeInsets.fromLTRB(60, 0, 60, 80),
+      child: EmptyWidget(
+        image: null,
+        packageImage: PackageImage.Image_1,
+        title: _emptyIndicatorTitle,
+        subTitle: _emptyIndicatorSubtitle,
+        titleTextStyle: TextStyle(
+          fontSize: 15,
+          color: Color(0xff9da9c7),
+          fontWeight: FontWeight.w500,
+        ),
+        subtitleTextStyle: TextStyle(
+          fontSize: 14,
+          color: Color(0xffabb8d6),
+        ),
+      ));
 }

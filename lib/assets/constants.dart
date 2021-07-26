@@ -130,6 +130,18 @@ class Constants {
   static const String userId = 'userid';
 
   static const String searchHistory = 'searchHistory';
+
+  static const String searchCommentEmptyIndicatorTitle = '找不到话题';
+
+  static const String searchCommentEmptyIndicatorSubtitle = '试试换个姿势搜索';
+
+  static const String searchUserEmptyIndicatorTitle = '找不到用户';
+
+  static const String searchUserEmptyIndicatorSubtitle = '也许只是擦肩而过';
+
+  static const String browsePostIndicatorTitle = '还没有话题';
+
+  static const String browsePostEmptyIndicatorSubtitle = '做第一个打破沉默的人吧';
 }
 
 enum FollowStatus {

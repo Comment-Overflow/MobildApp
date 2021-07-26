@@ -25,8 +25,8 @@ class _SearchedCommentCardListState extends State<SearchedCommentCardList> {
   final PagingManager<Post> _pagingManager;
 
   _SearchedCommentCardListState(searchKey, postTag)
-      : _pagingManager =
-            PagingManager(Constants.defaultPageSize, (page, pageSize) async {
+      : _pagingManager = PagingManager(Constants.defaultPageSize,
+            (page, pageSize) async {
           final Response response = await SearchService.searchComment(
               searchKey, page, pageSize,
               postTag: postTag);
@@ -34,7 +34,10 @@ class _SearchedCommentCardListState extends State<SearchedCommentCardList> {
           List<Post> searchedComments =
               (response.data as List).map((i) => Post.fromJson(i)).toList();
           return searchedComments;
-        }, (context, item, index) => PostCard(item, searchKey: [searchKey]));
+        }, (context, item, index) => PostCard(item, searchKey: [searchKey]),
+            emptyIndicatorTitle: Constants.searchCommentEmptyIndicatorTitle,
+            emptyIndicatorSubtitle:
+                Constants.searchCommentEmptyIndicatorSubtitle);
 
   @override
   dispose() {
