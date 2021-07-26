@@ -1,6 +1,5 @@
 import 'package:comment_overflow/assets/constants.dart';
 import 'package:comment_overflow/assets/custom_styles.dart';
-import 'package:comment_overflow/fake_data/fake_data.dart';
 import 'package:comment_overflow/model/post.dart';
 import 'package:comment_overflow/utils/route_generator.dart';
 import 'package:comment_overflow/widgets/user_avatar_with_name.dart';
@@ -121,24 +120,42 @@ class PostCard extends StatelessWidget {
           textStyleHighlight: CustomStyles.highlightedPostContentStyle,
         );
 
-  buildFooter() => RichText(
-        text: TextSpan(
-          children: [
-            WidgetSpan(
-              child: CustomStyles.getDefaultReplyIcon(),
-            ),
-            TextSpan(
-              text: ' ${_post.commentCount} · ',
-            ),
-            WidgetSpan(
-              child: CustomStyles.getDefaultThumbUpIcon(),
-            ),
-            TextSpan(
-              text:
-                  ' ${_post.approvalCount} · ${_post.commentToDisplay.timeString}',
-            ),
-          ],
-          style: CustomStyles.postFooterStyle,
-        ),
-      );
+  buildFooter() => searchKey.isEmpty
+      ? RichText(
+          text: TextSpan(
+            children: [
+              WidgetSpan(
+                child: CustomStyles.getDefaultReplyIcon(),
+              ),
+              TextSpan(
+                text: ' ${_post.commentCount} · ',
+              ),
+              WidgetSpan(
+                child: CustomStyles.getDefaultThumbUpIcon(),
+              ),
+              TextSpan(
+                text:
+                    ' ${_post.approvalCount} · ${_post.commentToDisplay.timeString}',
+              ),
+            ],
+            style: CustomStyles.postFooterStyle,
+          ),
+        )
+      : RichText(
+          text: TextSpan(
+            children: [
+              TextSpan(
+                text: '${_post.commentToDisplay.floorString}楼 · ',
+              ),
+              WidgetSpan(
+                child: CustomStyles.getDefaultThumbUpIcon(),
+              ),
+              TextSpan(
+                text:
+                    ' ${_post.commentToDisplay.approvalCount} · ${_post.commentToDisplay.timeString}',
+              ),
+            ],
+            style: CustomStyles.postFooterStyle,
+          ),
+        );
 }
