@@ -118,5 +118,6 @@ class _LoginPageState extends State<LoginPage> {
         flushbarTitleError: '出错啦',
         flushbarTitleSuccess: '成功',
         signUpSuccess: '注册成功!',
+        confirmPasswordError: '密码不匹配!',
       );
 }
