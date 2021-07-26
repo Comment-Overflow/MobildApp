@@ -4,6 +4,7 @@ import 'package:comment_overflow/model/routing_dto/image_gallery_dto.dart';
 import 'package:comment_overflow/model/routing_dto/personal_page_access_dto.dart';
 import 'package:comment_overflow/model/routing_dto/user_name_id_dto.dart';
 import 'package:comment_overflow/model/user_info.dart';
+import 'package:comment_overflow/pages/intro_page.dart';
 import 'package:comment_overflow/pages/login_page.dart';
 import 'package:comment_overflow/pages/new_post_page.dart';
 import 'package:comment_overflow/pages/notification_page.dart';
@@ -41,6 +42,7 @@ class RouteGenerator {
   static const followMeNotificationRoute = '/follow';
   static const followersRoute = '/followers';
   static const fansRoute = '/fans';
+  static const introRoute = '/intro';
 
   static Route<dynamic> generateRoute(RouteSettings settings) {
     final args = settings.arguments;
@@ -118,9 +120,12 @@ class RouteGenerator {
             settings: settings,
             builder: (_) => PrivateChatPage(args as UserInfo));
       case homeRoute:
-      default:
         return MaterialPageRoute(
             settings: settings, builder: (_) => PagesContainer());
+      case introRoute:
+      default:
+        return MaterialPageRoute(
+            settings: settings, builder: (_) => IntroPage());
     }
   }
 }

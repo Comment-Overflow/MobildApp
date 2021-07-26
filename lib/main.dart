@@ -52,7 +52,7 @@ class CommentOverflow extends StatelessWidget {
         disabledColor: Colors.grey.withOpacity(0.5),
         secondaryHeaderColor: Colors.grey,
       ),
-      initialRoute: RouteGenerator.loginRoute,
+      initialRoute: RouteGenerator.introRoute,
       onGenerateRoute: RouteGenerator.generateRoute,
       navigatorKey: GlobalUtils.navKey,
     );

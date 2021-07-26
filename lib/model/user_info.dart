@@ -1,4 +1,5 @@
 import 'package:comment_overflow/assets/constants.dart';
+import 'package:comment_overflow/utils/general_utils.dart';
 
 class UserInfo {
   final int _userId;
@@ -8,8 +9,6 @@ class UserInfo {
   int get userId => _userId;
 
   String get userName => _userName;
-
-  // String get avatarUrl => _avatarUrl;
 
   UserInfo(this._userId, this._userName, {this.avatarUrl});
 
@@ -21,12 +20,12 @@ class UserInfo {
 }
 
 class UserCardInfo extends UserInfo {
-  final String _brief;
+  final String? _brief;
   final int _commentCount;
   final int _followerCount;
   final FollowStatus _followStatus;
 
-  String get brief => _brief;
+  String get brief => _brief == null ? '' : _brief.toString();
 
   int get commentCount => _commentCount;
 
@@ -37,6 +36,13 @@ class UserCardInfo extends UserInfo {
   UserCardInfo(userId, userName, avatarUrl, this._brief, this._commentCount,
       this._followerCount, this._followStatus)
       : super(userId, userName, avatarUrl: avatarUrl);
+
+  UserCardInfo.fromJson(Map<String, dynamic> json)
+      : _brief = json['brief'],
+        _commentCount = json['commentCount'],
+        _followerCount = json['followerCount'],
+        _followStatus = GeneralUtils.getFollowStatus(json['followStatus']),
+        super(json['userId'], json['userName'], avatarUrl: json['avatarUrl']);
 }
 
 class PersonalPageInfo extends UserCardInfo {

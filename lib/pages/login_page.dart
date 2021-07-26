@@ -18,8 +18,7 @@ class LoginPage extends StatefulWidget {
   _LoginPageState createState() => _LoginPageState();
 }
 
-class _LoginPageState extends State<LoginPage>
-    with AfterLayoutMixin<LoginPage> {
+class _LoginPageState extends State<LoginPage> {
   Duration get loginTime => Duration(milliseconds: 2250);
 
   Future<String> _login(LoginData data) async {
@@ -56,29 +55,6 @@ class _LoginPageState extends State<LoginPage>
       }
       return e.response?.data as String;
     }
-  }
-
-  // FIXME: Move to another page.
-  Future<bool> _autoLogin(context) async {
-    String? token = await StorageUtil().storage.read(key: Constants.token);
-    if (token != null) {
-      try {
-        final response = await AuthService.autoLogin();
-        final LoginDTO loginDTO = LoginDTO.fromJson(response.data);
-        await StorageUtil()
-            .storage
-            .write(key: Constants.token, value: loginDTO.token);
-        await StorageUtil()
-            .storage
-            .write(key: Constants.userId, value: loginDTO.userId.toString());
-        SocketClient();
-        return true;
-      } on DioError {
-        // Stop auto login.
-        return false;
-      }
-    }
-    return false;
   }
 
   Future<String> _recoverPassword(String name) {
@@ -143,11 +119,4 @@ class _LoginPageState extends State<LoginPage>
         flushbarTitleSuccess: '成功',
         signUpSuccess: '注册成功!',
       );
-
-  @override
-  void afterFirstLayout(BuildContext context) async {
-    if (await _autoLogin(context) == true) {
-      Navigator.of(context).pushReplacementNamed(RouteGenerator.homeRoute);
-    }
-  }
 }

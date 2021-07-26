@@ -1,6 +1,5 @@
 import 'package:comment_overflow/assets/constants.dart';
 import 'package:comment_overflow/assets/custom_styles.dart';
-import 'package:comment_overflow/fake_data/fake_data.dart';
 import 'package:comment_overflow/model/post.dart';
 import 'package:comment_overflow/widgets/approval_button.dart';
 import 'package:comment_overflow/widgets/comment_card_list.dart';
@@ -71,30 +70,29 @@ class _PostPageState extends State<PostPage> {
       body: CommentCardList(widget._post, this._sortPolicy),
       bottomNavigationBar: StatefulBuilder(
           builder: (BuildContext context, StateSetter bottomSetter) {
-            int _usrId = widget._post.commentToDisplay.user.userId;
-            return BottomAppBar(
-              child: Row(
-                children: [
-                  buildDropDownMenu(),
-                  ApprovalButton(
-                      comment: widget._post.commentToDisplay,
-                      userId: _usrId,
-                      size: _bottomIconSize),
-                  DisapprovalButton(
-                      comment: widget._post.commentToDisplay,
-                      userId: _usrId,
-                      size: _bottomIconSize),
-                  StarButton(
-                      initialStared: widget._post.isStarred,
-                      postId: widget._post.postId,
-                      userId: _usrId,
-                      size: _bottomIconSize),
-                ],
-                mainAxisAlignment: MainAxisAlignment.spaceAround,
-              ),
-            );
-          }
-      ),
+        int _usrId = widget._post.commentToDisplay.user.userId;
+        return BottomAppBar(
+          child: Row(
+            children: [
+              buildDropDownMenu(),
+              ApprovalButton(
+                  comment: widget._post.commentToDisplay,
+                  userId: _usrId,
+                  size: _bottomIconSize),
+              DisapprovalButton(
+                  comment: widget._post.commentToDisplay,
+                  userId: _usrId,
+                  size: _bottomIconSize),
+              StarButton(
+                  initialStared: widget._post.isStarred,
+                  postId: widget._post.postId,
+                  userId: _usrId,
+                  size: _bottomIconSize),
+            ],
+            mainAxisAlignment: MainAxisAlignment.spaceAround,
+          ),
+        );
+      }),
     );
   }
 
