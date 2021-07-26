@@ -7,6 +7,7 @@ import 'package:dio/dio.dart';
 
 class ChatService {
   static Future<Response> sendImage(int receiverId, File imageFile) async {
+    print(imageFile.path);
     FormData formData = FormData.fromMap({
       'receiverId': receiverId,
       'imageFile': MultipartFile.fromFileSync(imageFile.path)

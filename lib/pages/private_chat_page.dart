@@ -199,15 +199,14 @@ class PrivateChatPageState extends State<PrivateChatPage> {
         _messages.insert(0, message);
         _messageMap.putIfAbsent(messageId, () => message);
       });
-      SocketClient().sendMessage(message, (frameBody) {
+      SocketClient().sendTextMessage(message, (frameBody) {
         setState(() {
           Message sentMessage = _messageMap[messageId]!;
           sentMessage.isSending = false;
           sentMessage.time = DateTime.parse(frameBody);
         });
-        String content = GeneralUtils.getLastMessageContent(message);
         context.read<RecentChatsProvider>().updateLastMessageRead(
-            widget._chatter, content, message.time!);
+            widget._chatter, message.getLastMessageContent(), message.time!);
       });
     }
     _textEditingController.clear();
@@ -221,19 +220,24 @@ class PrivateChatPageState extends State<PrivateChatPage> {
     if (result != null) {
       List<AssetEntity> assets = List<AssetEntity>.from(result);
       for (AssetEntity asset in assets) {
-        String messageId = _uuid.v4();
-        print((await asset.file)!.path);
+        File imageFile = (await asset.file)!;
         Message message = Message(MessageType.TemporaryImage, _currentUser,
-            widget._chatter, (await asset.file)!,
-            uuid: messageId);
+            widget._chatter, imageFile);
         setState(() {
           _messages.insert(0, message);
         });
-        SocketClient().sendMessage(message, (frameBody) {
+        try {
+          Response response = await ChatService.sendImage(widget._chatter.userId, imageFile);
           setState(() {
-            _messageMap[messageId]!.isSending = false;
+            message.isSending = false;
           });
-        });
+          DateTime time = Message.fromJson(response.data).time!;
+          context.read<RecentChatsProvider>().updateLastMessageRead(
+              widget._chatter, message.getLastMessageContent(), time);
+        } on DioError {
+          // TODO: Red exclamation mark.
+          print("Fail to send the image.");
+        }
       }
       _scrollToBottom();
     }
@@ -244,10 +248,8 @@ class PrivateChatPageState extends State<PrivateChatPage> {
     setState(() {
       _messages.insert(0, message);
     });
-    String content = GeneralUtils.getLastMessageContent(message);
-    context
-        .read<RecentChatsProvider>()
-        .updateLastMessageRead(widget._chatter, content, message.time!);
+    context.read<RecentChatsProvider>().updateLastMessageRead(
+        widget._chatter, message.getLastMessageContent(), message.time!);
     _scrollToBottom();
   }
 }

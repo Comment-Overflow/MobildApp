@@ -63,28 +63,27 @@ class SocketClient {
             onReceiveMessage!(message);
             updateChat(message.sender.userId);
           } else {
-            String content = GeneralUtils.getLastMessageContent(message);
             BuildContext context = GlobalUtils.navKey!.currentContext!;
-            context
-                .read<RecentChatsProvider>()
-                .updateLastMessageUnread(message.sender, content, message.time!);
+            context.read<RecentChatsProvider>().updateLastMessageUnread(
+                message.sender, message.getLastMessageContent(), message.time!);
           }
         });
   }
 
-  Future<void> sendMessage(
+  // Only for text message.
+  Future<void> sendTextMessage(
       Message message, void Function(String) onMessageSent) async {
-    String token = await GeneralUtils.getCurrentToken();
-
-    _stompClient.subscribe(
-        destination: '/notify/${message.uuid!}',
-        headers: {'Authorization': token},
-        callback: (frame) {
-          if (frame.body == 'error') throw UserUnauthorizedException();
-          onMessageSent(frame.body!);
-        });
-
     if (message.type == MessageType.Text) {
+      String token = await GeneralUtils.getCurrentToken();
+
+      _stompClient.subscribe(
+          destination: '/notify/${message.uuid!}',
+          headers: {'Authorization': token},
+          callback: (frame) {
+            if (frame.body == 'error') throw UserUnauthorizedException();
+            onMessageSent(frame.body!);
+          });
+
       _stompClient.send(
         destination: '/comment-overflow/chat/text',
         headers: {'Authorization': token},

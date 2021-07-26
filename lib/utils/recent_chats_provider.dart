@@ -12,8 +12,6 @@ class RecentChatsProvider extends ChangeNotifier {
   static final UserInfo _cyxInfo = UserInfo(_chatterId, "xx01cyx");
   static final _mockChat = Chat(_cyxInfo, "", DateTime.now(), 0);
 
-  // final Map<int, Chat> _chatMap = {_chatterId: _mockChat};
-  // List<Chat> _recentChats = [_mockChat];
   Map<int, Chat> _chatMap = Map();
   List<Chat> _recentChats = [];
 

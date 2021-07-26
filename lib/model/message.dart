@@ -30,13 +30,17 @@ class Message {
     MessageType messageType = ((json['type'] as String) == 'TEXT')
         ? MessageType.Text
         : MessageType.Image;
-    DateTime time = DateTime.parse(json['time'] as String);
     return Message(
         messageType,
         UserInfo.fromJson(json['minimalSenderInfo']),
         UserInfo.fromJson(json['minimalReceiverInfo']),
         json['content'] as String,
-        time: time,
+        time: DateTime.parse(json['time'] as String),
         isSending: false);
+  }
+
+  /// Get the message content to display in chat card.
+  String getLastMessageContent() {
+    return type == MessageType.Text ? content : Constants.imageLastMessage;
   }
 }

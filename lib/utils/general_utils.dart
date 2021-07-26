@@ -71,10 +71,4 @@ class GeneralUtils {
     }
   }
 
-  /// Get the message content to display in chat card.
-  static String getLastMessageContent(Message message) {
-      MessageType type = message.type;
-      return type == MessageType.Text ? message.content : Constants
-          .imageLastMessage;
-  }
 }
