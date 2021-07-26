@@ -1,8 +1,11 @@
+import 'dart:convert';
 import 'dart:math';
 
 import 'package:comment_overflow/assets/constants.dart';
 import 'package:comment_overflow/fake_data/fake_data.dart';
 import 'package:comment_overflow/model/post.dart';
+import 'package:comment_overflow/model/request_dto/post_query_dto.dart';
+import 'package:comment_overflow/service/post_service.dart';
 import 'package:comment_overflow/utils/paging_manager.dart';
 import 'package:comment_overflow/widgets/post_card.dart';
 import 'package:flutter/material.dart';
@@ -17,12 +20,12 @@ class PostCardList extends StatefulWidget {
 
 class _PostCardListState extends State<PostCardList> {
   final PagingManager<Post> _pagingManager =
-      PagingManager(Constants.defaultPageSize, (page, pageSize) {
-    return Future.delayed(
-      const Duration(milliseconds: 500),
-      () => posts.sublist(
-          page * pageSize, min((page + 1) * pageSize, posts.length)),
+      PagingManager(Constants.defaultPageSize, (page, pageSize) async {
+    var response = await PostService.getPosts(
+      PostQueryDTO(tag: PostTag.Life, pageNum: page, pageSize: pageSize)
     );
+    var postObjJson = response.data['content'] as List;
+    return postObjJson.map((e) => Post.fromJson(e)).toList();
   }, (context, item, index) => PostCard(item));
 
   @override

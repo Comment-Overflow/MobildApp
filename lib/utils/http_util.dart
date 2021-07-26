@@ -29,7 +29,6 @@ class HttpUtil {
         .add(InterceptorsWrapper(onRequest: (options, handler) async {
       String? token = await StorageUtil().storage.read(key: 'token');
       if (token != null) {
-        print(token);
         options.headers['Authorization'] = token;
       }
       return handler.next(options);

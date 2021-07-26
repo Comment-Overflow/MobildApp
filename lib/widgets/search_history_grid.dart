@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:comment_overflow/assets/constants.dart';
 import 'package:comment_overflow/assets/custom_styles.dart';
+import 'package:comment_overflow/pages/search_page.dart';
 import 'package:comment_overflow/utils/route_generator.dart';
 import 'package:comment_overflow/utils/storage_util.dart';
 import 'package:comment_overflow/widgets/adaptive_alert_dialog.dart';
@@ -128,9 +129,11 @@ class _SearchHistoryGridState extends State<SearchHistoryGrid> {
   }
 
   _buildHistoryItem(MapEntry<int, dynamic> entry) => GestureDetector(
-        onTap: () => Navigator.of(context).pushNamed(
-            RouteGenerator.searchResultRoute,
-            arguments: entry.value),
+        onTap: () {
+          Navigator.of(context).pushNamed(RouteGenerator.searchResultRoute,
+              arguments: entry.value);
+          SearchPage.appendSearchHistory(entry.value);
+        },
         child: Chip(
             deleteIcon: Icon(
               Icons.clear,

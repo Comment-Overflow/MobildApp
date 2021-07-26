@@ -13,10 +13,11 @@ class UserInfo {
 
   UserInfo(this._userId, this._userName, {this.avatarUrl});
 
-  factory UserInfo.fromJson(dynamic json) {
-    return UserInfo(json['id'] as int, json['userName'] as String,
-        avatarUrl: json['avatarUrl'] as String?);
-  }
+  factory UserInfo.fromJson(dynamic json) => UserInfo(
+        json['id'] as int,
+        json['userName'] as String,
+        avatarUrl: json['avatarUrl'] as String,
+      );
 }
 
 class UserCardInfo extends UserInfo {
