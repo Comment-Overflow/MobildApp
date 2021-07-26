@@ -1,6 +1,5 @@
 import 'package:comment_overflow/assets/constants.dart';
 import 'package:comment_overflow/assets/custom_styles.dart';
-import 'package:comment_overflow/model/notification_message.dart';
 import 'package:comment_overflow/model/user_action_record.dart';
 import 'package:comment_overflow/widgets/quote_card.dart';
 import 'package:comment_overflow/widgets/user_avatar_with_name_and_date.dart';

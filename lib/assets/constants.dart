@@ -155,8 +155,6 @@ enum SortPolicy {
   hottest,
 }
 
-enum NotificationType { approvePost, approveComment, collect, attention, reply }
-
 enum UserActionType {
   approval,
   follow,
