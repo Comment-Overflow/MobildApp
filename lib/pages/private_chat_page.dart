@@ -3,7 +3,6 @@ import 'dart:io';
 import 'package:comment_overflow/model/message.dart';
 import 'package:comment_overflow/model/user_info.dart';
 import 'package:comment_overflow/service/chat_service.dart';
-import 'package:comment_overflow/utils/general_utils.dart';
 import 'package:comment_overflow/utils/my_image_picker.dart';
 import 'package:comment_overflow/utils/recent_chats_provider.dart';
 import 'package:comment_overflow/utils/socket_client.dart';
@@ -34,11 +33,8 @@ class PrivateChatPageState extends State<PrivateChatPage> {
   final TextEditingController _textEditingController = TextEditingController();
   ScrollController _scrollController = new ScrollController();
   List<Message> _messages = [];
-  Map<String, Message> _messageMap = Map<String, Message>();
   int _currentPageNumber = 0;
   int _totalPageNumber = 0;
-
-  final Uuid _uuid = Uuid(options: {'grng': UuidUtil.cryptoRNG});
 
   @override
   void initState() {
@@ -191,23 +187,12 @@ class PrivateChatPageState extends State<PrivateChatPage> {
 
   Future _onSendText() async {
     if (_textEditingController.value.text.isNotEmpty) {
-      String messageId = _uuid.v4();
       Message message = Message(MessageType.Text, _currentUser, widget._chatter,
-          _textEditingController.value.text,
-          uuid: messageId);
+          _textEditingController.value.text);
       setState(() {
         _messages.insert(0, message);
-        _messageMap.putIfAbsent(messageId, () => message);
       });
-      SocketClient().sendTextMessage(message, (frameBody) {
-        setState(() {
-          Message sentMessage = _messageMap[messageId]!;
-          sentMessage.isSending = false;
-          sentMessage.time = DateTime.parse(frameBody);
-        });
-        context.read<RecentChatsProvider>().updateLastMessageRead(
-            widget._chatter, message.getLastMessageContent(), message.time!);
-      });
+      _sendMessage(message);
     }
     _textEditingController.clear();
     _scrollToBottom();
@@ -226,22 +211,30 @@ class PrivateChatPageState extends State<PrivateChatPage> {
         setState(() {
           _messages.insert(0, message);
         });
-        try {
-          Response response = await ChatService.sendImage(widget._chatter.userId, imageFile);
-          setState(() {
-            message.isSending = false;
-          });
-          DateTime time = Message.fromJson(response.data).time!;
-          context.read<RecentChatsProvider>().updateLastMessageRead(
-              widget._chatter, message.getLastMessageContent(), time);
-        } on DioError {
-          // TODO: Red exclamation mark.
-          print("Fail to send the image.");
-        }
+        _sendMessage(message);
       }
       _scrollToBottom();
     }
     FocusScope.of(context).previousFocus();
+  }
+
+  Future _sendMessage(Message message) async {
+    try {
+      Response response = await (message.type == MessageType.Text
+          ? ChatService.sendText(
+              message.receiver.userId, message.content as String)
+          : ChatService.sendImage(
+              widget._chatter.userId, message.content as File));
+      setState(() {
+        message.isSending = false;
+        message.time = DateTime.parse(response.data);
+      });
+      context.read<RecentChatsProvider>().updateLastMessageRead(
+          widget._chatter, message.getLastMessageContent(), message.time!);
+    } on DioError {
+      // TODO: Red exclamation mark.
+      print("Fail to send the image.");
+    }
   }
 
   void _onReceiveMessage(Message message) {

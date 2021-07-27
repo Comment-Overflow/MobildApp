@@ -26,8 +26,15 @@ class ChatService {
     context.read<RecentChatsProvider>().removeAllChats();
   }
 
+  static Future<Response> sendText(int receiverId, String content) async {
+    FormData formData = FormData.fromMap({
+      'receiverId': receiverId,
+      'content': content,
+    });
+    return HttpUtil().dio.post('/chat/text', data: formData);
+  }
+
   static Future<Response> sendImage(int receiverId, File imageFile) async {
-    print(imageFile.path);
     FormData formData = FormData.fromMap({
       'receiverId': receiverId,
       'imageFile': MultipartFile.fromFileSync(imageFile.path)

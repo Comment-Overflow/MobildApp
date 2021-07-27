@@ -122,7 +122,7 @@ class ChatMessage extends StatelessWidget {
         _message.content,
         fit: BoxFit.scaleDown,
         width: Constants.defaultMaxBubbleWidth,
-        cache: true,
+        cache: false,
         // enableLoadState: true,
         loadStateChanged: (ExtendedImageState state) {
           switch (state.extendedImageLoadState) {

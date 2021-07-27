@@ -66,33 +66,6 @@ class SocketClient {
         });
   }
 
-  // Only for text message.
-  Future<void> sendTextMessage(
-      Message message, void Function(String) onMessageSent) async {
-    if (message.type == MessageType.Text) {
-      String token = await GeneralUtils.getCurrentToken();
-
-      _stompClient.subscribe(
-          destination: '/message/${message.uuid!}',
-          headers: {'Authorization': token},
-          callback: (frame) {
-            if (frame.body == 'error') throw UserUnauthorizedException();
-            onMessageSent(frame.body!);
-          });
-
-      _stompClient.send(
-        destination: '/comment-overflow/chat/text',
-        headers: {'Authorization': token},
-        body: json.encode({
-          'uuid': message.uuid!,
-          'senderId': message.sender.userId,
-          'receiverId': message.receiver.userId,
-          'content': message.content
-        }),
-      );
-    }
-  }
-
   Future<void> updateChat(int chatterId) async {
     String token = await GeneralUtils.getCurrentToken();
     int userId = await GeneralUtils.getCurrentUserId();
