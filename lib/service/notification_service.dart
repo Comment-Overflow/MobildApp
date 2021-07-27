@@ -10,9 +10,8 @@ class NotificationService {
   }
 
   static Future<Response> postStar(int toUserId, int postId) async {
-    return await HttpUtil()
-        .dio
-        .post('/records/stars', data: {'toUserId': toUserId, 'postId': postId});
+    return await HttpUtil().dio.post('/records/stars',
+        queryParameters: {'toUserId': toUserId, 'postId': postId});
   }
 
   static Future<Response> postApproval(
@@ -36,5 +35,11 @@ class NotificationService {
       'toUserId': toUserId,
       'status': statusString[status]
     });
+  }
+
+  static Future<Response> postFollow(int toUserId) async {
+    return await HttpUtil()
+        .dio
+        .post('/records/followers', queryParameters: {'toUserId': toUserId});
   }
 }

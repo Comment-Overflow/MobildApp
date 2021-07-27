@@ -122,7 +122,7 @@ class _CommentCardState extends State<CommentCard>
                 widget._comment.quote == null
                     ? SizedBox.shrink()
                     : Row(
-                        mainAxisSize: MainAxisSize.min,
+                        mainAxisSize: MainAxisSize.max,
                         children: [
                           _gap,
                           Expanded(child: QuoteCard(widget._comment.quote)),

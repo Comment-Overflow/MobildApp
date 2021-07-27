@@ -19,7 +19,7 @@ class ApprovalRecord {
             json['fromUserUserId'] as int, json['fromUserUserName'] as String),
         DateTime.fromMillisecondsSinceEpoch(timeStamp),
         Quote(json['commentId'] as int, json['commentPostTitle'] as String,
-            json['commentContent'] as String, json['commentFloor' as int]));
+            json['commentContent'] as String, json['commentFloor'] as int));
   }
 }
 
@@ -47,7 +47,7 @@ class ReplyRecord {
             json['postHostCommentId'] as int,
             json['postTitle'] as String,
             json['postHostCommentContent'] as String,
-            json['postHostCommentFloor'] as int));
+            int.parse(json['postHostCommentFloor'] as String)));
   }
 }
 
