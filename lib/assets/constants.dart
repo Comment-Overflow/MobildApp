@@ -103,7 +103,6 @@ class Constants {
 
   static const defaultHighlightTime = 2000;
 
-
   /// Default page size when getting chat history from backend.
   static const HTTPChatHistoryPage = 15;
 
@@ -140,7 +139,6 @@ class Constants {
   static const String imageFailPrompt = '图片加载失败';
 
   static const String imageReloadPrompt = '点击重新加载';
-
 }
 
 enum FollowStatus {
@@ -198,3 +196,5 @@ enum Setting {
 }
 
 enum PostTag { Life, Study, Art, Mood, Career }
+
+enum MessageStatus { Normal, Sending, Failed }

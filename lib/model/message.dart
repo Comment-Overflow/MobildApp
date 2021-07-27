@@ -8,7 +8,7 @@ class Message {
   final UserInfo _sender;
   final UserInfo _receiver;
   final dynamic _content;
-  bool isSending;
+  MessageStatus status;
 
   String? get uuid => _uuid;
 
@@ -21,10 +21,10 @@ class Message {
   dynamic get content => _content;
 
   Message(this._type, this._sender, this._receiver, this._content,
-      {uuid, time, isSending = true})
+      {uuid, time, status = MessageStatus.Sending})
       : _uuid = uuid,
         time = time,
-        isSending = isSending;
+        status = status;
 
   factory Message.fromJson(dynamic json) {
     MessageType messageType = ((json['type'] as String) == 'TEXT')
@@ -36,7 +36,7 @@ class Message {
         UserInfo.fromJson(json['minimalReceiverInfo']),
         json['content'] as String,
         time: DateTime.parse(json['time'] as String),
-        isSending: false);
+        status: MessageStatus.Normal);
   }
 
   /// Get the message content to display in chat card.

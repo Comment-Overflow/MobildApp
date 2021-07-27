@@ -1,5 +1,3 @@
-import 'dart:io';
-
 import 'package:bubble/bubble.dart';
 import 'package:comment_overflow/assets/custom_styles.dart';
 import 'package:comment_overflow/utils/general_utils.dart';
@@ -13,8 +11,9 @@ import 'package:comment_overflow/widgets/user_avatar.dart';
 
 class ChatMessage extends StatelessWidget {
   final Message _message;
+  final void Function(Message) _resend;
 
-  ChatMessage(this._message, {Key? key}) : super(key: key);
+  ChatMessage(this._message, this._resend, {Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -31,36 +30,54 @@ class ChatMessage extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.end,
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  _message.isSending
-                      ? SizedBox(
-                          height: Constants.defaultChatRoomFontSize,
-                          width: Constants.defaultChatRoomFontSize,
-                          child: CupertinoActivityIndicator(
-                              radius: Constants.defaultChatRoomFontSize * 0.5))
-                      : Container(),
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.end,
+                  Row(
+                    crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
-                      Bubble(
-                        margin: BubbleEdges.only(top: 10),
-                        padding: BubbleEdges.all(8),
-                        elevation: 0.3,
-                        alignment: Alignment.topRight,
-                        nip: BubbleNip.rightTop,
-                        color: CustomColors.chatBubbleBlue,
-                        child: _buildContent(),
-                      ),
-                      _message.time == null
-                          ? Container()
-                          : Padding(
-                              padding: const EdgeInsets.only(
-                                  top: Constants.chatTimeVerticalPadding,
-                                  right: Constants.chatTimeHorizontalPadding),
-                              child: Text(
-                                GeneralUtils.getChatTimeString(_message.time!),
-                                style: CustomStyles.chatMessageTimeStyle,
+                      _message.status == MessageStatus.Sending
+                          ? SizedBox(
+                              height: Constants.defaultChatRoomFontSize,
+                              width: Constants.defaultChatRoomFontSize,
+                              child: CupertinoActivityIndicator(
+                                  radius:
+                                      Constants.defaultChatRoomFontSize * 0.5))
+                          : Container(),
+                      _message.status == MessageStatus.Failed
+                          ? GestureDetector(
+                              child: CustomStyles.getDefaultMessageFailIcon(
+                                size: Constants.defaultChatRoomFontSize * 1.3,
                               ),
-                            ),
+                              onTap: () {
+                                _resend(_message);
+                              },
+                            )
+                          : Container(),
+                      Column(
+                        crossAxisAlignment: CrossAxisAlignment.end,
+                        children: [
+                          Bubble(
+                            margin: BubbleEdges.only(top: 10),
+                            padding: BubbleEdges.all(8),
+                            elevation: 0.3,
+                            alignment: Alignment.topRight,
+                            nip: BubbleNip.rightTop,
+                            color: CustomColors.chatBubbleBlue,
+                            child: _buildContent(),
+                          ),
+                          _message.time == null
+                              ? Container()
+                              : Padding(
+                                  padding: const EdgeInsets.only(
+                                      top: Constants.chatTimeVerticalPadding,
+                                      right:
+                                          Constants.chatTimeHorizontalPadding),
+                                  child: Text(
+                                    GeneralUtils.getChatTimeString(
+                                        _message.time!),
+                                    style: CustomStyles.chatMessageTimeStyle,
+                                  ),
+                                ),
+                        ],
+                      ),
                     ],
                   ),
                   Container(

@@ -91,7 +91,7 @@ class PrivateChatPageState extends State<PrivateChatPage> {
                           itemCount: _messages.length,
                           itemBuilder: (context, index) {
                             ChatMessage chatMessage =
-                                ChatMessage(_messages[index]);
+                                ChatMessage(_messages[index], _resendMessage);
                             return Container(
                               padding: EdgeInsets.symmetric(
                                   vertical:
@@ -226,14 +226,15 @@ class PrivateChatPageState extends State<PrivateChatPage> {
           : ChatService.sendImage(
               widget._chatter.userId, message.content as File));
       setState(() {
-        message.isSending = false;
+        message.status = MessageStatus.Normal;
         message.time = DateTime.parse(response.data);
       });
       context.read<RecentChatsProvider>().updateLastMessageRead(
           widget._chatter, message.getLastMessageContent(), message.time!);
     } on DioError {
-      // TODO: Red exclamation mark.
-      print("Fail to send the image.");
+      setState(() {
+        message.status = MessageStatus.Failed;
+      });
     }
   }
 
@@ -244,5 +245,12 @@ class PrivateChatPageState extends State<PrivateChatPage> {
     context.read<RecentChatsProvider>().updateLastMessageRead(
         widget._chatter, message.getLastMessageContent(), message.time!);
     _scrollToBottom();
+  }
+
+  void _resendMessage(Message message) {
+    setState(() {
+      message.status = MessageStatus.Sending;
+    });
+    _sendMessage(message);
   }
 }
