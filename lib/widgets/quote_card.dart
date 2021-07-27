@@ -1,6 +1,7 @@
 import 'package:comment_overflow/assets/constants.dart';
 import 'package:comment_overflow/assets/custom_colors.dart';
 import 'package:comment_overflow/assets/custom_styles.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 
@@ -26,11 +27,21 @@ class QuoteCard extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           mainAxisSize: MainAxisSize.min,
           children: [
-            Text(
-              this._quote.title,
-              style: CustomStyles.referenceUserNameStyle,
-              maxLines: 1,
-              overflow: TextOverflow.ellipsis,
+            Row(
+              mainAxisSize: MainAxisSize.max,
+              children: [
+                Text(
+                  this._quote.title,
+                  style: CustomStyles.referenceUserNameStyle,
+                  maxLines: 1,
+                  overflow: TextOverflow.ellipsis,
+                ),
+                Expanded(child: Text(
+                  this._quote.floor.toString() + "楼",
+                  style: CustomStyles.floorStyle,
+                  textAlign: TextAlign.right,
+                ))
+              ],
             ),
             _gap,
             Text(
