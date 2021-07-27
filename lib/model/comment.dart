@@ -30,6 +30,13 @@ class Comment {
   
   factory Comment.fromJson(dynamic json) {
     var _imageList = json['imageUrl'];
+    String statusString = json['approvalStatus'] as String;
+
+    ApprovalStatus status;
+    if (statusString == "APPROVAL") status = ApprovalStatus.approve;
+    if (statusString == "DISAPPROVAL") status = ApprovalStatus.disapprove;
+    status = ApprovalStatus.none;
+
     return Comment(
         json['id'] as int,
         UserInfo.fromJson(json['userInfo']),
@@ -38,7 +45,7 @@ class Comment {
         (json['quoteId'] as int) == 0 ? null : Quote.fromJson(json['quoteDTO']),
         json['floor'] as int,
         json['approvalCount'] as int,
-        ApprovalStatus.none,
+        status,
         _imageList == null ? [] : List.from(_imageList)
     );
   }

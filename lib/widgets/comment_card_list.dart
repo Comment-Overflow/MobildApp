@@ -40,7 +40,7 @@ class _CommentCardListState extends State<CommentCardList> {
           var commentObjJson = response.data['content'] as List;
           return commentObjJson.map((e) => Comment.fromJson(e)).toList();
         },
-            (context, item, index) => index == 0
+            (context, item, index) => (item as Comment).floor == 0
                 ? CommentCard(item, post.postId, title: post.title)
                 : CommentCard(item, post.postId));
 
