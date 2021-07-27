@@ -15,7 +15,7 @@ class PagingManager<T> {
     viewportBoundaryGetter: () => Rect.fromLTRB(0, 0, 0, 10.0),
     axis: Axis.vertical,
   );
-
+  AutoScrollController get autoScrollController => _autoScrollController;
   // late final _onAutoScroll;
   final PagingController<int, T> _pagingController =
       PagingController(firstPageKey: 0);
@@ -38,6 +38,8 @@ class PagingManager<T> {
 
   // Check prevent manipulation of paging controller after disposal.
   bool _disposed = false;
+  // Should the list be able to auto scroll.
+  bool _enableAutoScroll;
 
   Future<void> _fetchPage(int pageKey) async {
     try {
@@ -57,7 +59,9 @@ class PagingManager<T> {
     }
   }
 
-  PagingManager(this._pageSize, this._customFetchApi, this._customItemBuilder) {
+  PagingManager(this._pageSize, this._customFetchApi, this._customItemBuilder,
+      {enableAutoScroll = false})
+      : this._enableAutoScroll = enableAutoScroll {
     this._wrappedFetchApi = (pageKey) {
       _fetchPage(pageKey);
     };
@@ -88,17 +92,20 @@ class PagingManager<T> {
 
   Widget getListView({refreshable = true}) {
     PagedListView<int, T> listView = PagedListView<int, T>(
-      scrollController: _autoScrollController,
+      scrollController: _enableAutoScroll ? _autoScrollController : null,
       pagingController: _pagingController,
       builderDelegate: PagedChildBuilderDelegate<T>(
         animateTransitions: true,
         transitionDuration: const Duration(milliseconds: 200),
-        itemBuilder: (context, item, index) => AutoScrollTag(
-          key: ValueKey(index),
-          controller: _autoScrollController,
-          index: index,
-          child: _customItemBuilder(context, item, index),
-        ),
+        itemBuilder: _enableAutoScroll
+            ? (context, item, index) => AutoScrollTag(
+                  key: ValueKey(index),
+                  controller: _autoScrollController,
+                  index: index,
+                  child: _customItemBuilder(context, item, index),
+                )
+            : (context, item, index) =>
+                _customItemBuilder(context, item, index),
         firstPageProgressIndicatorBuilder: (_) => Container(),
       ),
     );

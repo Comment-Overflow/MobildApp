@@ -1,7 +1,6 @@
-import 'dart:math';
+import 'dart:core';
 
 import 'package:comment_overflow/assets/constants.dart';
-import 'package:comment_overflow/fake_data/fake_data.dart';
 import 'package:comment_overflow/model/post.dart';
 import 'package:comment_overflow/service/search_service.dart';
 import 'package:comment_overflow/utils/paging_manager.dart';
@@ -9,29 +8,33 @@ import 'package:comment_overflow/widgets/post_card.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/widgets.dart';
 
-class SearchedPostCardList extends StatefulWidget {
+class SearchedCommentCardList extends StatefulWidget {
   final String _searchKey;
   final PostTag? _postTag;
 
-  const SearchedPostCardList(this._searchKey, {Key? key, postTag})
+  const SearchedCommentCardList(this._searchKey, {Key? key, postTag})
       : _postTag = postTag,
         super(key: key);
 
   @override
-  _SearchedPostCardListState createState() =>
-      _SearchedPostCardListState(_searchKey);
+  _SearchedCommentCardListState createState() =>
+      _SearchedCommentCardListState(_searchKey, _postTag);
 }
 
-class _SearchedPostCardListState extends State<SearchedPostCardList> {
+class _SearchedCommentCardListState extends State<SearchedCommentCardList> {
   final PagingManager<Post> _pagingManager;
 
-  _SearchedPostCardListState(_searchKey)
+  _SearchedCommentCardListState(searchKey, postTag)
       : _pagingManager =
             PagingManager(Constants.defaultPageSize, (page, pageSize) async {
-          final Response response =
-              await SearchService.searchComment(_searchKey, page, pageSize);
-          print(response.data);
-        }, (context, item, index) => PostCard(item));
+          final Response response = await SearchService.searchComment(
+              searchKey, page, pageSize,
+              postTag: postTag);
+          // The type is Post, but they are actually comments.
+          List<Post> searchedComments =
+              (response.data as List).map((i) => Post.fromJson(i)).toList();
+          return searchedComments;
+        }, (context, item, index) => PostCard(item, searchKey: [searchKey]));
 
   @override
   dispose() {

@@ -1,6 +1,5 @@
 import 'package:comment_overflow/assets/constants.dart';
 import 'package:comment_overflow/assets/custom_styles.dart';
-import 'package:comment_overflow/fake_data/fake_data.dart';
 import 'package:comment_overflow/model/post.dart';
 import 'package:comment_overflow/service/post_service.dart';
 import 'package:comment_overflow/utils/general_utils.dart';
@@ -75,18 +74,18 @@ class _PostPageState extends State<PostPage> {
             children: [
               buildDropDownMenu(),
               ApprovalButton(
-                comment: widget._post.commentToDisplay,
-                userId: _usrId,
-                size: _bottomIconSize),
+                  comment: widget._post.commentToDisplay,
+                  userId: _usrId,
+                  size: _bottomIconSize),
               DisapprovalButton(
-                comment: widget._post.commentToDisplay,
-                userId: _usrId,
-                size: _bottomIconSize),
+                  comment: widget._post.commentToDisplay,
+                  userId: _usrId,
+                  size: _bottomIconSize),
               StarButton(
-                initialStared: widget._post.isStarred,
-                postId: widget._post.postId,
-                userId: _usrId,
-                size: _bottomIconSize),
+                  initialStared: widget._post.isStarred,
+                  postId: widget._post.postId,
+                  userId: _usrId,
+                  size: _bottomIconSize),
             ],
             mainAxisAlignment: MainAxisAlignment.spaceAround,
           ),
