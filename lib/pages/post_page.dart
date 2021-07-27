@@ -1,11 +1,16 @@
 import 'package:comment_overflow/assets/constants.dart';
 import 'package:comment_overflow/assets/custom_styles.dart';
 import 'package:comment_overflow/model/post.dart';
+import 'package:comment_overflow/service/post_service.dart';
+import 'package:comment_overflow/utils/general_utils.dart';
+import 'package:comment_overflow/utils/message_box.dart';
+import 'package:comment_overflow/widgets/adaptive_alert_dialog.dart';
 import 'package:comment_overflow/widgets/approval_button.dart';
 import 'package:comment_overflow/widgets/comment_card_list.dart';
 import 'package:comment_overflow/widgets/disapproval_button.dart';
 import 'package:comment_overflow/widgets/multiple_input_field.dart';
 import 'package:comment_overflow/widgets/star_button.dart';
+import 'package:dio/dio.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
@@ -52,14 +57,7 @@ class _PostPageState extends State<PostPage> {
         ),
         title: Text("帖子 ${widget._post.postId.toString()}"),
         actions: <Widget>[
-          IconButton(
-            icon: CustomStyles.getDefaultDeleteIcon(size: _iconSize),
-            tooltip: 'Delete this Post',
-            onPressed: () {
-              ScaffoldMessenger.of(context).showSnackBar(
-                  const SnackBar(content: Text("Post has been deleted.")));
-            },
-          )
+          FutureBuilder(future: _getUserId(), builder: _buildDeleteButton)
         ],
         centerTitle: true,
       ),
@@ -128,6 +126,62 @@ class _PostPageState extends State<PostPage> {
                 child: Text("最热回复"),
               ),
             ]);
+  }
+
+  Future<int> _getUserId() async {
+    return await GeneralUtils.getCurrentUserId();
+  }
+
+  Widget _buildDeleteButton(BuildContext context, AsyncSnapshot snapshot) {
+
+    okCallback() {
+      _deletePost();
+      Navigator.pop(context);
+      Navigator.pop(context);
+      MessageBox.showToast(
+          msg: "帖子已被删除，刷新以更新。",
+          messageBoxType: MessageBoxType.Info);
+    }
+
+    cancelCallback() {
+      Navigator.pop(context);
+    }
+
+    switch (snapshot.connectionState) {
+      case ConnectionState.none:
+      case ConnectionState.waiting:
+      case ConnectionState.active:
+        return SizedBox.shrink();
+      case ConnectionState.done:
+        {
+          int _userId = snapshot.data;
+          return _userId == widget._post.commentToDisplay.user.userId
+            ? IconButton(
+              icon: CustomStyles.getDefaultDeleteIcon(size: _iconSize),
+              tooltip: 'Delete this Post',
+              onPressed: () {
+                showDialog(
+                  context: context,
+                  builder: (context) {
+                    return AdaptiveAlertDialog(
+                        "删除帖子: ${widget._post.postId}",
+                        "你确认要删除 \"${widget._post.title}\"吗",
+                        "确定", "取消",
+                        okCallback,
+                        cancelCallback);
+                  });
+              })
+            : SizedBox.shrink();
+        }
+    }
+  }
+
+  Future<void> _deletePost() async {
+    try {
+      await PostService.deletePost(widget._post.postId);
+    } on DioError catch (e) {
+      print(e.message);
+    }
   }
 
   void _pushReply() {

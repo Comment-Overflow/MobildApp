@@ -187,3 +187,9 @@ enum Setting {
 }
 
 enum PostTag { Life, Study, Art, Mood, Career }
+
+Map<ApprovalStatus, String> statusString = {
+  ApprovalStatus.approve : "APPROVAL",
+  ApprovalStatus.disapprove : "DISAPPROVAL",
+  ApprovalStatus.none : "NONE"
+};
