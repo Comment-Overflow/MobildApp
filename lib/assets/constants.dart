@@ -136,6 +136,8 @@ class Constants {
   static const String searchHistory = 'searchHistory';
 
   static const String imageLastMessage = '[图片]';
+
+  static const String imageFailPrompt = '图片加载失败';
 }
 
 enum FollowStatus {

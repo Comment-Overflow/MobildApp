@@ -2,13 +2,17 @@ import 'package:comment_overflow/assets/constants.dart';
 import 'package:comment_overflow/assets/custom_styles.dart';
 import 'package:comment_overflow/fake_data/fake_data.dart';
 import 'package:comment_overflow/model/user_info.dart';
+import 'package:comment_overflow/service/chat_service.dart';
+import 'package:comment_overflow/utils/recent_chats_provider.dart';
 import 'package:comment_overflow/utils/route_generator.dart';
+import 'package:comment_overflow/utils/socket_client.dart';
 import 'package:comment_overflow/utils/storage_util.dart';
 import 'package:comment_overflow/widgets/personal_profile_card.dart';
 import 'package:comment_overflow/widgets/post_card_list.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:toggle_switch/toggle_switch.dart';
+import 'package:provider/provider.dart';
 
 class PersonalPage extends StatefulWidget {
   final int _userId;
@@ -32,7 +36,6 @@ class _PersonalPageState extends State<PersonalPage> {
     super.initState();
     // _isSelf = false;
     _isSelf = widget._userId == currentUserId;
-    print(_isSelf);
   }
 
   @override
@@ -147,6 +150,7 @@ class _PersonalPageState extends State<PersonalPage> {
     return PopupMenuButton<Setting>(
       padding: const EdgeInsets.all(7.0),
       onSelected: (Setting setting) async {
+        await ChatService.disposeChat();
         await StorageUtil().storage.delete(key: Constants.userId);
         await StorageUtil().storage.delete(key: Constants.token);
         Navigator.of(context).pushNamedAndRemoveUntil(

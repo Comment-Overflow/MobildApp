@@ -1,11 +1,8 @@
 import 'dart:convert';
-import 'dart:io';
-import 'dart:typed_data';
 
 import 'package:comment_overflow/assets/constants.dart';
 import 'package:comment_overflow/exceptions/user_unauthorized_exception.dart';
 import 'package:comment_overflow/model/message.dart';
-import 'package:comment_overflow/model/user_info.dart';
 import 'package:comment_overflow/utils/recent_chats_provider.dart';
 import 'package:comment_overflow/utils/general_utils.dart';
 import 'package:comment_overflow/utils/global_utils.dart';
@@ -23,11 +20,9 @@ class SocketClient {
   factory SocketClient() => _instance;
   static SocketClient _instance = SocketClient._privateConstructor();
 
-  SocketClient._privateConstructor() {
-    _initStompClient();
-  }
+  SocketClient._privateConstructor();
 
-  late final StompClient _stompClient;
+  late StompClient _stompClient;
   void Function(Message)? onReceiveMessage = null;
 
   Future<void> _initStompClient() async {
@@ -58,6 +53,7 @@ class SocketClient {
         destination: '/user/${userId.toString()}/queue/private',
         headers: {'Authorization': token},
         callback: (frame) {
+          print(frame.body!);
           Message message = Message.fromJson(jsonDecode(frame.body!));
           if (onReceiveMessage != null) {
             onReceiveMessage!(message);
@@ -77,7 +73,7 @@ class SocketClient {
       String token = await GeneralUtils.getCurrentToken();
 
       _stompClient.subscribe(
-          destination: '/notify/${message.uuid!}',
+          destination: '/message/${message.uuid!}',
           headers: {'Authorization': token},
           callback: (frame) {
             if (frame.body == 'error') throw UserUnauthorizedException();
@@ -105,6 +101,20 @@ class SocketClient {
       'UserId': userId.toString(),
       'ChatterId': chatterId.toString(),
     });
+  }
+
+  Future deleteReadChats() async {
+    String token = await GeneralUtils.getCurrentToken();
+    int userId = await GeneralUtils.getCurrentUserId();
+    _stompClient
+        .send(destination: '/comment-overflow/user/read-chats', headers: {
+      'Authorization': token,
+      'UserId': userId.toString(),
+    });
+  }
+
+  Future init() async {
+    await _initStompClient();
   }
 
   void dispose() {

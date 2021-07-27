@@ -24,13 +24,6 @@ class _NotificationPageState extends State<NotificationPage> {
   void initState() {
     super.initState();
     _getRecentChats();
-    print("Notification page init state.");
-  }
-
-  @override
-  void dispose() {
-    super.dispose();
-    print("Notification page disposed.");
   }
 
   @override

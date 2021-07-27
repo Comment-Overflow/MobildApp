@@ -3,13 +3,16 @@ import 'package:comment_overflow/assets/constants.dart';
 import 'package:comment_overflow/model/message.dart';
 import 'package:comment_overflow/model/response_dto/login_dto.dart';
 import 'package:comment_overflow/service/auth_service.dart';
+import 'package:comment_overflow/service/chat_service.dart';
 import 'package:comment_overflow/utils/message_box.dart';
+import 'package:comment_overflow/utils/recent_chats_provider.dart';
 import 'package:comment_overflow/utils/route_generator.dart';
 import 'package:comment_overflow/utils/socket_client.dart';
 import 'package:comment_overflow/utils/storage_util.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_login/flutter_login.dart';
+import 'package:provider/provider.dart';
 
 class LoginPage extends StatefulWidget {
   const LoginPage({Key? key}) : super(key: key);
@@ -24,7 +27,6 @@ class _LoginPageState extends State<LoginPage> {
   Future<String> _login(LoginData data) async {
     try {
       final response = await AuthService.login(data.name, data.password);
-      SocketClient();
       Map<String, dynamic> loginDTOMap = response.data;
       final LoginDTO loginDTO = LoginDTO.fromJson(loginDTOMap);
       await StorageUtil()
@@ -34,6 +36,7 @@ class _LoginPageState extends State<LoginPage> {
           .storage
           .write(key: Constants.userId, value: loginDTO.userId.toString());
       await StorageUtil().storage.delete(key: Constants.emailToken);
+      await ChatService.initChat();
       return '';
     } on DioError catch (e) {
       if (e.response?.data == null) {
