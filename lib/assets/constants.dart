@@ -192,3 +192,9 @@ Map<String, FollowStatus> followStatusMap = {
   "FOLLOWING_ME": FollowStatus.followingMe,
   "BOTH": FollowStatus.both,
 };
+
+Map<ApprovalStatus, String> statusString = {
+  ApprovalStatus.approve : "APPROVAL",
+  ApprovalStatus.disapprove : "DISAPPROVAL",
+  ApprovalStatus.none : "NONE"
+};

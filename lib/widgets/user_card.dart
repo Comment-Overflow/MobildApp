@@ -113,7 +113,9 @@ class UserCard extends StatelessWidget {
                 Expanded(
                     flex: 29,
                     child: Center(
-                        child: FollowButton(_userCardInfo.userName,
+                        child: FollowButton(
+                            _userCardInfo.userId,
+                            _userCardInfo.userName,
                             _userCardInfo.followStatus)))
               ],
             )),

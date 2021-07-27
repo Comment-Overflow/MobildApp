@@ -123,7 +123,8 @@ class PersonalProfileCard extends StatelessWidget {
                     RouteGenerator.followersRoute,
                     [
                       Text(
-                      GeneralUtils.getDefaultNumberString(_personalPageInfo.followingCount),
+                        GeneralUtils.getDefaultNumberString(
+                            _personalPageInfo.followingCount),
                         style: CustomStyles.personalPageButtonNumberStyle,
                       ),
                       _gap,
@@ -142,7 +143,8 @@ class PersonalProfileCard extends StatelessWidget {
                     RouteGenerator.fansRoute,
                     [
                       Text(
-                        GeneralUtils.getDefaultNumberString(_personalPageInfo.followerCount),
+                        GeneralUtils.getDefaultNumberString(
+                            _personalPageInfo.followerCount),
                         style: CustomStyles.personalPageButtonNumberStyle,
                       ),
                       _gap,
@@ -161,7 +163,8 @@ class PersonalProfileCard extends StatelessWidget {
                     null,
                     [
                       Text(
-                        GeneralUtils.getDefaultNumberString(_personalPageInfo.commentCount),
+                        GeneralUtils.getDefaultNumberString(
+                            _personalPageInfo.commentCount),
                         style: CustomStyles.personalPageButtonNumberStyle,
                       ),
                       _gap,
@@ -178,7 +181,8 @@ class PersonalProfileCard extends StatelessWidget {
                     null,
                     [
                       Text(
-                        GeneralUtils.getDefaultNumberString(_personalPageInfo.approvalCount),
+                        GeneralUtils.getDefaultNumberString(
+                            _personalPageInfo.approvalCount),
                         style: CustomStyles.personalPageButtonNumberStyle,
                       ),
                       _gap,
@@ -207,7 +211,7 @@ class PersonalProfileCard extends StatelessWidget {
         Expanded(
           child: Padding(
             padding: const EdgeInsets.only(right: 4.0),
-            child: FollowButton(
+            child: FollowButton(_personalPageInfo.userId,
                 _personalPageInfo.userName, _personalPageInfo.followStatus),
           ),
         ),

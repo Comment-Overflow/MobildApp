@@ -15,7 +15,7 @@ class PagingManager<T> {
     viewportBoundaryGetter: () => Rect.fromLTRB(0, 0, 0, 10.0),
     axis: Axis.vertical,
   );
-
+  AutoScrollController get autoScrollController => _autoScrollController;
   // late final _onAutoScroll;
   final PagingController<int, T> _pagingController =
       PagingController(firstPageKey: 0);
@@ -97,12 +97,15 @@ class PagingManager<T> {
       builderDelegate: PagedChildBuilderDelegate<T>(
         animateTransitions: true,
         transitionDuration: const Duration(milliseconds: 200),
-        itemBuilder: (context, item, index) => AutoScrollTag(
-          key: ValueKey(index),
-          controller: _autoScrollController,
-          index: index,
-          child: _customItemBuilder(context, item, index),
-        ),
+        itemBuilder: _enableAutoScroll
+            ? (context, item, index) => AutoScrollTag(
+                  key: ValueKey(index),
+                  controller: _autoScrollController,
+                  index: index,
+                  child: _customItemBuilder(context, item, index),
+                )
+            : (context, item, index) =>
+                _customItemBuilder(context, item, index),
         firstPageProgressIndicatorBuilder: (_) => Container(),
       ),
     );

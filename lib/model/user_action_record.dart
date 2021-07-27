@@ -22,7 +22,6 @@ class ApprovalRecord {
               json['commentPostTitle'] as String,
               json['commentContent'] as String,
               json['commentFloor'] as int));
-  }
 }
 
 class ReplyRecord {
@@ -49,7 +48,7 @@ class ReplyRecord {
             json['postHostCommentId'] as int,
             json['postTitle'] as String,
             json['postHostCommentContent'] as String,
-            json['postHostCommentFloor'] as int));
+            int.parse(json['postHostCommentFloor'] as String)));
   }
 }
 

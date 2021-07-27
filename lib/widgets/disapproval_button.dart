@@ -1,6 +1,7 @@
 import 'package:comment_overflow/assets/constants.dart';
 import 'package:comment_overflow/assets/custom_styles.dart';
 import 'package:comment_overflow/model/comment.dart';
+import 'package:comment_overflow/service/notification_service.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
@@ -34,10 +35,18 @@ class _DisapprovalButtonState extends State<DisapprovalButton> {
         onPressed: () {
           switch (widget._comment.approvalStatus) {
             case ApprovalStatus.disapprove:
+              NotificationService.deleteApproval(
+                  widget._comment.id,
+                  widget._comment.user.userId,
+                  ApprovalStatus.disapprove);
               setState(() {widget._comment.addApprovals();});
               break;
             case ApprovalStatus.approve: break;
             case ApprovalStatus.none:
+              NotificationService.postApproval(
+                widget._comment.id,
+                widget._comment.user.userId,
+                ApprovalStatus.disapprove);
               setState(() {widget._comment.subApprovals();});
               break;
           }
