@@ -48,12 +48,12 @@ class MultipleInputField extends StatelessWidget {
   ================================================
   */
 
-  MultipleInputField({
-    required BuildContext context,
-    required TextEditingController textController,
-    required List<AssetEntity> assets,
-    required int postId,
-    Quote? quote,
+  MultipleInputField(
+      {required BuildContext context,
+      required TextEditingController textController,
+      required List<AssetEntity> assets,
+      required int postId,
+      Quote? quote,
       Key? key})
       : _context = context,
         _controller = textController,
@@ -89,9 +89,14 @@ class MultipleInputField extends StatelessWidget {
             ),
             _quote == null
                 ? SizedBox.shrink()
-                : Padding(
-                    padding: EdgeInsets.all(6.0),
-                    child: QuoteCard(_quote),
+                : Row(
+                    children: [
+                      Expanded(
+                          child: Padding(
+                        padding: EdgeInsets.all(6.0),
+                        child: QuoteCard(_quote),
+                      ))
+                    ],
                   ),
             HorizontalImageScroller(_assets),
             Row(
@@ -145,8 +150,7 @@ class MultipleInputField extends StatelessWidget {
         postId: _postId,
         quoteId: _quote == null ? 0 : _quote!.commentId,
         content: _controller.text,
-        assets: _assets
-    );
+        assets: _assets);
     try {
       final response = await PostService.postComment(dto);
       print(response);
