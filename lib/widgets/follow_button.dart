@@ -24,6 +24,7 @@ class _FollowButtonState extends State<FollowButton> {
   @override
   Widget build(BuildContext context) {
     okCallback() {
+      NotificationService.deleteFollow(widget._userId);
       setState(() {
         _followStatus = FollowStatus.none;
       });
