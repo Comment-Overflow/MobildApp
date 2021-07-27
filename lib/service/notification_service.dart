@@ -1,6 +1,7 @@
 import 'package:comment_overflow/assets/constants.dart';
 import 'package:comment_overflow/utils/http_util.dart';
 import 'package:dio/dio.dart';
+import 'package:flutter/cupertino.dart';
 
 class NotificationService {
   static Future<Response> getNotification(page, pageSize, String url) async {
@@ -21,6 +22,11 @@ class NotificationService {
       'toUserId': toUserId,
       'status': statusString[status]
     });
+  }
+
+  static Future<void> ifHaveNewNotification(String url, ValueSetter callback) async {
+    dynamic json = (await HttpUtil().dio.get(url)).data;
+    callback(json);
   }
 
   static Future<Response> deleteStar(int toUserId, int postId) async {

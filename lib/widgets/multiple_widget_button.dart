@@ -16,7 +16,7 @@ class MultipleWidgetButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return InkWell(
-      onTap: () {
+      onTap: () async {
         if (_routeName != null)
           Navigator.pushNamed(context, _routeName!, arguments: this._arguments);
       },
