@@ -43,6 +43,10 @@ class ChatService {
     });
   }
 
+  static Future deleteChat(int chatterId) async {
+    return SocketClient().deleteChat(chatterId);
+  }
+
   static Future<Response> getRecentChats() async {
     return HttpUtil().dio.get('/recent-chats');
   }

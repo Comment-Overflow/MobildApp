@@ -89,8 +89,7 @@ class _NotificationPageState extends State<NotificationPage> {
       delegate: SliverChildBuilderDelegate(
         (BuildContext context, int index) {
           return ChatCard(recentChats[index], () {
-            // TODO: Delete the chat from local file.
-            // TODO: Delete the chat from server. (?)
+            ChatService.deleteChat(recentChats[index].chatter.userId);
             context.read<RecentChatsProvider>().removeAt(index);
           });
         },

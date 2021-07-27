@@ -106,11 +106,24 @@ class SocketClient {
   Future deleteReadChats() async {
     String token = await GeneralUtils.getCurrentToken();
     int userId = await GeneralUtils.getCurrentUserId();
-    _stompClient
-        .send(destination: '/comment-overflow/user/read-chats', headers: {
-      'Authorization': token,
-      'UserId': userId.toString(),
-    });
+    _stompClient.send(
+        destination: '/comment-overflow/user/read-chats/delete',
+        headers: {
+          'Authorization': token,
+          'UserId': userId.toString(),
+        });
+  }
+
+  Future deleteChat(int chatterId) async {
+    String token = await GeneralUtils.getCurrentToken();
+    int userId = await GeneralUtils.getCurrentUserId();
+    _stompClient.send(
+        destination: '/comment-overflow/user/chat/delete',
+        headers: {
+          'Authorization': token,
+          'UserId': userId.toString(),
+          'ChatterId': chatterId.toString(),
+        });
   }
 
   Future init() async {
