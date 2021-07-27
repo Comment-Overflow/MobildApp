@@ -1,6 +1,8 @@
 import 'package:comment_overflow/assets/constants.dart';
 import 'package:comment_overflow/assets/custom_styles.dart';
 import 'package:comment_overflow/model/comment.dart';
+import 'package:comment_overflow/service/notification_service.dart';
+import 'package:comment_overflow/service/post_service.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
@@ -47,11 +49,19 @@ class _ApprovalButtonState extends State<ApprovalButton> {
             case ApprovalStatus.disapprove:
               break;
             case ApprovalStatus.approve:
+              NotificationService.deleteApproval(
+                  widget._comment.id,
+                  widget._comment.user.userId,
+                  ApprovalStatus.approve);
               setState(() {
                 widget._comment.subApprovals();
               });
               break;
             case ApprovalStatus.none:
+              NotificationService.postApproval(
+                widget._comment.id,
+                widget._comment.user.userId,
+                ApprovalStatus.approve);
               setState(() {
                 widget._comment.addApprovals();
               });

@@ -1,4 +1,5 @@
 import 'package:comment_overflow/assets/custom_styles.dart';
+import 'package:comment_overflow/service/notification_service.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
@@ -30,10 +31,13 @@ class _StarButtonState extends State<StarButton> {
   Widget build(BuildContext context) {
     return TextButton(
         onPressed: () {
+          if (_stared) {
+            NotificationService.deleteStar(widget._userId, widget._postId);
+          } else {
+            NotificationService.postStar(widget._userId, widget._postId);
+          }
           setState(() {
             _stared = !_stared;
-
-            /// Send request here
           });
         },
         child: Column(
