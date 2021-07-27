@@ -138,6 +138,9 @@ class Constants {
   static const String imageLastMessage = '[图片]';
 
   static const String imageFailPrompt = '图片加载失败';
+
+  static const String imageReloadPrompt = '点击重新加载';
+
 }
 
 enum FollowStatus {

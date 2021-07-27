@@ -118,65 +118,65 @@ class ChatMessage extends StatelessWidget {
               BoxConstraints(maxWidth: Constants.defaultMaxBubbleWidth),
           child: Text(_message.content, textAlign: TextAlign.left));
     else if (_message.type == MessageType.Image)
-      return ExtendedImage.network(
-        _message.content,
-        fit: BoxFit.scaleDown,
-        width: Constants.defaultMaxBubbleWidth,
-        cache: false,
-        // enableLoadState: true,
-        loadStateChanged: (ExtendedImageState state) {
-          switch (state.extendedImageLoadState) {
-            case LoadState.loading:
-              return SizedBox(
-                width: Constants.defaultMaxBubbleWidth,
-                height: Constants.defaultMaxBubbleWidth * 0.5,
-                child: CupertinoActivityIndicator(
-                  radius: Constants.defaultChatRoomFontSize * 0.7,
-                ),
-              );
-
-            case LoadState.completed:
-              return null;
-            // return state.completedWidget;
-            // return FadeTransition(
-            //   opacity: ,
-            //   child: ExtendedRawImage(
-            //     image: state.extendedImageInfo?.image,
-            //   ),
-            // );
-            case LoadState.failed:
-              return GestureDetector(
-                // child: Text(Constants.imageFailPrompt),
-                child: Stack(
-                  fit: StackFit.loose,
-                  children: <Widget>[
-                    SizedBox(
-                      width: Constants.defaultMaxBubbleWidth,
-                      child: Center(
-                        child: Image.asset(
-                          "assets/images/image_loading_fail.png",
-                          width: Constants.defaultMaxBubbleWidth * 0.8,
-                          fit: BoxFit.scaleDown,
+      return ConstrainedBox(
+        constraints: BoxConstraints(
+          maxWidth: Constants.defaultMaxBubbleWidth,
+        ),
+        child: ExtendedImage.network(
+          _message.content,
+          fit: BoxFit.scaleDown,
+          cache: true,
+          loadStateChanged: (ExtendedImageState state) {
+            switch (state.extendedImageLoadState) {
+              case LoadState.loading:
+                return SizedBox(
+                  width: Constants.defaultMaxBubbleWidth * 0.5,
+                  height: Constants.defaultMaxBubbleWidth * 0.5,
+                  child: CupertinoActivityIndicator(
+                    radius: Constants.defaultChatRoomFontSize * 0.7,
+                  ),
+                );
+              case LoadState.completed:
+                return null;
+              case LoadState.failed:
+                return GestureDetector(
+                  child: SizedBox(
+                    width: Constants.defaultMaxBubbleWidth * 0.5,
+                    child: Center(
+                      child: Padding(
+                        padding: const EdgeInsets.symmetric(
+                            vertical: Constants.defaultMaxBubbleWidth * 0.1),
+                        child: Column(
+                          mainAxisSize: MainAxisSize.min,
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          children: [
+                            Image.asset(
+                              "assets/images/image_loading_fail.png",
+                              width: Constants.defaultMaxBubbleWidth * 0.15,
+                              fit: BoxFit.scaleDown,
+                            ),
+                            SizedBox(
+                                height:
+                                    Constants.defaultChatRoomFontSize * 0.5),
+                            Text(
+                              Constants.imageReloadPrompt,
+                              style: TextStyle(
+                                fontSize:
+                                    Constants.defaultChatRoomFontSize * 0.8,
+                              ),
+                            ),
+                          ],
                         ),
                       ),
                     ),
-                    Positioned(
-                      bottom: 0.0,
-                      left: 0.0,
-                      right: 0.0,
-                      child: Text(
-                        "load image failed, click to reload",
-                        textAlign: TextAlign.center,
-                      ),
-                    )
-                  ],
-                ),
-                onTap: () {
-                  state.reLoadImage();
-                },
-              );
-          }
-        },
+                  ),
+                  onTap: () {
+                    state.reLoadImage();
+                  },
+                );
+            }
+          },
+        ),
       );
     else {
       return Image.file(
