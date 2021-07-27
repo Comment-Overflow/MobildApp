@@ -31,9 +31,8 @@ class NotificationService {
 
   static Future<Response> deleteStar(int toUserId, int postId) async {
     return await HttpUtil().dio.delete('/records/stars',
-        data: {'toUserId': toUserId, 'postId': postId});
+        queryParameters: {'postId': postId});
   }
-
   static Future<Response> deleteApproval(
       int commentId, int toUserId, ApprovalStatus status) async {
     return await HttpUtil().dio.delete('/records/approvals', data: {
@@ -47,5 +46,11 @@ class NotificationService {
     return await HttpUtil()
         .dio
         .post('/records/followers', queryParameters: {'toUserId': toUserId});
+  }
+
+  static Future<Response> deleteFollow(int toUserId) async {
+    return await HttpUtil()
+        .dio
+        .delete('/records/followers', queryParameters: {'toUserId': toUserId});
   }
 }
