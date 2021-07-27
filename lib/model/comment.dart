@@ -34,8 +34,8 @@ class Comment {
 
     ApprovalStatus status;
     if (statusString == "APPROVAL") status = ApprovalStatus.approve;
-    if (statusString == "DISAPPROVAL") status = ApprovalStatus.disapprove;
-    status = ApprovalStatus.none;
+    else if (statusString == "DISAPPROVAL") status = ApprovalStatus.disapprove;
+    else status = ApprovalStatus.none;
 
     return Comment(
         json['id'] as int,

@@ -121,10 +121,6 @@ class _PostPageState extends State<PostPage> {
                 value: SortPolicy.latest,
                 child: Text("最近回复"),
               ),
-              const PopupMenuItem(
-                value: SortPolicy.hottest,
-                child: Text("最热回复"),
-              ),
             ]);
   }
 
