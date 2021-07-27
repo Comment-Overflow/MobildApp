@@ -54,6 +54,7 @@ class _NotificationCardListState extends State<NotificationCardList> {
         this._pagingManager =
             PagingManager(Constants.defaultNotificationPageSize, (page, pageSize) async {
               var jsonArray = (await NotificationService.getNotification(page, pageSize, "/notifications/followers")).data as List;
+              print(jsonArray);
               return jsonArray.map((json) => FollowRecord.fromJson(json)).toList();
             }, _itemBuilder);
         break;

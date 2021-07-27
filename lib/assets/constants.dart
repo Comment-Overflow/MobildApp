@@ -185,3 +185,10 @@ enum Setting {
 }
 
 enum PostTag { Life, Study, Art, Mood, Career }
+
+Map<String, FollowStatus> followStatusMap = {
+  "NONE": FollowStatus.none,
+  "FOLLOWED_BY_ME": FollowStatus.followedByMe,
+  "FOLLOWING_ME": FollowStatus.followingMe,
+  "BOTH": FollowStatus.both,
+};

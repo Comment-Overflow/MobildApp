@@ -66,14 +66,13 @@ class FollowRecord {
 
   factory FollowRecord.fromJson(dynamic json) {
     int timestamp = json['timestamp'] as int;
-    var followStatus = FollowStatus.followingMe;
-    bool isMutual = json['isMutual'] as bool;
-    if (isMutual) followStatus = FollowStatus.both;
     return FollowRecord(
         UserInfo(
-            json['fromUserUserId'] as int, json['fromUserUserName'] as String),
+            json['fromUserUserId'] as int, json['fromUserUserName'] as String,
+            avatarUrl: json['fromUserAvatar'] == null ? null : json['fromUserAvatar'] as String
+        ),
         DateTime.fromMillisecondsSinceEpoch(timestamp),
-        followStatus);
+        followStatusMap[json['followStatus'] as String]!);
   }
 }
 
