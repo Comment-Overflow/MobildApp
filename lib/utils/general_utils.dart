@@ -55,4 +55,18 @@ class GeneralUtils {
     if (userId == null) throw UserUnauthorizedException();
     return int.parse(userId);
   }
+
+  static FollowStatus getFollowStatus(String str) {
+    switch (str) {
+      case 'FOLLOWED_BY_ME':
+        return FollowStatus.followedByMe;
+      case 'FOLLOWING_ME':
+        return FollowStatus.followingMe;
+      case 'BOTH':
+        return FollowStatus.both;
+      case 'NONE':
+      default:
+        return FollowStatus.none;
+    }
+  }
 }

@@ -22,8 +22,7 @@ class _PostCardListState extends State<PostCardList> {
   final PagingManager<Post> _pagingManager =
       PagingManager(Constants.defaultPageSize, (page, pageSize) async {
     var response = await PostService.getPosts(
-      PostQueryDTO(tag: PostTag.Life, pageNum: page, pageSize: pageSize)
-    );
+        PostQueryDTO(tag: PostTag.Life, pageNum: page, pageSize: pageSize));
     var postObjJson = response.data['content'] as List;
     return postObjJson.map((e) => Post.fromJson(e)).toList();
   }, (context, item, index) => PostCard(item));
