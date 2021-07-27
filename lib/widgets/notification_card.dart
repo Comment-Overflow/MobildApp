@@ -136,6 +136,7 @@ class FollowNotificationCard extends StatelessWidget {
                     verticalGap: 12.0,
                   ),
                   FollowButton(
+                    _followRecord.userInfo.userId,
                     _followRecord.userInfo.userName,
                     _followRecord.followStatus,
                   ),

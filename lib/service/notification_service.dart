@@ -36,4 +36,10 @@ class NotificationService {
       'status': statusString[status]
     });
   }
+
+  static Future<Response> postFollow(int toUserId) async {
+    return await HttpUtil()
+        .dio
+        .post('/records/followers', queryParameters: {'toUserId': toUserId});
+  }
 }
