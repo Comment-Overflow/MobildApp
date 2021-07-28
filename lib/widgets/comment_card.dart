@@ -42,6 +42,8 @@ class _CommentCardState extends State<CommentCard>
   final List<AssetEntity> _assets = <AssetEntity>[];
   final TextEditingController _replyController = TextEditingController();
 
+  bool _hasHighlighted = false;
+
   @override
   void initState() {
     _animationController = AnimationController(
@@ -62,110 +64,114 @@ class _CommentCardState extends State<CommentCard>
 
   @override
   Widget build(BuildContext context) {
-    if (widget._highlight) _highlightComment();
+    if (widget._highlight && !_hasHighlighted) {
+      _highlightComment();
+      _hasHighlighted = true;
+    }
     return AnimatedBuilder(
-      animation: _colorTween,
-      builder: (context, child) => Card(
-        color: _colorTween.value,
-        elevation: Constants.defaultCardElevation,
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.all(Radius.circular(10.0)),
-        ),
-        child: InkWell(
-          onTap: () {},
-          child: Padding(
-            padding: EdgeInsets.only(
-                left: Constants.defaultCardPadding,
-                right: Constants.defaultCardPadding,
-                top: Constants.defaultCardPadding,
-                bottom: widget._comment.floor == 0
-                    ? Constants.defaultCardPadding
-                    : Constants.defaultCardPadding / 4),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                ...(widget._comment.floor == 0 && widget._title.isNotEmpty
-                    ? [_buildTitle(), _gap]
-                    : [SizedBox.shrink()]),
-                Row(
-                  children: [
-                    Expanded(
-                      child: UserAvatarWithName(
-                        widget._comment.user.userName,
-                        Constants.defaultAvatarInCommentSize,
-                        image: widget._comment.user.avatarUrl == null
-                            ? null
-                            : NetworkImage(widget._comment.user.avatarUrl!),
+        animation: _colorTween,
+        builder: (context, child) => Card(
+              color: _colorTween.value,
+              elevation: Constants.defaultCardElevation,
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.all(Radius.circular(10.0)),
+              ),
+              child: InkWell(
+                onTap: () {},
+                child: Padding(
+                  padding: EdgeInsets.only(
+                      left: Constants.defaultCardPadding,
+                      right: Constants.defaultCardPadding,
+                      top: Constants.defaultCardPadding,
+                      bottom: widget._comment.floor == 0
+                          ? Constants.defaultCardPadding
+                          : Constants.defaultCardPadding / 4),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      ...(widget._comment.floor == 0 && widget._title.isNotEmpty
+                          ? [_buildTitle(), _gap]
+                          : [SizedBox.shrink()]),
+                      Row(
+                        children: [
+                          Expanded(
+                            child: UserAvatarWithName(
+                              widget._comment.user.userName,
+                              Constants.defaultAvatarInCommentSize,
+                              image: widget._comment.user.avatarUrl == null
+                                  ? null
+                                  : NetworkImage(
+                                      widget._comment.user.avatarUrl!),
+                            ),
+                          ),
+                          Text(
+                            widget._comment.timeString,
+                            style: CustomStyles.dateStyle,
+                            textAlign: TextAlign.right,
+                          ),
+                          SizedBox(width: 10),
+                          Text(
+                            widget._comment.floor > 0
+                                ? widget._comment.floorString + '楼'
+                                : "",
+                            style: CustomStyles.floorStyle,
+                            textAlign: TextAlign.right,
+                          ),
+                        ],
                       ),
-                    ),
-                    Text(
-                      widget._comment.timeString,
-                      style: CustomStyles.dateStyle,
-                      textAlign: TextAlign.right,
-                    ),
-                    SizedBox(width: 10),
-                    Text(
+                      _gap,
+                      widget._comment.quote == null
+                          ? SizedBox.shrink()
+                          : Row(
+                              mainAxisSize: MainAxisSize.min,
+                              children: [
+                                _gap,
+                                Expanded(
+                                    child: QuoteCard(widget._comment.quote)),
+                              ],
+                            ),
+                      _gap,
+                      Text(
+                        widget._comment.content,
+                      ),
+                      _gap,
+                      ImageList(widget._comment.imageUrl),
                       widget._comment.floor > 0
-                          ? widget._comment.floorString + '楼'
-                          : "",
-                      style: CustomStyles.floorStyle,
-                      textAlign: TextAlign.right,
-                    ),
-                  ],
+                          ? Row(
+                              mainAxisSize: MainAxisSize.max,
+                              mainAxisAlignment: MainAxisAlignment.end,
+                              children: [
+                                ApprovalButton.horizontal(
+                                  comment: widget._comment,
+                                  userId: 1,
+                                  size: _iconSize,
+                                ),
+                                DisapprovalButton(
+                                  comment: widget._comment,
+                                  userId: 1,
+                                  size: _iconSize,
+                                  showText: false,
+                                ),
+                                IconButton(
+                                  splashColor: Colors.transparent,
+                                  icon: CustomStyles.getDefaultReplyIcon(
+                                      size: _iconSize),
+                                  onPressed: _pushReply,
+                                ),
+                                IconButton(
+                                  splashColor: Colors.transparent,
+                                  icon: CustomStyles.getDefaultDeleteIcon(
+                                      size: _iconSize),
+                                  onPressed: () => {},
+                                ),
+                              ],
+                            )
+                          : SizedBox.shrink(),
+                    ],
+                  ),
                 ),
-                _gap,
-                widget._comment.quote == null
-                    ? SizedBox.shrink()
-                    : Row(
-                        mainAxisSize: MainAxisSize.min,
-                        children: [
-                          _gap,
-                          Expanded(child: QuoteCard(widget._comment.quote)),
-                        ],
-                      ),
-                _gap,
-                Text(
-                  widget._comment.content,
-                ),
-                _gap,
-                ImageList(widget._comment.imageUrl),
-                widget._comment.floor > 0
-                    ? Row(
-                        mainAxisSize: MainAxisSize.max,
-                        mainAxisAlignment: MainAxisAlignment.end,
-                        children: [
-                          ApprovalButton.horizontal(
-                            comment: widget._comment,
-                            userId: 1,
-                            size: _iconSize,
-                          ),
-                          DisapprovalButton(
-                            comment: widget._comment,
-                            userId: 1,
-                            size: _iconSize,
-                            showText: false,
-                          ),
-                          IconButton(
-                            splashColor: Colors.transparent,
-                            icon: CustomStyles.getDefaultReplyIcon(
-                                size: _iconSize),
-                            onPressed: _pushReply,
-                          ),
-                          IconButton(
-                            splashColor: Colors.transparent,
-                            icon: CustomStyles.getDefaultDeleteIcon(
-                                size: _iconSize),
-                            onPressed: () => {},
-                          ),
-                        ],
-                      )
-                    : SizedBox.shrink(),
-              ],
-            ),
-          ),
-        ),
-      ),
-    );
+              ),
+            ));
   }
 
   Future _highlightComment() async {

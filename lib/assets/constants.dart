@@ -101,7 +101,7 @@ class Constants {
   /// Default nine-pattern spacing.
   static const defaultNinePatternSpacing = 6.0;
 
-  static const defaultHighlightTime = 2000;
+  static const defaultHighlightTime = 1500;
 
   static const maxSearchHistory = 20;
 

@@ -43,7 +43,7 @@ class CommentPagingManager<T> {
   // _customItemBuilder should be a function with parameters
   // (context, item, index), and must return a widget displayed as list item
   // such as
-  final Widget Function(BuildContext, dynamic, int) _customItemBuilder;
+  final _customItemBuilder;
 
   // Check prevent manipulation of paging controller after disposal.
   bool _disposed = false;
@@ -93,9 +93,7 @@ class CommentPagingManager<T> {
     try {
       final newItems = await _customFetchApi(pageKey ~/ _pageSize, _pageSize);
 
-      if (this._disposed) {
-        return;
-      }
+      if (this._disposed) {}
 
       final isCurrentlyLastPage = newItems.length < _pageSize;
 
@@ -333,7 +331,14 @@ class CommentPagingManager<T> {
       }
     } else {
       // print('card');
-      return _customItemBuilder(context, item, index);
+      bool _shouldHighlight =
+          !jumpFloorValues._hasHighlighted && index == _initialIndex;
+      if (_shouldHighlight) {
+        jumpFloorValues._hasHighlighted = true;
+      }
+      Widget _widget =
+          _customItemBuilder(context, item, index, highlight: _shouldHighlight);
+      return _widget;
     }
   }
 }
@@ -343,6 +348,7 @@ class JumpFloorValues {
   bool _firstTimeFetch = true;
   bool _firstJumpCompleted = false;
   bool _hasFirstScrolled = false;
+  bool _hasHighlighted = false;
   int _recentlyFetchedTopIndex;
   int _recentlyBuiltTopIndex;
 

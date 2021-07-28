@@ -1,5 +1,3 @@
-import 'dart:math';
-
 import 'package:comment_overflow/assets/constants.dart';
 import 'package:comment_overflow/model/comment.dart';
 import 'package:comment_overflow/model/post.dart';
@@ -13,9 +11,11 @@ import 'comment_paging_manager.dart';
 
 class CommentCardList extends StatefulWidget {
   final Post _post;
-  final int _pageIndex = 24;
+  final int _pageIndex;
 
-  CommentCardList(this._post, {Key? key}) : super(key: key);
+  CommentCardList(this._post, {Key? key, pageIndex: 0})
+      : _pageIndex = pageIndex,
+        super(key: key);
 
   @override
   _CommentCardListState createState() =>
@@ -38,9 +38,14 @@ class _CommentCardListState extends State<CommentCardList> {
             var commentObjJson = response.data['content'] as List;
             return commentObjJson.map((e) => Comment.fromJson(e)).toList();
           },
-          (context, item, index) => (item as Comment).floor == 0
-              ? CommentCard(item, post.postId, title: post.title)
-              : CommentCard(item, post.postId),
+          (context, item, index, {highlight: false}) =>
+              (item as Comment).floor == 0
+                  ? CommentCard(item, post.postId, title: post.title)
+                  : CommentCard(
+                      item,
+                      post.postId,
+                      highlight: highlight,
+                    ),
           initialIndex: pageIndex,
         );
 
