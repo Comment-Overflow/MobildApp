@@ -13,8 +13,6 @@ import 'package:flutter/material.dart';
 import 'package:comment_overflow/assets/constants.dart';
 import 'package:comment_overflow/assets/custom_styles.dart';
 import 'package:comment_overflow/widgets/chat_message.dart';
-import 'package:uuid/uuid.dart';
-import 'package:uuid/uuid_util.dart';
 import 'package:wechat_assets_picker/wechat_assets_picker.dart';
 import 'package:provider/provider.dart';
 
@@ -35,6 +33,7 @@ class PrivateChatPageState extends State<PrivateChatPage> {
   List<Message> _messages = [];
   int _currentPageNumber = 0;
   int _totalPageNumber = 0;
+  int _newMessageCount = 0;
 
   @override
   void initState() {
@@ -169,7 +168,7 @@ class PrivateChatPageState extends State<PrivateChatPage> {
 
   Future _getChatHistory() async {
     Response<dynamic> response = await ChatService.getChatHistory(
-        widget._chatter.userId, _currentPageNumber);
+        widget._chatter.userId, _newMessageCount, _currentPageNumber);
     List messagesResponse = response.data['content'] as List;
     setState(() {
       if (_currentPageNumber == 0)
@@ -228,6 +227,7 @@ class PrivateChatPageState extends State<PrivateChatPage> {
       setState(() {
         message.status = MessageStatus.Normal;
         message.time = DateTime.parse(response.data);
+        _newMessageCount++;
       });
       context.read<RecentChatsProvider>().updateLastMessageRead(
           widget._chatter, message.getLastMessageContent(), message.time!);
@@ -241,6 +241,7 @@ class PrivateChatPageState extends State<PrivateChatPage> {
   void _onReceiveMessage(Message message) {
     setState(() {
       _messages.insert(0, message);
+      _newMessageCount++;
     });
     context.read<RecentChatsProvider>().updateLastMessageRead(
         widget._chatter, message.getLastMessageContent(), message.time!);

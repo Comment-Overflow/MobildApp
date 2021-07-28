@@ -42,11 +42,11 @@ class ChatService {
     return HttpUtil().dio.post('/chat/image', data: formData);
   }
 
-  static Future<Response> getChatHistory(int chatterId, int pageNumber) async {
+  static Future<Response> getChatHistory(int chatterId, int newMessageCount, int pageNumber) async {
     return HttpUtil().dio.get('/chat-history', queryParameters: {
       'chatterId': chatterId,
-      'pageNum': pageNumber,
-      'pageSize': Constants.HTTPChatHistoryPage,
+      'offset': newMessageCount + pageNumber * Constants.HTTPChatHistoryPage,
+      'limit': Constants.HTTPChatHistoryPage,
     });
   }
 

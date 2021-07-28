@@ -21,7 +21,7 @@ class RecentChatsProvider extends ChangeNotifier {
   void add(Chat chat) {
     GlobalUtils.mutex.protect(() async {
       _chatMap.putIfAbsent(chat.chatter.userId, () => chat);
-      _recentChats.add(chat);
+      _recentChats.insert(0, chat);
       _totalUnreadCount += chat.unreadCount;
     });
     notifyListeners();
@@ -67,12 +67,14 @@ class RecentChatsProvider extends ChangeNotifier {
       if (chat == null) {
         Chat newChat = Chat(chatter, lastMessageContent, time, 0);
         _chatMap.putIfAbsent(chatter.userId, () => newChat);
-        _recentChats.add(newChat);
+        _recentChats.insert(0, newChat);
       } else {
         _totalUnreadCount -= chat.unreadCount;
         chat.lastMessageContent = lastMessageContent;
         chat.time = time;
         chat.unreadCount = 0;
+        _recentChats.remove(chat);
+        _recentChats.insert(0, chat);
       }
     });
     notifyListeners();
@@ -85,12 +87,14 @@ class RecentChatsProvider extends ChangeNotifier {
         _totalUnreadCount = 1;
         Chat newChat = Chat(chatter, lastMessageContent, time, 1);
         _chatMap.putIfAbsent(chatter.userId, () => newChat);
-        _recentChats.add(newChat);
+        _recentChats.insert(0, newChat);
       } else {
         _totalUnreadCount++;
         chat.lastMessageContent = lastMessageContent;
         chat.time = time;
         chat.unreadCount++;
+        _recentChats.remove(chat);
+        _recentChats.insert(0, chat);
       }
     });
     notifyListeners();
@@ -108,17 +112,6 @@ class RecentChatsProvider extends ChangeNotifier {
   void updateTotalUnreadCount(int totalUnreadCount) {
     GlobalUtils.mutex.protect(() async {
       _totalUnreadCount = totalUnreadCount;
-    });
-  }
-
-  void _makeLatestMessage(int chatterId) {
-    GlobalUtils.mutex.protect(() async {
-      // TODO: _totalUnreadCount
-      Chat? chat = _chatMap[chatterId];
-      if (chat != null) {
-        _recentChats.remove(chat);
-        _recentChats.insert(0, chat);
-      }
     });
   }
 }
