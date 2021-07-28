@@ -1,7 +1,6 @@
 import 'dart:io';
 
 import 'package:comment_overflow/assets/constants.dart';
-import 'package:comment_overflow/assets/custom_colors.dart';
 import 'package:comment_overflow/model/chat.dart';
 import 'package:comment_overflow/model/user_info.dart';
 import 'package:comment_overflow/utils/general_utils.dart';
@@ -22,6 +21,7 @@ class ChatCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     Container card = Container(
+      color: Theme.of(context).primaryColor,
       padding: EdgeInsets.fromLTRB(
           Constants.defaultCardPadding * 0.4,
           Constants.defaultCardPadding,
