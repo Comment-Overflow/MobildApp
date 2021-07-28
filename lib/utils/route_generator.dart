@@ -14,6 +14,7 @@ import 'package:comment_overflow/pages/profile_setting_page.dart';
 import 'package:comment_overflow/pages/scroll_view_page.dart';
 import 'package:comment_overflow/pages/search_page.dart';
 import 'package:comment_overflow/pages/search_result_page.dart';
+import 'package:comment_overflow/widgets/follow_record_card_list.dart';
 import 'package:comment_overflow/widgets/image_gallery.dart';
 import 'package:comment_overflow/widgets/my_comment_card_list.dart';
 import 'package:comment_overflow/widgets/notification_card_list.dart';
@@ -50,12 +51,12 @@ class RouteGenerator {
     switch (settings.name) {
       case fansRoute:
         return MaterialPageRoute(
-          builder: (_) => ScrollViewPage(SearchedUserCardList(''),
+          builder: (_) => ScrollViewPage(FollowRecordCardList(FollowStatus.followingMe),
               (args as UserNameIdDto).userName + '的粉丝'),
         );
       case followersRoute:
         return MaterialPageRoute(
-            builder: (_) => ScrollViewPage(SearchedUserCardList(''),
+            builder: (_) => ScrollViewPage(FollowRecordCardList(FollowStatus.followedByMe),
                 (args as UserNameIdDto).userName + '的关注'));
       case approveMeRoute:
         return MaterialPageRoute(
