@@ -79,8 +79,8 @@ class _FollowButtonState extends State<FollowButton> {
               setState(() {
                 _isLoading = false;
                 _followStatus = _isOtherFollowing
-                    ? FollowStatus.followedByMe
-                    : FollowStatus.both;
+                    ? FollowStatus.both
+                    : FollowStatus.followedByMe;
               });
             });
           }
