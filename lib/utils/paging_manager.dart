@@ -2,6 +2,7 @@ import 'package:comment_overflow/widgets/adaptive_refresher.dart';
 import 'package:empty_widget/empty_widget.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/rendering.dart';
 import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
 import 'package:scroll_to_index/scroll_to_index.dart';
 
@@ -11,7 +12,7 @@ class PagingManager<T> {
     height: 25.0,
     child: const CupertinoActivityIndicator(),
   );
-  final _pageSize;
+  final int _pageSize;
   late final AutoScrollController _autoScrollController = AutoScrollController(
     viewportBoundaryGetter: () => Rect.fromLTRB(0, 0, 0, 10.0),
     axis: Axis.vertical,
@@ -39,16 +40,13 @@ class PagingManager<T> {
 
   // Check prevent manipulation of paging controller after disposal.
   bool _disposed = false;
-  // Should the list be able to auto scroll.
-  bool _enableAutoScroll;
   // Title for empty indicator.
   String? _emptyIndicatorTitle;
   String? _emptyIndicatorSubtitle;
 
   PagingManager(this._pageSize, this._customFetchApi, this._customItemBuilder,
       {enableAutoScroll = false, emptyIndicatorTitle, emptyIndicatorSubtitle})
-      : this._enableAutoScroll = enableAutoScroll,
-        this._emptyIndicatorTitle = emptyIndicatorTitle,
+      : this._emptyIndicatorTitle = emptyIndicatorTitle,
         this._emptyIndicatorSubtitle = emptyIndicatorSubtitle {
     this._wrappedFetchApi = (pageKey) {
       _fetchPage(pageKey);
@@ -92,7 +90,6 @@ class PagingManager<T> {
     if (_disposed == false) {
       _disposed = true;
       _pagingController.dispose();
-      _autoScrollController.dispose();
     }
   }
 
@@ -100,22 +97,15 @@ class PagingManager<T> {
   /// Refreshing programmatically is always doable.
   Widget getListView({refreshable = true}) {
     PagedListView<int, T> listView = PagedListView<int, T>(
-      scrollController: _enableAutoScroll ? _autoScrollController : null,
       pagingController: _pagingController,
       builderDelegate: PagedChildBuilderDelegate<T>(
         animateTransitions: true,
         transitionDuration: const Duration(milliseconds: 200),
-        itemBuilder: _enableAutoScroll
-            ? (context, item, index) => AutoScrollTag(
-                  key: ValueKey(index),
-                  controller: _autoScrollController,
-                  index: index,
-                  child: _customItemBuilder(context, item, index),
-                )
-            : (context, item, index) =>
-                _customItemBuilder(context, item, index),
+        itemBuilder: (context, item, index) =>
+            _customItemBuilder(context, item, index),
         firstPageProgressIndicatorBuilder: (_) => Container(),
         noItemsFoundIndicatorBuilder: (_) => buildEmptyWidget(),
+        noMoreItemsIndicatorBuilder: (_) => buildNoMoreItemsIndicator(),
       ),
     );
 
@@ -156,4 +146,11 @@ class PagingManager<T> {
           color: Color(0xffabb8d6),
         ),
       ));
+
+  buildNoMoreItemsIndicator() =>
+      Column(crossAxisAlignment: CrossAxisAlignment.center, children: [
+        Padding(
+            padding: EdgeInsets.symmetric(vertical: 20.0),
+            child: Text('-  暂时没有更多内容  -', style: TextStyle(color: Colors.grey)))
+      ]);
 }

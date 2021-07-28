@@ -67,7 +67,7 @@ class _PostPageState extends State<PostPage> {
           onPressed: _pushReply,
           child: CustomStyles.getDefaultReplyIcon(
               size: Constants.defaultFabIconSize, color: Colors.white)),
-      body: CommentCardList(widget._post, this._sortPolicy),
+      body: CommentCardList(widget._post),
       bottomNavigationBar: StatefulBuilder(
           builder: (BuildContext context, StateSetter bottomSetter) {
         int _usrId = widget._post.commentToDisplay.user.userId;
