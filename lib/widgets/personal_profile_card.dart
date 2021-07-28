@@ -122,6 +122,7 @@ class PersonalProfileCard extends StatelessWidget {
                   flex: 25,
                   child: MultipleWidgetButton(
                     RouteGenerator.followersRoute,
+                      () => {},
                     [
                       Text(
                         GeneralUtils.getDefaultNumberString(
@@ -142,6 +143,7 @@ class PersonalProfileCard extends StatelessWidget {
                   flex: 25,
                   child: MultipleWidgetButton(
                     RouteGenerator.fansRoute,
+                        () => {},
                     [
                       Text(
                         GeneralUtils.getDefaultNumberString(
@@ -162,6 +164,7 @@ class PersonalProfileCard extends StatelessWidget {
                   flex: 25,
                   child: MultipleWidgetButton(
                     null,
+                        () => {},
                     [
                       Text(
                         GeneralUtils.getDefaultNumberString(
@@ -180,6 +183,7 @@ class PersonalProfileCard extends StatelessWidget {
                   flex: 25,
                   child: MultipleWidgetButton(
                     null,
+                        () => {},
                     [
                       Text(
                         GeneralUtils.getDefaultNumberString(
