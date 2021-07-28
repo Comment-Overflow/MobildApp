@@ -138,9 +138,10 @@ enum FollowStatus {
   followingMe,
   both,
 }
-enum Sex {
+enum Gender {
   male,
   female,
+  secret,
 }
 
 enum ApprovalStatus {
@@ -197,4 +198,10 @@ Map<ApprovalStatus, String> statusString = {
   ApprovalStatus.approve : "APPROVAL",
   ApprovalStatus.disapprove : "DISAPPROVAL",
   ApprovalStatus.none : "NONE"
+};
+
+Map<String, Gender> genderMap = {
+  "MALE": Gender.male,
+  "FEMALE": Gender.female,
+  "SECRET": Gender.secret
 };
