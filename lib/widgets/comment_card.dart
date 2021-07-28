@@ -1,9 +1,13 @@
 import 'package:comment_overflow/assets/custom_colors.dart';
 import 'package:comment_overflow/model/quote.dart';
+import 'package:comment_overflow/service/post_service.dart';
+import 'package:comment_overflow/utils/general_utils.dart';
+import 'package:comment_overflow/utils/message_box.dart';
 import 'package:comment_overflow/widgets/approval_button.dart';
 import 'package:comment_overflow/widgets/disapproval_button.dart';
 import 'package:comment_overflow/widgets/image_list.dart';
 import 'package:comment_overflow/widgets/quote_card.dart';
+import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 
 import 'package:comment_overflow/assets/constants.dart';
@@ -13,6 +17,7 @@ import 'package:comment_overflow/widgets/user_avatar_with_name.dart';
 import 'package:flutter/widgets.dart';
 import 'package:wechat_assets_picker/wechat_assets_picker.dart';
 
+import 'adaptive_alert_dialog.dart';
 import 'multiple_input_field.dart';
 
 class CommentCard extends StatefulWidget {
@@ -117,7 +122,7 @@ class _CommentCardState extends State<CommentCard>
                 widget._comment.quote == null
                     ? SizedBox.shrink()
                     : Row(
-                        mainAxisSize: MainAxisSize.min,
+                        mainAxisSize: MainAxisSize.max,
                         children: [
                           _gap,
                           Expanded(child: QuoteCard(widget._comment.quote)),
@@ -130,36 +135,34 @@ class _CommentCardState extends State<CommentCard>
                 _gap,
                 ImageList(widget._comment.imageUrl),
                 widget._comment.floor > 0
-                    ? Row(
-                        mainAxisSize: MainAxisSize.max,
-                        mainAxisAlignment: MainAxisAlignment.end,
-                        children: [
-                          ApprovalButton.horizontal(
-                            comment: widget._comment,
-                            userId: 1,
-                            size: _iconSize,
-                          ),
-                          DisapprovalButton(
-                            comment: widget._comment,
-                            userId: 1,
-                            size: _iconSize,
-                            showText: false,
-                          ),
-                          IconButton(
-                            splashColor: Colors.transparent,
-                            icon: CustomStyles.getDefaultReplyIcon(
-                                size: _iconSize),
-                            onPressed: _pushReply,
-                          ),
-                          IconButton(
-                            splashColor: Colors.transparent,
-                            icon: CustomStyles.getDefaultDeleteIcon(
-                                size: _iconSize),
-                            onPressed: () => {},
-                          ),
-                        ],
+                ? Row(
+                    mainAxisSize: MainAxisSize.max,
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    children: [
+                      ApprovalButton.horizontal(
+                        comment: widget._comment,
+                        userId: widget._comment.user.userId,
+                        size: _iconSize,
+                      ),
+                      DisapprovalButton(
+                        comment: widget._comment,
+                        userId: widget._comment.user.userId,
+                        size: _iconSize,
+                        showText: false,
+                      ),
+                      IconButton(
+                        splashColor: Colors.transparent,
+                        icon: CustomStyles.getDefaultReplyIcon(
+                            size: _iconSize),
+                        onPressed: _pushReply,
+                      ),
+                      FutureBuilder(
+                        future: _getUserId(),
+                        builder: _buildDeleteButton,
                       )
-                    : SizedBox.shrink(),
+                    ],
+                  )
+                : SizedBox.shrink(),
               ],
             ),
           ),
@@ -186,16 +189,73 @@ class _CommentCardState extends State<CommentCard>
 
   void _pushReply() {
     showModalBottomSheet(
-        isScrollControlled: true, // !important
-        context: context,
-        builder: (_) {
-          return MultipleInputField(
-            postId: widget._postId,
-            context: context,
-            textController: _replyController,
-            assets: _assets,
-            quote: Quote.fromComment(widget._comment),
-          );
-        });
+      isScrollControlled: true, // !important
+      context: context,
+      builder: (_) {
+        return MultipleInputField(
+          postId: widget._postId,
+          context: context,
+          textController: _replyController,
+          assets: _assets,
+          quote: Quote.fromComment(widget._comment),
+        );
+      });
+  }
+
+  Future<void> _deleteComment() async {
+    try {
+      await PostService.deleteComment(widget._comment.id);
+    } on DioError catch (e) {
+      print(e.message);
+    }
+  }
+
+  Future<int> _getUserId() async {
+    return await GeneralUtils.getCurrentUserId();
+  }
+
+  Widget _buildDeleteButton(BuildContext context, AsyncSnapshot snapshot) {
+
+    okCallback() {
+      _deleteComment();
+      Navigator.pop(context);
+      MessageBox.showToast(
+          msg: "回复已被删除，刷新以更新。",
+          messageBoxType: MessageBoxType.Success);
+    }
+
+    cancelCallback() {
+      Navigator.pop(context);
+    }
+
+    switch (snapshot.connectionState) {
+      case ConnectionState.none:
+      case ConnectionState.waiting:
+      case ConnectionState.active:
+        return SizedBox.shrink();
+      case ConnectionState.done:
+        {
+          int _userId = snapshot.data;
+          return _userId == widget._comment.user.userId
+              ? IconButton(
+                splashColor: Colors.transparent,
+                icon: CustomStyles.getDefaultDeleteIcon(
+                    size: _iconSize),
+                onPressed: () {
+                  showDialog(
+                    context: context,
+                    builder: (context) {
+                      return AdaptiveAlertDialog(
+                        "删除回复",
+                        "你确认要删除第${widget._comment.floor}楼的回复吗",
+                        "确定", "取消",
+                        okCallback,
+                        cancelCallback);
+                    });
+                },
+              )
+              : SizedBox.shrink();
+        }
+    }
   }
 }

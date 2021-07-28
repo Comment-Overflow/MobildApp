@@ -1,5 +1,3 @@
-import 'dart:convert';
-
 import 'package:comment_overflow/utils/http_util.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
@@ -10,7 +8,6 @@ class ProfileSettingService {
   }
   static void getProfile(String url, ValueSetter callback) async {
      Map<String, dynamic> json = (await HttpUtil().dio.get(url)).data;
-     print(json);
      callback(json);
   }
 }

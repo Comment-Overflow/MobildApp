@@ -164,8 +164,6 @@ enum SortPolicy {
   hottest,
 }
 
-enum NotificationType { approvePost, approveComment, collect, attention, reply }
-
 enum UserActionType {
   approval,
   follow,
@@ -198,3 +196,17 @@ enum Setting {
 enum PostTag { Life, Study, Art, Mood, Career }
 
 enum MessageStatus { Normal, Sending, Failed }
+
+Map<String, FollowStatus> followStatusMap = {
+  "NONE": FollowStatus.none,
+  "FOLLOWED_BY_ME": FollowStatus.followedByMe,
+  "FOLLOWING_ME": FollowStatus.followingMe,
+  "BOTH": FollowStatus.both,
+};
+
+Map<ApprovalStatus, String> statusString = {
+  ApprovalStatus.approve : "APPROVAL",
+  ApprovalStatus.disapprove : "DISAPPROVAL",
+  ApprovalStatus.none : "NONE"
+};
+

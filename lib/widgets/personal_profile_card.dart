@@ -215,7 +215,7 @@ class PersonalProfileCard extends StatelessWidget {
         Expanded(
           child: Padding(
             padding: const EdgeInsets.only(right: 4.0),
-            child: FollowButton(
+            child: FollowButton(_personalPageInfo.userId,
                 _personalPageInfo.userName, _personalPageInfo.followStatus),
           ),
         ),

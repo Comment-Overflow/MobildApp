@@ -52,27 +52,27 @@ class HomePage extends StatelessWidget {
                 ),
                 MediaQuery.removePadding(
                   context: context,
-                  child: PostCardList(),
+                  child: PostCardList(tag: PostTag.Life),
                   removeTop: true,
                 ),
                 MediaQuery.removePadding(
                   context: context,
-                  child: PostCardList(),
+                  child: PostCardList(tag: PostTag.Study),
                   removeTop: true,
                 ),
                 MediaQuery.removePadding(
                   context: context,
-                  child: PostCardList(),
+                  child: PostCardList(tag: PostTag.Art),
                   removeTop: true,
                 ),
                 MediaQuery.removePadding(
                   context: context,
-                  child: PostCardList(),
+                  child: PostCardList(tag: PostTag.Mood),
                   removeTop: true,
                 ),
                 MediaQuery.removePadding(
                   context: context,
-                  child: PostCardList(),
+                  child: PostCardList(tag: PostTag.Career),
                   removeTop: true,
                 ),
               ],

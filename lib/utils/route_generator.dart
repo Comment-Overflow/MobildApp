@@ -15,10 +15,10 @@ import 'package:comment_overflow/pages/profile_setting_page.dart';
 import 'package:comment_overflow/pages/scroll_view_page.dart';
 import 'package:comment_overflow/pages/search_page.dart';
 import 'package:comment_overflow/pages/search_result_page.dart';
+import 'package:comment_overflow/widgets/follow_record_card_list.dart';
 import 'package:comment_overflow/widgets/image_gallery.dart';
 import 'package:comment_overflow/widgets/notification_card_list.dart';
 import 'package:comment_overflow/widgets/pages_container.dart';
-import 'package:comment_overflow/widgets/searched_user_card_list.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
@@ -51,13 +51,15 @@ class RouteGenerator {
       case fansRoute:
         return MaterialPageRoute(
           settings: settings,
-          builder: (_) => ScrollViewPage(SearchedUserCardList(''),
+          builder: (_) => ScrollViewPage(
+              FollowRecordCardList(FollowStatus.followingMe),
               (args as UserNameIdDto).userName + '的粉丝'),
         );
       case followersRoute:
         return MaterialPageRoute(
             settings: settings,
-            builder: (_) => ScrollViewPage(SearchedUserCardList(''),
+            builder: (_) => ScrollViewPage(
+                FollowRecordCardList(FollowStatus.followedByMe),
                 (args as UserNameIdDto).userName + '的关注'));
       case approveMeRoute:
         return MaterialPageRoute(

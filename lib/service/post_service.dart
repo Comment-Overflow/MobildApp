@@ -31,4 +31,14 @@ class PostService {
         .dio
         .post('/comment', data: await newComment.formData());
   }
+  static Future<Response> deletePost(int postId) async {
+    return await HttpUtil()
+        .dio
+        .delete('/post', queryParameters: {'postId' : postId});
+  }
+  static Future<Response> deleteComment(int commentId) async {
+    return await HttpUtil()
+        .dio
+        .delete('/comment', queryParameters: {'commentId' : commentId});
+  }
 }

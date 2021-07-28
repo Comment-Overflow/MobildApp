@@ -1,3 +1,4 @@
+import 'package:badges/badges.dart';
 import 'package:comment_overflow/fake_data/fake_data.dart';
 import 'package:comment_overflow/pages/home_page.dart';
 import 'package:comment_overflow/pages/personal_page.dart';
@@ -15,6 +16,8 @@ class PagesContainer extends StatefulWidget {
 
 class _PagesContainerState extends State<PagesContainer> {
   int _index = 0;
+  //小红点，null就不显示，String就显示String的内容
+  String? badge;
   final _pages = <Widget>[
     HomePage(),
     NotificationPage(),
@@ -26,7 +29,8 @@ class _PagesContainerState extends State<PagesContainer> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: this._pages[_index],
-      bottomNavigationBar: ConvexAppBar(
+      bottomNavigationBar: ConvexAppBar.badge({1: badge},
+        badgeMargin: EdgeInsets.fromLTRB(20.0, 0.0, 0.0, 20.0),
         elevation: 0.5,
         style: TabStyle.flip,
         backgroundColor: Theme.of(context).primaryColor,

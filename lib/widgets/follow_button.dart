@@ -1,14 +1,16 @@
 import 'package:comment_overflow/assets/constants.dart';
 import 'package:comment_overflow/assets/custom_styles.dart';
+import 'package:comment_overflow/service/notification_service.dart';
 import 'package:comment_overflow/widgets/adaptive_alert_dialog.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 class FollowButton extends StatefulWidget {
+  final int _userId;
   final String userName;
   final FollowStatus _followStatus;
 
-  FollowButton(this.userName, this._followStatus, {Key? key}) : super(key: key);
+  FollowButton(this._userId, this.userName, this._followStatus, {Key? key}) : super(key: key);
 
   @override
   _FollowButtonState createState() => _FollowButtonState(this._followStatus);
@@ -22,6 +24,7 @@ class _FollowButtonState extends State<FollowButton> {
   @override
   Widget build(BuildContext context) {
     okCallback() {
+      NotificationService.deleteFollow(widget._userId);
       setState(() {
         _followStatus = FollowStatus.none;
       });
@@ -55,6 +58,7 @@ class _FollowButtonState extends State<FollowButton> {
                       cancelCallback);
                 });
           } else {
+            NotificationService.postFollow(widget._userId);
             setState(() {
               _followStatus = FollowStatus.followedByMe;
             });

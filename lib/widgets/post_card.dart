@@ -131,7 +131,10 @@ class PostCard extends StatelessWidget {
                 text: ' ${_post.commentCount} · ',
               ),
               WidgetSpan(
-                child: CustomStyles.getDefaultThumbUpIcon(),
+                child: _post.commentToDisplay.approvalStatus ==
+                    ApprovalStatus.approve
+                    ? CustomStyles.getDefaultThumbUpIcon()
+                    : CustomStyles.getDefaultNotThumbUpIcon()
               ),
               TextSpan(
                 text:

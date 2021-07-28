@@ -119,8 +119,6 @@ class _ProfileSettingPageState extends State<ProfileSettingPage> {
                   if (_isUserNameValid && _isIntroductionValid) {
                     bool errorFlag = false;
                     try{
-                      print(_userNameController.text);
-                      print(_briefController.text);
                       final response = await ProfileSettingService.putProfile("/profiles", (await formData()));
                     } on DioError catch(e) {
                       errorFlag = true;
