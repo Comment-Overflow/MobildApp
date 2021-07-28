@@ -1,4 +1,5 @@
 import 'package:bubble/bubble.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:comment_overflow/assets/custom_styles.dart';
 import 'package:comment_overflow/utils/general_utils.dart';
 import 'package:extended_image/extended_image.dart';
@@ -9,12 +10,17 @@ import 'package:comment_overflow/assets/custom_colors.dart';
 import 'package:comment_overflow/model/message.dart';
 import 'package:comment_overflow/widgets/user_avatar.dart';
 
-class ChatMessage extends StatelessWidget {
+class ChatMessage extends StatefulWidget {
   final Message _message;
   final void Function(Message) _resend;
 
   ChatMessage(this._message, this._resend, {Key? key}) : super(key: key);
 
+  @override
+  _ChatMessageState createState() => _ChatMessageState();
+}
+
+class _ChatMessageState extends State<ChatMessage> {
   @override
   Widget build(BuildContext context) {
     return FutureBuilder(
@@ -24,7 +30,7 @@ class ChatMessage extends StatelessWidget {
             return Container();
           else {
             int currentUserId = snapshot.data;
-            if (currentUserId == _message.sender.userId)
+            if (currentUserId == widget._message.sender.userId)
               return Row(
                 mainAxisSize: MainAxisSize.max,
                 mainAxisAlignment: MainAxisAlignment.end,
@@ -33,7 +39,7 @@ class ChatMessage extends StatelessWidget {
                   Row(
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
-                      _message.status == MessageStatus.Sending
+                      widget._message.status == MessageStatus.Sending
                           ? SizedBox(
                               height: Constants.defaultChatRoomFontSize,
                               width: Constants.defaultChatRoomFontSize,
@@ -41,13 +47,13 @@ class ChatMessage extends StatelessWidget {
                                   radius:
                                       Constants.defaultChatRoomFontSize * 0.5))
                           : Container(),
-                      _message.status == MessageStatus.Failed
+                      widget._message.status == MessageStatus.Failed
                           ? GestureDetector(
                               child: CustomStyles.getDefaultMessageFailIcon(
                                 size: Constants.defaultChatRoomFontSize * 1.3,
                               ),
                               onTap: () {
-                                _resend(_message);
+                                widget._resend(widget._message);
                               },
                             )
                           : Container(),
@@ -63,7 +69,7 @@ class ChatMessage extends StatelessWidget {
                             color: CustomColors.chatBubbleBlue,
                             child: _buildContent(),
                           ),
-                          _message.time == null
+                          widget._message.time == null
                               ? Container()
                               : Padding(
                                   padding: const EdgeInsets.only(
@@ -72,7 +78,7 @@ class ChatMessage extends StatelessWidget {
                                           Constants.chatTimeHorizontalPadding),
                                   child: Text(
                                     GeneralUtils.getChatTimeString(
-                                        _message.time!),
+                                        widget._message.time!),
                                     style: CustomStyles.chatMessageTimeStyle,
                                   ),
                                 ),
@@ -109,14 +115,15 @@ class ChatMessage extends StatelessWidget {
                         nip: BubbleNip.leftTop,
                         child: _buildContent(),
                       ),
-                      _message.time == null
+                      widget._message.time == null
                           ? Container()
                           : Padding(
                               padding: const EdgeInsets.only(
                                   top: Constants.chatTimeVerticalPadding,
                                   left: Constants.chatTimeHorizontalPadding),
                               child: Text(
-                                GeneralUtils.getChatTimeString(_message.time!),
+                                GeneralUtils.getChatTimeString(
+                                    widget._message.time!),
                                 style: CustomStyles.chatMessageTimeStyle,
                               ),
                             ),
@@ -129,78 +136,146 @@ class ChatMessage extends StatelessWidget {
   }
 
   Widget _buildContent() {
-    if (_message.type == MessageType.Text)
+    if (widget._message.type == MessageType.Text)
       return Container(
           constraints:
               BoxConstraints(maxWidth: Constants.defaultMaxBubbleWidth),
-          child: Text(_message.content, textAlign: TextAlign.left));
-    else if (_message.type == MessageType.Image)
-      return ConstrainedBox(
-        constraints: BoxConstraints(
-          maxWidth: Constants.defaultMaxBubbleWidth,
-        ),
-        child: ExtendedImage.network(
-          _message.content,
-          fit: BoxFit.scaleDown,
-          cache: true,
-          loadStateChanged: (ExtendedImageState state) {
-            switch (state.extendedImageLoadState) {
-              case LoadState.loading:
-                return SizedBox(
-                  width: Constants.defaultMaxBubbleWidth * 0.5,
-                  height: Constants.defaultMaxBubbleWidth * 0.5,
-                  child: CupertinoActivityIndicator(
-                    radius: Constants.defaultChatRoomFontSize * 0.7,
-                  ),
-                );
-              case LoadState.completed:
-                return null;
-              case LoadState.failed:
-                return GestureDetector(
-                  child: SizedBox(
-                    width: Constants.defaultMaxBubbleWidth * 0.5,
-                    child: Center(
-                      child: Padding(
-                        padding: const EdgeInsets.symmetric(
-                            vertical: Constants.defaultMaxBubbleWidth * 0.1),
-                        child: Column(
-                          mainAxisSize: MainAxisSize.min,
-                          crossAxisAlignment: CrossAxisAlignment.center,
-                          children: [
-                            Image.asset(
-                              "assets/images/image_loading_fail.png",
-                              width: Constants.defaultMaxBubbleWidth * 0.15,
-                              fit: BoxFit.scaleDown,
+          child: Text(widget._message.content, textAlign: TextAlign.left));
+    else if (widget._message.type == MessageType.Image)
+      return GestureDetector(
+        onTap: () {
+          Navigator.push(context, MaterialPageRoute(builder: (_) {
+            return _ImageDetailView(widget._message);
+          }));
+        },
+        child: Hero(
+          tag: widget._message.content as String,
+          child: ConstrainedBox(
+            constraints: BoxConstraints(
+              maxWidth: Constants.defaultMaxBubbleWidth,
+            ),
+            child: ExtendedImage.network(
+              widget._message.content,
+              fit: BoxFit.scaleDown,
+              cache: true,
+              loadStateChanged: (ExtendedImageState state) {
+                switch (state.extendedImageLoadState) {
+                  case LoadState.loading:
+                    return SizedBox(
+                      width: Constants.defaultMaxBubbleWidth * 0.5,
+                      height: Constants.defaultMaxBubbleWidth * 0.5,
+                      child: CupertinoActivityIndicator(
+                        radius: Constants.defaultChatRoomFontSize * 0.7,
+                      ),
+                    );
+                  case LoadState.completed:
+                    return null;
+                  case LoadState.failed:
+                    return GestureDetector(
+                      child: SizedBox(
+                        width: Constants.defaultMaxBubbleWidth * 0.5,
+                        child: Center(
+                          child: Padding(
+                            padding: const EdgeInsets.symmetric(
+                                vertical:
+                                    Constants.defaultMaxBubbleWidth * 0.1),
+                            child: Column(
+                              mainAxisSize: MainAxisSize.min,
+                              crossAxisAlignment: CrossAxisAlignment.center,
+                              children: [
+                                Image.asset(
+                                  "assets/images/image_loading_fail.png",
+                                  width: Constants.defaultMaxBubbleWidth * 0.15,
+                                  fit: BoxFit.scaleDown,
+                                ),
+                                SizedBox(
+                                    height: Constants.defaultChatRoomFontSize *
+                                        0.5),
+                                Text(
+                                  Constants.imageReloadPrompt,
+                                  style: TextStyle(
+                                    fontSize:
+                                        Constants.defaultChatRoomFontSize * 0.8,
+                                  ),
+                                ),
+                              ],
                             ),
-                            SizedBox(
-                                height:
-                                    Constants.defaultChatRoomFontSize * 0.5),
-                            Text(
-                              Constants.imageReloadPrompt,
-                              style: TextStyle(
-                                fontSize:
-                                    Constants.defaultChatRoomFontSize * 0.8,
-                              ),
-                            ),
-                          ],
+                          ),
                         ),
                       ),
-                    ),
-                  ),
-                  onTap: () {
-                    state.reLoadImage();
-                  },
-                );
-            }
-          },
+                      onTap: () {
+                        state.reLoadImage();
+                      },
+                    );
+                }
+              },
+            ),
+          ),
         ),
       );
     else {
-      return Image.file(
-        _message.content,
-        fit: BoxFit.scaleDown,
-        width: Constants.defaultMaxBubbleWidth,
+      return GestureDetector(
+        onTap: () {
+          Navigator.push(context, MaterialPageRoute(builder: (_) {
+            return _ImageDetailView(widget._message);
+          }));
+        },
+        child: Hero(
+          tag: (widget._message.content as File).path,
+          child: Image.file(
+            widget._message.content,
+            fit: BoxFit.scaleDown,
+            width: Constants.defaultMaxBubbleWidth,
+          ),
+        ),
       );
     }
+  }
+}
+
+class _ImageDetailView extends StatelessWidget {
+  final Message _message;
+
+  const _ImageDetailView(this._message, {Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return GestureDetector(
+      child: Scaffold(
+        backgroundColor: Colors.black,
+        body: Center(
+          child: Hero(
+            tag: 'imageHero',
+            child: _message.type == MessageType.Image ? _buildNetworkImage() : _buildLocalImage(),
+          ),
+        ),
+      ),
+      onTap: () {
+        Navigator.pop(context);
+      },
+    );
+  }
+
+  Widget _buildLocalImage() {
+    return Image.file(
+      _message.content as File,
+      errorBuilder: (context, object, stackTrace) => Image.asset(
+        "assets/images/image_loading_fail.png",
+        width: Constants.defaultMaxBubbleWidth * 0.5,
+        fit: BoxFit.scaleDown,
+      ),
+    );
+  }
+
+  Widget _buildNetworkImage() {
+    return CachedNetworkImage(
+      imageUrl: _message.content as String,
+      placeholder: (context, url) => CircularProgressIndicator(),
+      errorWidget: (context, url, error) => Image.asset(
+        "assets/images/image_loading_fail.png",
+        width: Constants.defaultMaxBubbleWidth * 0.5,
+        fit: BoxFit.scaleDown,
+      ),
+    );
   }
 }
