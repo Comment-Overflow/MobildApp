@@ -56,7 +56,6 @@ class MultipleInputField extends StatelessWidget {
       required TextEditingController textController,
       required List<AssetEntity> assets,
       required int postId,
-      required void Function() refreshCallback,
       Quote? quote,
       Key? key})
       : _context = context,
