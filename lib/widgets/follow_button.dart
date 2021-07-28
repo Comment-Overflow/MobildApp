@@ -33,7 +33,6 @@ class _FollowButtonState extends State<FollowButton> {
     cancelCallback() {
       Navigator.of(context).pop();
     }
-
     return SizedBox(
       height: Constants.defaultTextButtonHeight,
       child: TextButton(

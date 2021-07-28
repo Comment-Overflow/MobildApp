@@ -45,11 +45,11 @@ class UserCardInfo extends UserInfo {
 }
 
 class PersonalPageInfo extends UserCardInfo {
-  final Sex _sex;
+  final Gender _gender;
   final int _approvalCount;
   final int _followingCount;
 
-  Sex get sex => _sex;
+  Gender get gender => _gender;
 
   int get approvalCount => _approvalCount;
 
@@ -63,9 +63,16 @@ class PersonalPageInfo extends UserCardInfo {
       commentCount,
       followerCount,
       followStatus,
-      this._sex,
+      this._gender,
       this._approvalCount,
       this._followingCount)
       : super(userId, userName, avatarUrl, brief, commentCount, followerCount,
             followStatus);
+
+  factory PersonalPageInfo.fromJson(dynamic json) => PersonalPageInfo(
+      json['userId'] as int, json['userName'] as String, json['avatarUrl'] as String,
+      json['brief'] as String, json['userStatisticCommentCount'] as int, json['userStatisticFollowerCount'] as int,
+      followStatusMap[json['followStatus'] as String], genderMap[json['gender'] as String]!, json['userStatisticApprovalCount'] as int,
+      json['userStatisticFollowingCount'] as int
+  );
 }
