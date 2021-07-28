@@ -75,11 +75,9 @@ class _PostPageState extends State<PostPage> {
               buildDropDownMenu(),
               ApprovalButton(
                   comment: widget._post.commentToDisplay,
-                  userId: _usrId,
                   size: _bottomIconSize),
               DisapprovalButton(
                   comment: widget._post.commentToDisplay,
-                  userId: _usrId,
                   size: _bottomIconSize),
               StarButton(
                   initialStared: widget._post.isStarred,
