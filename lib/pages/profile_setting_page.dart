@@ -124,7 +124,7 @@ class _ProfileSettingPageState extends State<ProfileSettingPage> {
                       errorFlag = true;
                       print(e.message);
                       MessageBox.showToast(
-                          msg: "网络错误", messageBoxType: MessageBoxType.Error);
+                          msg: Constants.networkError, messageBoxType: MessageBoxType.Error);
                     }
                     if(!errorFlag) {
                       MessageBox.showToast(

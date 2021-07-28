@@ -3,17 +3,14 @@ import 'dart:io';
 import 'package:comment_overflow/assets/constants.dart';
 import 'package:comment_overflow/assets/custom_colors.dart';
 import 'package:comment_overflow/model/chat.dart';
-import 'package:comment_overflow/model/routing_dto/private_chat_page_access_dto.dart';
 import 'package:comment_overflow/model/user_info.dart';
-import 'package:comment_overflow/pages/private_chat_page.dart';
 import 'package:comment_overflow/utils/general_utils.dart';
-import 'package:comment_overflow/utils/recent_chats_provider.dart';
 import 'package:comment_overflow/utils/route_generator.dart';
 import 'package:comment_overflow/widgets/user_avatar.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
-import 'package:provider/provider.dart';
+import 'package:badges/badges.dart';
 
 class ChatCard extends StatelessWidget {
   final Chat _chat;
@@ -118,18 +115,35 @@ class ChatCard extends StatelessWidget {
 
   Widget _buildUnreadPrompt() {
     return _chat.unreadCount == 0
-        ? Container(height: 0, width: 0)
-        : CircleAvatar(
-            radius: Constants.chatListBaselineSize / 2,
-            backgroundColor: CustomColors.UnreadChatRed,
-            child: Text(
-              _chat.unreadCount.toString(),
-              style: TextStyle(
-                fontSize: Constants.chatListBaselineSize * 0.8,
-                fontWeight: FontWeight.bold,
-                color: Colors.white,
-              ),
-            ),
-          );
+        ? Container()
+        : _chat.unreadCount < 100
+            ? CircleAvatar(
+                radius: Constants.chatListBaselineSize * 0.6,
+                backgroundColor: Colors.red,
+                child: Text(
+                  GeneralUtils.getBadgeString(_chat.unreadCount)!,
+                  style: TextStyle(
+                    fontSize: _chat.unreadCount < 10
+                        ? Constants.chatListBaselineSize * 0.8
+                        : Constants.chatListBaselineSize * 0.72,
+                    color: Colors.white,
+                  ),
+                ),
+              )
+            : Badge(
+                elevation: 0,
+                toAnimate: false,
+                shape: BadgeShape.square,
+                borderRadius:
+                    BorderRadius.circular(Constants.chatListBaselineSize),
+                padding: EdgeInsets.all(Constants.chatListBaselineSize * 0.15),
+                badgeContent: Text(
+                  GeneralUtils.getBadgeString(_chat.unreadCount)!,
+                  style: TextStyle(
+                    fontSize: Constants.chatListBaselineSize * 0.7,
+                    color: Colors.white,
+                  ),
+                ),
+              );
   }
 }

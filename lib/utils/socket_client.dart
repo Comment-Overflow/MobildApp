@@ -1,7 +1,5 @@
 import 'dart:convert';
 
-import 'package:comment_overflow/assets/constants.dart';
-import 'package:comment_overflow/exceptions/user_unauthorized_exception.dart';
 import 'package:comment_overflow/model/message.dart';
 import 'package:comment_overflow/utils/recent_chats_provider.dart';
 import 'package:comment_overflow/utils/general_utils.dart';
@@ -53,7 +51,6 @@ class SocketClient {
         destination: '/user/${userId.toString()}/queue/private',
         headers: {'Authorization': token},
         callback: (frame) {
-          print(frame.body!);
           Message message = Message.fromJson(jsonDecode(frame.body!));
           if (onReceiveMessage != null) {
             onReceiveMessage!(message);

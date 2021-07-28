@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:comment_overflow/model/message.dart';
 import 'package:comment_overflow/model/user_info.dart';
 import 'package:comment_overflow/service/chat_service.dart';
+import 'package:comment_overflow/utils/message_box.dart';
 import 'package:comment_overflow/utils/my_image_picker.dart';
 import 'package:comment_overflow/utils/recent_chats_provider.dart';
 import 'package:comment_overflow/utils/socket_client.dart';
@@ -34,10 +35,10 @@ class PrivateChatPageState extends State<PrivateChatPage> {
   int _currentPageNumber = 0;
   int _totalPageNumber = 0;
   int _newMessageCount = 0;
+  bool _requireReload = false;
 
   @override
   void initState() {
-    print('Enter private chat channel with user ${widget._chatter.userId}');
     super.initState();
     SocketClient().onReceiveMessage = _onReceiveMessage;
     SocketClient().updateChat(widget._chatter.userId);
@@ -53,13 +54,10 @@ class PrivateChatPageState extends State<PrivateChatPage> {
     _textEditingController.dispose();
     _scrollController.dispose();
     super.dispose();
-    print('Leave private chat channel with user ${widget._chatter.userId}');
   }
 
   @override
   Widget build(BuildContext context) {
-    // print((ModalRoute.of(context)?.settings.arguments as UserInfo).userId);
-    // print(ModalRoute.of(context)?.settings.arguments is UserCardInfo);
     return Scaffold(
       appBar: AppBar(
         elevation: Constants.defaultAppBarElevation,
@@ -74,36 +72,41 @@ class PrivateChatPageState extends State<PrivateChatPage> {
         },
         child: Column(
           children: [
-            Expanded(
-              child: _messages.length == 0
-                  ? Container()
-                  : AdaptiveRefresher(
-                      enablePullUp: _currentPageNumber < _totalPageNumber,
-                      enablePullDown: false,
-                      onLoading: _onLoading,
-                      child: ListView.builder(
-                          controller: _scrollController,
-                          reverse: true,
-                          shrinkWrap: true,
-                          padding:
-                              EdgeInsets.all(Constants.defaultChatRoomPadding),
-                          itemCount: _messages.length,
-                          itemBuilder: (context, index) {
-                            ChatMessage chatMessage =
-                                ChatMessage(_messages[index], _resendMessage);
-                            return Container(
-                              padding: EdgeInsets.symmetric(
-                                  vertical:
-                                      Constants.defaultChatMessagePadding),
-                              child: chatMessage,
-                            );
-                          }),
-                    ),
-            ),
+            _buildChatMessages(),
             _buildTextField(),
           ],
         ),
       ),
+    );
+  }
+
+  Widget _buildChatMessages() {
+    return Expanded(
+      child: _messages.length == 0
+          ? (_requireReload
+              ? AdaptiveRefresher(
+                  onRefresh: _getChatHistory, child: Container())
+              : Container())
+          : AdaptiveRefresher(
+              enablePullUp: _currentPageNumber < _totalPageNumber,
+              enablePullDown: false,
+              onLoading: _onLoading,
+              child: ListView.builder(
+                  controller: _scrollController,
+                  reverse: true,
+                  shrinkWrap: true,
+                  padding: EdgeInsets.all(Constants.defaultChatRoomPadding),
+                  itemCount: _messages.length,
+                  itemBuilder: (context, index) {
+                    ChatMessage chatMessage =
+                        ChatMessage(_messages[index], _resendMessage);
+                    return Container(
+                      padding: EdgeInsets.symmetric(
+                          vertical: Constants.defaultChatMessagePadding),
+                      child: chatMessage,
+                    );
+                  }),
+            ),
     );
   }
 
@@ -167,17 +170,27 @@ class PrivateChatPageState extends State<PrivateChatPage> {
   }
 
   Future _getChatHistory() async {
-    Response<dynamic> response = await ChatService.getChatHistory(
-        widget._chatter.userId, _newMessageCount, _currentPageNumber);
-    List messagesResponse = response.data['content'] as List;
-    setState(() {
-      if (_currentPageNumber == 0)
-        _totalPageNumber = response.data['totalPages'] as int;
-      _currentPageNumber++;
-      for (Map messageJson in messagesResponse) {
-        _messages.add(Message.fromJson(messageJson));
-      }
-    });
+    try {
+      Response<dynamic> response = await ChatService.getChatHistory(
+          widget._chatter.userId, _newMessageCount, _currentPageNumber);
+      List messagesResponse = response.data['content'] as List;
+      setState(() {
+        if (_requireReload) _requireReload = false;
+        if (_currentPageNumber == 0)
+          _totalPageNumber = response.data['totalPages'] as int;
+        _currentPageNumber++;
+        for (Map messageJson in messagesResponse) {
+          _messages.add(Message.fromJson(messageJson));
+        }
+      });
+    } on DioError {
+      if (_messages.length == 0)
+        setState(() {
+          _requireReload = true;
+        });
+      MessageBox.showToast(
+          msg: Constants.networkError, messageBoxType: MessageBoxType.Error);
+    }
   }
 
   Future _onLoading() async {
