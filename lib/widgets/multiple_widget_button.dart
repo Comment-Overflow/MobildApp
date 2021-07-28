@@ -7,8 +7,9 @@ class MultipleWidgetButton extends StatelessWidget {
   final String? _routeName;
   final List<Widget> _widgets;
   final _arguments;
+  final VoidCallback _callback;
 
-  const MultipleWidgetButton(this._routeName, this._widgets,
+  MultipleWidgetButton(this._routeName, this._callback, this._widgets,
       {Key? key, arguments})
       : this._arguments = arguments,
         super(key: key);
@@ -19,6 +20,7 @@ class MultipleWidgetButton extends StatelessWidget {
       onTap: () async {
         if (_routeName != null)
           Navigator.pushNamed(context, _routeName!, arguments: this._arguments);
+        _callback();
       },
       child: Column(
         mainAxisSize: MainAxisSize.max,

@@ -57,6 +57,9 @@ class _NotificationButtonList extends State<NotificationButtonList> {
             flex: 25,
             child: MultipleWidgetButton(
               RouteGenerator.approveMeRoute,
+                () => this.setState(() {
+                _haveNewApprovals = false;
+              }),
               [
                 Badge(
                   child: Icon(CupertinoIcons.heart,
@@ -72,6 +75,9 @@ class _NotificationButtonList extends State<NotificationButtonList> {
             flex: 25,
             child: MultipleWidgetButton(
               RouteGenerator.replyMeRoute,
+                  () => this.setState(() {
+                    _haveNewReplies = false;
+                  }),
               [
                 Badge(
                   child: Icon(CupertinoIcons.text_bubble,
@@ -87,6 +93,9 @@ class _NotificationButtonList extends State<NotificationButtonList> {
             flex: 25,
             child: MultipleWidgetButton(
               RouteGenerator.starMeRoute,
+                  () => this.setState(() {
+                    _haveNewStars = false;
+                  }),
               [
                 Badge(
                   child: Icon(CupertinoIcons.star,
@@ -102,6 +111,9 @@ class _NotificationButtonList extends State<NotificationButtonList> {
             flex: 25,
             child: MultipleWidgetButton(
               RouteGenerator.followMeNotificationRoute,
+                  () => this.setState(() {
+                    _haveNewFollowers = false;
+                  }),
               [
                 Badge(
                   child: CustomStyles.getDefaultUnfilledFollowerIcon(
