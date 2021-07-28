@@ -4,6 +4,7 @@ import 'package:comment_overflow/model/comment.dart';
 import 'package:comment_overflow/model/quote.dart';
 import 'package:comment_overflow/model/request_dto/new_comment_dto.dart';
 import 'package:comment_overflow/service/post_service.dart';
+import 'package:comment_overflow/utils/message_box.dart';
 import 'package:comment_overflow/utils/my_image_picker.dart';
 import 'package:comment_overflow/widgets/quote_card.dart';
 import 'package:dio/dio.dart';
@@ -26,6 +27,8 @@ class MultipleInputField extends StatelessWidget {
   final Quote? _quote;
 
   final int _postId;
+
+  bool _isLoading = false;
 
   /*
     Usage:
@@ -103,12 +106,47 @@ class MultipleInputField extends StatelessWidget {
               children: [
                 _buildTextField(),
                 Padding(
-                  padding: EdgeInsets.only(right: 5.0),
-                  child: ElevatedButton(
-                    child: Text("发送"),
-                    onPressed: _pushSend,
-                  ),
-                )
+                    padding: EdgeInsets.only(right: 5.0),
+                    child: StatefulBuilder(builder: (c, s) {
+                      Future<void> _postComment() async {
+                        final dto = NewCommentDTO(
+                            postId: _postId,
+                            quoteId: _quote == null ? 0 : _quote!.commentId,
+                            content: _controller.text,
+                            assets: _assets);
+                        try {
+                          s(() {
+                            _isLoading = true;
+                          });
+                          final response = await PostService.postComment(dto);
+                          print(response);
+                          MessageBox.showToast(
+                              msg: "回复成功，经验+3！",
+                              messageBoxType: MessageBoxType.Success);
+                          s(() {
+                            _isLoading = false;
+                          });
+                          Navigator.pop(context);
+                        } on DioError catch (e) {
+                          print(e.message);
+                          MessageBox.showToast(
+                              msg: "发送回复失败: ${e.message}",
+                              messageBoxType: MessageBoxType.Error);
+                          s(() {
+                            _isLoading = false;
+                          });
+                        }
+                      }
+
+                      return _isLoading
+                          ? ElevatedButton(
+                              onPressed: null,
+                              child: CupertinoActivityIndicator())
+                          : ElevatedButton(
+                              child: Text("发送"),
+                              onPressed: _postComment,
+                            );
+                    }))
               ],
             ),
           ]),
@@ -139,24 +177,6 @@ class MultipleInputField extends StatelessWidget {
         autofocus: true,
       ),
     ));
-  }
-
-  void _pushSend() {
-    _postComment();
-  }
-
-  Future<void> _postComment() async {
-    final dto = NewCommentDTO(
-        postId: _postId,
-        quoteId: _quote == null ? 0 : _quote!.commentId,
-        content: _controller.text,
-        assets: _assets);
-    try {
-      final response = await PostService.postComment(dto);
-      print(response);
-    } on DioError catch (e) {
-      print(e.message);
-    }
   }
 
   Future<void> _selectAssets() async {

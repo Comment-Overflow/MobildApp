@@ -2,12 +2,15 @@ import 'package:chips_choice/chips_choice.dart';
 import 'package:comment_overflow/assets/constants.dart';
 import 'package:comment_overflow/assets/custom_styles.dart';
 import 'package:comment_overflow/fake_data/fake_data.dart';
+import 'package:comment_overflow/model/post.dart';
 import 'package:comment_overflow/model/request_dto/new_post_dto.dart';
 import 'package:comment_overflow/service/post_service.dart';
+import 'package:comment_overflow/utils/message_box.dart';
 import 'package:comment_overflow/utils/my_image_picker.dart';
 import 'package:comment_overflow/utils/route_generator.dart';
 import 'package:comment_overflow/widgets/horizontal_image_scroller.dart';
 import 'package:dio/dio.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter/widgets.dart';
@@ -35,6 +38,8 @@ class _NewPostPageState extends State<NewPostPage> {
   String _content = '';
   // The list of images to upload.
   final List<AssetEntity> _assets = [];
+
+  bool _isLoading = false;
 
   List<String> _tags = ["LIFE", "STUDY", "ART", "MOOD", "CAREER"];
 
@@ -121,23 +126,25 @@ class _NewPostPageState extends State<NewPostPage> {
           ),
           Text("发布帖子"),
           // Send icon.
-          IconButton(
-              padding: EdgeInsets.zero,
-              constraints: BoxConstraints(),
-              splashRadius: _iconSize / 1.3,
-              splashColor: Theme.of(context).buttonColor,
-              icon: CustomStyles.getDefaultSendIcon(
-                  size: _iconSize,
-                  color: this._title.isNotEmpty
-                      ? iconColor
-                      : Theme.of(context).disabledColor),
-              onPressed: this._title.isNotEmpty
-                  ? () {
-                      print(this._title);
-                      print(this._content);
-                      _pushSend();
-                    }
-                  : null),
+          _isLoading
+              ? CupertinoActivityIndicator()
+              : IconButton(
+                  padding: EdgeInsets.zero,
+                  constraints: BoxConstraints(),
+                  splashRadius: _iconSize / 1.3,
+                  splashColor: Theme.of(context).buttonColor,
+                  icon: CustomStyles.getDefaultSendIcon(
+                      size: _iconSize,
+                      color: this._title.isNotEmpty
+                          ? iconColor
+                          : Theme.of(context).disabledColor),
+                  onPressed: this._title.isNotEmpty
+                      ? () {
+                          print(this._title);
+                          print(this._content);
+                          _pushSend();
+                        }
+                      : null),
         ]),
         automaticallyImplyLeading: false,
       );
@@ -180,10 +187,27 @@ class _NewPostPageState extends State<NewPostPage> {
     final dto = NewPostDTO(
         tag: _tags[_idx], title: _title, content: _content, assets: _assets);
     try {
+      setState(() {
+        _isLoading = true;
+      });
       final response = await PostService.postPost(dto);
-      print(response);
+      var _newPost = Post.fromJson(response.data);
+      _newPost.isStarred = false;
+      Navigator.pushReplacement(
+          context,
+          RouteGenerator.generateRoute(RouteSettings(
+            name: RouteGenerator.postRoute,
+            arguments: _newPost,
+          )));
+      setState(() {
+        _isLoading = false;
+      });
     } on DioError catch (e) {
-      print(e.message);
+      MessageBox.showToast(
+          msg: "发帖失败！ ${e.message}", messageBoxType: MessageBoxType.Error);
+      setState(() {
+        _isLoading = false;
+      });
     }
   }
 }

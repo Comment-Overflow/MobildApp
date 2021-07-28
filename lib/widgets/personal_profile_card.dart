@@ -72,7 +72,8 @@ class PersonalProfileCard extends StatelessWidget {
                                   width: Constants
                                           .defaultPersonalPageHeaderTitleSize *
                                       0.2),
-                              _personalPageInfo.sex == Sex.male
+                              _personalPageInfo.gender == Gender.secret ? 
+                              Container() : _personalPageInfo.gender == Gender.male
                                   ? CustomStyles.getDefaultMaleIcon()
                                   : CustomStyles.getDefaultFemaleIcon(),
                             ],

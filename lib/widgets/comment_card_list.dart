@@ -46,14 +46,17 @@ class _CommentCardListState extends State<CommentCardList> {
 
   @override
   void didUpdateWidget(CommentCardList oldWidget) {
-    _pagingManager.changeCustomFetchApi((page, pageSize) {
-      return Future.delayed(
-        const Duration(milliseconds: 300),
-        () => comments.sublist(
-            page * pageSize, min((page + 1) * pageSize, comments.length)),
+    _pagingManager.changeCustomFetchApi((page, pageSize) async {
+      var response = await PostService.getPostComments(
+          CommentQueryDTO(
+              postId: widget._post.postId,
+              policy: widget._sortPolicy,
+              pageNum: page,
+              pageSize: pageSize)
       );
+      var commentObjJson = response.data['content'] as List;
+      return commentObjJson.map((e) => Comment.fromJson(e)).toList();
     });
-
     super.didUpdateWidget(oldWidget);
   }
 

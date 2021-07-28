@@ -141,12 +141,10 @@ class _CommentCardState extends State<CommentCard>
                     children: [
                       ApprovalButton.horizontal(
                         comment: widget._comment,
-                        userId: widget._comment.user.userId,
                         size: _iconSize,
                       ),
                       DisapprovalButton(
                         comment: widget._comment,
-                        userId: widget._comment.user.userId,
                         size: _iconSize,
                         showText: false,
                       ),

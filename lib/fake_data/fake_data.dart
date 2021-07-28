@@ -42,7 +42,7 @@ final PersonalPageInfo personalPageInfo = PersonalPageInfo(
     12,
     23567,
     FollowStatus.none,
-    Sex.male,
+    Gender.male,
     128538,
     21);
 final Quote _quoteWithUserName = Quote(4, "Gun9niR", "aa", 2);

@@ -22,8 +22,13 @@ class _PagesContainerState extends State<PagesContainer> {
   final _pages = <Widget>[
     HomePage(),
     NotificationPage(),
-    // TODO: Get real current user id.
-    PersonalPage(currentUserId, false)
+    FutureBuilder<int>(
+      future: GeneralUtils.getCurrentUserId(),
+      builder: (_, snapshot) {
+        if (!snapshot.hasData) return Container();
+        return PersonalPage(snapshot.data!, false);
+      },
+    ),
   ];
 
   @override

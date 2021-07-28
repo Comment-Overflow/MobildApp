@@ -3,16 +3,15 @@ import 'package:comment_overflow/assets/custom_styles.dart';
 import 'package:comment_overflow/fake_data/fake_data.dart';
 import 'package:comment_overflow/model/user_info.dart';
 import 'package:comment_overflow/service/chat_service.dart';
-import 'package:comment_overflow/utils/recent_chats_provider.dart';
+import 'package:comment_overflow/service/profile_service.dart';
+import 'package:comment_overflow/utils/general_utils.dart';
 import 'package:comment_overflow/utils/route_generator.dart';
-import 'package:comment_overflow/utils/socket_client.dart';
 import 'package:comment_overflow/utils/storage_util.dart';
 import 'package:comment_overflow/widgets/personal_profile_card.dart';
 import 'package:comment_overflow/widgets/post_card_list.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:toggle_switch/toggle_switch.dart';
-import 'package:provider/provider.dart';
 
 class PersonalPage extends StatefulWidget {
   final int _userId;
@@ -27,57 +26,63 @@ class PersonalPage extends StatefulWidget {
 
 class _PersonalPageState extends State<PersonalPage> {
   PersonalPageInfo _personalPageInfo = personalPageInfo;
-  bool _isSelf = false;
   SortPolicy _policy = SortPolicy.hottest;
 
   @override
   void initState() {
-    // TODO: Get personalPageInfo using widget.userId
+    ValueSetter callback = (dynamic json) => this.setState(() {
+          _personalPageInfo = PersonalPageInfo.fromJson(json);
+        });
+    ProfileService.getProfile('/profiles/${widget._userId}', callback);
     super.initState();
-    // _isSelf = false;
-    _isSelf = widget._userId == currentUserId;
   }
 
   @override
   Widget build(BuildContext context) {
-    String title = _isSelf ? "我的个人主页" : _personalPageInfo.userName + "的个人主页";
-
-    return Scaffold(
-      appBar: AppBar(
-        elevation: Constants.defaultAppBarElevation,
-        title: Text(
-          title,
-          style: CustomStyles.pageTitleStyle,
-        ),
-        actions: [_isSelf ? _buildDropDownMenu() : Container()],
-        automaticallyImplyLeading: widget._fromCard,
-        centerTitle: true,
-      ),
-      body: DefaultTabController(
-        length: Constants.personalPageTabs.length,
-        child: NestedScrollView(
-          physics: NeverScrollableScrollPhysics(),
-          headerSliverBuilder: (context, value) {
-            return [
-              SliverToBoxAdapter(
-                child: Container(
-                    color: Colors.white,
-                    child: PersonalProfileCard(_personalPageInfo, _isSelf)),
-              ),
-              SliverPersistentHeader(
-                floating: true,
-                pinned: true,
-                delegate: _isSelf
-                    ? TabBarHeader()
-                    : PersonalPostHeader(onToggle: _onToggle),
-              ),
-            ];
-          },
-          body: Container(child: PostCardList()),
-        ),
-      ),
-      bottomNavigationBar:
-          _isSelf ? SafeArea(child: _buildSorter()) : Container(height: 0),
+    return FutureBuilder<int>(
+      future: GeneralUtils.getCurrentUserId(),
+      builder: (_, snapshot) {
+        if (!snapshot.hasData) return Container();
+        bool isSelf = snapshot.data == widget._userId;
+        String title = isSelf ? "我的个人主页" : _personalPageInfo.userName + "的个人主页";
+        return Scaffold(
+          appBar: AppBar(
+            elevation: Constants.defaultAppBarElevation,
+            title: Text(
+              title,
+              style: CustomStyles.pageTitleStyle,
+            ),
+            actions: [isSelf ? _buildDropDownMenu() : Container()],
+            automaticallyImplyLeading: widget._fromCard,
+            centerTitle: true,
+          ),
+          body: DefaultTabController(
+            length: Constants.personalPageTabs.length,
+            child: NestedScrollView(
+              physics: NeverScrollableScrollPhysics(),
+              headerSliverBuilder: (context, value) {
+                return [
+                  SliverToBoxAdapter(
+                    child: Container(
+                        color: Colors.white,
+                        child: PersonalProfileCard(_personalPageInfo, isSelf)),
+                  ),
+                  SliverPersistentHeader(
+                    floating: true,
+                    pinned: true,
+                    delegate: isSelf
+                        ? TabBarHeader()
+                        : PersonalPostHeader(onToggle: _onToggle),
+                  ),
+                ];
+              },
+              body: Container(child: PostCardList()),
+            ),
+          ),
+          bottomNavigationBar:
+              isSelf ? SafeArea(child: _buildSorter()) : Container(height: 0),
+        );
+      },
     );
   }
 

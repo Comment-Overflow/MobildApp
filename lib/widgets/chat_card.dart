@@ -93,10 +93,8 @@ class ChatCard extends StatelessWidget {
 
     return GestureDetector(
         onTap: () {
-          UserInfo chatter =
-              UserInfo(Platform.isIOS ? 1 : 2, _chat.chatter.userName);
-          Navigator.of(context)
-              .pushNamed(RouteGenerator.privateChatRoute, arguments: chatter);
+          Navigator.of(context).pushNamed(RouteGenerator.privateChatRoute,
+              arguments: _chat.chatter);
         },
         child: Slidable(
           actionPane: SlidableDrawerActionPane(),
