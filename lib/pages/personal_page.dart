@@ -1,6 +1,5 @@
 import 'package:comment_overflow/assets/constants.dart';
 import 'package:comment_overflow/assets/custom_styles.dart';
-import 'package:comment_overflow/fake_data/fake_data.dart';
 import 'package:comment_overflow/model/user_info.dart';
 import 'package:comment_overflow/service/chat_service.dart';
 import 'package:comment_overflow/service/profile_service.dart';
@@ -25,22 +24,24 @@ class PersonalPage extends StatefulWidget {
 }
 
 class _PersonalPageState extends State<PersonalPage> {
-  PersonalPageInfo _personalPageInfo = personalPageInfo;
+  late PersonalPageInfo _personalPageInfo;
   SortPolicy _policy = SortPolicy.hottest;
+  late ValueSetter _callback;
+  bool _hasInit = false;
 
   @override
   void initState() {
-    ValueSetter callback = (dynamic json) => this.setState(() {
-          _personalPageInfo = PersonalPageInfo.fromJson(json);
-        });
-    ProfileService.getProfile('/profiles/${widget._userId}', callback);
+    _callback = (dynamic json) => this.setState(() {
+      _personalPageInfo = PersonalPageInfo.fromJson(json);
+      print(json);
+    });
     super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
     return FutureBuilder<int>(
-      future: GeneralUtils.getCurrentUserId(),
+      future: _initData(),
       builder: (_, snapshot) {
         if (!snapshot.hasData) return Container();
         bool isSelf = snapshot.data == widget._userId;
@@ -84,6 +85,14 @@ class _PersonalPageState extends State<PersonalPage> {
         );
       },
     );
+  }
+  
+  Future<int> _initData() async {
+    if (!_hasInit) {
+      await ProfileService.getProfile('/profiles/${widget._userId}', _callback);
+      _hasInit = true;
+    }
+    return GeneralUtils.getCurrentUserId();
   }
 
   void _onToggle(int index) {
@@ -156,8 +165,7 @@ class _PersonalPageState extends State<PersonalPage> {
       padding: const EdgeInsets.all(7.0),
       onSelected: (Setting setting) async {
         await ChatService.disposeChat();
-        await StorageUtil().storage.delete(key: Constants.userId);
-        await StorageUtil().storage.delete(key: Constants.token);
+        await StorageUtil().deleteOnLogout();
         Navigator.of(context).pushNamedAndRemoveUntil(
             RouteGenerator.loginRoute, (route) => false);
       },

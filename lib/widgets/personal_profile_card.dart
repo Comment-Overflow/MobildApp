@@ -1,11 +1,7 @@
-import 'dart:io';
-
 import 'package:comment_overflow/assets/constants.dart';
 import 'package:comment_overflow/assets/custom_styles.dart';
-import 'package:comment_overflow/model/routing_dto/private_chat_page_access_dto.dart';
 import 'package:comment_overflow/model/routing_dto/user_name_id_dto.dart';
 import 'package:comment_overflow/model/user_info.dart';
-import 'package:comment_overflow/pages/private_chat_page.dart';
 import 'package:comment_overflow/utils/general_utils.dart';
 import 'package:comment_overflow/utils/route_generator.dart';
 import 'package:comment_overflow/widgets/follow_button.dart';
@@ -45,12 +41,16 @@ class PersonalProfileCard extends StatelessWidget {
                 children: [
                   Expanded(
                     flex: 40,
-                    child: Column(
-                      mainAxisSize: MainAxisSize.max,
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      children: [
-                        UserAvatar(Constants.defaultPersonalPageAvatarSize),
-                      ],
+                    child: Padding(
+                      padding: EdgeInsets.symmetric(horizontal: 12.0),
+                      child: Column(
+                        mainAxisSize: MainAxisSize.max,
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        children: [
+                          UserAvatar(Constants.defaultPersonalPageAvatarSize,
+                              imageContent: _personalPageInfo.avatarUrl),
+                        ],
+                      ),
                     ),
                   ),
                   Expanded(
@@ -72,10 +72,11 @@ class PersonalProfileCard extends StatelessWidget {
                                   width: Constants
                                           .defaultPersonalPageHeaderTitleSize *
                                       0.2),
-                              _personalPageInfo.gender == Gender.secret ? 
-                              Container() : _personalPageInfo.gender == Gender.male
-                                  ? CustomStyles.getDefaultMaleIcon()
-                                  : CustomStyles.getDefaultFemaleIcon(),
+                              _personalPageInfo.gender == Gender.secret
+                                  ? Container()
+                                  : _personalPageInfo.gender == Gender.male
+                                      ? CustomStyles.getDefaultMaleIcon()
+                                      : CustomStyles.getDefaultFemaleIcon(),
                             ],
                           ),
                         ),
@@ -126,7 +127,7 @@ class PersonalProfileCard extends StatelessWidget {
                   flex: 25,
                   child: MultipleWidgetButton(
                     RouteGenerator.followersRoute,
-                      () => {},
+                    () => {},
                     [
                       Text(
                         GeneralUtils.getDefaultNumberString(
@@ -147,7 +148,7 @@ class PersonalProfileCard extends StatelessWidget {
                   flex: 25,
                   child: MultipleWidgetButton(
                     RouteGenerator.fansRoute,
-                        () => {},
+                    () => {},
                     [
                       Text(
                         GeneralUtils.getDefaultNumberString(
@@ -168,7 +169,7 @@ class PersonalProfileCard extends StatelessWidget {
                   flex: 25,
                   child: MultipleWidgetButton(
                     null,
-                        () => {},
+                    () => {},
                     [
                       Text(
                         GeneralUtils.getDefaultNumberString(
@@ -187,7 +188,7 @@ class PersonalProfileCard extends StatelessWidget {
                   flex: 25,
                   child: MultipleWidgetButton(
                     null,
-                        () => {},
+                    () => {},
                     [
                       Text(
                         GeneralUtils.getDefaultNumberString(
@@ -243,8 +244,7 @@ class PersonalProfileCard extends StatelessWidget {
                 onPressed: () {
                   Navigator.of(context).pushNamed(
                       RouteGenerator.privateChatRoute,
-                      arguments: UserInfo(
-                          Platform.isIOS ? 1 : 2, _personalPageInfo.userName));
+                      arguments: _personalPageInfo);
                 },
               ),
             ),

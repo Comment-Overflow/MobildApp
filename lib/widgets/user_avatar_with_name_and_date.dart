@@ -1,7 +1,9 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:comment_overflow/assets/constants.dart';
 import 'package:comment_overflow/model/user_info.dart';
 import 'package:comment_overflow/utils/general_utils.dart';
 import 'package:comment_overflow/widgets/user_avatar.dart';
+import 'package:extended_image/extended_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 
@@ -18,8 +20,10 @@ class UserAvatarWithNameAndDate extends StatelessWidget {
   final DateTime _time;
   final UserActionType _userActionType;
   final double avatarSize;
+
   // Gap between avatar and text.
   final double horizontalGap;
+
   // Gap between lines of text.
   final double verticalGap;
 
@@ -41,7 +45,7 @@ class UserAvatarWithNameAndDate extends StatelessWidget {
     return Row(
       mainAxisSize: MainAxisSize.min,
       children: [
-        UserAvatar(this.avatarSize, image: _userInfo.avatarUrl == null ? null : NetworkImage(_userInfo.avatarUrl!)),
+        UserAvatar(this.avatarSize, imageContent: _userInfo.avatarUrl),
         _horizontalGap,
         Column(
           crossAxisAlignment: CrossAxisAlignment.start,

@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:comment_overflow/assets/constants.dart';
 import 'package:comment_overflow/assets/custom_styles.dart';
 import 'package:comment_overflow/model/routing_dto/personal_page_access_dto.dart';
@@ -5,6 +6,7 @@ import 'package:comment_overflow/model/user_info.dart';
 import 'package:comment_overflow/utils/route_generator.dart';
 import 'package:comment_overflow/widgets/follow_button.dart';
 import 'package:comment_overflow/widgets/user_avatar.dart';
+import 'package:extended_image/extended_image.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
@@ -41,7 +43,8 @@ class UserCard extends StatelessWidget {
               children: [
                 Expanded(
                   flex: 15,
-                  child: UserAvatar(55.0),
+                  child:
+                      UserAvatar(50.0, imageContent: _userCardInfo.avatarUrl),
                 ),
                 Expanded(
                   flex: 4,

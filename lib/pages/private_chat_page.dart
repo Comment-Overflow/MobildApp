@@ -3,10 +3,12 @@ import 'dart:io';
 import 'package:comment_overflow/model/message.dart';
 import 'package:comment_overflow/model/user_info.dart';
 import 'package:comment_overflow/service/chat_service.dart';
+import 'package:comment_overflow/utils/general_utils.dart';
 import 'package:comment_overflow/utils/message_box.dart';
 import 'package:comment_overflow/utils/my_image_picker.dart';
 import 'package:comment_overflow/utils/recent_chats_provider.dart';
 import 'package:comment_overflow/utils/socket_client.dart';
+import 'package:comment_overflow/utils/storage_util.dart';
 import 'package:comment_overflow/widgets/adaptive_refresher.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/cupertino.dart';
@@ -23,12 +25,12 @@ class PrivateChatPage extends StatefulWidget {
   PrivateChatPage(this._chatter, {Key? key}) : super(key: key);
 
   @override
-  PrivateChatPageState createState() => PrivateChatPageState();
+  PrivateChatPageState createState() => PrivateChatPageState(_chatter);
 }
 
 class PrivateChatPageState extends State<PrivateChatPage> {
-  late final UserInfo _currentUser =
-      UserInfo(Platform.isIOS ? 2 : 1, '123@123.com');
+  final UserInfo _chatter;
+  late final UserInfo _currentUser;
   final TextEditingController _textEditingController = TextEditingController();
   ScrollController _scrollController = new ScrollController();
   List<Message> _messages = [];
@@ -36,15 +38,18 @@ class PrivateChatPageState extends State<PrivateChatPage> {
   int _totalPageNumber = 0;
   int _newMessageCount = 0;
   bool _requireReload = false;
+  bool _hasInit = false;
+
+  PrivateChatPageState(this._chatter);
 
   @override
   void initState() {
     super.initState();
     SocketClient().onReceiveMessage = _onReceiveMessage;
-    SocketClient().updateChat(widget._chatter.userId);
+    SocketClient().updateChat(_chatter.userId);
     _getChatHistory();
     WidgetsBinding.instance!.addPostFrameCallback((_) {
-      context.read<RecentChatsProvider>().updateRead(widget._chatter);
+      context.read<RecentChatsProvider>().updateRead(_chatter);
     });
   }
 
@@ -62,7 +67,7 @@ class PrivateChatPageState extends State<PrivateChatPage> {
       appBar: AppBar(
         elevation: Constants.defaultAppBarElevation,
         title: Text(
-          widget._chatter.userName,
+          _chatter.userName,
           style: CustomStyles.pageTitleStyle,
         ),
       ),
@@ -70,12 +75,16 @@ class PrivateChatPageState extends State<PrivateChatPage> {
         onTap: () {
           FocusScope.of(context).unfocus();
         },
-        child: Column(
-          children: [
-            _buildChatMessages(),
-            _buildTextField(),
-          ],
-        ),
+        child: FutureBuilder(
+            future: _getCurrentUserInfo(),
+            builder: (_, snapshot) {
+              return Column(
+                children: [
+                  _buildChatMessages(),
+                  _buildTextField(),
+                ],
+              );
+            }),
       ),
     );
   }
@@ -98,8 +107,14 @@ class PrivateChatPageState extends State<PrivateChatPage> {
                   padding: EdgeInsets.all(Constants.defaultChatRoomPadding),
                   itemCount: _messages.length,
                   itemBuilder: (context, index) {
-                    ChatMessage chatMessage =
-                        ChatMessage(_messages[index], _resendMessage);
+                    Message message = _messages[index];
+                    bool fromUser =
+                        message.sender.userId == _currentUser.userId;
+                    ChatMessage chatMessage = ChatMessage(
+                        _messages[index],
+                        fromUser,
+                        fromUser ? _currentUser.avatarUrl : _chatter.avatarUrl,
+                        _resendMessage);
                     return Container(
                       padding: EdgeInsets.symmetric(
                           vertical: Constants.defaultChatMessagePadding),
@@ -169,10 +184,22 @@ class PrivateChatPageState extends State<PrivateChatPage> {
     );
   }
 
+  Future _getCurrentUserInfo() async {
+    if (!_hasInit) {
+      int userId = await GeneralUtils.getCurrentUserId();
+      String? userName =
+          await StorageUtil().storage.read(key: Constants.userName);
+      String? avatarUrl =
+          await StorageUtil().storage.read(key: Constants.avatarUrl);
+      _currentUser = UserInfo(userId, userName!, avatarUrl: avatarUrl);
+      _hasInit = true;
+    }
+  }
+
   Future _getChatHistory() async {
     try {
       Response<dynamic> response = await ChatService.getChatHistory(
-          widget._chatter.userId, _newMessageCount, _currentPageNumber);
+          _chatter.userId, _newMessageCount, _currentPageNumber);
       List messagesResponse = response.data['content'] as List;
       setState(() {
         if (_requireReload) _requireReload = false;
@@ -199,7 +226,7 @@ class PrivateChatPageState extends State<PrivateChatPage> {
 
   Future _onSendText() async {
     if (_textEditingController.value.text.isNotEmpty) {
-      Message message = Message(MessageType.Text, _currentUser, widget._chatter,
+      Message message = Message(MessageType.Text, _currentUser, _chatter,
           _textEditingController.value.text);
       setState(() {
         _messages.insert(0, message);
@@ -218,8 +245,8 @@ class PrivateChatPageState extends State<PrivateChatPage> {
       List<AssetEntity> assets = List<AssetEntity>.from(result);
       for (AssetEntity asset in assets) {
         File imageFile = (await asset.file)!;
-        Message message = Message(MessageType.TemporaryImage, _currentUser,
-            widget._chatter, imageFile);
+        Message message = Message(
+            MessageType.TemporaryImage, _currentUser, _chatter, imageFile);
         setState(() {
           _messages.insert(0, message);
         });
@@ -235,15 +262,14 @@ class PrivateChatPageState extends State<PrivateChatPage> {
       Response response = await (message.type == MessageType.Text
           ? ChatService.sendText(
               message.receiver.userId, message.content as String)
-          : ChatService.sendImage(
-              widget._chatter.userId, message.content as File));
+          : ChatService.sendImage(_chatter.userId, message.content as File));
       setState(() {
         message.status = MessageStatus.Normal;
         message.time = DateTime.parse(response.data);
         _newMessageCount++;
       });
       context.read<RecentChatsProvider>().updateLastMessageRead(
-          widget._chatter, message.getLastMessageContent(), message.time!);
+          _chatter, message.getLastMessageContent(), message.time!);
     } on DioError {
       setState(() {
         message.status = MessageStatus.Failed;
@@ -255,9 +281,25 @@ class PrivateChatPageState extends State<PrivateChatPage> {
     setState(() {
       _messages.insert(0, message);
       _newMessageCount++;
+      if (message.sender.avatarUrl != _chatter.avatarUrl) {
+        setState(() {
+          _chatter.avatarUrl = message.sender.avatarUrl;
+        });
+      }
+      if (message.receiver.avatarUrl != _currentUser.avatarUrl) {
+        setState(() {
+          _currentUser.avatarUrl = message.receiver.avatarUrl;
+        });
+        StorageUtil()
+            .storage
+            .write(key: Constants.userName, value: message.receiver.userName);
+        StorageUtil()
+            .storage
+            .write(key: Constants.avatarUrl, value: message.receiver.avatarUrl);
+      }
     });
     context.read<RecentChatsProvider>().updateLastMessageRead(
-        widget._chatter, message.getLastMessageContent(), message.time!);
+        _chatter, message.getLastMessageContent(), message.time!);
     _scrollToBottom();
   }
 

@@ -22,18 +22,15 @@ class ChatCard extends StatelessWidget {
   Widget build(BuildContext context) {
     Container card = Container(
       color: Theme.of(context).primaryColor,
-      padding: EdgeInsets.fromLTRB(
-          Constants.defaultCardPadding * 0.4,
-          Constants.defaultCardPadding,
-          Constants.defaultCardPadding,
-          Constants.defaultCardPadding),
+      padding: EdgeInsets.all(Constants.defaultCardPadding),
       height: Constants.defaultChatCardHeight,
       child: Row(
         mainAxisSize: MainAxisSize.max,
         mainAxisAlignment: MainAxisAlignment.start,
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
-          UserAvatar(Constants.defaultChatListAvatarSize),
+          UserAvatar(Constants.defaultChatListAvatarSize,
+              imageContent: this._chat.chatter.avatarUrl),
           SizedBox(width: _horizontalGap),
           Expanded(
             child: Column(
@@ -93,6 +90,7 @@ class ChatCard extends StatelessWidget {
 
     return GestureDetector(
         onTap: () {
+          print(_chat.chatter.avatarUrl);
           Navigator.of(context).pushNamed(RouteGenerator.privateChatRoute,
               arguments: _chat.chatter);
         },

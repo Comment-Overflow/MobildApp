@@ -199,13 +199,6 @@ final recentChats = List<Chat>.filled(
     growable: true,
   ));
 
-List<Message> messages = [
-  Message( MessageType.Text, _cyxInfo, _userInfo, "好问题"),
-  Message(MessageType.Image, _userInfo, _cyxInfo,
-      "http://img8.zol.com.cn/bbs/upload/23765/23764201.jpg"),
-  Message(MessageType.Text, _userInfo, _cyxInfo,
-      "中午吃啥中午吃啥中午吃啥中午吃啥中午吃啥中午吃啥中午吃啥中午吃啥中午吃啥中午吃啥中午吃啥中午吃啥"),
-];
 
 final approvalRecords = List<ApprovalRecord>.filled(
     10,

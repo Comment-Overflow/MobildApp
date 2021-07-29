@@ -2,15 +2,12 @@ import 'package:comment_overflow/assets/constants.dart';
 import 'package:comment_overflow/model/user_info.dart';
 
 class Message {
-  final String? _uuid;
   final MessageType _type;
   DateTime? time;
   final UserInfo _sender;
   final UserInfo _receiver;
   final dynamic _content;
   MessageStatus status;
-
-  String? get uuid => _uuid;
 
   MessageType get type => _type;
 
@@ -22,8 +19,7 @@ class Message {
 
   Message(this._type, this._sender, this._receiver, this._content,
       {uuid, time, status = MessageStatus.Sending})
-      : _uuid = uuid,
-        time = time,
+      : time = time,
         status = status;
 
   factory Message.fromJson(dynamic json) {

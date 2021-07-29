@@ -27,12 +27,7 @@ class _IntroPageState extends State<IntroPage>
         // Rejected by interceptor.
         if (response.data.runtimeType == String) return false;
         final LoginDTO loginDTO = LoginDTO.fromJson(response.data);
-        await StorageUtil()
-            .storage
-            .write(key: Constants.token, value: loginDTO.token);
-        await StorageUtil()
-            .storage
-            .write(key: Constants.userId, value: loginDTO.userId.toString());
+        await StorageUtil().configOnLogin(loginDTO);
         await ChatService.initChat();
         return true;
       } on DioError {

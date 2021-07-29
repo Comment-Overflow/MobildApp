@@ -6,7 +6,7 @@ class Constants {
   static const defaultNotificationPageSize = 10;
 
   /// Default padding of any card component.
-  static const defaultCardPadding = 16.0;
+  static const defaultCardPadding = 14.0;
 
   /// Default size height of a user card.
   static const defaultUserCardHeight = 100.0;
@@ -24,7 +24,7 @@ class Constants {
   static const defaultChatCardHeight = 80.0;
 
   /// Default size of chat avatar.
-  static const defaultChatListAvatarSize = 60.0;
+  static const defaultChatListAvatarSize = 50.0;
 
   static const defaultAppBarElevation = 0.5;
 
@@ -60,7 +60,7 @@ class Constants {
   static const defaultPersonalPageHeaderHeight = 150.0;
 
   /// Default personal page avatar size.
-  static const defaultPersonalPageAvatarSize = 130.0;
+  static const defaultPersonalPageAvatarSize = 115.0;
 
   /// Default personal page avatar padding.
   static const defaultPersonalPageAvatarPadding = 5.0;
@@ -130,7 +130,11 @@ class Constants {
 
   static const String token = 'token';
 
-  static const String userId = 'userid';
+  static const String userId = 'userId';
+
+  static const String userName = 'userName';
+
+  static const String avatarUrl = 'avatarUrl';
 
   static const String searchHistory = 'searchHistory';
 
@@ -141,10 +145,6 @@ class Constants {
   static const String imageReloadPrompt = '点击重新加载';
 
   static const String networkError = '网络错误';
-
-
-  
-  
 }
 
 enum FollowStatus {

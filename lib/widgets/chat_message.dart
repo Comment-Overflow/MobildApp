@@ -1,7 +1,7 @@
 import 'package:bubble/bubble.dart';
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:comment_overflow/assets/custom_styles.dart';
 import 'package:comment_overflow/utils/general_utils.dart';
+import 'package:comment_overflow/utils/global_utils.dart';
 import 'package:extended_image/extended_image.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -9,163 +9,159 @@ import 'package:comment_overflow/assets/constants.dart';
 import 'package:comment_overflow/assets/custom_colors.dart';
 import 'package:comment_overflow/model/message.dart';
 import 'package:comment_overflow/widgets/user_avatar.dart';
+import 'package:skeleton_text/skeleton_text.dart';
 
-class ChatMessage extends StatefulWidget {
+class ChatMessage extends StatelessWidget {
   final Message _message;
+  final bool _fromUser;
+  final String? _avatarUrl;
   final void Function(Message) _resend;
 
-  ChatMessage(this._message, this._resend, {Key? key}) : super(key: key);
+  ChatMessage(this._message, this._fromUser, this._avatarUrl, this._resend,
+      {Key? key})
+      : super(key: key);
 
-  @override
-  _ChatMessageState createState() => _ChatMessageState();
-}
-
-class _ChatMessageState extends State<ChatMessage> {
   @override
   Widget build(BuildContext context) {
-    return FutureBuilder(
-        future: GeneralUtils.getCurrentUserId(),
-        builder: (BuildContext context, AsyncSnapshot snapshot) {
-          if (!snapshot.hasData)
-            return Container();
-          else {
-            int currentUserId = snapshot.data;
-            if (currentUserId == widget._message.sender.userId)
-              return Row(
-                mainAxisSize: MainAxisSize.max,
-                mainAxisAlignment: MainAxisAlignment.end,
-                crossAxisAlignment: CrossAxisAlignment.start,
+    return _fromUser
+        ? Row(
+            mainAxisSize: MainAxisSize.max,
+            mainAxisAlignment: MainAxisAlignment.end,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Row(
+                crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
-                  Row(
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: [
-                      widget._message.status == MessageStatus.Sending
-                          ? SizedBox(
-                              height: Constants.defaultChatRoomFontSize,
-                              width: Constants.defaultChatRoomFontSize,
-                              child: CupertinoActivityIndicator(
-                                  radius:
-                                      Constants.defaultChatRoomFontSize * 0.5))
-                          : Container(),
-                      widget._message.status == MessageStatus.Failed
-                          ? GestureDetector(
-                              child: CustomStyles.getDefaultMessageFailIcon(
-                                size: Constants.defaultChatRoomFontSize * 1.3,
-                              ),
-                              onTap: () {
-                                widget._resend(widget._message);
-                              },
-                            )
-                          : Container(),
-                      Column(
-                        crossAxisAlignment: CrossAxisAlignment.end,
-                        children: [
-                          Bubble(
-                            margin: BubbleEdges.only(top: 10),
-                            padding: BubbleEdges.all(8),
-                            elevation: 0.3,
-                            alignment: Alignment.topRight,
-                            nip: BubbleNip.rightTop,
-                            color: CustomColors.chatBubbleBlue,
-                            child: _buildContent(),
+                  _message.status == MessageStatus.Sending
+                      ? SizedBox(
+                          height: Constants.defaultChatRoomFontSize,
+                          width: Constants.defaultChatRoomFontSize,
+                          child: CupertinoActivityIndicator(
+                              radius: Constants.defaultChatRoomFontSize * 0.5))
+                      : Container(),
+                  _message.status == MessageStatus.Failed
+                      ? GestureDetector(
+                          child: CustomStyles.getDefaultMessageFailIcon(
+                            size: Constants.defaultChatRoomFontSize * 1.3,
                           ),
-                          widget._message.time == null
-                              ? Container()
-                              : Padding(
-                                  padding: const EdgeInsets.only(
-                                      top: Constants.chatTimeVerticalPadding,
-                                      right:
-                                          Constants.chatTimeHorizontalPadding),
-                                  child: Text(
-                                    GeneralUtils.getChatTimeString(
-                                        widget._message.time!),
-                                    style: CustomStyles.chatMessageTimeStyle,
-                                  ),
-                                ),
-                        ],
-                      ),
-                    ],
-                  ),
-                  Container(
-                    padding: EdgeInsets.fromLTRB(
-                        Constants.defaultChatRoomAvatarPadding, 0, 0, 0),
-                    child: UserAvatar(Constants.defaultChatRoomAvatarSize),
-                  ),
-                ],
-              );
-            else
-              return Row(
-                mainAxisSize: MainAxisSize.max,
-                mainAxisAlignment: MainAxisAlignment.start,
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Container(
-                    padding: EdgeInsets.fromLTRB(
-                        0, 0, Constants.defaultChatRoomAvatarPadding, 0),
-                    child: UserAvatar(Constants.defaultChatRoomAvatarSize),
-                  ),
+                          onTap: () {
+                            _resend(_message);
+                          },
+                        )
+                      : Container(),
                   Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
+                    crossAxisAlignment: CrossAxisAlignment.end,
                     children: [
                       Bubble(
                         margin: BubbleEdges.only(top: 10),
                         padding: BubbleEdges.all(8),
                         elevation: 0.3,
-                        alignment: Alignment.topLeft,
-                        nip: BubbleNip.leftTop,
+                        alignment: Alignment.topRight,
+                        nip: BubbleNip.rightTop,
+                        color: CustomColors.chatBubbleBlue,
                         child: _buildContent(),
                       ),
-                      widget._message.time == null
+                      _message.time == null
                           ? Container()
                           : Padding(
                               padding: const EdgeInsets.only(
                                   top: Constants.chatTimeVerticalPadding,
-                                  left: Constants.chatTimeHorizontalPadding),
+                                  right: Constants.chatTimeHorizontalPadding),
                               child: Text(
-                                GeneralUtils.getChatTimeString(
-                                    widget._message.time!),
+                                GeneralUtils.getChatTimeString(_message.time!),
                                 style: CustomStyles.chatMessageTimeStyle,
                               ),
                             ),
                     ],
                   ),
                 ],
-              );
-          }
-        });
+              ),
+              Container(
+                padding: EdgeInsets.fromLTRB(
+                    Constants.defaultChatRoomAvatarPadding, 0, 0, 0),
+                child: UserAvatar(Constants.defaultChatRoomAvatarSize,
+                    imageContent: _avatarUrl),
+              ),
+            ],
+          )
+        : Row(
+            mainAxisSize: MainAxisSize.max,
+            mainAxisAlignment: MainAxisAlignment.start,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Container(
+                padding: EdgeInsets.fromLTRB(
+                    0, 0, Constants.defaultChatRoomAvatarPadding, 0),
+                child: UserAvatar(Constants.defaultChatRoomAvatarSize),
+              ),
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Bubble(
+                    margin: BubbleEdges.only(top: 10),
+                    padding: BubbleEdges.all(8),
+                    elevation: 0.3,
+                    alignment: Alignment.topLeft,
+                    nip: BubbleNip.leftTop,
+                    child: _buildContent(),
+                  ),
+                  _message.time == null
+                      ? Container()
+                      : Padding(
+                          padding: const EdgeInsets.only(
+                              top: Constants.chatTimeVerticalPadding,
+                              left: Constants.chatTimeHorizontalPadding),
+                          child: Text(
+                            GeneralUtils.getChatTimeString(_message.time!),
+                            style: CustomStyles.chatMessageTimeStyle,
+                          ),
+                        ),
+                ],
+              ),
+            ],
+          );
   }
 
   Widget _buildContent() {
-    if (widget._message.type == MessageType.Text)
+    if (_message.type == MessageType.Text)
       return Container(
           constraints:
               BoxConstraints(maxWidth: Constants.defaultMaxBubbleWidth),
-          child: Text(widget._message.content, textAlign: TextAlign.left));
-    else if (widget._message.type == MessageType.Image)
+          child: Text(_message.content, textAlign: TextAlign.left));
+    else if (_message.type == MessageType.Image)
       return GestureDetector(
         onTap: () {
+          BuildContext context = GlobalUtils.navKey!.currentContext!;
           Navigator.push(context, MaterialPageRoute(builder: (_) {
-            return _ImageDetailView(widget._message);
+            return _ImageDetailView(_message);
           }));
         },
         child: Hero(
-          tag: widget._message.content as String,
+          tag: _message.content as String,
           child: ConstrainedBox(
             constraints: BoxConstraints(
               maxWidth: Constants.defaultMaxBubbleWidth,
             ),
             child: ExtendedImage.network(
-              widget._message.content,
+              _message.content,
               fit: BoxFit.scaleDown,
               cache: true,
               loadStateChanged: (ExtendedImageState state) {
                 switch (state.extendedImageLoadState) {
                   case LoadState.loading:
-                    return SizedBox(
-                      width: Constants.defaultMaxBubbleWidth * 0.5,
-                      height: Constants.defaultMaxBubbleWidth * 0.5,
-                      child: CupertinoActivityIndicator(
-                        radius: Constants.defaultChatRoomFontSize * 0.7,
+                    return SkeletonAnimation(
+                      // return SizedBox(
+                      //   width: Constants.defaultMaxBubbleWidth * 0.5,
+                      //   height: Constants.defaultMaxBubbleWidth * 0.5,
+                      //   child: CupertinoActivityIndicator(
+                      //     radius: Constants.defaultChatRoomFontSize * 0.7,
+                      //   ),
+                      // );
+                      shimmerDuration: 2000,
+                      child: Container(
+                        color: Colors.grey[200],
+                        width: Constants.defaultMaxBubbleWidth * 0.5,
+                        height: Constants.defaultMaxBubbleWidth * 0.5,
                       ),
                     );
                   case LoadState.completed:
@@ -216,14 +212,15 @@ class _ChatMessageState extends State<ChatMessage> {
     else {
       return GestureDetector(
         onTap: () {
+          BuildContext context = GlobalUtils.navKey!.currentContext!;
           Navigator.push(context, MaterialPageRoute(builder: (_) {
-            return _ImageDetailView(widget._message);
+            return _ImageDetailView(_message);
           }));
         },
         child: Hero(
-          tag: (widget._message.content as File).path,
+          tag: (_message.content as File).path,
           child: Image.file(
-            widget._message.content,
+            _message.content,
             fit: BoxFit.scaleDown,
             width: Constants.defaultMaxBubbleWidth,
           ),
@@ -246,7 +243,9 @@ class _ImageDetailView extends StatelessWidget {
         body: Center(
           child: Hero(
             tag: 'imageHero',
-            child: _message.type == MessageType.Image ? _buildNetworkImage() : _buildLocalImage(),
+            child: _message.type == MessageType.Image
+                ? _buildNetworkImage()
+                : _buildLocalImage(),
           ),
         ),
       ),
@@ -268,14 +267,20 @@ class _ImageDetailView extends StatelessWidget {
   }
 
   Widget _buildNetworkImage() {
-    return CachedNetworkImage(
-      imageUrl: _message.content as String,
-      placeholder: (context, url) => CircularProgressIndicator(),
-      errorWidget: (context, url, error) => Image.asset(
-        "assets/images/image_loading_fail.png",
-        width: Constants.defaultMaxBubbleWidth * 0.5,
-        fit: BoxFit.scaleDown,
-      ),
-    );
+    return ExtendedImage.network(_message.content as String,
+        loadStateChanged: (ExtendedImageState state) {
+      switch (state.extendedImageLoadState) {
+        case LoadState.loading:
+          return null;
+        case LoadState.completed:
+          return null;
+        case LoadState.failed:
+          return Image.asset(
+            "assets/images/image_loading_fail.png",
+            width: Constants.defaultMaxBubbleWidth * 0.5,
+            fit: BoxFit.scaleDown,
+          );
+      }
+    });
   }
 }
