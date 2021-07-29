@@ -1,7 +1,11 @@
+import 'dart:typed_data';
+
 import 'package:comment_overflow/assets/constants.dart';
 import 'package:comment_overflow/assets/custom_styles.dart';
+import 'package:comment_overflow/service/image_service.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:image_gallery_saver/image_gallery_saver.dart';
 import 'package:photo_view/photo_view.dart';
 import 'package:photo_view/photo_view_gallery.dart';
 
@@ -81,10 +85,11 @@ class _ImageGalleryState extends State<ImageGallery> {
             padding: const EdgeInsets.all(Constants.defaultCardPadding / 2),
             child: ElevatedButton(
               child: Text("保存"),
-              onPressed: () {},
+              onPressed: _saveImage,
             ),
           )
         ],
+        backgroundColor: Colors.black87,
       );
 
   BottomAppBar _buildBottomBar() => BottomAppBar(
@@ -95,6 +100,7 @@ class _ImageGalleryState extends State<ImageGallery> {
             style: CustomStyles.userNameStyle,
           ),
         ),
+        color: Colors.black87,
       );
 
   void _onPageChanged(int index) {
@@ -111,5 +117,15 @@ class _ImageGalleryState extends State<ImageGallery> {
       maxScale: PhotoViewComputedScale.covered * 4.1,
       heroAttributes: PhotoViewHeroAttributes(tag: index),
     );
+  }
+
+  void _saveImage() async {
+    String currentUrl = widget.imageUrl[currentIndex];
+    var response = await ImageService.getImageBytes(currentUrl);
+    final result = await ImageGallerySaver.saveImage(
+      Uint8List.fromList(response.data),
+      quality: 100
+    );
+    print(result);
   }
 }
