@@ -23,15 +23,20 @@ class _SearchedUserCardListState extends State<SearchedUserCardList> {
   final PagingManager<UserCardInfo> _pagingManager;
 
   _SearchedUserCardListState(searchKey)
-      : _pagingManager =
-            PagingManager(Constants.defaultPageSize, (page, pageSize) async {
-          final Response response =
-              await SearchService.searchUser(searchKey, page, pageSize);
+      : _pagingManager = PagingManager(
+          Constants.defaultPageSize,
+          (page, pageSize) async {
+            final Response response =
+                await SearchService.searchUser(searchKey, page, pageSize);
 
-          return (response.data as List)
-              .map((e) => UserCardInfo.fromJson(e))
-              .toList();
-        }, (context, item, index) => UserCard(item, searchKey: searchKey));
+            return (response.data as List)
+                .map((e) => UserCardInfo.fromJson(e))
+                .toList();
+          },
+          (context, item, index) => UserCard(item, searchKey: searchKey),
+          emptyIndicatorTitle: Constants.searchUserEmptyIndicatorTitle,
+          emptyIndicatorSubtitle: Constants.searchUserEmptyIndicatorSubtitle,
+        );
 
   @override
   dispose() {
