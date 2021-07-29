@@ -76,7 +76,7 @@ class _NotificationPageState extends State<NotificationPage> {
           "没有消息",
           style: TextStyle(
             color: Colors.grey,
-            fontSize: 20.0,
+            fontSize: 16.0,
           ),
         ),
       ),

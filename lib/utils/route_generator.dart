@@ -1,6 +1,6 @@
 import 'package:comment_overflow/assets/constants.dart';
-import 'package:comment_overflow/model/post.dart';
 import 'package:comment_overflow/model/routing_dto/image_gallery_dto.dart';
+import 'package:comment_overflow/model/routing_dto/jump_post_dto.dart';
 import 'package:comment_overflow/model/routing_dto/personal_page_access_dto.dart';
 import 'package:comment_overflow/model/routing_dto/profile_setting_dto.dart';
 import 'package:comment_overflow/model/routing_dto/user_name_id_dto.dart';
@@ -96,8 +96,14 @@ class RouteGenerator {
             settings: settings,
             builder: (_) => SearchResultPage(args as String));
       case postRoute:
-        return MaterialPageRoute(
-            settings: settings, builder: (_) => PostPage(args as Post));
+        {
+          JumpPostDTO jumpPostDTO = args as JumpPostDTO;
+          return MaterialPageRoute(
+              builder: (_) => PostPage(
+                    jumpPostDTO.post,
+                    pageIndex: jumpPostDTO.pageIndex,
+                  ));
+        }
       case profileSettingRoute:
         return MaterialPageRoute(settings: settings, builder: (_) => ProfileSettingPage(args as ProfileSettingDto));
       case galleryRoute:

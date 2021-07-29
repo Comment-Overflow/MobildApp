@@ -18,11 +18,14 @@ import 'package:wechat_assets_picker/wechat_assets_picker.dart';
 
 class PostPage extends StatefulWidget {
   final Post _post;
+  final int _pageIndex;
 
-  const PostPage(this._post, {Key? key}) : super(key: key);
+  const PostPage(this._post, {Key? key, pageIndex: 0})
+      : _pageIndex = pageIndex,
+        super(key: key);
 
   @override
-  _PostPageState createState() => _PostPageState();
+  _PostPageState createState() => _PostPageState(_pageIndex);
 }
 
 class _PostPageState extends State<PostPage> {
@@ -32,6 +35,10 @@ class _PostPageState extends State<PostPage> {
 
   static const _iconSize = 20.0;
   static const _bottomIconSize = 24.0;
+
+  int _pageIndex;
+
+  _PostPageState(this._pageIndex);
 
   String getPolicyName(SortPolicy policy) {
     switch (policy) {
@@ -71,7 +78,7 @@ class _PostPageState extends State<PostPage> {
       ),
       bottomNavigationBar: StatefulBuilder(
           builder: (BuildContext context, StateSetter bottomSetter) {
-        int _usrId = widget._post.commentToDisplay.user.userId;
+        int _usrId = widget._post.hostComment.user.userId;
         return BottomAppBar(
           child: Row(
             children: [
@@ -86,11 +93,9 @@ class _PostPageState extends State<PostPage> {
                 onPressed: () {},
               ),
               ApprovalButton(
-                  comment: widget._post.commentToDisplay,
-                  size: _bottomIconSize),
+                  comment: widget._post.hostComment, size: _bottomIconSize),
               DisapprovalButton(
-                  comment: widget._post.commentToDisplay,
-                  size: _bottomIconSize),
+                  comment: widget._post.hostComment, size: _bottomIconSize),
               StarButton(
                   initialStared: widget._post.isStarred,
                   postId: widget._post.postId,
@@ -105,40 +110,36 @@ class _PostPageState extends State<PostPage> {
   }
 
   Widget _buildPageJumper(int currentPage, int totalPage) {
-    return StatefulBuilder(
-        builder: (BuildContext c, StateSetter s) {
-          return Card(
-            elevation: Constants.defaultCardElevation,
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.all(Radius.circular(5.0))
-            ),
-            child: InkWell(
-              child: Padding(
-                padding: EdgeInsets.symmetric(vertical: 30, horizontal: 20),
-                child: Column(
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    Row(
-                      children: [
-                        TextButton(onPressed: () {}, child: Text("首页")),
-                        Text("页面跳转"),
-                        TextButton(onPressed: () {}, child: Text("末页"))
-                      ],
-                      mainAxisAlignment: MainAxisAlignment.spaceAround,
-                    ),
-                    Divider(),
-                    GridView(
-                      gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                        crossAxisCount: 5,
-                      ),
-                    )
-                  ],
+    return StatefulBuilder(builder: (BuildContext c, StateSetter s) {
+      return Card(
+        elevation: Constants.defaultCardElevation,
+        shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.all(Radius.circular(5.0))),
+        child: InkWell(
+            child: Padding(
+          padding: EdgeInsets.symmetric(vertical: 30, horizontal: 20),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Row(
+                children: [
+                  TextButton(onPressed: () {}, child: Text("首页")),
+                  Text("页面跳转"),
+                  TextButton(onPressed: () {}, child: Text("末页"))
+                ],
+                mainAxisAlignment: MainAxisAlignment.spaceAround,
+              ),
+              Divider(),
+              GridView(
+                gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                  crossAxisCount: 5,
                 ),
               )
-            ),
-          );
-        }
-    );
+            ],
+          ),
+        )),
+      );
+    });
   }
 
   Widget _buildDropDownMenu() {
@@ -196,7 +197,7 @@ class _PostPageState extends State<PostPage> {
       case ConnectionState.done:
         {
           int _userId = snapshot.data;
-          return _userId == widget._post.commentToDisplay.user.userId
+          return _userId == widget._post.hostComment.user.userId
               ? IconButton(
                   icon: CustomStyles.getDefaultDeleteIcon(size: _iconSize),
                   tooltip: 'Delete this Post',
@@ -237,6 +238,7 @@ class _PostPageState extends State<PostPage> {
             textController: _replyController,
             assets: _assets,
             quote: null,
+            finishCallback: _pushReplyCallback,
           );
         });
   }
@@ -250,8 +252,13 @@ class _PostPageState extends State<PostPage> {
       case ConnectionState.done:
         {
           int _userId = snapshot.data;
-          return CommentCardList(widget._post, _userId);
+          return CommentCardList(widget._post, _userId, _pushReplyCallback,
+              pageIndex: _pageIndex);
         }
     }
   }
+
+  _pushReplyCallback(pageIndex) => setState(() {
+        _pageIndex = pageIndex;
+      });
 }

@@ -4,6 +4,7 @@ import 'package:comment_overflow/assets/custom_styles.dart';
 import 'package:comment_overflow/fake_data/fake_data.dart';
 import 'package:comment_overflow/model/post.dart';
 import 'package:comment_overflow/model/request_dto/new_post_dto.dart';
+import 'package:comment_overflow/model/routing_dto/jump_post_dto.dart';
 import 'package:comment_overflow/service/post_service.dart';
 import 'package:comment_overflow/utils/message_box.dart';
 import 'package:comment_overflow/utils/my_image_picker.dart';
@@ -195,7 +196,7 @@ class _NewPostPageState extends State<NewPostPage> {
           context,
           RouteGenerator.generateRoute(RouteSettings(
             name: RouteGenerator.postRoute,
-            arguments: Post.fromJson(response.data),
+            arguments: JumpPostDTO(Post.fromJson(response.data)),
           )));
     } on DioError catch (e) {
       MessageBox.showToast(

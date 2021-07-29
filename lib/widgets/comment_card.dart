@@ -25,11 +25,12 @@ class CommentCard extends StatefulWidget {
   final String _title;
   final bool _highlight;
   final int _userId;
-
+  final Function? _replyCallback;
   const CommentCard(this._comment, this._postId, this._userId,
-      {Key? key, title = "", highlight = false})
+      {Key? key, title = "", highlight = false, replyCallback})
       : _title = title,
         _highlight = highlight,
+        _replyCallback = replyCallback,
         super(key: key);
 
   @override
@@ -194,6 +195,8 @@ class _CommentCardState extends State<CommentCard>
             textController: _replyController,
             assets: _assets,
             quote: Quote.fromComment(widget._comment),
+            finishCallback:
+                widget._replyCallback == null ? () {} : widget._replyCallback!,
           );
         });
   }
