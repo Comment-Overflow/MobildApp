@@ -191,13 +191,11 @@ class _NewPostPageState extends State<NewPostPage> {
         _isLoading = true;
       });
       final response = await PostService.postPost(dto);
-      var _newPost = Post.fromJson(response.data);
-      _newPost.isStarred = false;
       Navigator.pushReplacement(
           context,
           RouteGenerator.generateRoute(RouteSettings(
             name: RouteGenerator.postRoute,
-            arguments: _newPost,
+            arguments: Post.fromJson(response.data),
           )));
     } on DioError catch (e) {
       MessageBox.showToast(

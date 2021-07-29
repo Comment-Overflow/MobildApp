@@ -19,7 +19,7 @@ class PostService {
   static Future<Response> getPostComments(CommentQueryDTO query) async {
     return await HttpUtil()
         .dio
-        .get('/post', queryParameters: query.getData());
+        .get('/posts', queryParameters: query.getData());
   }
   static Future<Response> getPosts(PostQueryDTO query) async {
     return await HttpUtil()

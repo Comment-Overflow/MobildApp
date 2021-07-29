@@ -72,7 +72,16 @@ class _PostPageState extends State<PostPage> {
         return BottomAppBar(
           child: Row(
             children: [
-              buildDropDownMenu(),
+              TextButton(
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    CustomStyles.getDefaultListIcon(size: _bottomIconSize),
+                    Text("跳页"),
+                  ],
+                ),
+                onPressed: () {},
+              ),
               ApprovalButton(
                   comment: widget._post.commentToDisplay,
                   size: _bottomIconSize),
@@ -92,7 +101,44 @@ class _PostPageState extends State<PostPage> {
     );
   }
 
-  Widget buildDropDownMenu() {
+  Widget _buildPageJumper(int currentPage, int totalPage) {
+    return StatefulBuilder(
+        builder: (BuildContext c, StateSetter s) {
+          return Card(
+            elevation: Constants.defaultCardElevation,
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.all(Radius.circular(5.0))
+            ),
+            child: InkWell(
+              child: Padding(
+                padding: EdgeInsets.symmetric(vertical: 30, horizontal: 20),
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    Row(
+                      children: [
+                        TextButton(onPressed: () {}, child: Text("首页")),
+                        Text("页面跳转"),
+                        TextButton(onPressed: () {}, child: Text("末页"))
+                      ],
+                      mainAxisAlignment: MainAxisAlignment.spaceAround,
+                    ),
+                    Divider(),
+                    GridView(
+                      gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                        crossAxisCount: 5,
+                      ),
+                    )
+                  ],
+                ),
+              )
+            ),
+          );
+        }
+    );
+  }
+
+  Widget _buildDropDownMenu() {
     return PopupMenuButton<SortPolicy>(
         padding: const EdgeInsets.all(7.0),
         onSelected: (SortPolicy result) => {
