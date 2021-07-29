@@ -199,12 +199,13 @@ class _NewPostPageState extends State<NewPostPage> {
             name: RouteGenerator.postRoute,
             arguments: _newPost,
           )));
-      setState(() {
-        _isLoading = false;
-      });
     } on DioError catch (e) {
       MessageBox.showToast(
           msg: "发帖失败！ ${e.message}", messageBoxType: MessageBoxType.Error);
+    } on Error {
+      MessageBox.showToast(
+          msg: "发帖失败！每张图片大小应小于20MB.", messageBoxType: MessageBoxType.Error);
+    } finally {
       setState(() {
         _isLoading = false;
       });
