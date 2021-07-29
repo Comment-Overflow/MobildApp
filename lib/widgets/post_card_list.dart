@@ -1,8 +1,4 @@
-import 'dart:convert';
-import 'dart:math';
-
 import 'package:comment_overflow/assets/constants.dart';
-import 'package:comment_overflow/fake_data/fake_data.dart';
 import 'package:comment_overflow/model/post.dart';
 import 'package:comment_overflow/model/request_dto/post_query_dto.dart';
 import 'package:comment_overflow/service/post_service.dart';
@@ -14,7 +10,9 @@ import 'package:flutter/widgets.dart';
 class PostCardList extends StatefulWidget {
   final PostTag? _tag;
 
-  const PostCardList({PostTag? tag, Key? key}) : _tag = tag, super(key: key);
+  const PostCardList({PostTag? tag, Key? key})
+      : _tag = tag,
+        super(key: key);
 
   @override
   _PostCardListState createState() => _PostCardListState();

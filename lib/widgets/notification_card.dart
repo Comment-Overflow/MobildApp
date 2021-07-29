@@ -1,9 +1,15 @@
 import 'package:comment_overflow/assets/constants.dart';
 import 'package:comment_overflow/assets/custom_styles.dart';
+import 'package:comment_overflow/model/post.dart';
+import 'package:comment_overflow/model/quote.dart';
+import 'package:comment_overflow/model/routing_dto/jump_post_dto.dart';
 import 'package:comment_overflow/model/user_action_record.dart';
+import 'package:comment_overflow/service/post_service.dart';
+import 'package:comment_overflow/utils/message_box.dart';
+import 'package:comment_overflow/utils/route_generator.dart';
 import 'package:comment_overflow/widgets/quote_card.dart';
 import 'package:comment_overflow/widgets/user_avatar_with_name_and_date.dart';
-import 'package:comment_overflow/widgets/user_avatar.dart';
+import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 
@@ -33,7 +39,11 @@ class StarNotificationCard extends StatelessWidget {
                 mainAxisSize: MainAxisSize.min,
                 children: [
                   Expanded(
-                    child: QuoteCard(_starRecord.starredPost),
+                    child: GestureDetector(
+                      onTap: () =>
+                          _jumpToPost(_starRecord.starredPost, context),
+                      child: QuoteCard(_starRecord.starredPost),
+                    ),
                   ),
                 ],
               ),
@@ -66,7 +76,10 @@ class ApprovalNotificationCard extends StatelessWidget {
                 mainAxisSize: MainAxisSize.min,
                 children: <Widget>[
                   Expanded(
-                    child: QuoteCard(_approvalRecord.approvedComment),
+                    child: GestureDetector(
+                        onTap: () => _jumpToPost(
+                            _approvalRecord.approvedComment, context),
+                        child: QuoteCard(_approvalRecord.approvedComment)),
                   ),
                 ],
               ),
@@ -100,7 +113,10 @@ class ReplyNotificationCard extends StatelessWidget {
                 mainAxisSize: MainAxisSize.min,
                 children: [
                   Expanded(
-                    child: QuoteCard(_replyRecord.repliedQuote),
+                    child: GestureDetector(
+                        onTap: () =>
+                            _jumpToPost(_replyRecord.repliedQuote, context),
+                        child: QuoteCard(_replyRecord.repliedQuote)),
                   ),
                 ],
               ),
@@ -140,5 +156,24 @@ class FollowNotificationCard extends StatelessWidget {
                     _followRecord.followStatus,
                   ),
                 ])));
+  }
+}
+
+_jumpToPost(Quote quote, BuildContext context) async {
+  try {
+    final Response response =
+        await PostService.getPostByComment(quote.commentId);
+    print(response.data);
+    Post _post = Post.fromJson(response.data);
+    Navigator.of(context).pushNamed(RouteGenerator.postRoute,
+        arguments: JumpPostDTO(_post, pageIndex: quote.floor));
+  } on DioError catch (e) {
+    print(e.type);
+    if (e.type == DioErrorType.connectTimeout || e.type == DioErrorType.other) {
+      MessageBox.showToast(msg: "网络连接异常", messageBoxType: MessageBoxType.Error);
+    } else {
+      MessageBox.showToast(
+          msg: "服务器开小差了，过会再试试", messageBoxType: MessageBoxType.Error);
+    }
   }
 }

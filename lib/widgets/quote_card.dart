@@ -1,6 +1,7 @@
 import 'package:comment_overflow/assets/constants.dart';
 import 'package:comment_overflow/assets/custom_colors.dart';
 import 'package:comment_overflow/assets/custom_styles.dart';
+import 'package:comment_overflow/model/quote.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
@@ -9,7 +10,7 @@ class QuoteCard extends StatelessWidget {
   /// Vertical gap between rows.
   static const _gap = const SizedBox(height: 5.0);
 
-  final _quote;
+  final Quote? _quote;
 
   const QuoteCard(this._quote, {Key? key}) : super(key: key);
 
@@ -31,7 +32,7 @@ class QuoteCard extends StatelessWidget {
               mainAxisSize: MainAxisSize.max,
               children: [
                 Text(
-                  this._quote.title,
+                  this._quote!.title,
                   style: CustomStyles.referenceUserNameStyle,
                   maxLines: 1,
                   overflow: TextOverflow.ellipsis,
@@ -48,7 +49,7 @@ class QuoteCard extends StatelessWidget {
             ),
             _gap,
             Text(
-              this._quote.content,
+              this._quote!.content,
               style: CustomStyles.referenceContentStyle,
               maxLines: 2,
               overflow: TextOverflow.ellipsis,

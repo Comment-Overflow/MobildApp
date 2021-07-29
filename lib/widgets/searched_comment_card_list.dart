@@ -22,7 +22,7 @@ class SearchedCommentCardList extends StatefulWidget {
 }
 
 class _SearchedCommentCardListState extends State<SearchedCommentCardList> {
-  final PagingManager<Post> _pagingManager;
+  final PagingManager<SearchedPost> _pagingManager;
 
   _SearchedCommentCardListState(searchKey, postTag)
       : _pagingManager = PagingManager(Constants.defaultPageSize,
@@ -31,10 +31,11 @@ class _SearchedCommentCardListState extends State<SearchedCommentCardList> {
               searchKey, page, pageSize,
               postTag: postTag);
           // The type is Post, but they are actually comments.
-          List<Post> searchedComments =
-              (response.data as List).map((i) => Post.fromJson(i)).toList();
+          List searchedComments = (response.data as List).map((i) {
+            return SearchedPost.fromJson(i);
+          }).toList();
           return searchedComments;
-        }, (context, item, index) => PostCard(item, searchKey: [searchKey]),
+        }, (context, item, index) => SearchedPostCard(item, [searchKey]),
             emptyIndicatorTitle: Constants.searchCommentEmptyIndicatorTitle,
             emptyIndicatorSubtitle:
                 Constants.searchCommentEmptyIndicatorSubtitle);
