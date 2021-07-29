@@ -20,25 +20,25 @@ class UserInfo {
 
 class UserCardInfo extends UserInfo {
   final String? _brief;
-  final int _commentCount;
+  final int _postCount;
   final int _followerCount;
   final FollowStatus _followStatus;
 
   String get brief => _brief == null ? '' : _brief.toString();
 
-  int get commentCount => _commentCount;
+  int get postCount => _postCount;
 
   int get followerCount => _followerCount;
 
   FollowStatus get followStatus => _followStatus;
 
-  UserCardInfo(userId, userName, avatarUrl, this._brief, this._commentCount,
+  UserCardInfo(userId, userName, avatarUrl, this._brief, this._postCount,
       this._followerCount, this._followStatus)
       : super(userId, userName, avatarUrl: avatarUrl);
 
   UserCardInfo.fromJson(Map<String, dynamic> json)
       : _brief = json['brief'],
-        _commentCount = json['commentCount'],
+        _postCount = json['commentCount'],
         _followerCount = json['followerCount'],
         _followStatus = GeneralUtils.getFollowStatus(json['followStatus']),
         super(json['userId'], json['userName'], avatarUrl: json['avatarUrl']);
@@ -60,18 +60,18 @@ class PersonalPageInfo extends UserCardInfo {
       userName,
       avatarUrl,
       brief,
-      commentCount,
+      postCount,
       followerCount,
       followStatus,
       this._gender,
       this._approvalCount,
       this._followingCount)
-      : super(userId, userName, avatarUrl, brief, commentCount, followerCount,
+      : super(userId, userName, avatarUrl, brief, postCount, followerCount,
             followStatus);
 
   factory PersonalPageInfo.fromJson(dynamic json) => PersonalPageInfo(
       json['userId'] as int, json['userName'] as String, json['avatarUrl'] as String,
-      json['brief'] as String, json['userStatisticCommentCount'] as int, json['userStatisticFollowerCount'] as int,
+      json['brief'] as String, json['userStatisticPostCount'] as int, json['userStatisticFollowerCount'] as int,
       followStatusMap[json['followStatus'] as String], genderMap[json['gender'] as String]!, json['userStatisticApprovalCount'] as int,
       json['userStatisticFollowingCount'] as int
   );

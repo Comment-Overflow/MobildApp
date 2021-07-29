@@ -205,3 +205,9 @@ Map<String, Gender> genderMap = {
   "FEMALE": Gender.female,
   "SECRET": Gender.secret
 };
+
+Map<Gender, String> genderEnum2StringMap = {
+  Gender.male: "男",
+  Gender.female: "女",
+  Gender.secret: "保密"
+};
