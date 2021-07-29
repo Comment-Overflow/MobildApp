@@ -66,6 +66,7 @@ dependencies:
   substring_highlight: ^1.0.33
   empty_widget: ^0.0.5
   badges: ^2.0.1
+  image_gallery_saver: ^1.6.9
 
 dev_dependencies:
   flutter_test:

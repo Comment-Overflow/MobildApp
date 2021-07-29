@@ -123,7 +123,6 @@ class MultipleInputField extends StatelessWidget {
                             _isLoading = true;
                           });
                           final response = await PostService.postComment(dto);
-                          print(response.data.runtimeType);
                           MessageBox.showToast(
                               msg: "回复成功，经验+3！",
                               messageBoxType: MessageBoxType.Success);
@@ -131,8 +130,10 @@ class MultipleInputField extends StatelessWidget {
                             _isLoading = false;
                           });
 
-                          // _finishCallback(response.data);
                           Navigator.pop(context);
+                          _finishCallback(response.data);
+                          _controller.clear();
+                          _assets.clear();
                         } on DioError catch (e) {
                           print(e.message);
                           MessageBox.showToast(

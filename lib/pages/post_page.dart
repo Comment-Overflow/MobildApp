@@ -18,11 +18,14 @@ import 'package:wechat_assets_picker/wechat_assets_picker.dart';
 
 class PostPage extends StatefulWidget {
   final Post _post;
+  final int _pageIndex;
 
-  const PostPage(this._post, {Key? key}) : super(key: key);
+  const PostPage(this._post, {Key? key, pageIndex: 0})
+      : _pageIndex = pageIndex,
+        super(key: key);
 
   @override
-  _PostPageState createState() => _PostPageState();
+  _PostPageState createState() => _PostPageState(_pageIndex);
 }
 
 class _PostPageState extends State<PostPage> {
@@ -33,7 +36,9 @@ class _PostPageState extends State<PostPage> {
   static const _iconSize = 20.0;
   static const _bottomIconSize = 24.0;
 
-  int _pageIndex = 0;
+  int _pageIndex;
+
+  _PostPageState(this._pageIndex);
 
   String getPolicyName(SortPolicy policy) {
     switch (policy) {
@@ -77,7 +82,16 @@ class _PostPageState extends State<PostPage> {
         return BottomAppBar(
           child: Row(
             children: [
-              buildDropDownMenu(),
+              TextButton(
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    CustomStyles.getDefaultListIcon(size: _bottomIconSize),
+                    Text("跳页"),
+                  ],
+                ),
+                onPressed: () {},
+              ),
               ApprovalButton(
                   comment: widget._post.commentToDisplay,
                   size: _bottomIconSize),
@@ -97,7 +111,40 @@ class _PostPageState extends State<PostPage> {
     );
   }
 
-  Widget buildDropDownMenu() {
+  Widget _buildPageJumper(int currentPage, int totalPage) {
+    return StatefulBuilder(builder: (BuildContext c, StateSetter s) {
+      return Card(
+        elevation: Constants.defaultCardElevation,
+        shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.all(Radius.circular(5.0))),
+        child: InkWell(
+            child: Padding(
+          padding: EdgeInsets.symmetric(vertical: 30, horizontal: 20),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Row(
+                children: [
+                  TextButton(onPressed: () {}, child: Text("首页")),
+                  Text("页面跳转"),
+                  TextButton(onPressed: () {}, child: Text("末页"))
+                ],
+                mainAxisAlignment: MainAxisAlignment.spaceAround,
+              ),
+              Divider(),
+              GridView(
+                gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                  crossAxisCount: 5,
+                ),
+              )
+            ],
+          ),
+        )),
+      );
+    });
+  }
+
+  Widget _buildDropDownMenu() {
     return PopupMenuButton<SortPolicy>(
         padding: const EdgeInsets.all(7.0),
         onSelected: (SortPolicy result) => {
@@ -193,9 +240,7 @@ class _PostPageState extends State<PostPage> {
             textController: _replyController,
             assets: _assets,
             quote: null,
-            finishCallback: (pageIndex) => setState(() {
-              _pageIndex = pageIndex;
-            }),
+            finishCallback: _pushReplyCallback,
           );
         });
   }
@@ -209,8 +254,13 @@ class _PostPageState extends State<PostPage> {
       case ConnectionState.done:
         {
           int _userId = snapshot.data;
-          return CommentCardList(widget._post, _userId);
+          return CommentCardList(widget._post, _userId, _pushReplyCallback,
+              pageIndex: _pageIndex);
         }
     }
   }
+
+  _pushReplyCallback(pageIndex) => setState(() {
+        _pageIndex = pageIndex;
+      });
 }

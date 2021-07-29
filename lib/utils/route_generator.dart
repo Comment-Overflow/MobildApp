@@ -1,6 +1,7 @@
 import 'package:comment_overflow/assets/constants.dart';
 import 'package:comment_overflow/model/post.dart';
 import 'package:comment_overflow/model/routing_dto/image_gallery_dto.dart';
+import 'package:comment_overflow/model/routing_dto/jump_post_dto.dart';
 import 'package:comment_overflow/model/routing_dto/personal_page_access_dto.dart';
 import 'package:comment_overflow/model/routing_dto/user_name_id_dto.dart';
 import 'package:comment_overflow/model/user_info.dart';
@@ -51,12 +52,14 @@ class RouteGenerator {
     switch (settings.name) {
       case fansRoute:
         return MaterialPageRoute(
-          builder: (_) => ScrollViewPage(FollowRecordCardList(FollowStatus.followingMe),
+          builder: (_) => ScrollViewPage(
+              FollowRecordCardList(FollowStatus.followingMe),
               (args as UserNameIdDto).userName + '的粉丝'),
         );
       case followersRoute:
         return MaterialPageRoute(
-            builder: (_) => ScrollViewPage(FollowRecordCardList(FollowStatus.followedByMe),
+            builder: (_) => ScrollViewPage(
+                FollowRecordCardList(FollowStatus.followedByMe),
                 (args as UserNameIdDto).userName + '的关注'));
       case approveMeRoute:
         return MaterialPageRoute(
@@ -84,7 +87,14 @@ class RouteGenerator {
         return MaterialPageRoute(
             builder: (_) => SearchResultPage(args as String));
       case postRoute:
-        return MaterialPageRoute(builder: (_) => PostPage(args as Post));
+        {
+          JumpPostDTO jumpPostDTO = args as JumpPostDTO;
+          return MaterialPageRoute(
+              builder: (_) => PostPage(
+                    jumpPostDTO.post,
+                    pageIndex: jumpPostDTO.pageIndex,
+                  ));
+        }
       case profileSettingRoute:
         return MaterialPageRoute(builder: (_) => ProfileSettingPage());
       case galleryRoute:

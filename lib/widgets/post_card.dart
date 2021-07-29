@@ -1,6 +1,7 @@
 import 'package:comment_overflow/assets/constants.dart';
 import 'package:comment_overflow/assets/custom_styles.dart';
 import 'package:comment_overflow/model/post.dart';
+import 'package:comment_overflow/model/routing_dto/jump_post_dto.dart';
 import 'package:comment_overflow/utils/route_generator.dart';
 import 'package:comment_overflow/widgets/user_avatar_with_name.dart';
 import 'package:flutter/material.dart';
@@ -85,7 +86,7 @@ class PostCard extends StatelessWidget {
               context,
               RouteGenerator.generateRoute(RouteSettings(
                 name: RouteGenerator.postRoute,
-                arguments: _post,
+                arguments: JumpPostDTO(_post),
               )));
         },
       ),
@@ -131,11 +132,10 @@ class PostCard extends StatelessWidget {
                 text: ' ${_post.commentCount} · ',
               ),
               WidgetSpan(
-                child: _post.commentToDisplay.approvalStatus ==
-                    ApprovalStatus.approve
-                    ? CustomStyles.getDefaultThumbUpIcon()
-                    : CustomStyles.getDefaultNotThumbUpIcon()
-              ),
+                  child: _post.commentToDisplay.approvalStatus ==
+                          ApprovalStatus.approve
+                      ? CustomStyles.getDefaultThumbUpIcon()
+                      : CustomStyles.getDefaultNotThumbUpIcon()),
               TextSpan(
                 text:
                     ' ${_post.approvalCount} · ${_post.commentToDisplay.timeString}',

@@ -154,25 +154,6 @@ class CommentPagingManager<T> {
     }
   }
 
-  refresh({jumpTo: 0}) {
-    // print('==== refresh ====');
-    _pagingController.removePageRequestListener(this._wrappedFetchApi);
-    // print('listener removed');
-
-    _initialIndex = jumpTo;
-    int indexOfFirstElementInPageToBeFetched =
-        _initialIndex ~/ _pageSize * _pageSize;
-    _lastIncompletePageSize = 0;
-    _pageKeyToResume = 0;
-    jumpFloorValues = JumpFloorValues(indexOfFirstElementInPageToBeFetched);
-
-    _pagingController.refresh();
-
-    _pagingController.addPageRequestListener(this._wrappedFetchApi);
-    _pagingController.notifyPageRequestListeners(jumpTo);
-    // print('refreshed');
-  }
-
   dispose() {
     if (_disposed == false) {
       _disposed = true;

@@ -16,8 +16,16 @@ class PostService {
         .get('/post', queryParameters: {'postId': postId});
   }
 
+  static Future<Response> getPostByComment(int commentId) async {
+    return await HttpUtil()
+        .dio
+        .get('/comment/post', queryParameters: {'commentId': commentId});
+  }
+
   static Future<Response> getPostComments(CommentQueryDTO query) async {
-    return await HttpUtil().dio.get('/posts', queryParameters: query.getData());
+    return await HttpUtil()
+        .dio
+        .get('/post/comments', queryParameters: query.getData());
   }
 
   static Future<Response> getPosts(PostQueryDTO query) async {

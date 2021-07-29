@@ -191,20 +191,19 @@ class _NewPostPageState extends State<NewPostPage> {
         _isLoading = true;
       });
       final response = await PostService.postPost(dto);
-      var _newPost = Post.fromJson(response.data);
-      _newPost.isStarred = false;
       Navigator.pushReplacement(
           context,
           RouteGenerator.generateRoute(RouteSettings(
             name: RouteGenerator.postRoute,
-            arguments: _newPost,
+            arguments: Post.fromJson(response.data),
           )));
-      setState(() {
-        _isLoading = false;
-      });
     } on DioError catch (e) {
       MessageBox.showToast(
           msg: "发帖失败！ ${e.message}", messageBoxType: MessageBoxType.Error);
+    } on Error {
+      MessageBox.showToast(
+          msg: "发帖失败！每张图片大小应小于20MB.", messageBoxType: MessageBoxType.Error);
+    } finally {
       setState(() {
         _isLoading = false;
       });
