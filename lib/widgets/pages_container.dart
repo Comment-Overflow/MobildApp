@@ -1,5 +1,4 @@
 import 'package:badges/badges.dart';
-import 'package:comment_overflow/fake_data/fake_data.dart';
 import 'package:comment_overflow/pages/home_page.dart';
 import 'package:comment_overflow/pages/personal_page.dart';
 import 'package:comment_overflow/utils/general_utils.dart';

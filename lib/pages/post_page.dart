@@ -65,7 +65,10 @@ class _PostPageState extends State<PostPage> {
           onPressed: _pushReply,
           child: CustomStyles.getDefaultReplyIcon(
               size: Constants.defaultFabIconSize, color: Colors.white)),
-      body: CommentCardList(widget._post, this._sortPolicy),
+      body: FutureBuilder(
+        future: _getUserId(),
+        builder: _buildCommentCardList,
+      ),
       bottomNavigationBar: StatefulBuilder(
           builder: (BuildContext context, StateSetter bottomSetter) {
         int _usrId = widget._post.commentToDisplay.user.userId;
@@ -127,14 +130,12 @@ class _PostPageState extends State<PostPage> {
   }
 
   Widget _buildDeleteButton(BuildContext context, AsyncSnapshot snapshot) {
-
     okCallback() {
       _deletePost();
       Navigator.pop(context);
       Navigator.pop(context);
       MessageBox.showToast(
-          msg: "帖子已被删除，刷新以更新。",
-          messageBoxType: MessageBoxType.Info);
+          msg: "帖子已被删除，刷新以更新。", messageBoxType: MessageBoxType.Info);
     }
 
     cancelCallback() {
@@ -150,22 +151,23 @@ class _PostPageState extends State<PostPage> {
         {
           int _userId = snapshot.data;
           return _userId == widget._post.commentToDisplay.user.userId
-            ? IconButton(
-              icon: CustomStyles.getDefaultDeleteIcon(size: _iconSize),
-              tooltip: 'Delete this Post',
-              onPressed: () {
-                showDialog(
-                  context: context,
-                  builder: (context) {
-                    return AdaptiveAlertDialog(
-                        "删除帖子: ${widget._post.postId}",
-                        "你确认要删除 \"${widget._post.title}\"吗",
-                        "确定", "取消",
-                        okCallback,
-                        cancelCallback);
-                  });
-              })
-            : SizedBox.shrink();
+              ? IconButton(
+                  icon: CustomStyles.getDefaultDeleteIcon(size: _iconSize),
+                  tooltip: 'Delete this Post',
+                  onPressed: () {
+                    showDialog(
+                        context: context,
+                        builder: (context) {
+                          return AdaptiveAlertDialog(
+                              "删除帖子: ${widget._post.postId}",
+                              "你确认要删除 \"${widget._post.title}\"吗",
+                              "确定",
+                              "取消",
+                              okCallback,
+                              cancelCallback);
+                        });
+                  })
+              : SizedBox.shrink();
         }
     }
   }
@@ -191,5 +193,19 @@ class _PostPageState extends State<PostPage> {
             quote: null,
           );
         });
+  }
+
+  Widget _buildCommentCardList(BuildContext context, AsyncSnapshot snapshot) {
+    switch (snapshot.connectionState) {
+      case ConnectionState.none:
+      case ConnectionState.waiting:
+      case ConnectionState.active:
+        return SizedBox.shrink();
+      case ConnectionState.done:
+        {
+          int _userId = snapshot.data;
+          return CommentCardList(widget._post, _userId);
+        }
+    }
   }
 }

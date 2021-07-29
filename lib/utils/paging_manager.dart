@@ -1,6 +1,8 @@
 import 'package:comment_overflow/widgets/adaptive_refresher.dart';
+import 'package:empty_widget/empty_widget.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/rendering.dart';
 import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
 import 'package:scroll_to_index/scroll_to_index.dart';
 
@@ -10,7 +12,7 @@ class PagingManager<T> {
     height: 25.0,
     child: const CupertinoActivityIndicator(),
   );
-  final _pageSize;
+  final int _pageSize;
   late final AutoScrollController _autoScrollController = AutoScrollController(
     viewportBoundaryGetter: () => Rect.fromLTRB(0, 0, 0, 10.0),
     axis: Axis.vertical,
@@ -38,8 +40,29 @@ class PagingManager<T> {
 
   // Check prevent manipulation of paging controller after disposal.
   bool _disposed = false;
-  // Should the list be able to auto scroll.
-  bool _enableAutoScroll;
+  // Title for empty indicator.
+  String? _emptyIndicatorTitle;
+  String? _emptyIndicatorSubtitle;
+
+  PagingManager(this._pageSize, this._customFetchApi, this._customItemBuilder,
+      {enableAutoScroll = false, emptyIndicatorTitle, emptyIndicatorSubtitle})
+      : this._emptyIndicatorTitle = emptyIndicatorTitle,
+        this._emptyIndicatorSubtitle = emptyIndicatorSubtitle {
+    this._wrappedFetchApi = (pageKey) {
+      _fetchPage(pageKey);
+    };
+
+    _pagingController.addPageRequestListener(this._wrappedFetchApi);
+  }
+
+  changeCustomFetchApi(newApi) {
+    _pagingController.removePageRequestListener(this._wrappedFetchApi);
+    this._customFetchApi = newApi;
+    this._wrappedFetchApi = (pageKey) {
+      _fetchPage(pageKey);
+    };
+    _pagingController.addPageRequestListener(this._wrappedFetchApi);
+  }
 
   Future<void> _fetchPage(int pageKey) async {
     try {
@@ -59,25 +82,6 @@ class PagingManager<T> {
     }
   }
 
-  PagingManager(this._pageSize, this._customFetchApi, this._customItemBuilder,
-      {enableAutoScroll = false})
-      : this._enableAutoScroll = enableAutoScroll {
-    this._wrappedFetchApi = (pageKey) {
-      _fetchPage(pageKey);
-    };
-
-    _pagingController.addPageRequestListener(this._wrappedFetchApi);
-  }
-
-  changeCustomFetchApi(newApi) {
-    _pagingController.removePageRequestListener(this._wrappedFetchApi);
-    this._customFetchApi = newApi;
-    this._wrappedFetchApi = (pageKey) {
-      _fetchPage(pageKey);
-    };
-    _pagingController.addPageRequestListener(this._wrappedFetchApi);
-  }
-
   refresh() {
     _pagingController.refresh();
   }
@@ -86,27 +90,22 @@ class PagingManager<T> {
     if (_disposed == false) {
       _disposed = true;
       _pagingController.dispose();
-      _autoScrollController.dispose();
     }
   }
 
+  /// Refreshable means can user refresh by swiping down the screen.
+  /// Refreshing programmatically is always doable.
   Widget getListView({refreshable = true}) {
     PagedListView<int, T> listView = PagedListView<int, T>(
-      scrollController: _enableAutoScroll ? _autoScrollController : null,
       pagingController: _pagingController,
       builderDelegate: PagedChildBuilderDelegate<T>(
         animateTransitions: true,
         transitionDuration: const Duration(milliseconds: 200),
-        itemBuilder: _enableAutoScroll
-            ? (context, item, index) => AutoScrollTag(
-                  key: ValueKey(index),
-                  controller: _autoScrollController,
-                  index: index,
-                  child: _customItemBuilder(context, item, index),
-                )
-            : (context, item, index) =>
-                _customItemBuilder(context, item, index),
+        itemBuilder: (context, item, index) =>
+            _customItemBuilder(context, item, index),
         firstPageProgressIndicatorBuilder: (_) => Container(),
+        noItemsFoundIndicatorBuilder: (_) => buildEmptyWidget(),
+        noMoreItemsIndicatorBuilder: (_) => buildNoMoreItemsIndicator(),
       ),
     );
 
@@ -128,4 +127,30 @@ class PagingManager<T> {
     await _autoScrollController.scrollToIndex(index,
         preferPosition: AutoScrollPosition.middle);
   }
+
+  buildEmptyWidget() => Container(
+      height: 1,
+      padding: EdgeInsets.fromLTRB(60, 0, 60, 80),
+      child: EmptyWidget(
+        image: null,
+        packageImage: PackageImage.Image_1,
+        title: _emptyIndicatorTitle,
+        subTitle: _emptyIndicatorSubtitle,
+        titleTextStyle: TextStyle(
+          fontSize: 15,
+          color: Color(0xff9da9c7),
+          fontWeight: FontWeight.w500,
+        ),
+        subtitleTextStyle: TextStyle(
+          fontSize: 14,
+          color: Color(0xffabb8d6),
+        ),
+      ));
+
+  buildNoMoreItemsIndicator() =>
+      Column(crossAxisAlignment: CrossAxisAlignment.center, children: [
+        Padding(
+            padding: EdgeInsets.symmetric(vertical: 20.0),
+            child: Text('-  暂时没有更多内容  -', style: TextStyle(color: Colors.grey)))
+      ]);
 }

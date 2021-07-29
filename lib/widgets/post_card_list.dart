@@ -27,7 +27,9 @@ class _PostCardListState extends State<PostCardList> {
         PostQueryDTO(tag: widget._tag, pageNum: page, pageSize: pageSize));
     var postObjJson = response.data['content'] as List;
     return postObjJson.map((e) => Post.fromJson(e)).toList();
-  }, (context, item, index) => PostCard(item));
+  }, (context, item, index) => PostCard(item),
+          emptyIndicatorTitle: Constants.browsePostIndicatorTitle,
+          emptyIndicatorSubtitle: Constants.browsePostEmptyIndicatorSubtitle);
 
   @override
   dispose() {
