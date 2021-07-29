@@ -76,7 +76,7 @@ class _ProfileSettingPageState extends State<ProfileSettingPage> {
   void initState() {
     super.initState();
     _gender = genderEnum2StringMap[_profileSettingDto.gender]!;
-    _userAvatar = UserAvatar(Constants.profileSettingImageSize, image: _profileSettingDto.userAvatar == null ? null : NetworkImage(_profileSettingDto.userAvatar!));
+    _userAvatar = UserAvatar(Constants.profileSettingImageSize, imageContent: _profileSettingDto.userAvatar);
     _userNameController = TextEditingController(text: this._profileSettingDto.userName);
     _briefController = TextEditingController(text: this._profileSettingDto.brief);
   }
@@ -211,16 +211,14 @@ class _ProfileSettingPageState extends State<ProfileSettingPage> {
               ],
               maxLength: 30,
               minLines: 1,
-              maxLines: 3,
+              maxLines: 1,
               decoration: InputDecoration(
                 hintText: "不超过30个字",
                 enabledBorder: UnderlineInputBorder(
-                  borderSide:
-                  BorderSide(color: CustomColors.profileSettingInputGery),
+                  borderSide: BorderSide(color: CustomColors.profileSettingInputGery),
                 ),
                 focusedBorder: UnderlineInputBorder(
-                  borderSide:
-                  BorderSide(color: CustomColors.profileSettingInputGery),
+                  borderSide: BorderSide(color: CustomColors.profileSettingInputGery),
                 ),
               ),
             ),
