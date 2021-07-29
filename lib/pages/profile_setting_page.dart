@@ -1,12 +1,13 @@
 import 'package:comment_overflow/assets/constants.dart';
 import 'package:comment_overflow/assets/custom_colors.dart';
 import 'package:comment_overflow/assets/custom_styles.dart';
-import 'package:comment_overflow/model/routing_dto/personal_page_access_dto.dart';
+
 import 'package:comment_overflow/model/routing_dto/profile_setting_dto.dart';
 import 'package:comment_overflow/service/profile_service.dart';
 import 'package:comment_overflow/utils/message_box.dart';
 import 'package:comment_overflow/utils/my_image_picker.dart';
 import 'package:comment_overflow/utils/route_generator.dart';
+import 'package:comment_overflow/utils/storage_util.dart';
 import 'package:comment_overflow/widgets/user_avatar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -54,7 +55,7 @@ class _ProfileSettingPageState extends State<ProfileSettingPage> {
         _assets.addAll(List<AssetEntity>.from(result));
         _userAvatar = UserAvatar(
           Constants.profileSettingImageSize,
-          image: AssetEntityImageProvider(_assets.first, isOriginal: false),
+          imageContent: _assets.first,
         );
       });
     }
@@ -65,11 +66,11 @@ class _ProfileSettingPageState extends State<ProfileSettingPage> {
   }
 
   Future<FormData> formData() async => FormData.fromMap({
-    "userName": _userNameController.text,
-    "brief": _briefController.text,
-    "avatar": _isUserAvatarChanged ? await _transport(_assets.first) : null,
-    "gender": _gender
-  });
+        "userName": _userNameController.text,
+        "brief": _briefController.text,
+        "avatar": _isUserAvatarChanged ? await _transport(_assets.first) : null,
+        "gender": _gender
+      });
 
   @override
   void initState() {
@@ -103,15 +104,22 @@ class _ProfileSettingPageState extends State<ProfileSettingPage> {
                 onPressed: () async {
                   if (_isUserNameValid && _isIntroductionValid) {
                     bool errorFlag = false;
-                    try{
-                      final response = await ProfileService.putProfileSetting("/profiles/settings", (await formData()));
-                    } on DioError catch(e) {
+                    try {
+                      final Response response =
+                          await ProfileService.putProfileSetting(
+                              "/profiles/settings", (await formData()));
+                      Map userNameAndAvatarUrl = response.data;
+                      StorageUtil().writeOnProfileChange(
+                          userNameAndAvatarUrl['userName'],
+                          userNameAndAvatarUrl['avatarUrl']);
+                    } on DioError catch (e) {
                       errorFlag = true;
                       print(e.message);
                       MessageBox.showToast(
-                          msg: "网络错误", messageBoxType: MessageBoxType.Error);
+                          msg: Constants.networkError,
+                          messageBoxType: MessageBoxType.Error);
                     }
-                    if(!errorFlag) {
+                    if (!errorFlag) {
                       MessageBox.showToast(
                           msg: "保存成功", messageBoxType: MessageBoxType.Success);
                       Navigator.pushReplacement(

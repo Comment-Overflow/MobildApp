@@ -6,7 +6,7 @@ class Constants {
   static const defaultNotificationPageSize = 10;
 
   /// Default padding of any card component.
-  static const defaultCardPadding = 16.0;
+  static const defaultCardPadding = 14.0;
 
   /// Default size height of a user card.
   static const defaultUserCardHeight = 100.0;
@@ -24,7 +24,7 @@ class Constants {
   static const defaultChatCardHeight = 80.0;
 
   /// Default size of chat avatar.
-  static const defaultChatListAvatarSize = 60.0;
+  static const defaultChatListAvatarSize = 50.0;
 
   static const defaultAppBarElevation = 0.5;
 
@@ -60,7 +60,7 @@ class Constants {
   static const defaultPersonalPageHeaderHeight = 150.0;
 
   /// Default personal page avatar size.
-  static const defaultPersonalPageAvatarSize = 130.0;
+  static const defaultPersonalPageAvatarSize = 115.0;
 
   /// Default personal page avatar padding.
   static const defaultPersonalPageAvatarPadding = 5.0;
@@ -103,6 +103,9 @@ class Constants {
 
   static const defaultHighlightTime = 2000;
 
+  /// Default page size when getting chat history from backend.
+  static const HTTPChatHistoryPage = 15;
+
   static const maxSearchHistory = 20;
 
   // Categories of posts
@@ -127,9 +130,34 @@ class Constants {
 
   static const String token = 'token';
 
-  static const String userId = 'userid';
+  static const String userId = 'userId';
+
+  static const String userName = 'userName';
+
+  static const String avatarUrl = 'avatarUrl';
 
   static const String searchHistory = 'searchHistory';
+
+  static const String imageLastMessage = '[图片]';
+
+  static const String imageLoadingError = '图片加载失败';
+
+  static const String imageReloadPrompt = '点击重新加载';
+
+  static const String networkError = '网络错误';
+
+  static const String searchCommentEmptyIndicatorTitle = '找不到话题';
+
+  static const String searchCommentEmptyIndicatorSubtitle = '试试换个姿势搜索';
+
+  static const String searchUserEmptyIndicatorTitle = '找不到用户';
+
+  static const String searchUserEmptyIndicatorSubtitle = '也许只是擦肩而过';
+
+  static const String browsePostIndicatorTitle = '还没有话题';
+
+  static const String browsePostEmptyIndicatorSubtitle = '做第一个打破沉默的人吧';
+
 }
 
 enum FollowStatus {
@@ -187,6 +215,8 @@ enum Setting {
 
 enum PostTag { Life, Study, Art, Mood, Career }
 
+enum MessageStatus { Normal, Sending, Failed }
+
 Map<String, FollowStatus> followStatusMap = {
   "NONE": FollowStatus.none,
   "FOLLOWED_BY_ME": FollowStatus.followedByMe,
@@ -195,9 +225,9 @@ Map<String, FollowStatus> followStatusMap = {
 };
 
 Map<ApprovalStatus, String> statusString = {
-  ApprovalStatus.approve : "APPROVAL",
-  ApprovalStatus.disapprove : "DISAPPROVAL",
-  ApprovalStatus.none : "NONE"
+  ApprovalStatus.approve: "APPROVAL",
+  ApprovalStatus.disapprove: "DISAPPROVAL",
+  ApprovalStatus.none: "NONE"
 };
 
 Map<String, Gender> genderMap = {

@@ -1,15 +1,21 @@
 class LoginDTO {
-  int userId;
   String token;
+  int userId;
+  String userName;
+  String avatarUrl;
 
-  LoginDTO(this.userId, this.token);
+  LoginDTO(this.token, this.userId, this.userName, this.avatarUrl);
 
   LoginDTO.fromJson(Map<String, dynamic> json)
-      : userId = json['userId'],
-        token = json['token'];
+      : token = json['token'],
+        userId = json['userId'],
+        userName = json['userName'],
+        avatarUrl = json['avatarUrl'];
 
   Map<String, dynamic> toJson() => {
-        'userId': userId,
         'token': token,
+        'userId': userId,
+        'userName': userName,
+        'avatarUrl': avatarUrl,
       };
 }

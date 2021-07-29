@@ -1,6 +1,4 @@
-import 'package:comment_overflow/assets/constants.dart';
 import 'package:comment_overflow/assets/custom_styles.dart';
-import 'package:comment_overflow/pages/home_page.dart';
 import 'package:comment_overflow/service/notification_service.dart';
 import 'package:comment_overflow/utils/route_generator.dart';
 import 'package:comment_overflow/widgets/multiple_widget_button.dart';
@@ -26,12 +24,13 @@ class _NotificationButtonList extends State<NotificationButtonList> {
   @override
   void initState() {
     ValueSetter callback = (dynamic json) => this.setState(() {
-      _haveNewApprovals = json['isNewlyApproved'] as bool;
-      _haveNewFollowers = json['isNewlyFollowed'] as bool;
-      _haveNewStars = json['isNewlyStarred'] as bool;
-      _haveNewReplies = json['isNewlyReplied'] as bool;
-    });
-    NotificationService.ifHaveNewNotification('/notifications/new_records', callback);
+          _haveNewApprovals = json['isNewlyApproved'] as bool;
+          _haveNewFollowers = json['isNewlyFollowed'] as bool;
+          _haveNewStars = json['isNewlyStarred'] as bool;
+          _haveNewReplies = json['isNewlyReplied'] as bool;
+        });
+    NotificationService.ifHaveNewNotification(
+        '/notifications/new_records', callback);
     super.initState();
   }
 
@@ -57,7 +56,7 @@ class _NotificationButtonList extends State<NotificationButtonList> {
             flex: 25,
             child: MultipleWidgetButton(
               RouteGenerator.approveMeRoute,
-                () => this.setState(() {
+              () => this.setState(() {
                 _haveNewApprovals = false;
               }),
               [
@@ -75,9 +74,9 @@ class _NotificationButtonList extends State<NotificationButtonList> {
             flex: 25,
             child: MultipleWidgetButton(
               RouteGenerator.replyMeRoute,
-                  () => this.setState(() {
-                    _haveNewReplies = false;
-                  }),
+              () => this.setState(() {
+                _haveNewReplies = false;
+              }),
               [
                 Badge(
                   child: Icon(CupertinoIcons.text_bubble,
@@ -93,9 +92,9 @@ class _NotificationButtonList extends State<NotificationButtonList> {
             flex: 25,
             child: MultipleWidgetButton(
               RouteGenerator.starMeRoute,
-                  () => this.setState(() {
-                    _haveNewStars = false;
-                  }),
+              () => this.setState(() {
+                _haveNewStars = false;
+              }),
               [
                 Badge(
                   child: Icon(CupertinoIcons.star,
@@ -111,9 +110,9 @@ class _NotificationButtonList extends State<NotificationButtonList> {
             flex: 25,
             child: MultipleWidgetButton(
               RouteGenerator.followMeNotificationRoute,
-                  () => this.setState(() {
-                    _haveNewFollowers = false;
-                  }),
+              () => this.setState(() {
+                _haveNewFollowers = false;
+              }),
               [
                 Badge(
                   child: CustomStyles.getDefaultUnfilledFollowerIcon(

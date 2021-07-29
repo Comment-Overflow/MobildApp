@@ -36,11 +36,14 @@ class QuoteCard extends StatelessWidget {
                   maxLines: 1,
                   overflow: TextOverflow.ellipsis,
                 ),
-                Expanded(child: Text(
-                  this._quote.floor.toString() + "楼",
-                  style: CustomStyles.floorStyle,
-                  textAlign: TextAlign.right,
-                ))
+                _quote.floor == 0
+                    ? SizedBox.shrink()
+                    : Expanded(
+                        child: Text(
+                        this._quote.floor.toString() + "楼",
+                        style: CustomStyles.floorStyle,
+                        textAlign: TextAlign.right,
+                      ))
               ],
             ),
             _gap,

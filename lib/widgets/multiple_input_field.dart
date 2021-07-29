@@ -127,6 +127,8 @@ class MultipleInputField extends StatelessWidget {
                             _isLoading = false;
                           });
                           Navigator.pop(context);
+                          _controller.clear();
+                          _assets.clear();
                         } on DioError catch (e) {
                           print(e.message);
                           MessageBox.showToast(

@@ -1,5 +1,6 @@
 import 'package:comment_overflow/assets/constants.dart';
 import 'package:comment_overflow/exceptions/user_unauthorized_exception.dart';
+import 'package:comment_overflow/model/message.dart';
 import 'package:comment_overflow/utils/storage_util.dart';
 import 'package:dart_date/dart_date.dart';
 
@@ -42,6 +43,16 @@ class GeneralUtils {
       return time.format('yyyy-MM-dd HH:mm');
   }
 
+  /// Convert number of unread messages into string that displayed in badge.
+  /// Returns null if [unreadCount] is 0,
+  static String? getBadgeString(int unreadCount) {
+    if (unreadCount == 0)
+      return null;
+    if (unreadCount > 99)
+      return "99+";
+    return unreadCount.toString();
+  }
+
   /// Get the current JWT token.
   static Future<String> getCurrentToken() async {
     String? token = await StorageUtil().storage.read(key: Constants.token);
@@ -69,4 +80,5 @@ class GeneralUtils {
         return FollowStatus.none;
     }
   }
+
 }
