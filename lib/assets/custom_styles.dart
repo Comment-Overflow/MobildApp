@@ -201,6 +201,9 @@ class CustomStyles {
   static Icon getDefaultRightArrow({size = 14.0, color = Colors.grey}) =>
       Icon(Icons.keyboard_arrow_right_sharp, color: color, size: size);
 
+  static Icon getDefaultMessageFailIcon({size = 14.0, color = Colors.red}) =>
+      Icon(CupertinoIcons.exclamationmark_circle_fill, color: color, size: size);
+
   static const referenceUserNameStyle = TextStyle(
     fontWeight: FontWeight.bold,
     fontSize: 16.0,

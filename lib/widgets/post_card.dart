@@ -24,7 +24,7 @@ class PostCard extends StatelessWidget {
         UserAvatarWithName(_post.commentToDisplay.user.userName, 21.0,
             textStyle: CustomStyles.postContentStyle,
             gap: 7.0,
-            searchKey: searchKey),
+            searchKey: searchKey,avatarUrl:_post.commentToDisplay.user.avatarUrl),
         _gap,
         buildContent(),
       ],

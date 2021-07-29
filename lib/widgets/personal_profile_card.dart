@@ -41,12 +41,16 @@ class PersonalProfileCard extends StatelessWidget {
                 children: [
                   Expanded(
                     flex: 40,
-                    child: Column(
-                      mainAxisSize: MainAxisSize.max,
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      children: [
-                        UserAvatar(Constants.defaultPersonalPageAvatarSize),
-                      ],
+                    child: Padding(
+                      padding: EdgeInsets.symmetric(horizontal: 12.0),
+                      child: Column(
+                        mainAxisSize: MainAxisSize.max,
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        children: [
+                          UserAvatar(Constants.defaultPersonalPageAvatarSize,
+                              imageContent: _personalPageInfo.avatarUrl),
+                        ],
+                      ),
                     ),
                   ),
                   Expanded(
@@ -68,10 +72,11 @@ class PersonalProfileCard extends StatelessWidget {
                                   width: Constants
                                           .defaultPersonalPageHeaderTitleSize *
                                       0.2),
-                              _personalPageInfo.gender == Gender.secret ? 
-                              Container() : _personalPageInfo.gender == Gender.male
-                                  ? CustomStyles.getDefaultMaleIcon()
-                                  : CustomStyles.getDefaultFemaleIcon(),
+                              _personalPageInfo.gender == Gender.secret
+                                  ? Container()
+                                  : _personalPageInfo.gender == Gender.male
+                                      ? CustomStyles.getDefaultMaleIcon()
+                                      : CustomStyles.getDefaultFemaleIcon(),
                             ],
                           ),
                         ),
@@ -122,7 +127,7 @@ class PersonalProfileCard extends StatelessWidget {
                   flex: 25,
                   child: MultipleWidgetButton(
                     RouteGenerator.followersRoute,
-                      () => {},
+                    () => {},
                     [
                       Text(
                         GeneralUtils.getDefaultNumberString(
@@ -143,7 +148,7 @@ class PersonalProfileCard extends StatelessWidget {
                   flex: 25,
                   child: MultipleWidgetButton(
                     RouteGenerator.fansRoute,
-                        () => {},
+                    () => {},
                     [
                       Text(
                         GeneralUtils.getDefaultNumberString(
@@ -164,7 +169,7 @@ class PersonalProfileCard extends StatelessWidget {
                   flex: 25,
                   child: MultipleWidgetButton(
                     null,
-                        () => {},
+                    () => {},
                     [
                       Text(
                         GeneralUtils.getDefaultNumberString(
@@ -183,7 +188,7 @@ class PersonalProfileCard extends StatelessWidget {
                   flex: 25,
                   child: MultipleWidgetButton(
                     null,
-                        () => {},
+                    () => {},
                     [
                       Text(
                         GeneralUtils.getDefaultNumberString(
@@ -226,19 +231,22 @@ class PersonalProfileCard extends StatelessWidget {
             child: SizedBox(
               height: Constants.defaultTextButtonHeight,
               child: TextButton(
-                  style: ButtonStyle(
-                      padding: MaterialStateProperty.all<EdgeInsetsGeometry>(
-                          EdgeInsets.symmetric(
-                              horizontal: Constants.defaultTextButtonPadding)),
-                      side: MaterialStateProperty.all<BorderSide>(
-                          BorderSide(color: Colors.blue, width: 0.7))),
-                  child: Text("私信",
-                      style: TextStyle(
-                          fontSize: Constants.defaultButtonTextSize,
-                          color: Colors.blue)),
-                  onPressed: () {
-                    // TODO: chat room route.
-                  }),
+                style: ButtonStyle(
+                    padding: MaterialStateProperty.all<EdgeInsetsGeometry>(
+                        EdgeInsets.symmetric(
+                            horizontal: Constants.defaultTextButtonPadding)),
+                    side: MaterialStateProperty.all<BorderSide>(
+                        BorderSide(color: Colors.blue, width: 0.7))),
+                child: Text("私信",
+                    style: TextStyle(
+                        fontSize: Constants.defaultButtonTextSize,
+                        color: Colors.blue)),
+                onPressed: () {
+                  Navigator.of(context).pushNamed(
+                      RouteGenerator.privateChatRoute,
+                      arguments: _personalPageInfo);
+                },
+              ),
             ),
           ),
         ),

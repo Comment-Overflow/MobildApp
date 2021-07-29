@@ -64,8 +64,11 @@ dependencies:
   after_layout: ^1.1.0
   uuid: ^3.0.4
   substring_highlight: ^1.0.33
-  empty_widget: ^0.0.5
+  mutex: ^3.0.0
+  cached_network_image: ^3.1.0
   badges: ^2.0.1
+  skeleton_text: ^3.0.0
+  empty_widget: ^0.0.5
   image_gallery_saver: ^1.6.9
 
 dev_dependencies:
@@ -96,6 +99,7 @@ flutter:
 
   assets:
     - .env
+    - assets/images/image_loading_fail.png
 
   # To add custom fonts to your application, add a fonts section here,
   # in this "flutter" section. Each entry in this list should have a
