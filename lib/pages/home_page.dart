@@ -6,7 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 
 class HomePage extends StatelessWidget {
-  final _tabs = ['浏览', '推荐', '关注'] + Constants.postCategories;
+  final _tabs = ['时间线', '推荐', '关注'] + Constants.postCategories;
 
   HomePage({Key? key}) : super(key: key);
 

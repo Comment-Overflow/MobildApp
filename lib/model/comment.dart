@@ -40,7 +40,6 @@ class Comment {
     else
       status = ApprovalStatus.none;
 
-    print(json);
     return Comment(
         json['id'] as int,
         UserInfo.fromJson(json['userInfo']),

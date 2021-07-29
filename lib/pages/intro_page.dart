@@ -25,7 +25,10 @@ class _IntroPageState extends State<IntroPage>
       try {
         final response = await AuthService.autoLogin();
         // Rejected by interceptor.
-        if (response.data.runtimeType == String) return false;
+        if (response.data.runtimeType == String) {
+          print(response.data);
+          return false;
+        }
         final LoginDTO loginDTO = LoginDTO.fromJson(response.data);
         await StorageUtil().configOnLogin(loginDTO);
         await ChatService.initChat();
