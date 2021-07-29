@@ -78,7 +78,7 @@ class _PostPageState extends State<PostPage> {
       ),
       bottomNavigationBar: StatefulBuilder(
           builder: (BuildContext context, StateSetter bottomSetter) {
-        int _usrId = widget._post.commentToDisplay.user.userId;
+        int _usrId = widget._post.hostComment.user.userId;
         return BottomAppBar(
           child: Row(
             children: [
@@ -93,11 +93,9 @@ class _PostPageState extends State<PostPage> {
                 onPressed: () {},
               ),
               ApprovalButton(
-                  comment: widget._post.commentToDisplay,
-                  size: _bottomIconSize),
+                  comment: widget._post.hostComment, size: _bottomIconSize),
               DisapprovalButton(
-                  comment: widget._post.commentToDisplay,
-                  size: _bottomIconSize),
+                  comment: widget._post.hostComment, size: _bottomIconSize),
               StarButton(
                   initialStared: widget._post.isStarred,
                   postId: widget._post.postId,
@@ -199,7 +197,7 @@ class _PostPageState extends State<PostPage> {
       case ConnectionState.done:
         {
           int _userId = snapshot.data;
-          return _userId == widget._post.commentToDisplay.user.userId
+          return _userId == widget._post.hostComment.user.userId
               ? IconButton(
                   icon: CustomStyles.getDefaultDeleteIcon(size: _iconSize),
                   tooltip: 'Delete this Post',

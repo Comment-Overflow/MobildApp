@@ -15,7 +15,7 @@ class MyPostCard extends StatelessWidget {
   Widget build(BuildContext context) {
     final postContentColumn = Column(children: [
       Text(
-        _post.commentToDisplay.content,
+        _post.hostComment.content,
         maxLines: 3,
         overflow: TextOverflow.ellipsis,
       )
@@ -23,7 +23,7 @@ class MyPostCard extends StatelessWidget {
 
     /// If the post contains an images, display the first on the left, taking up
     /// 3/4 of the entire width.
-    final contentColumnWithImage = _post.commentToDisplay.imageUrl.isNotEmpty
+    final contentColumnWithImage = _post.hostComment.imageUrl.isNotEmpty
         ? IntrinsicHeight(
             child: Row(children: [
             Expanded(
@@ -41,7 +41,7 @@ class MyPostCard extends StatelessWidget {
                   child: ClipRRect(
                     borderRadius: BorderRadius.circular(8.0),
                     child: Image.network(
-                      _post.commentToDisplay.imageUrl[0],
+                      _post.hostComment.imageUrl[0],
                       fit: BoxFit.cover,
                     ),
                   )),
@@ -80,7 +80,7 @@ class MyPostCard extends StatelessWidget {
                   ),
                   TextSpan(
                     text:
-                        ' ${_post.approvalCount} · ${_post.commentToDisplay.timeString}',
+                        ' ${_post.approvalCount} · ${_post.hostComment.timeString}',
                   ),
                 ],
                 style: CustomStyles.postFooterStyle,

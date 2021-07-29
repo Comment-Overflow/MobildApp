@@ -25,18 +25,22 @@ class Comment {
   ApprovalStatus get approvalStatus => _approvalStatus;
   List<String> get imageUrl => _imageUrl;
 
-  Comment(this._id, this.user, this._content, this._time, this._quote, this._floor,
-      this._approvalCount, this._approvalStatus, this._imageUrl);
-  
+  Comment(this._id, this.user, this._content, this._time, this._quote,
+      this._floor, this._approvalCount, this._approvalStatus, this._imageUrl);
+
   factory Comment.fromJson(dynamic json) {
     var _imageList = json['imageUrl'];
     String statusString = json['approvalStatus'] as String;
 
     ApprovalStatus status;
-    if (statusString == "APPROVAL") status = ApprovalStatus.approve;
-    else if (statusString == "DISAPPROVAL") status = ApprovalStatus.disapprove;
-    else status = ApprovalStatus.none;
+    if (statusString == "APPROVAL")
+      status = ApprovalStatus.approve;
+    else if (statusString == "DISAPPROVAL")
+      status = ApprovalStatus.disapprove;
+    else
+      status = ApprovalStatus.none;
 
+    print(json);
     return Comment(
         json['id'] as int,
         UserInfo.fromJson(json['userInfo']),
@@ -46,8 +50,7 @@ class Comment {
         json['floor'] as int,
         json['approvalCount'] as int,
         status,
-        _imageList == null ? [] : List.from(_imageList)
-    );
+        _imageList == null ? [] : List.from(_imageList));
   }
 
   void addApprovals() {

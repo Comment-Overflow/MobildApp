@@ -218,8 +218,8 @@ class CommentPagingManager<T> {
 
                 () async {
                   int _fetchTopIndex = jumpFloorValues._recentlyFetchedTopIndex;
-                  print(_fetchTopIndex);
-                  print(jumpFloorValues._recentlyBuiltTopIndex);
+                  // print(_fetchTopIndex);
+                  // print(jumpFloorValues._recentlyBuiltTopIndex);
 
                   if (_fetchTopIndex ==
                           jumpFloorValues._recentlyBuiltTopIndex &&
@@ -229,9 +229,9 @@ class CommentPagingManager<T> {
                           _loadingIndicatorHeight) {
                     jumpFloorValues._isLoadingTop = true;
 
-                    print('scroll to top!');
-                    print(
-                        'fetching page ${_fetchTopIndex ~/ _pageSize - 1} due to scroll to top');
+                    // print('scroll to top!');
+                    // print(
+                    //     'fetching page ${_fetchTopIndex ~/ _pageSize - 1} due to scroll to top');
 
                     // Get new items and stuff them in paging controller's item list.
                     List<Comment> newItems = await _customFetchApi(
@@ -312,7 +312,7 @@ class CommentPagingManager<T> {
     if (item == null) {
       if (index == jumpFloorValues._recentlyFetchedTopIndex - 1 &&
           jumpFloorValues._firstJumpCompleted == true) {
-        print('$index build as indicator');
+        // print('$index build as indicator');
         return Padding(
           padding: const EdgeInsets.only(
             top: 16,
@@ -337,12 +337,12 @@ class CommentPagingManager<T> {
       // it as a dummy.
       if (jumpFloorValues._shouldBuildAsShrink != null &&
           jumpFloorValues._shouldBuildAsShrink![index] == true) {
-        print('should build as shrink');
+        // print('should build as shrink');
         jumpFloorValues._shouldBuildAsShrink![index] = false;
         return SizedBox.shrink();
       }
 
-      print('$index build as card!');
+      // print('$index build as card!');
       jumpFloorValues._hasBuiltAsCard.add(index);
 
       Widget _widget = _customItemBuilder(context, item, index,
@@ -371,7 +371,7 @@ class CommentPagingManager<T> {
     print(_itemList);
     _itemList!.asMap().forEach((key, value) {
       if (value != null && !jumpFloorValues._hasBuiltAsCard.contains(key)) {
-        print('$key should not be drawed on next rebuild');
+        // print('$key should not be drawed on next rebuild');
         jumpFloorValues._shouldBuildAsShrink![key] = true;
       }
     });

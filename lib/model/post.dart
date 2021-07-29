@@ -6,24 +6,39 @@ class Post {
   final int _commentCount;
   final int _approvalCount;
   // Depending on whether the comment is displayed as post or comment.
-  final Comment _commentToDisplay;
+  final Comment _hostComment;
   bool isStarred;
 
   int get postId => _postId;
   String get title => _title;
   int get commentCount => _commentCount;
   int get approvalCount => _approvalCount;
-  Comment get commentToDisplay => _commentToDisplay;
+  Comment get hostComment => _hostComment;
 
   Post(this._postId, this._title, this._commentCount, this._approvalCount,
-      this._commentToDisplay, this.isStarred);
+      this._hostComment, this.isStarred);
 
   factory Post.fromJson(dynamic json) => Post(
-    json['id'] as int,
-    json['title'] as String,
-    json['commentCount'] as int,
-    json['hostComment']['approvalCount'] as int,
-    Comment.fromJson(json['hostComment']),
-    json['isStarred'] as bool
-  );
+      json['id'] as int,
+      json['title'] as String,
+      json['commentCount'] as int,
+      json['hostComment']['approvalCount'] as int,
+      Comment.fromJson(json['hostComment']),
+      json['isStarred'] as bool);
+}
+
+class SearchedPost extends Post {
+  final Comment _searchedComment;
+
+  Comment get searchedComment => _searchedComment;
+
+  SearchedPost.fromJson(dynamic json)
+      : _searchedComment = Comment.fromJson(json['searchedComment']),
+        super(
+            json['id'] as int,
+            json['title'] as String,
+            json['commentCount'] as int,
+            json['hostComment']['approvalCount'] as int,
+            Comment.fromJson(json['hostComment']),
+            json['isStarred'] as bool);
 }
