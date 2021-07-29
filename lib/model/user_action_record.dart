@@ -32,27 +32,30 @@ class ReplyRecord {
   UserInfo _userInfo;
   DateTime _time;
   String _content;
-  Quote _repliedQuote;
+  int _replyCommentId;//回复的comment id
+  Quote _repliedQuote;//引用的信息
 
   UserInfo get userInfo => _userInfo;
   DateTime get time => _time;
   String get content => _content;
   Quote get repliedQuote => _repliedQuote;
 
-  ReplyRecord(this._userInfo, this._time, this._content, this._repliedQuote);
+  ReplyRecord(this._userInfo, this._time, this._content, this._replyCommentId, this._repliedQuote);
 
   factory ReplyRecord.fromJson(dynamic json) {
     int timestamp = json['timestamp'] as int;
     return ReplyRecord(
         UserInfo(
-            json['fromUserUserId'] as int, json['fromUserUserName'] as String, avatarUrl: json['fromUserAvatarUrl'] as String),
+            json['userId'] as int, json['userName'] as String, avatarUrl: json['userAvatarUrl'] as String),
         DateTime.fromMillisecondsSinceEpoch(timestamp),
-        json['commentContent'] as String,
+        json['replyContent'] as String,
+        json['replyCommentId'] as int,
         Quote(
-            json['postHostCommentId'] as int,
+            json['quoteCommentId'] as int,
             json['postTitle'] as String,
-            json['postHostCommentContent'] as String,
-            int.parse(json['postHostCommentFloor'] as String)));
+            json['quoteCommentContent'] as String,
+            json['commentFloor'] as int)
+    );
   }
 }
 

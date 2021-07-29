@@ -1,5 +1,6 @@
 import 'package:comment_overflow/assets/constants.dart';
 import 'package:comment_overflow/assets/custom_styles.dart';
+import 'package:comment_overflow/model/routing_dto/profile_setting_dto.dart';
 import 'package:comment_overflow/model/routing_dto/user_name_id_dto.dart';
 import 'package:comment_overflow/model/user_info.dart';
 import 'package:comment_overflow/utils/general_utils.dart';
@@ -173,7 +174,7 @@ class PersonalProfileCard extends StatelessWidget {
                     [
                       Text(
                         GeneralUtils.getDefaultNumberString(
-                            _personalPageInfo.commentCount),
+                            _personalPageInfo.postCount),
                         style: CustomStyles.personalPageButtonNumberStyle,
                       ),
                       _gap,
@@ -288,7 +289,9 @@ class PersonalProfileCard extends StatelessWidget {
                 onPressed: () {
                   // TODO: edit route.
                   Navigator.of(context)
-                      .pushNamed(RouteGenerator.profileSettingRoute);
+                      .pushNamed(
+                      RouteGenerator.profileSettingRoute,
+                      arguments: new ProfileSettingDto(_personalPageInfo.userId, _personalPageInfo.avatarUrl, _personalPageInfo.brief, _personalPageInfo.userName, _personalPageInfo.gender));
                 }),
           ),
         ),

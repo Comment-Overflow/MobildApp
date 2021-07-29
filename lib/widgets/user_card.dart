@@ -93,7 +93,7 @@ class UserCard extends StatelessWidget {
                               child: CustomStyles.getDefaultReplyIcon(),
                             ),
                             TextSpan(
-                              text: ' ${_userCardInfo.commentCount}   ',
+                              text: ' ${_userCardInfo.postCount}   ',
                             ),
                             WidgetSpan(
                               child:

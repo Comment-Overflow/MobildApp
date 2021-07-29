@@ -10,14 +10,17 @@ import 'package:comment_overflow/pages/notification_page.dart';
 import 'package:provider/provider.dart';
 
 class PagesContainer extends StatefulWidget {
-  const PagesContainer({Key? key}) : super(key: key);
+  final int defaultIndex;
+  PagesContainer({Key? key, this.defaultIndex = 0}) : super(key: key);
 
   @override
-  _PagesContainerState createState() => _PagesContainerState();
+  _PagesContainerState createState() => _PagesContainerState(defaultIndex);
 }
 
 class _PagesContainerState extends State<PagesContainer> {
-  int _index = 0;
+  int _index;
+
+  _PagesContainerState(this._index);
   final _pages = <Widget>[
     HomePage(),
     NotificationPage(),
@@ -54,7 +57,7 @@ class _PagesContainerState extends State<PagesContainer> {
         onTap: (int i) => setState(() {
           this._index = i;
         }),
-        initialActiveIndex: 0,
+        initialActiveIndex: _index,
       ),
     );
   }

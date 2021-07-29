@@ -225,12 +225,3 @@ final followRecords = List<FollowRecord>.filled(
     FollowStatus.followingMe,
   ),
 );
-
-final replyRecords = List<ReplyRecord>.filled(
-    10,
-    ReplyRecord(
-      _yzyInfo,
-      _date,
-      _content,
-      _quoteWithPostTitle,
-    ));
