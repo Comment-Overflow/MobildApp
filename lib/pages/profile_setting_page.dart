@@ -1,10 +1,12 @@
 import 'package:comment_overflow/assets/constants.dart';
 import 'package:comment_overflow/assets/custom_colors.dart';
 import 'package:comment_overflow/assets/custom_styles.dart';
-import 'package:comment_overflow/model/user_info.dart';
+
+import 'package:comment_overflow/model/routing_dto/profile_setting_dto.dart';
 import 'package:comment_overflow/service/profile_service.dart';
 import 'package:comment_overflow/utils/message_box.dart';
 import 'package:comment_overflow/utils/my_image_picker.dart';
+import 'package:comment_overflow/utils/route_generator.dart';
 import 'package:comment_overflow/utils/storage_util.dart';
 import 'package:comment_overflow/widgets/user_avatar.dart';
 import 'package:flutter/material.dart';
@@ -14,24 +16,27 @@ import 'package:wechat_assets_picker/wechat_assets_picker.dart';
 import 'package:dio/dio.dart';
 
 class ProfileSettingPage extends StatefulWidget {
-  ProfileSettingPage({Key? key}) : super(key: key);
+  final ProfileSettingDto _profileSettingDto;
+  ProfileSettingPage(this._profileSettingDto, {Key? key}) : super(key: key);
 
   @override
-  createState() => _ProfileSettingPageState();
+  createState() => _ProfileSettingPageState(this._profileSettingDto);
 }
 
 class _ProfileSettingPageState extends State<ProfileSettingPage> {
-  UserAvatar _userAvatar = UserAvatar(Constants.profileSettingImageSize);
-  String _brief = "";
+  final ProfileSettingDto _profileSettingDto;
+
   bool _isIntroductionValid = true;
-  String _userName = "";
   bool _isUserNameValid = true;
   bool _isUserAvatarChanged = false;
-  String _gender = "保密";
+
+  late UserAvatar _userAvatar;
+  late String _gender;
   late TextEditingController _briefController;
   late TextEditingController _userNameController;
   final List<AssetEntity> _assets = [];
   late MessageBox messageBox;
+  _ProfileSettingPageState(this._profileSettingDto);
 
   static const _itemDivider = Divider(
     height: 10,
@@ -69,31 +74,11 @@ class _ProfileSettingPageState extends State<ProfileSettingPage> {
 
   @override
   void initState() {
-    ValueSetter callback = (dynamic json) => this.setState(() {
-          String? _imageUrl =
-              json['avatarUrl'] == null ? null : json['avatarUrl'] as String;
-          this._userAvatar = UserAvatar(Constants.profileSettingImageSize,
-              imageContent: _imageUrl);
-          this._brief = json['brief'] as String;
-          this._userName = json['userName'] as String;
-          switch (json['gender'] as String) {
-            case "MALE":
-              this._gender = "男";
-              break;
-            case "FEMALE":
-              this._gender = "女";
-              break;
-            case "SECRET":
-              this._gender = "保密";
-              break;
-          }
-          _userNameController = TextEditingController(text: this._userName);
-          _briefController = TextEditingController(text: this._brief);
-        });
-    ProfileService.getProfile("/profiles/settings", callback);
     super.initState();
-    _userNameController = TextEditingController();
-    _briefController = TextEditingController();
+    _gender = genderEnum2StringMap[_profileSettingDto.gender]!;
+    _userAvatar = UserAvatar(Constants.profileSettingImageSize, image: _profileSettingDto.userAvatar == null ? null : NetworkImage(_profileSettingDto.userAvatar!));
+    _userNameController = TextEditingController(text: this._profileSettingDto.userName);
+    _briefController = TextEditingController(text: this._profileSettingDto.brief);
   }
 
   @override
@@ -137,7 +122,11 @@ class _ProfileSettingPageState extends State<ProfileSettingPage> {
                     if (!errorFlag) {
                       MessageBox.showToast(
                           msg: "保存成功", messageBoxType: MessageBoxType.Success);
-                      Navigator.of(context).pop();
+                      Navigator.pushReplacement(
+                          context, RouteGenerator.generateRoute(RouteSettings(
+                          name: RouteGenerator.homeRoute,
+                          arguments: 2,
+                      )));
                     }
                   } else if (!_isUserNameValid) {
                     MessageBox.showToast(
@@ -156,120 +145,118 @@ class _ProfileSettingPageState extends State<ProfileSettingPage> {
   Widget _buildBody() {
     return Form(
         child: ListView(
-      padding: const EdgeInsets.all(20.0),
-      children: [
-        GestureDetector(
-          onTap: _selectAssets,
-          child: _userAvatar,
-        ),
-        _gap,
-        _gap,
-        _gap,
-        _gap,
-        Text(
-          "基本资料",
-          style: TextStyle(fontWeight: FontWeight.bold, fontSize: 24.0),
-        ),
-        Row(
-          mainAxisSize: MainAxisSize.min,
-          crossAxisAlignment: CrossAxisAlignment.center,
+          padding: const EdgeInsets.all(20.0),
           children: [
+            GestureDetector(
+              onTap: _selectAssets,
+              child: _userAvatar,
+            ),
+            _gap,
+            _gap,
+            _gap,
+            _gap,
             Text(
-              "昵称",
+              "基本资料",
+              style: TextStyle(fontWeight: FontWeight.bold, fontSize: 24.0),
+            ),
+            Row(
+              mainAxisSize: MainAxisSize.min,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                Text(
+                  "昵称",
+                  style: CustomStyles.profileSettingItemTitleStyle,
+                ),
+                Expanded(
+                  flex: 2,
+                  child: Container(),
+                ),
+                Expanded(
+                  flex: 15,
+                  child: TextFormField(
+                      controller: _userNameController,
+                      inputFormatters: [
+                        LengthLimitingTextInputFormatter(10),
+                      ],
+                      decoration: InputDecoration(
+                        hintText: '昵称（不超过10个字）',
+                        border: null,
+                        focusedBorder: InputBorder.none,
+                        enabledBorder: InputBorder.none,
+                        errorBorder: InputBorder.none,
+                        focusedErrorBorder: InputBorder.none,
+                        disabledBorder: InputBorder.none,
+                      ),
+                      onChanged: (value) {
+                        setState(() {
+                          value.isEmpty
+                              ? _isUserNameValid = false
+                              : _isUserNameValid = true;
+                        });
+                      }),
+                ),
+              ],
+            ),
+            _itemDivider,
+            _gap,
+            _gap,
+            Text(
+              "一句话介绍",
               style: CustomStyles.profileSettingItemTitleStyle,
             ),
-            Expanded(
-              flex: 2,
-              child: Container(),
-            ),
-            Expanded(
-              flex: 15,
-              child: TextFormField(
-                  controller: _userNameController,
-                  inputFormatters: [
-                    LengthLimitingTextInputFormatter(10),
-                  ],
-                  // maxLength: 10,
-                  decoration: InputDecoration(
-                    hintText: '昵称（不超过10个字）',
-                    border: null,
-                    focusedBorder: InputBorder.none,
-                    enabledBorder: InputBorder.none,
-                    errorBorder: InputBorder.none,
-                    focusedErrorBorder: InputBorder.none,
-                    disabledBorder: InputBorder.none,
-                  ),
-                  onChanged: (value) {
-                    setState(() {
-                      value.isEmpty
-                          ? _isUserNameValid = false
-                          : _isUserNameValid = true;
-                    });
-                  }),
-              // ),
-            ),
-          ],
-        ),
-        _itemDivider,
-        _gap,
-        _gap,
-        Text(
-          "一句话介绍",
-          style: CustomStyles.profileSettingItemTitleStyle,
-        ),
-        TextFormField(
-          controller: _briefController,
-          inputFormatters: [
-            LengthLimitingTextInputFormatter(30),
-          ],
-          maxLength: 30,
-          minLines: 1,
-          maxLines: 3,
-          decoration: InputDecoration(
-            hintText: "不超过30个字",
-            enabledBorder: UnderlineInputBorder(
-              borderSide:
+            TextFormField(
+              controller: _briefController,
+              inputFormatters: [
+                LengthLimitingTextInputFormatter(30),
+              ],
+              maxLength: 30,
+              minLines: 1,
+              maxLines: 3,
+              decoration: InputDecoration(
+                hintText: "不超过30个字",
+                enabledBorder: UnderlineInputBorder(
+                  borderSide:
                   BorderSide(color: CustomColors.profileSettingInputGery),
-            ),
-            focusedBorder: UnderlineInputBorder(
-              borderSide:
+                ),
+                focusedBorder: UnderlineInputBorder(
+                  borderSide:
                   BorderSide(color: CustomColors.profileSettingInputGery),
-            ),
-          ),
-        ),
-        Row(
-          mainAxisSize: MainAxisSize.min,
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: [
-            Text("性别", style: CustomStyles.profileSettingItemTitleStyle),
-            Expanded(
-              flex: 2,
-              child: Container(),
-            ),
-            Expanded(
-              flex: 15,
-              child: DropdownButtonHideUnderline(
-                child: DropdownButton<String>(
-                  value: _gender,
-                  onChanged: (String? Value) {
-                    setState(() {
-                      _gender = Value!;
-                    });
-                  },
-                  items: <String>['男', '女', '保密']
-                      .map<DropdownMenuItem<String>>((String value) {
-                    return DropdownMenuItem<String>(
-                      value: value,
-                      child: Text(value),
-                    );
-                  }).toList(),
                 ),
               ),
-            )
+            ),
+            Row(
+              mainAxisSize: MainAxisSize.min,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                Text("性别", style: CustomStyles.profileSettingItemTitleStyle),
+                Expanded(
+                  flex: 2,
+                  child: Container(),
+                ),
+                Expanded(
+                  flex: 15,
+                  child: DropdownButtonHideUnderline(
+                    child: DropdownButton<String>(
+                      value: _gender,
+                      onChanged: (String? value) {
+                        setState(() {
+                          _gender = value!;
+                        });
+                      },
+                      items: <String>['男', '女', '保密']
+                          .map<DropdownMenuItem<String>>((String value) {
+                        return DropdownMenuItem<String>(
+                          value: value,
+                          child: Text(value),
+                        );
+                      }).toList(),
+                    ),
+                  ),
+                )
+              ],
+            ),
+            _itemDivider,
           ],
-        ),
-        _itemDivider,
-      ],
-    ));
-  }
-}
+        ));
+      }
+    }

@@ -2,6 +2,7 @@ import 'package:comment_overflow/assets/constants.dart';
 import 'package:comment_overflow/model/post.dart';
 import 'package:comment_overflow/model/routing_dto/image_gallery_dto.dart';
 import 'package:comment_overflow/model/routing_dto/personal_page_access_dto.dart';
+import 'package:comment_overflow/model/routing_dto/profile_setting_dto.dart';
 import 'package:comment_overflow/model/routing_dto/user_name_id_dto.dart';
 import 'package:comment_overflow/model/user_info.dart';
 import 'package:comment_overflow/pages/intro_page.dart';
@@ -98,8 +99,7 @@ class RouteGenerator {
         return MaterialPageRoute(
             settings: settings, builder: (_) => PostPage(args as Post));
       case profileSettingRoute:
-        return MaterialPageRoute(
-            settings: settings, builder: (_) => ProfileSettingPage());
+        return MaterialPageRoute(settings: settings, builder: (_) => ProfileSettingPage(args as ProfileSettingDto));
       case galleryRoute:
         return MaterialPageRoute(
             settings: settings,
@@ -122,8 +122,7 @@ class RouteGenerator {
             settings: settings,
             builder: (_) => PrivateChatPage(args as UserInfo));
       case homeRoute:
-        return MaterialPageRoute(
-            settings: settings, builder: (_) => PagesContainer());
+        return MaterialPageRoute(settings: settings, builder: (_) => PagesContainer(defaultIndex: args == null ? 0 : args as int));
       case introRoute:
       default:
         return MaterialPageRoute(
