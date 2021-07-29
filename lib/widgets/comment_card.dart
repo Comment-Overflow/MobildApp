@@ -1,9 +1,12 @@
 import 'package:comment_overflow/assets/custom_colors.dart';
 import 'package:comment_overflow/model/quote.dart';
+import 'package:comment_overflow/service/post_service.dart';
+import 'package:comment_overflow/utils/message_box.dart';
 import 'package:comment_overflow/widgets/approval_button.dart';
 import 'package:comment_overflow/widgets/disapproval_button.dart';
 import 'package:comment_overflow/widgets/image_list.dart';
 import 'package:comment_overflow/widgets/quote_card.dart';
+import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 
 import 'package:comment_overflow/assets/constants.dart';
@@ -13,6 +16,7 @@ import 'package:comment_overflow/widgets/user_avatar_with_name.dart';
 import 'package:flutter/widgets.dart';
 import 'package:wechat_assets_picker/wechat_assets_picker.dart';
 
+import 'adaptive_alert_dialog.dart';
 import 'multiple_input_field.dart';
 
 class CommentCard extends StatefulWidget {
@@ -20,8 +24,9 @@ class CommentCard extends StatefulWidget {
   final int _postId;
   final String _title;
   final bool _highlight;
+  final int _userId;
 
-  const CommentCard(this._comment, this._postId,
+  const CommentCard(this._comment, this._postId, this._userId,
       {Key? key, title = "", highlight = false})
       : _title = title,
         _highlight = highlight,
@@ -42,17 +47,17 @@ class _CommentCardState extends State<CommentCard>
   final List<AssetEntity> _assets = <AssetEntity>[];
   final TextEditingController _replyController = TextEditingController();
 
-  bool _hasHighlighted = false;
-
+  // TODO: Change color transition.
   @override
   void initState() {
     _animationController = AnimationController(
         vsync: this,
         duration: Duration(milliseconds: Constants.defaultHighlightTime));
     _colorTween =
-        ColorTween(begin: Colors.white, end: CustomColors.highlightBlue)
-            .animate(_animationController);
-
+        ColorTween(begin: CustomColors.highlightBlue, end: Colors.white)
+            .animate(
+      CurvedAnimation(parent: _animationController, curve: Interval(0.5, 1.0)),
+    );
     super.initState();
   }
 
@@ -64,14 +69,13 @@ class _CommentCardState extends State<CommentCard>
 
   @override
   Widget build(BuildContext context) {
-    if (widget._highlight && !_hasHighlighted) {
+    if (widget._highlight) {
       _highlightComment();
-      _hasHighlighted = true;
     }
     return AnimatedBuilder(
         animation: _colorTween,
         builder: (context, child) => Card(
-              color: _colorTween.value,
+              color: widget._highlight ? _colorTween.value : Colors.white,
               elevation: Constants.defaultCardElevation,
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.all(Radius.circular(10.0)),
@@ -123,7 +127,7 @@ class _CommentCardState extends State<CommentCard>
                       widget._comment.quote == null
                           ? SizedBox.shrink()
                           : Row(
-                              mainAxisSize: MainAxisSize.min,
+                              mainAxisSize: MainAxisSize.max,
                               children: [
                                 _gap,
                                 Expanded(
@@ -139,16 +143,14 @@ class _CommentCardState extends State<CommentCard>
                       widget._comment.floor > 0
                           ? Row(
                               mainAxisSize: MainAxisSize.max,
-                              mainAxisAlignment: MainAxisAlignment.end,
+                              mainAxisAlignment: MainAxisAlignment.start,
                               children: [
                                 ApprovalButton.horizontal(
                                   comment: widget._comment,
-                                  userId: 1,
                                   size: _iconSize,
                                 ),
                                 DisapprovalButton(
                                   comment: widget._comment,
-                                  userId: 1,
                                   size: _iconSize,
                                   showText: false,
                                 ),
@@ -158,12 +160,7 @@ class _CommentCardState extends State<CommentCard>
                                       size: _iconSize),
                                   onPressed: _pushReply,
                                 ),
-                                IconButton(
-                                  splashColor: Colors.transparent,
-                                  icon: CustomStyles.getDefaultDeleteIcon(
-                                      size: _iconSize),
-                                  onPressed: () => {},
-                                ),
+                                _buildDeleteButton(),
                               ],
                             )
                           : SizedBox.shrink(),
@@ -176,7 +173,6 @@ class _CommentCardState extends State<CommentCard>
 
   Future _highlightComment() async {
     await _animationController.forward();
-    await _animationController.reverse();
   }
 
   Padding _buildTitle() => Padding(
@@ -203,5 +199,46 @@ class _CommentCardState extends State<CommentCard>
             quote: Quote.fromComment(widget._comment),
           );
         });
+  }
+
+  Future<void> _deleteComment() async {
+    try {
+      await PostService.deleteComment(widget._comment.id);
+    } on DioError catch (e) {
+      print(e.message);
+    }
+  }
+
+  Widget _buildDeleteButton() {
+    okCallback() {
+      _deleteComment();
+      Navigator.pop(context);
+      MessageBox.showToast(
+          msg: "回复已被删除，刷新以更新。", messageBoxType: MessageBoxType.Success);
+    }
+
+    cancelCallback() {
+      Navigator.pop(context);
+    }
+
+    return widget._userId == widget._comment.user.userId
+        ? IconButton(
+            splashColor: Colors.transparent,
+            icon: CustomStyles.getDefaultDeleteIcon(size: _iconSize),
+            onPressed: () {
+              showDialog(
+                  context: context,
+                  builder: (context) {
+                    return AdaptiveAlertDialog(
+                        "删除回复",
+                        "你确认要删除第${widget._comment.floor}楼的回复吗",
+                        "确定",
+                        "取消",
+                        okCallback,
+                        cancelCallback);
+                  });
+            },
+          )
+        : SizedBox.shrink();
   }
 }

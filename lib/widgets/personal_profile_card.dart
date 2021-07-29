@@ -68,7 +68,8 @@ class PersonalProfileCard extends StatelessWidget {
                                   width: Constants
                                           .defaultPersonalPageHeaderTitleSize *
                                       0.2),
-                              _personalPageInfo.sex == Sex.male
+                              _personalPageInfo.gender == Gender.secret ? 
+                              Container() : _personalPageInfo.gender == Gender.male
                                   ? CustomStyles.getDefaultMaleIcon()
                                   : CustomStyles.getDefaultFemaleIcon(),
                             ],
@@ -121,9 +122,11 @@ class PersonalProfileCard extends StatelessWidget {
                   flex: 25,
                   child: MultipleWidgetButton(
                     RouteGenerator.followersRoute,
+                      () => {},
                     [
                       Text(
-                      GeneralUtils.getDefaultNumberString(_personalPageInfo.followingCount),
+                        GeneralUtils.getDefaultNumberString(
+                            _personalPageInfo.followingCount),
                         style: CustomStyles.personalPageButtonNumberStyle,
                       ),
                       _gap,
@@ -140,9 +143,11 @@ class PersonalProfileCard extends StatelessWidget {
                   flex: 25,
                   child: MultipleWidgetButton(
                     RouteGenerator.fansRoute,
+                        () => {},
                     [
                       Text(
-                        GeneralUtils.getDefaultNumberString(_personalPageInfo.followerCount),
+                        GeneralUtils.getDefaultNumberString(
+                            _personalPageInfo.followerCount),
                         style: CustomStyles.personalPageButtonNumberStyle,
                       ),
                       _gap,
@@ -159,9 +164,11 @@ class PersonalProfileCard extends StatelessWidget {
                   flex: 25,
                   child: MultipleWidgetButton(
                     null,
+                        () => {},
                     [
                       Text(
-                        GeneralUtils.getDefaultNumberString(_personalPageInfo.commentCount),
+                        GeneralUtils.getDefaultNumberString(
+                            _personalPageInfo.commentCount),
                         style: CustomStyles.personalPageButtonNumberStyle,
                       ),
                       _gap,
@@ -176,9 +183,11 @@ class PersonalProfileCard extends StatelessWidget {
                   flex: 25,
                   child: MultipleWidgetButton(
                     null,
+                        () => {},
                     [
                       Text(
-                        GeneralUtils.getDefaultNumberString(_personalPageInfo.approvalCount),
+                        GeneralUtils.getDefaultNumberString(
+                            _personalPageInfo.approvalCount),
                         style: CustomStyles.personalPageButtonNumberStyle,
                       ),
                       _gap,
@@ -207,7 +216,7 @@ class PersonalProfileCard extends StatelessWidget {
         Expanded(
           child: Padding(
             padding: const EdgeInsets.only(right: 4.0),
-            child: FollowButton(
+            child: FollowButton(_personalPageInfo.userId,
                 _personalPageInfo.userName, _personalPageInfo.followStatus),
           ),
         ),

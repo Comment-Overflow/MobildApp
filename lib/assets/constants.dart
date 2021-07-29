@@ -101,7 +101,7 @@ class Constants {
   /// Default nine-pattern spacing.
   static const defaultNinePatternSpacing = 6.0;
 
-  static const defaultHighlightTime = 1500;
+  static const defaultHighlightTime = 2000;
 
   static const maxSearchHistory = 20;
 
@@ -150,9 +150,10 @@ enum FollowStatus {
   followingMe,
   both,
 }
-enum Sex {
+enum Gender {
   male,
   female,
+  secret,
 }
 
 enum ApprovalStatus {
@@ -166,8 +167,6 @@ enum SortPolicy {
   latest,
   hottest,
 }
-
-enum NotificationType { approvePost, approveComment, collect, attention, reply }
 
 enum UserActionType {
   approval,
@@ -199,3 +198,22 @@ enum Setting {
 }
 
 enum PostTag { Life, Study, Art, Mood, Career }
+
+Map<String, FollowStatus> followStatusMap = {
+  "NONE": FollowStatus.none,
+  "FOLLOWED_BY_ME": FollowStatus.followedByMe,
+  "FOLLOWING_ME": FollowStatus.followingMe,
+  "BOTH": FollowStatus.both,
+};
+
+Map<ApprovalStatus, String> statusString = {
+  ApprovalStatus.approve: "APPROVAL",
+  ApprovalStatus.disapprove: "DISAPPROVAL",
+  ApprovalStatus.none: "NONE"
+};
+
+Map<String, Gender> genderMap = {
+  "MALE": Gender.male,
+  "FEMALE": Gender.female,
+  "SECRET": Gender.secret
+};

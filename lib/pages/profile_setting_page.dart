@@ -1,7 +1,7 @@
 import 'package:comment_overflow/assets/constants.dart';
 import 'package:comment_overflow/assets/custom_colors.dart';
 import 'package:comment_overflow/assets/custom_styles.dart';
-import 'package:comment_overflow/service/profile_setting_service.dart';
+import 'package:comment_overflow/service/profile_service.dart';
 import 'package:comment_overflow/utils/message_box.dart';
 import 'package:comment_overflow/utils/my_image_picker.dart';
 import 'package:comment_overflow/widgets/user_avatar.dart';
@@ -89,7 +89,7 @@ class _ProfileSettingPageState extends State<ProfileSettingPage> {
       _userNameController = TextEditingController(text: this._userName);
       _briefController = TextEditingController(text: this._brief);
     });
-    ProfileSettingService.getProfile("/profiles", callback);
+    ProfileService.getProfile("/profiles/settings", callback);
     super.initState();
     _userNameController = TextEditingController();
     _briefController = TextEditingController();
@@ -119,9 +119,7 @@ class _ProfileSettingPageState extends State<ProfileSettingPage> {
                   if (_isUserNameValid && _isIntroductionValid) {
                     bool errorFlag = false;
                     try{
-                      print(_userNameController.text);
-                      print(_briefController.text);
-                      final response = await ProfileSettingService.putProfile("/profiles", (await formData()));
+                      final response = await ProfileService.putProfileSetting("/profiles/settings", (await formData()));
                     } on DioError catch(e) {
                       errorFlag = true;
                       print(e.message);

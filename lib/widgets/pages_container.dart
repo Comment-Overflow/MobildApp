@@ -1,6 +1,7 @@
-import 'package:comment_overflow/fake_data/fake_data.dart';
+import 'package:badges/badges.dart';
 import 'package:comment_overflow/pages/home_page.dart';
 import 'package:comment_overflow/pages/personal_page.dart';
+import 'package:comment_overflow/utils/general_utils.dart';
 import 'package:convex_bottom_bar/convex_bottom_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
@@ -15,18 +16,28 @@ class PagesContainer extends StatefulWidget {
 
 class _PagesContainerState extends State<PagesContainer> {
   int _index = 0;
+
+  //小红点，null就不显示，String就显示String的内容
+  String? badge;
   final _pages = <Widget>[
     HomePage(),
     NotificationPage(),
-    // TODO: Get real current user id.
-    PersonalPage(currentUserId, false)
+    FutureBuilder<int>(
+      future: GeneralUtils.getCurrentUserId(),
+      builder: (_, snapshot) {
+        if (!snapshot.hasData) return Container();
+        return PersonalPage(snapshot.data!, false);
+      },
+    ),
   ];
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: this._pages[_index],
-      bottomNavigationBar: ConvexAppBar(
+      bottomNavigationBar: ConvexAppBar.badge(
+        {1: badge},
+        badgeMargin: EdgeInsets.fromLTRB(20.0, 0.0, 0.0, 20.0),
         elevation: 0.5,
         style: TabStyle.flip,
         backgroundColor: Theme.of(context).primaryColor,
