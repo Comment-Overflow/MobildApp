@@ -1,5 +1,4 @@
 import 'package:comment_overflow/assets/constants.dart';
-import 'package:comment_overflow/model/post.dart';
 import 'package:comment_overflow/model/routing_dto/image_gallery_dto.dart';
 import 'package:comment_overflow/model/routing_dto/jump_post_dto.dart';
 import 'package:comment_overflow/model/routing_dto/personal_page_access_dto.dart';
@@ -11,17 +10,15 @@ import 'package:comment_overflow/pages/new_post_page.dart';
 import 'package:comment_overflow/pages/notification_page.dart';
 import 'package:comment_overflow/pages/personal_page.dart';
 import 'package:comment_overflow/pages/post_page.dart';
+import 'package:comment_overflow/pages/private_chat_page.dart';
 import 'package:comment_overflow/pages/profile_setting_page.dart';
 import 'package:comment_overflow/pages/scroll_view_page.dart';
 import 'package:comment_overflow/pages/search_page.dart';
 import 'package:comment_overflow/pages/search_result_page.dart';
 import 'package:comment_overflow/widgets/follow_record_card_list.dart';
 import 'package:comment_overflow/widgets/image_gallery.dart';
-import 'package:comment_overflow/widgets/my_comment_card_list.dart';
 import 'package:comment_overflow/widgets/notification_card_list.dart';
 import 'package:comment_overflow/widgets/pages_container.dart';
-import 'package:comment_overflow/widgets/post_card_list.dart';
-import 'package:comment_overflow/widgets/searched_user_card_list.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
@@ -39,6 +36,7 @@ class RouteGenerator {
   static const approveMeRoute = '/approval';
   static const replyMeRoute = '/comment';
   static const starMeRoute = '/star';
+  static const privateChatRoute = 'private_chat';
 
   /// Shows the list of notification when other users have followed me.
   static const followMeNotificationRoute = '/follow';
@@ -52,39 +50,49 @@ class RouteGenerator {
     switch (settings.name) {
       case fansRoute:
         return MaterialPageRoute(
+          settings: settings,
           builder: (_) => ScrollViewPage(
               FollowRecordCardList(FollowStatus.followingMe),
               (args as UserNameIdDto).userName + '的粉丝'),
         );
       case followersRoute:
         return MaterialPageRoute(
+            settings: settings,
             builder: (_) => ScrollViewPage(
                 FollowRecordCardList(FollowStatus.followedByMe),
                 (args as UserNameIdDto).userName + '的关注'));
       case approveMeRoute:
         return MaterialPageRoute(
+            settings: settings,
             builder: (_) => ScrollViewPage(
                 NotificationCardList(UserActionType.approval), '赞同'));
       case replyMeRoute:
         return MaterialPageRoute(
+            settings: settings,
             builder: (_) => ScrollViewPage(
                 NotificationCardList(UserActionType.reply), '回复'));
       case starMeRoute:
         return MaterialPageRoute(
+            settings: settings,
             builder: (_) => ScrollViewPage(
                 NotificationCardList(UserActionType.star), '收藏'));
       case followMeNotificationRoute:
         return MaterialPageRoute(
+            settings: settings,
             builder: (_) => ScrollViewPage(
                 NotificationCardList(UserActionType.follow), '关注'));
       case loginRoute:
-        return MaterialPageRoute(builder: (_) => LoginPage());
+        return MaterialPageRoute(
+            settings: settings, builder: (_) => LoginPage());
       case newPostRoute:
-        return MaterialPageRoute(builder: (_) => NewPostPage());
+        return MaterialPageRoute(
+            settings: settings, builder: (_) => NewPostPage());
       case searchRoute:
-        return MaterialPageRoute(builder: (_) => SearchPage());
+        return MaterialPageRoute(
+            settings: settings, builder: (_) => SearchPage());
       case searchResultRoute:
         return MaterialPageRoute(
+            settings: settings,
             builder: (_) => SearchResultPage(args as String));
       case postRoute:
         {
@@ -96,25 +104,36 @@ class RouteGenerator {
                   ));
         }
       case profileSettingRoute:
-        return MaterialPageRoute(builder: (_) => ProfileSettingPage());
+        return MaterialPageRoute(
+            settings: settings, builder: (_) => ProfileSettingPage());
       case galleryRoute:
         return MaterialPageRoute(
+            settings: settings,
             builder: (_) => ImageGallery(
                   imageUrl: (args as ImageGalleryDto).imageUrl,
                   initialIndex: (args).index,
                 ));
       case notificationRoute:
-        return MaterialPageRoute(builder: (_) => NotificationPage());
+        return MaterialPageRoute(
+            settings: settings, builder: (_) => NotificationPage());
       case personalRoute:
-        return MaterialPageRoute(builder: (_) {
-          final arguments = args as PersonalPageAccessDto;
-          return PersonalPage(arguments.userId, arguments.fromCard);
-        });
+        return MaterialPageRoute(
+            settings: settings,
+            builder: (_) {
+              final arguments = args as PersonalPageAccessDto;
+              return PersonalPage(arguments.userId, arguments.fromCard);
+            });
+      case privateChatRoute:
+        return MaterialPageRoute(
+            settings: settings,
+            builder: (_) => PrivateChatPage(args as UserInfo));
       case homeRoute:
-        return MaterialPageRoute(builder: (_) => PagesContainer());
+        return MaterialPageRoute(
+            settings: settings, builder: (_) => PagesContainer());
       case introRoute:
       default:
-        return MaterialPageRoute(builder: (_) => IntroPage());
+        return MaterialPageRoute(
+            settings: settings, builder: (_) => IntroPage());
     }
   }
 }

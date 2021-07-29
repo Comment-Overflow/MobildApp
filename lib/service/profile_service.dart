@@ -4,9 +4,9 @@ import 'package:flutter/material.dart';
 
 class ProfileService {
   static Future<Response> putProfileSetting(String url, FormData formData) async {
-    return await HttpUtil().dio.put(url, data: formData);
+    return HttpUtil().dio.put(url, data: formData);
   }
-  static void getProfile(String url, ValueSetter callback) async {
+  static Future getProfile(String url, ValueSetter callback) async {
      Map<String, dynamic> json = (await HttpUtil().dio.get(url)).data;
      print(json);
      callback(json);

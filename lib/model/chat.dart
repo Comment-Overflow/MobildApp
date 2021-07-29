@@ -1,17 +1,20 @@
 import 'package:comment_overflow/model/user_info.dart';
 
 class Chat {
-
   final UserInfo _chatter;
-  final String _lastMessage;
-  final DateTime _time;
-  final int _unreadCount;
+  String lastMessageContent;
+  DateTime time;
+  int unreadCount;
 
-  DateTime get time => _time;
-  String get lastMessage => _lastMessage;
   UserInfo get chatter => _chatter;
-  int get unreadCount => _unreadCount;
 
-  Chat(this._chatter, this._lastMessage, this._time, this._unreadCount);
+  Chat(this._chatter, this.lastMessageContent, this.time, this.unreadCount);
 
+  factory Chat.fromJson(dynamic json) {
+    return Chat(
+        UserInfo.fromJson(json['minimalChatterInfo']),
+        json['lastMessageContent'] as String,
+        DateTime.parse(json['time'] as String),
+        json['unreadCount'] as int);
+  }
 }

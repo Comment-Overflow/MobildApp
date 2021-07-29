@@ -8,7 +8,7 @@ class AdaptiveRefresher extends StatefulWidget {
   final bool enablePullUp;
   final bool enablePullDown;
   final Future Function()? onRefresh;
-  final VoidCallback? onLoading;
+  final Future Function()? onLoading;
   final Widget? child;
   final Widget? iosRefresh;
   final Widget? iosComplete;
@@ -56,7 +56,10 @@ class _AdaptiveRefresherState extends State<AdaptiveRefresher> {
           await widget.onRefresh!();
           _refreshController.refreshCompleted();
         },
-        onLoading: widget.onLoading,
+        onLoading: () async {
+          await widget.onLoading!();
+          _refreshController.loadComplete();
+        },
         child: widget.child,
       ),
     );
