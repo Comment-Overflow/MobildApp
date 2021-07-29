@@ -30,6 +30,8 @@ class MultipleInputField extends StatelessWidget {
 
   bool _isLoading = false;
 
+  /// The function to call after sending reply.
+  final Function _finishCallback;
   /*
     Usage:
     add [onTap] property for reply button
@@ -56,6 +58,7 @@ class MultipleInputField extends StatelessWidget {
       required TextEditingController textController,
       required List<AssetEntity> assets,
       required int postId,
+      required Function finishCallback,
       Quote? quote,
       Key? key})
       : _context = context,
@@ -63,6 +66,7 @@ class MultipleInputField extends StatelessWidget {
         _assets = assets,
         _quote = quote,
         _postId = postId,
+        _finishCallback = finishCallback,
         super(key: key);
 
   @override
@@ -119,13 +123,15 @@ class MultipleInputField extends StatelessWidget {
                             _isLoading = true;
                           });
                           final response = await PostService.postComment(dto);
-                          print(response);
+                          print(response.data.runtimeType);
                           MessageBox.showToast(
                               msg: "回复成功，经验+3！",
                               messageBoxType: MessageBoxType.Success);
                           s(() {
                             _isLoading = false;
                           });
+
+                          // _finishCallback(response.data);
                           Navigator.pop(context);
                         } on DioError catch (e) {
                           print(e.message);

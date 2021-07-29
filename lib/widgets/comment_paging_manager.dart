@@ -397,7 +397,6 @@ class CommentPagingManager<T> {
 
     jumpFloorValues._hasBottomRefreshed = true;
     _pagingController.nextPageKey = _pageKeyToResume;
-    // _pagingController.notifyPageRequestListeners(_pageKeyToResume);
   }
 }
 

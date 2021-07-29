@@ -33,6 +33,8 @@ class _PostPageState extends State<PostPage> {
   static const _iconSize = 20.0;
   static const _bottomIconSize = 24.0;
 
+  int _pageIndex = 0;
+
   String getPolicyName(SortPolicy policy) {
     switch (policy) {
       case SortPolicy.earliest:
@@ -191,6 +193,9 @@ class _PostPageState extends State<PostPage> {
             textController: _replyController,
             assets: _assets,
             quote: null,
+            finishCallback: (pageIndex) => setState(() {
+              _pageIndex = pageIndex;
+            }),
           );
         });
   }
