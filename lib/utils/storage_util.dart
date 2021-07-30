@@ -18,7 +18,6 @@ class StorageUtil {
   StorageUtil._internal();
 
   Future configOnLogin(LoginDTO loginDTO) async {
-    print(loginDTO.userName);
     await StorageUtil()
         .storage
         .write(key: Constants.token, value: loginDTO.token);

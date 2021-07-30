@@ -92,7 +92,8 @@ class ChatMessage extends StatelessWidget {
               Container(
                 padding: EdgeInsets.fromLTRB(
                     0, 0, Constants.defaultChatRoomAvatarPadding, 0),
-                child: UserAvatar(Constants.defaultChatRoomAvatarSize),
+                child: UserAvatar(Constants.defaultChatRoomAvatarSize,
+                    imageContent: _avatarUrl),
               ),
               Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -150,13 +151,6 @@ class ChatMessage extends StatelessWidget {
                 switch (state.extendedImageLoadState) {
                   case LoadState.loading:
                     return SkeletonAnimation(
-                      // return SizedBox(
-                      //   width: Constants.defaultMaxBubbleWidth * 0.5,
-                      //   height: Constants.defaultMaxBubbleWidth * 0.5,
-                      //   child: CupertinoActivityIndicator(
-                      //     radius: Constants.defaultChatRoomFontSize * 0.7,
-                      //   ),
-                      // );
                       shimmerDuration: 2000,
                       child: Container(
                         color: Colors.grey[200],
