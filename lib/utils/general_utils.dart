@@ -7,14 +7,15 @@ class GeneralUtils {
   /// Convert DateTime to String by default. Eliminate verbose
   /// information based on [time].
   static String getDefaultTimeString(DateTime time) {
-    if (time.isToday)
-      return time.format('HH:mm');
-    else if (time.isYesterday)
+    DateTime localTime = time.toLocalTime;
+    if (localTime.isToday)
+      return localTime.format('HH:mm');
+    else if (localTime.isYesterday)
       return '昨天';
-    else if (time.isThisYear)
-      return time.format('MM-dd');
+    else if (localTime.isThisYear)
+      return localTime.format('MM-dd');
     else
-      return time.format('yyyy-MM-dd');
+      return localTime.format('yyyy-MM-dd');
   }
 
   /// Convert int to String by default. Eliminate some least
@@ -32,14 +33,15 @@ class GeneralUtils {
 
   /// Convert DateTime to String displayed in chat room.
   static String getChatTimeString(DateTime time) {
-    if (time.isToday)
-      return time.format('HH:mm');
-    else if (time.isYesterday)
-      return '昨天 ' + time.format('HH:mm');
-    else if (time.isThisYear)
-      return time.format('MM-dd HH:mm');
+    DateTime localTime = time.toLocalTime;
+    if (localTime.isToday)
+      return localTime.format('HH:mm');
+    else if (localTime.isYesterday)
+      return '昨天 ' + localTime.format('HH:mm');
+    else if (localTime.isThisYear)
+      return localTime.format('MM-dd HH:mm');
     else
-      return time.format('yyyy-MM-dd HH:mm');
+      return localTime.format('yyyy-MM-dd HH:mm');
   }
 
   /// Convert number of unread messages into string that displayed in badge.
