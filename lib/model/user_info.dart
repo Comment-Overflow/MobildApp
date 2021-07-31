@@ -4,7 +4,7 @@ import 'package:comment_overflow/utils/general_utils.dart';
 class UserInfo {
   final int _userId;
   final String _userName;
-  late final String? avatarUrl;
+  late String? avatarUrl;
 
   int get userId => _userId;
 
