@@ -4,7 +4,6 @@ import 'package:comment_overflow/model/response_dto/login_dto.dart';
 import 'package:comment_overflow/service/auth_service.dart';
 import 'package:comment_overflow/service/chat_service.dart';
 import 'package:comment_overflow/utils/route_generator.dart';
-import 'package:comment_overflow/utils/socket_client.dart';
 import 'package:comment_overflow/utils/storage_util.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
