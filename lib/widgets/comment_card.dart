@@ -44,6 +44,7 @@ class _CommentCardState extends State<CommentCard>
 
   late AnimationController _animationController;
   late Animation _colorTween;
+  late bool isDeleted;
 
   final List<AssetEntity> _assets = <AssetEntity>[];
   final TextEditingController _replyController = TextEditingController();
@@ -59,6 +60,7 @@ class _CommentCardState extends State<CommentCard>
             .animate(
       CurvedAnimation(parent: _animationController, curve: Interval(0.5, 1.0)),
     );
+    isDeleted = widget._comment.isDeleted;
     super.initState();
   }
 
@@ -122,7 +124,7 @@ class _CommentCardState extends State<CommentCard>
                         ],
                       ),
                       _gap,
-                      widget._comment.quote == null
+                      widget._comment.quote == null || isDeleted
                           ? SizedBox.shrink()
                           : Row(
                               mainAxisSize: MainAxisSize.max,
@@ -133,12 +135,20 @@ class _CommentCardState extends State<CommentCard>
                               ],
                             ),
                       _gap,
-                      Text(
-                        widget._comment.content,
-                      ),
+                      isDeleted
+                          ? Padding(
+                              padding: EdgeInsets.only(bottom: 10, left: 133),
+                              child: Text("该回复已被删除",
+                                  style: CustomStyles.commentDeletedStyle,
+                                  textAlign: TextAlign.center))
+                          : Text(
+                              widget._comment.content,
+                            ),
                       _gap,
-                      ImageList(widget._comment.imageUrl),
-                      widget._comment.floor > 0
+                      ImageList(isDeleted
+                          ? []
+                          : widget._comment.imageUrl),
+                      widget._comment.floor > 0 && !isDeleted
                           ? Row(
                               mainAxisSize: MainAxisSize.max,
                               mainAxisAlignment: MainAxisAlignment.start,
@@ -188,10 +198,10 @@ class _CommentCardState extends State<CommentCard>
     showModalBottomSheet(
         isScrollControlled: true, // !important
         context: context,
-        builder: (_) {
+        builder: (BuildContext replyContext) {
           return MultipleInputField(
             postId: widget._postId,
-            context: context,
+            context: replyContext,
             textController: _replyController,
             assets: _assets,
             quote: Quote.fromComment(widget._comment),
@@ -213,6 +223,9 @@ class _CommentCardState extends State<CommentCard>
     okCallback() {
       _deleteComment();
       Navigator.pop(context);
+      setState(() {
+        isDeleted = true;
+      });
       MessageBox.showToast(
           msg: "回复已被删除，刷新以更新。", messageBoxType: MessageBoxType.Success);
     }

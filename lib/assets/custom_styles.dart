@@ -71,6 +71,11 @@ class CustomStyles {
     color: Colors.grey,
   );
 
+  static const commentDeletedStyle = TextStyle(
+    color: Colors.grey,
+    fontSize: 15.0,
+  );
+
   static const pageTitleStyle = TextStyle(
     fontWeight: FontWeight.normal,
   );
