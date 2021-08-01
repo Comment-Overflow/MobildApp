@@ -1,3 +1,4 @@
+import 'package:comment_overflow/assets/constants.dart';
 import 'package:comment_overflow/model/request_dto/comments_query_dto.dart';
 import 'package:comment_overflow/model/request_dto/new_comment_dto.dart';
 import 'package:comment_overflow/model/request_dto/new_post_dto.dart';
@@ -7,7 +8,10 @@ import 'package:dio/dio.dart';
 
 class PostService {
   static Future<Response> postPost(NewPostDTO newPost) async {
-    return await HttpUtil().dio.post('/post', data: await newPost.formData());
+    return await HttpUtil()
+        .dio
+        .post('/post', data: await newPost.formData())
+        .timeout(Duration(seconds: Constants.postCommentTimeout));
   }
 
   static Future<Response> getPost(int postId) async {
@@ -35,7 +39,8 @@ class PostService {
   static Future<Response> postComment(NewCommentDTO newComment) async {
     return await HttpUtil()
         .dio
-        .post('/comment', data: await newComment.formData());
+        .post('/comment', data: await newComment.formData())
+        .timeout(Duration(seconds: Constants.postCommentTimeout));
   }
 
   static Future<Response> deletePost(int postId) async {
