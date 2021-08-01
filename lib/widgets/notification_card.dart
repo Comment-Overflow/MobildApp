@@ -107,7 +107,9 @@ class ReplyNotificationCard extends StatelessWidget {
               UserAvatarWithNameAndDate(_replyRecord.userInfo,
                   _replyRecord.time, UserActionType.reply),
               _gap,
-              Text(_replyRecord.content, style: CustomStyles.postContentStyle),
+              GestureDetector(
+                  child: Text(_replyRecord.content,
+                      style: CustomStyles.postContentStyle)),
               _gap,
               Row(
                 mainAxisSize: MainAxisSize.min,

@@ -26,11 +26,14 @@ class CommentCard extends StatefulWidget {
   final bool _highlight;
   final int _userId;
   final Function? _replyCallback;
+  final Function? _jumpCallback;
+
   const CommentCard(this._comment, this._postId, this._userId,
-      {Key? key, title = "", highlight = false, replyCallback})
+      {Key? key, title = "", highlight = false, replyCallback, jumpCallback})
       : _title = title,
         _highlight = highlight,
         _replyCallback = replyCallback,
+        _jumpCallback = jumpCallback,
         super(key: key);
 
   @override
@@ -44,6 +47,7 @@ class _CommentCardState extends State<CommentCard>
 
   late AnimationController _animationController;
   late Animation _colorTween;
+  late bool isDeleted;
 
   final List<AssetEntity> _assets = <AssetEntity>[];
   final TextEditingController _replyController = TextEditingController();
@@ -59,6 +63,7 @@ class _CommentCardState extends State<CommentCard>
             .animate(
       CurvedAnimation(parent: _animationController, curve: Interval(0.5, 1.0)),
     );
+    isDeleted = widget._comment.isDeleted;
     super.initState();
   }
 
@@ -81,48 +86,60 @@ class _CommentCardState extends State<CommentCard>
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.all(Radius.circular(10.0)),
               ),
-              child: InkWell(
-                onTap: () {},
-                child: Padding(
-                  padding: EdgeInsets.only(
-                      left: Constants.defaultCardPadding,
-                      right: Constants.defaultCardPadding,
-                      top: Constants.defaultCardPadding,
-                      bottom: widget._comment.floor == 0
-                          ? Constants.defaultCardPadding
-                          : Constants.defaultCardPadding / 4),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      ...(widget._comment.floor == 0 && widget._title.isNotEmpty
-                          ? [_buildTitle(), _gap]
-                          : [SizedBox.shrink()]),
-                      Row(
-                        children: [
-                          Expanded(
-                            child: UserAvatarWithName(
-                              widget._comment.user.userName,
-                              Constants.defaultAvatarInCommentSize,
-                              avatarUrl: widget._comment.user.avatarUrl,
-                            ),
+              child: Padding(
+                padding: EdgeInsets.only(
+                    left: Constants.defaultCardPadding,
+                    right: Constants.defaultCardPadding,
+                    top: Constants.defaultCardPadding,
+                    bottom: widget._comment.floor == 0
+                        ? Constants.defaultCardPadding
+                        : Constants.defaultCardPadding / 4),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    ...(widget._comment.floor == 0 && widget._title.isNotEmpty
+                        ? [_buildTitle(), _gap]
+                        : [SizedBox.shrink()]),
+                    Row(
+                      children: [
+                        Expanded(
+                          child: UserAvatarWithName(
+                            widget._comment.user.userName,
+                            Constants.defaultAvatarInCommentSize,
+                            avatarUrl: widget._comment.user.avatarUrl,
                           ),
-                          Text(
-                            widget._comment.timeString,
-                            style: CustomStyles.dateStyle,
-                            textAlign: TextAlign.right,
+                        ),
+                        Text(
+                          widget._comment.timeString,
+                          style: CustomStyles.dateStyle,
+                          textAlign: TextAlign.right,
+                        ),
+                        SizedBox(width: 10),
+                        Text(
+                          widget._comment.floor > 0
+                              ? widget._comment.floorString + '楼'
+                              : "",
+                          style: CustomStyles.floorStyle,
+                          textAlign: TextAlign.right,
+                        ),
+                      ],
+                    ),
+                    _gap,
+                    widget._comment.quote == null
+                        ? SizedBox.shrink()
+                        : Row(
+                            mainAxisSize: MainAxisSize.max,
+                            children: [
+                              _gap,
+                              Expanded(
+                                  child: GestureDetector(
+                                      onTap: () => widget._jumpCallback!(
+                                          widget._comment.quote!.floor),
+                                      child: QuoteCard(widget._comment.quote))),
+                            ],
                           ),
-                          SizedBox(width: 10),
-                          Text(
-                            widget._comment.floor > 0
-                                ? widget._comment.floorString + '楼'
-                                : "",
-                            style: CustomStyles.floorStyle,
-                            textAlign: TextAlign.right,
-                          ),
-                        ],
-                      ),
                       _gap,
-                      widget._comment.quote == null
+                      widget._comment.quote == null || isDeleted
                           ? SizedBox.shrink()
                           : Row(
                               mainAxisSize: MainAxisSize.max,
@@ -133,12 +150,20 @@ class _CommentCardState extends State<CommentCard>
                               ],
                             ),
                       _gap,
-                      Text(
-                        widget._comment.content,
-                      ),
+                      isDeleted
+                          ? Padding(
+                              padding: EdgeInsets.only(bottom: 10, left: 133),
+                              child: Text("该回复已被删除",
+                                  style: CustomStyles.commentDeletedStyle,
+                                  textAlign: TextAlign.center))
+                          : Text(
+                              widget._comment.content,
+                            ),
                       _gap,
-                      ImageList(widget._comment.imageUrl),
-                      widget._comment.floor > 0
+                      ImageList(isDeleted
+                          ? []
+                          : widget._comment.imageUrl),
+                      widget._comment.floor > 0 && !isDeleted
                           ? Row(
                               mainAxisSize: MainAxisSize.max,
                               mainAxisAlignment: MainAxisAlignment.start,
@@ -166,7 +191,7 @@ class _CommentCardState extends State<CommentCard>
                   ),
                 ),
               ),
-            ));
+    );
   }
 
   Future _highlightComment() async {
@@ -188,10 +213,10 @@ class _CommentCardState extends State<CommentCard>
     showModalBottomSheet(
         isScrollControlled: true, // !important
         context: context,
-        builder: (_) {
+        builder: (BuildContext replyContext) {
           return MultipleInputField(
             postId: widget._postId,
-            context: context,
+            context: replyContext,
             textController: _replyController,
             assets: _assets,
             quote: Quote.fromComment(widget._comment),
@@ -213,6 +238,9 @@ class _CommentCardState extends State<CommentCard>
     okCallback() {
       _deleteComment();
       Navigator.pop(context);
+      setState(() {
+        isDeleted = true;
+      });
       MessageBox.showToast(
           msg: "回复已被删除，刷新以更新。", messageBoxType: MessageBoxType.Success);
     }

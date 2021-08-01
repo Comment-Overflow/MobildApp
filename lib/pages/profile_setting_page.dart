@@ -76,9 +76,14 @@ class _ProfileSettingPageState extends State<ProfileSettingPage> {
   void initState() {
     super.initState();
     _gender = genderEnum2StringMap[_profileSettingDto.gender]!;
-    _userAvatar = UserAvatar(Constants.profileSettingImageSize, imageContent: _profileSettingDto.userAvatar);
-    _userNameController = TextEditingController(text: this._profileSettingDto.userName);
-    _briefController = TextEditingController(text: this._profileSettingDto.brief);
+    _userAvatar = UserAvatar(Constants.profileSettingImageSize,
+        imageContent: _profileSettingDto.userAvatar == null
+            ? null
+            : NetworkImage(_profileSettingDto.userAvatar!));
+    _userNameController =
+        TextEditingController(text: this._profileSettingDto.userName);
+    _briefController =
+        TextEditingController(text: this._profileSettingDto.brief);
   }
 
   @override
@@ -123,10 +128,11 @@ class _ProfileSettingPageState extends State<ProfileSettingPage> {
                       MessageBox.showToast(
                           msg: "保存成功", messageBoxType: MessageBoxType.Success);
                       Navigator.pushReplacement(
-                          context, RouteGenerator.generateRoute(RouteSettings(
-                          name: RouteGenerator.homeRoute,
-                          arguments: 2,
-                      )));
+                          context,
+                          RouteGenerator.generateRoute(RouteSettings(
+                            name: RouteGenerator.homeRoute,
+                            arguments: 2,
+                          )));
                     }
                   } else if (!_isUserNameValid) {
                     MessageBox.showToast(
@@ -145,64 +151,55 @@ class _ProfileSettingPageState extends State<ProfileSettingPage> {
   Widget _buildBody() {
     return Form(
         child: ListView(
-          padding: const EdgeInsets.all(20.0),
+      padding: const EdgeInsets.all(20.0),
+      children: [
+        GestureDetector(
+          onTap: _selectAssets,
+          child: _userAvatar,
+        ),
+        _gap,
+        _gap,
+        _gap,
+        _gap,
+        Text(
+          "基本资料",
+          style: TextStyle(fontWeight: FontWeight.bold, fontSize: 24.0),
+        ),
+        Row(
+          mainAxisSize: MainAxisSize.min,
+          crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-            GestureDetector(
-              onTap: _selectAssets,
-              child: _userAvatar,
-            ),
-            _gap,
-            _gap,
-            _gap,
-            _gap,
             Text(
-              "基本资料",
-              style: TextStyle(fontWeight: FontWeight.bold, fontSize: 24.0),
-            ),
-            Row(
-              mainAxisSize: MainAxisSize.min,
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: [
-                Text(
-                  "昵称",
-                  style: CustomStyles.profileSettingItemTitleStyle,
-                ),
-                Expanded(
-                  flex: 2,
-                  child: Container(),
-                ),
-                Expanded(
-                  flex: 15,
-                  child: TextFormField(
-                      controller: _userNameController,
-                      inputFormatters: [
-                        LengthLimitingTextInputFormatter(10),
-                      ],
-                      decoration: InputDecoration(
-                        hintText: '昵称（不超过10个字）',
-                        border: null,
-                        focusedBorder: InputBorder.none,
-                        enabledBorder: InputBorder.none,
-                        errorBorder: InputBorder.none,
-                        focusedErrorBorder: InputBorder.none,
-                        disabledBorder: InputBorder.none,
-                      ),
-                      onChanged: (value) {
-                        setState(() {
-                          value.isEmpty
-                              ? _isUserNameValid = false
-                              : _isUserNameValid = true;
-                        });
-                      }),
-                ),
-              ],
-            ),
-            _itemDivider,
-            _gap,
-            _gap,
-            Text(
-              "一句话介绍",
+              "昵称",
               style: CustomStyles.profileSettingItemTitleStyle,
+            ),
+            Expanded(
+              flex: 2,
+              child: Container(),
+            ),
+            Expanded(
+              flex: 15,
+              child: TextFormField(
+                  controller: _userNameController,
+                  inputFormatters: [
+                    LengthLimitingTextInputFormatter(10),
+                  ],
+                  decoration: InputDecoration(
+                    hintText: '昵称（不超过10个字）',
+                    border: null,
+                    focusedBorder: InputBorder.none,
+                    enabledBorder: InputBorder.none,
+                    errorBorder: InputBorder.none,
+                    focusedErrorBorder: InputBorder.none,
+                    disabledBorder: InputBorder.none,
+                  ),
+                  onChanged: (value) {
+                    setState(() {
+                      value.isEmpty
+                          ? _isUserNameValid = false
+                          : _isUserNameValid = true;
+                    });
+                  }),
             ),
             TextFormField(
               controller: _briefController,
@@ -222,39 +219,41 @@ class _ProfileSettingPageState extends State<ProfileSettingPage> {
                 ),
               ),
             ),
-            Row(
-              mainAxisSize: MainAxisSize.min,
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: [
-                Text("性别", style: CustomStyles.profileSettingItemTitleStyle),
-                Expanded(
-                  flex: 2,
-                  child: Container(),
-                ),
-                Expanded(
-                  flex: 15,
-                  child: DropdownButtonHideUnderline(
-                    child: DropdownButton<String>(
-                      value: _gender,
-                      onChanged: (String? value) {
-                        setState(() {
-                          _gender = value!;
-                        });
-                      },
-                      items: <String>['男', '女', '保密']
-                          .map<DropdownMenuItem<String>>((String value) {
-                        return DropdownMenuItem<String>(
-                          value: value,
-                          child: Text(value),
-                        );
-                      }).toList(),
-                    ),
-                  ),
-                )
-              ],
-            ),
-            _itemDivider,
           ],
-        ));
-      }
-    }
+        ),
+        Row(
+          mainAxisSize: MainAxisSize.min,
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            Text("性别", style: CustomStyles.profileSettingItemTitleStyle),
+            Expanded(
+              flex: 2,
+              child: Container(),
+            ),
+            Expanded(
+              flex: 15,
+              child: DropdownButtonHideUnderline(
+                child: DropdownButton<String>(
+                  value: _gender,
+                  onChanged: (String? value) {
+                    setState(() {
+                      _gender = value!;
+                    });
+                  },
+                  items: <String>['男', '女', '保密']
+                      .map<DropdownMenuItem<String>>((String value) {
+                    return DropdownMenuItem<String>(
+                      value: value,
+                      child: Text(value),
+                    );
+                  }).toList(),
+                ),
+              ),
+            )
+          ],
+        ),
+        _itemDivider,
+      ],
+    ));
+  }
+}

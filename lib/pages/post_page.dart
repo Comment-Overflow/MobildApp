@@ -252,7 +252,8 @@ class _PostPageState extends State<PostPage> {
       case ConnectionState.done:
         {
           int _userId = snapshot.data;
-          return CommentCardList(widget._post, _userId, _pushReplyCallback,
+          return CommentCardList(
+              widget._post, _userId, _pushReplyCallback, _pushReplyCallback,
               pageIndex: _pageIndex);
         }
     }

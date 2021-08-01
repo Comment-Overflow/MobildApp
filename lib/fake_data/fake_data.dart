@@ -49,22 +49,22 @@ final Quote _quoteWithUserName = Quote(4, "Gun9niR", "aa", 2);
 final Quote _quoteWithPostTitle = Quote(5, "Gun9niR", "aa", 5);
 
 final Comment _approvedComment = Comment(6, _userInfo, "sadad", _date,
-    _quoteWithUserName, 0, 500, ApprovalStatus.approve, []);
+    _quoteWithUserName, 0, false, 500, ApprovalStatus.approve, []);
 final Comment _disapprovedComment = Comment(7, _userInfo, _content, _date,
-    _quoteWithUserName, 0, 500, ApprovalStatus.approve, [
+    _quoteWithUserName, 0, false, 500, ApprovalStatus.approve, [
   "http://img8.zol.com.cn/bbs/upload/23765/23764201.jpg",
   "https://images.unsplash.com/photo-1526512340740-9217d0159da9?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=2677&q=80"
 ]);
 
 final Comment _firstFloorComment = Comment(8, _userInfo, _content, _date,
-    _quoteWithUserName, 0, 500, ApprovalStatus.none, [
+    _quoteWithUserName, 0, false, 500, ApprovalStatus.none, [
   "https://images.unsplash.com/photo-1526512340740-9217d0159da9?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=2677&q=80",
   "http://img8.zol.com.cn/bbs/upload/23765/23764201.jpg",
   "http://img8.zol.com.cn/bbs/upload/23765/23764201.jpg",
   "http://img8.zol.com.cn/bbs/upload/23765/23764201.jpg",
 ]);
 final Comment _noneComment = Comment(9, _userInfo, _content, _date,
-    _quoteWithUserName, 1, 500, ApprovalStatus.none, [
+    _quoteWithUserName, 1, false, 500, ApprovalStatus.none, [
   "https://images.unsplash.com/photo-1526512340740-9217d0159da9?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=2677&q=80",
   "http://img8.zol.com.cn/bbs/upload/23765/23764201.jpg",
   "http://img8.zol.com.cn/bbs/upload/23765/23764201.jpg",

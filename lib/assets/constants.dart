@@ -108,6 +108,8 @@ class Constants {
 
   static const maxSearchHistory = 20;
 
+  static const postCommentTimeout = 30;
+
   // Categories of posts
   static const List<String> postCategories = [
     '校园生活',
@@ -157,7 +159,6 @@ class Constants {
   static const String browsePostIndicatorTitle = '还没有话题';
 
   static const String browsePostEmptyIndicatorSubtitle = '做第一个打破沉默的人吧';
-
 }
 
 enum FollowStatus {

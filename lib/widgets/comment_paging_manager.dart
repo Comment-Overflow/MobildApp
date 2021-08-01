@@ -58,10 +58,11 @@ class CommentPagingManager<T> {
 
   /// Jump floor related.
   int _initialIndex;
+  final Function _distantJumpCallback;
   JumpFloorValues jumpFloorValues;
 
-  CommentPagingManager(
-      this._pageSize, this._customFetchApi, this._customItemBuilder,
+  CommentPagingManager(this._pageSize, this._customFetchApi,
+      this._customItemBuilder, this._distantJumpCallback,
       {emptyIndicatorTitle, emptyIndicatorSubtitle, initialIndex: 0})
       : this._emptyIndicatorTitle = emptyIndicatorTitle,
         this._emptyIndicatorSubtitle = emptyIndicatorSubtitle,
@@ -90,14 +91,12 @@ class CommentPagingManager<T> {
     _pagingController.addPageRequestListener(this._wrappedFetchApi);
   }
 
-  // TODO: If fetching for the first time, fetch two pages so that the whole
-  // page can be filled with cards, which prevents
   Future<void> _fetchPage(int pageKey) async {
     // print('fetching page ${pageKey ~/ _pageSize}');
     try {
       final newItems = await _customFetchApi(pageKey ~/ _pageSize, _pageSize);
 
-      if (this._disposed) {}
+      if (this._disposed) return;
 
       final isCurrentlyLastPage = newItems.length < _pageSize;
 
@@ -138,7 +137,8 @@ class CommentPagingManager<T> {
           Future.delayed(Duration(milliseconds: 400), () async {
             await scrollToIndex(_initialIndex);
 
-            if (_autoScrollController.position.pixels < _cacheExtent + 0.1) {
+            if (_autoScrollController.position.pixels < _cacheExtent + 0.1 &&
+                jumpFloorValues._recentlyFetchedTopIndex != 0) {
               // print('trigger scroll position adjustment');
               WidgetsBinding.instance!.addPostFrameCallback((_) {
                 _autoScrollController.jumpTo(_cacheExtent + 0.1);
@@ -189,7 +189,7 @@ class CommentPagingManager<T> {
                 min(index, jumpFloorValues._recentlyBuiltTopIndex);
           }
 
-          print('item builder called on index $index');
+          // print('item builder called on index $index');
 
           return AutoScrollTag(
             key: ValueKey(index),
@@ -346,7 +346,8 @@ class CommentPagingManager<T> {
       jumpFloorValues._hasBuiltAsCard.add(index);
 
       Widget _widget = _customItemBuilder(context, item, index,
-          highlight: index == _initialIndex && shouldHighlight);
+          highlight: index == _initialIndex && shouldHighlight,
+          jumpCallback: _jumpFloorCallback);
       return _widget;
     }
   }
@@ -378,6 +379,14 @@ class CommentPagingManager<T> {
 
     jumpFloorValues._hasBottomRefreshed = true;
     _pagingController.nextPageKey = _pageKeyToResume;
+  }
+
+  _jumpFloorCallback(int floor) {
+    if (jumpFloorValues._recentlyBuiltTopIndex <= floor) {
+      scrollToIndex(floor);
+    } else {
+      _distantJumpCallback(floor);
+    }
   }
 }
 

@@ -113,6 +113,12 @@ class MultipleInputField extends StatelessWidget {
                     padding: EdgeInsets.only(right: 5.0),
                     child: StatefulBuilder(builder: (c, s) {
                       Future<void> _postComment() async {
+                        if (_controller.text.isEmpty) {
+                          MessageBox.showToast(
+                              msg: "回复文字不能为空",
+                              messageBoxType: MessageBoxType.Error);
+                          return;
+                        }
                         final dto = NewCommentDTO(
                             postId: _postId,
                             quoteId: _quote == null ? 0 : _quote!.commentId,

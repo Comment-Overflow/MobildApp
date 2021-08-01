@@ -10,6 +10,7 @@ class Comment {
   final DateTime _time;
   final Quote? _quote;
   final int _floor;
+  final bool _isDeleted;
   int _approvalCount;
   ApprovalStatus _approvalStatus;
   List<String> _imageUrl;
@@ -24,9 +25,10 @@ class Comment {
   int get approvalCount => _approvalCount;
   ApprovalStatus get approvalStatus => _approvalStatus;
   List<String> get imageUrl => _imageUrl;
+  bool get isDeleted => _isDeleted;
 
   Comment(this._id, this.user, this._content, this._time, this._quote,
-      this._floor, this._approvalCount, this._approvalStatus, this._imageUrl);
+      this._floor, this._isDeleted, this._approvalCount, this._approvalStatus, this._imageUrl);
 
   factory Comment.fromJson(dynamic json) {
     var _imageList = json['imageUrl'];
@@ -40,7 +42,6 @@ class Comment {
     else
       status = ApprovalStatus.none;
 
-    print(json);
     return Comment(
         json['id'] as int,
         UserInfo.fromJson(json['userInfo']),
@@ -48,6 +49,7 @@ class Comment {
         DateTime.parse(json['time'] as String),
         (json['quoteId'] as int) == 0 ? null : Quote.fromJson(json['quoteDTO']),
         json['floor'] as int,
+        json['isDeleted'] as bool,
         json['approvalCount'] as int,
         status,
         _imageList == null ? [] : List.from(_imageList));
