@@ -15,8 +15,9 @@ class CommentCardList extends StatefulWidget {
   final int _userId;
   final Function _replyCallback;
   final Function _setMaxCallback;
+  final Function _distantJumpCallback;
 
-  CommentCardList(this._post, this._userId, this._replyCallback, this._setMaxCallback,
+  CommentCardList(this._post, this._userId, this._replyCallback, this._setMaxCallback, this._distantJumpCallback,
       {Key? key, pageIndex: 0})
       : _pageIndex = pageIndex,
         super(key: key);
@@ -50,15 +51,18 @@ class _CommentCardListState extends State<CommentCardList> {
         widget._setMaxCallback((response.data['size'] as int) ~/ pageSize);
         return commentObjJson.map((e) => Comment.fromJson(e)).toList();
       },
-      (context, item, index, {highlight: false}) => (item as Comment).floor == 0
-          ? CommentCard(item, post.postId, userId, title: post.title)
-          : CommentCard(
-              item,
-              post.postId,
-              userId,
-              highlight: highlight,
-              replyCallback: widget._replyCallback,
-            ),
+      (context, item, index, {highlight: false, jumpCallback}) =>
+          (item as Comment).floor == 0
+              ? CommentCard(item, post.postId, userId, title: post.title)
+              : CommentCard(
+                  item,
+                  post.postId,
+                  userId,
+                  highlight: highlight,
+                  replyCallback: widget._replyCallback,
+                  jumpCallback: jumpCallback,
+                ),
+      widget._distantJumpCallback,
       initialIndex: _pageIndex,
     );
 

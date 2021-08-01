@@ -26,11 +26,14 @@ class CommentCard extends StatefulWidget {
   final bool _highlight;
   final int _userId;
   final Function? _replyCallback;
+  final Function? _jumpCallback;
+
   const CommentCard(this._comment, this._postId, this._userId,
-      {Key? key, title = "", highlight = false, replyCallback})
+      {Key? key, title = "", highlight = false, replyCallback, jumpCallback})
       : _title = title,
         _highlight = highlight,
         _replyCallback = replyCallback,
+        _jumpCallback = jumpCallback,
         super(key: key);
 
   @override
@@ -83,46 +86,58 @@ class _CommentCardState extends State<CommentCard>
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.all(Radius.circular(10.0)),
               ),
-              child: InkWell(
-                onTap: () {},
-                child: Padding(
-                  padding: EdgeInsets.only(
-                      left: Constants.defaultCardPadding,
-                      right: Constants.defaultCardPadding,
-                      top: Constants.defaultCardPadding,
-                      bottom: widget._comment.floor == 0
-                          ? Constants.defaultCardPadding
-                          : Constants.defaultCardPadding / 4),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      ...(widget._comment.floor == 0 && widget._title.isNotEmpty
-                          ? [_buildTitle(), _gap]
-                          : [SizedBox.shrink()]),
-                      Row(
-                        children: [
-                          Expanded(
-                            child: UserAvatarWithName(
-                              widget._comment.user.userName,
-                              Constants.defaultAvatarInCommentSize,
-                              avatarUrl: widget._comment.user.avatarUrl,
-                            ),
+              child: Padding(
+                padding: EdgeInsets.only(
+                    left: Constants.defaultCardPadding,
+                    right: Constants.defaultCardPadding,
+                    top: Constants.defaultCardPadding,
+                    bottom: widget._comment.floor == 0
+                        ? Constants.defaultCardPadding
+                        : Constants.defaultCardPadding / 4),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    ...(widget._comment.floor == 0 && widget._title.isNotEmpty
+                        ? [_buildTitle(), _gap]
+                        : [SizedBox.shrink()]),
+                    Row(
+                      children: [
+                        Expanded(
+                          child: UserAvatarWithName(
+                            widget._comment.user.userName,
+                            Constants.defaultAvatarInCommentSize,
+                            avatarUrl: widget._comment.user.avatarUrl,
                           ),
-                          Text(
-                            widget._comment.timeString,
-                            style: CustomStyles.dateStyle,
-                            textAlign: TextAlign.right,
+                        ),
+                        Text(
+                          widget._comment.timeString,
+                          style: CustomStyles.dateStyle,
+                          textAlign: TextAlign.right,
+                        ),
+                        SizedBox(width: 10),
+                        Text(
+                          widget._comment.floor > 0
+                              ? widget._comment.floorString + '楼'
+                              : "",
+                          style: CustomStyles.floorStyle,
+                          textAlign: TextAlign.right,
+                        ),
+                      ],
+                    ),
+                    _gap,
+                    widget._comment.quote == null
+                        ? SizedBox.shrink()
+                        : Row(
+                            mainAxisSize: MainAxisSize.max,
+                            children: [
+                              _gap,
+                              Expanded(
+                                  child: GestureDetector(
+                                      onTap: () => widget._jumpCallback!(
+                                          widget._comment.quote!.floor),
+                                      child: QuoteCard(widget._comment.quote))),
+                            ],
                           ),
-                          SizedBox(width: 10),
-                          Text(
-                            widget._comment.floor > 0
-                                ? widget._comment.floorString + '楼'
-                                : "",
-                            style: CustomStyles.floorStyle,
-                            textAlign: TextAlign.right,
-                          ),
-                        ],
-                      ),
                       _gap,
                       widget._comment.quote == null || isDeleted
                           ? SizedBox.shrink()
@@ -176,7 +191,7 @@ class _CommentCardState extends State<CommentCard>
                   ),
                 ),
               ),
-            ));
+            );
   }
 
   Future _highlightComment() async {

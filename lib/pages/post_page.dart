@@ -305,7 +305,7 @@ class _PostPageState extends State<PostPage> {
         {
           int _userId = snapshot.data;
           return CommentCardList(
-              widget._post, _userId, _pushReplyCallback, _setMaxPageCallback,
+              widget._post, _userId, _pushReplyCallback, _setMaxPageCallback, _pushReplyCallback,
               pageIndex: _pageIndex);
         }
     }
