@@ -34,8 +34,6 @@ class Comment {
     var _imageList = json['imageUrl'];
     String statusString = json['approvalStatus'] as String;
 
-    print(json);
-
     ApprovalStatus status;
     if (statusString == "APPROVAL")
       status = ApprovalStatus.approve;
