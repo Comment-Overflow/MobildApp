@@ -26,11 +26,14 @@ class CommentCard extends StatefulWidget {
   final bool _highlight;
   final int _userId;
   final Function? _replyCallback;
+  final Function? _jumpCallback;
+
   const CommentCard(this._comment, this._postId, this._userId,
-      {Key? key, title = "", highlight = false, replyCallback})
+      {Key? key, title = "", highlight = false, replyCallback, jumpCallback})
       : _title = title,
         _highlight = highlight,
         _replyCallback = replyCallback,
+        _jumpCallback = jumpCallback,
         super(key: key);
 
   @override
@@ -126,7 +129,11 @@ class _CommentCardState extends State<CommentCard>
                             mainAxisSize: MainAxisSize.max,
                             children: [
                               _gap,
-                              Expanded(child: QuoteCard(widget._comment.quote)),
+                              Expanded(
+                                  child: GestureDetector(
+                                      onTap: () => widget._jumpCallback!(
+                                          widget._comment.quote!.floor),
+                                      child: QuoteCard(widget._comment.quote))),
                             ],
                           ),
                     _gap,
