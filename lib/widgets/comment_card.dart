@@ -47,6 +47,7 @@ class _CommentCardState extends State<CommentCard>
 
   late AnimationController _animationController;
   late Animation _colorTween;
+  late bool isDeleted;
 
   final List<AssetEntity> _assets = <AssetEntity>[];
   final TextEditingController _replyController = TextEditingController();
@@ -62,6 +63,7 @@ class _CommentCardState extends State<CommentCard>
             .animate(
       CurvedAnimation(parent: _animationController, curve: Interval(0.5, 1.0)),
     );
+    isDeleted = widget._comment.isDeleted;
     super.initState();
   }
 
@@ -136,40 +138,60 @@ class _CommentCardState extends State<CommentCard>
                                       child: QuoteCard(widget._comment.quote))),
                             ],
                           ),
-                    _gap,
-                    Text(
-                      widget._comment.content,
-                    ),
-                    _gap,
-                    ImageList(widget._comment.imageUrl),
-                    widget._comment.floor > 0
-                        ? Row(
-                            mainAxisSize: MainAxisSize.max,
-                            mainAxisAlignment: MainAxisAlignment.start,
-                            children: [
-                              ApprovalButton.horizontal(
-                                comment: widget._comment,
-                                size: _iconSize,
-                              ),
-                              DisapprovalButton(
-                                comment: widget._comment,
-                                size: _iconSize,
-                                showText: false,
-                              ),
-                              IconButton(
-                                splashColor: Colors.transparent,
-                                icon: CustomStyles.getDefaultReplyIcon(
-                                    size: _iconSize),
-                                onPressed: _pushReply,
-                              ),
-                              _buildDeleteButton(),
-                            ],
-                          )
-                        : SizedBox.shrink(),
-                  ],
+                      _gap,
+                      widget._comment.quote == null || isDeleted
+                          ? SizedBox.shrink()
+                          : Row(
+                              mainAxisSize: MainAxisSize.max,
+                              children: [
+                                _gap,
+                                Expanded(
+                                    child: QuoteCard(widget._comment.quote)),
+                              ],
+                            ),
+                      _gap,
+                      isDeleted
+                          ? Padding(
+                              padding: EdgeInsets.only(bottom: 10, left: 133),
+                              child: Text("该回复已被删除",
+                                  style: CustomStyles.commentDeletedStyle,
+                                  textAlign: TextAlign.center))
+                          : Text(
+                              widget._comment.content,
+                            ),
+                      _gap,
+                      ImageList(isDeleted
+                          ? []
+                          : widget._comment.imageUrl),
+                      widget._comment.floor > 0 && !isDeleted
+                          ? Row(
+                              mainAxisSize: MainAxisSize.max,
+                              mainAxisAlignment: MainAxisAlignment.start,
+                              children: [
+                                ApprovalButton.horizontal(
+                                  comment: widget._comment,
+                                  size: _iconSize,
+                                ),
+                                DisapprovalButton(
+                                  comment: widget._comment,
+                                  size: _iconSize,
+                                  showText: false,
+                                ),
+                                IconButton(
+                                  splashColor: Colors.transparent,
+                                  icon: CustomStyles.getDefaultReplyIcon(
+                                      size: _iconSize),
+                                  onPressed: _pushReply,
+                                ),
+                                _buildDeleteButton(),
+                              ],
+                            )
+                          : SizedBox.shrink(),
+                    ],
+                  ),
                 ),
               ),
-            ));
+    );
   }
 
   Future _highlightComment() async {
@@ -191,10 +213,10 @@ class _CommentCardState extends State<CommentCard>
     showModalBottomSheet(
         isScrollControlled: true, // !important
         context: context,
-        builder: (_) {
+        builder: (BuildContext replyContext) {
           return MultipleInputField(
             postId: widget._postId,
-            context: context,
+            context: replyContext,
             textController: _replyController,
             assets: _assets,
             quote: Quote.fromComment(widget._comment),
@@ -216,6 +238,9 @@ class _CommentCardState extends State<CommentCard>
     okCallback() {
       _deleteComment();
       Navigator.pop(context);
+      setState(() {
+        isDeleted = true;
+      });
       MessageBox.showToast(
           msg: "回复已被删除，刷新以更新。", messageBoxType: MessageBoxType.Success);
     }
