@@ -138,8 +138,6 @@ class _CommentCardState extends State<CommentCard>
                                       child: QuoteCard(widget._comment.quote))),
                             ],
                           ),
-                        ],
-                      ),
                       _gap,
                       widget._comment.quote == null || isDeleted
                           ? SizedBox.shrink()
@@ -193,7 +191,7 @@ class _CommentCardState extends State<CommentCard>
                   ),
                 ),
               ),
-            ));
+    );
   }
 
   Future _highlightComment() async {

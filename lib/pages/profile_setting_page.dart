@@ -201,34 +201,25 @@ class _ProfileSettingPageState extends State<ProfileSettingPage> {
                     });
                   }),
             ),
-          ],
-        ),
-        _itemDivider,
-        _gap,
-        _gap,
-        Text(
-          "一句话介绍",
-          style: CustomStyles.profileSettingItemTitleStyle,
-        ),
-        TextFormField(
-          controller: _briefController,
-          inputFormatters: [
-            LengthLimitingTextInputFormatter(30),
-          ],
-          maxLength: 30,
-          minLines: 1,
-          maxLines: 3,
-          decoration: InputDecoration(
-            hintText: "不超过30个字",
-            enabledBorder: UnderlineInputBorder(
-              borderSide:
-                  BorderSide(color: CustomColors.profileSettingInputGery),
+            TextFormField(
+              controller: _briefController,
+              inputFormatters: [
+                LengthLimitingTextInputFormatter(30),
+              ],
+              maxLength: 30,
+              minLines: 1,
+              maxLines: 1,
+              decoration: InputDecoration(
+                hintText: "不超过30个字",
+                enabledBorder: UnderlineInputBorder(
+                  borderSide: BorderSide(color: CustomColors.profileSettingInputGery),
+                ),
+                focusedBorder: UnderlineInputBorder(
+                  borderSide: BorderSide(color: CustomColors.profileSettingInputGery),
+                ),
+              ),
             ),
-            focusedBorder: UnderlineInputBorder(
-              borderSide:
-                  BorderSide(color: CustomColors.profileSettingInputGery),
-            ),
-          ),
+          ],
         ),
         Row(
           mainAxisSize: MainAxisSize.min,
