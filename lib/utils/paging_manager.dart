@@ -130,7 +130,7 @@ class PagingManager<T> {
 
   buildEmptyWidget() => Container(
       height: 1,
-      padding: EdgeInsets.fromLTRB(60, 0, 60, 80),
+      padding: EdgeInsets.fromLTRB(60, 0, 60, 60),
       child: EmptyWidget(
         image: null,
         packageImage: PackageImage.Image_1,

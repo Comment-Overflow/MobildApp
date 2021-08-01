@@ -1,7 +1,9 @@
 import 'package:comment_overflow/assets/constants.dart';
 import 'package:comment_overflow/assets/custom_styles.dart';
+import 'package:comment_overflow/model/comment.dart';
 import 'package:comment_overflow/model/post.dart';
 import 'package:comment_overflow/model/routing_dto/jump_post_dto.dart';
+import 'package:comment_overflow/model/user_info.dart';
 import 'package:comment_overflow/utils/route_generator.dart';
 import 'package:comment_overflow/widgets/user_avatar_with_name.dart';
 import 'package:flutter/material.dart';
@@ -136,14 +138,17 @@ class SearchedPostCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    Comment _searchedComment = _post.searchedComment;
+    UserInfo _user = _searchedComment.user;
+
     final userAndContentColumn = Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        UserAvatarWithName(_post.hostComment.user.userName, 21.0,
+        UserAvatarWithName(_user.userName, 21.0,
             textStyle: CustomStyles.postContentStyle,
             gap: 7.0,
             searchKey: searchKey,
-            avatarUrl: _post.hostComment.user.avatarUrl),
+            avatarUrl: _user.avatarUrl),
         _gap,
         buildContent(),
       ],
@@ -151,7 +156,7 @@ class SearchedPostCard extends StatelessWidget {
 
     /// If the post contains an images, display the first on the left, taking up
     /// 3/4 of the entire width.
-    final userAndContentColumnWithImage = _post.hostComment.imageUrl.isNotEmpty
+    final userAndContentColumnWithImage = _searchedComment.imageUrl.isNotEmpty
         ? IntrinsicHeight(
             child: Row(
               children: [
@@ -170,7 +175,7 @@ class SearchedPostCard extends StatelessWidget {
                     child: ClipRRect(
                       borderRadius: BorderRadius.circular(8.0),
                       child: Image.network(
-                        _post.hostComment.imageUrl[0],
+                        _searchedComment.imageUrl[0],
                         fit: BoxFit.cover,
                       ),
                     ),
@@ -204,7 +209,7 @@ class SearchedPostCard extends StatelessWidget {
               RouteGenerator.generateRoute(RouteSettings(
                 name: RouteGenerator.postRoute,
                 arguments:
-                    JumpPostDTO(_post, pageIndex: _post.searchedComment.floor),
+                    JumpPostDTO(_post, pageIndex: _searchedComment.floor),
               )));
         },
       ),
@@ -231,14 +236,16 @@ class SearchedPostCard extends StatelessWidget {
         text: TextSpan(
           children: [
             TextSpan(
-              text: '${_post.hostComment.floorString}楼 · ',
+              text: _post.searchedComment.floor == 0
+                  ? '楼主 · '
+                  : '${_post.searchedComment.floorString}楼 · ',
             ),
             WidgetSpan(
               child: CustomStyles.getDefaultThumbUpIcon(),
             ),
             TextSpan(
               text:
-                  ' ${_post.hostComment.approvalCount} · ${_post.hostComment.timeString}',
+                  ' ${_post.searchedComment.approvalCount} · ${_post.hostComment.timeString}',
             ),
           ],
           style: CustomStyles.postFooterStyle,

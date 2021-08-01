@@ -57,16 +57,25 @@ class _LoginPageState extends State<LoginPage> {
     });
   }
 
-  _sendEmail(email) async {
+  _sendEmail(email, failureCallback) async {
     try {
       final Response response = await AuthService.sendEmailConfirmation(email);
       StorageUtil()
           .storage
           .write(key: Constants.emailToken, value: response.data);
-    } on DioError {}
 
-    MessageBox.showToast(
-        msg: "验证邮件已发送!", messageBoxType: MessageBoxType.Success);
+      MessageBox.showToast(
+          msg: "验证邮件已发送!", messageBoxType: MessageBoxType.Success);
+    } on DioError catch (e) {
+      if (e.type == DioErrorType.connectTimeout) {
+        MessageBox.showToast(
+            msg: "网络连接异常，请重试!", messageBoxType: MessageBoxType.Success);
+      } else {
+        MessageBox.showToast(
+            msg: "未能成功发送邮件，请重试!", messageBoxType: MessageBoxType.Success);
+      }
+      failureCallback();
+    }
   }
 
   @override
