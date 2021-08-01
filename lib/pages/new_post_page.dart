@@ -127,25 +127,29 @@ class _NewPostPageState extends State<NewPostPage> {
           ),
           Text("发布帖子"),
           // Send icon.
-          _isLoading
-              ? CupertinoActivityIndicator()
-              : IconButton(
-                  padding: EdgeInsets.zero,
-                  constraints: BoxConstraints(),
-                  splashRadius: _iconSize / 1.3,
-                  splashColor: Theme.of(context).buttonColor,
-                  icon: CustomStyles.getDefaultSendIcon(
-                      size: _iconSize,
-                      color: this._title.isNotEmpty
-                          ? iconColor
-                          : Theme.of(context).disabledColor),
-                  onPressed: this._title.isNotEmpty
-                      ? () {
-                          print(this._title);
-                          print(this._content);
-                          _pushSend();
-                        }
-                      : null),
+          SizedBox(
+            height: _iconSize,
+            width: _iconSize,
+            child: _isLoading
+                ? CupertinoActivityIndicator()
+                : IconButton(
+                    padding: EdgeInsets.zero,
+                    constraints: BoxConstraints(),
+                    splashRadius: _iconSize / 1.3,
+                    splashColor: Theme.of(context).buttonColor,
+                    icon: CustomStyles.getDefaultSendIcon(
+                        size: _iconSize,
+                        color: this._title.isNotEmpty
+                            ? iconColor
+                            : Theme.of(context).disabledColor),
+                    onPressed: this._title.isNotEmpty
+                        ? () {
+                            print(this._title);
+                            print(this._content);
+                            _pushSend();
+                          }
+                        : null),
+          ),
         ]),
         automaticallyImplyLeading: false,
       );

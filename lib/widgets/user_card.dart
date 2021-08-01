@@ -1,12 +1,11 @@
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:comment_overflow/assets/constants.dart';
 import 'package:comment_overflow/assets/custom_styles.dart';
 import 'package:comment_overflow/model/routing_dto/personal_page_access_dto.dart';
 import 'package:comment_overflow/model/user_info.dart';
 import 'package:comment_overflow/utils/route_generator.dart';
+import 'package:comment_overflow/utils/storage_util.dart';
 import 'package:comment_overflow/widgets/follow_button.dart';
 import 'package:comment_overflow/widgets/user_avatar.dart';
-import 'package:extended_image/extended_image.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
@@ -113,16 +112,18 @@ class UserCard extends StatelessWidget {
                   flex: 2,
                   child: Container(),
                 ),
-                Expanded(
-                    flex: 29,
-                    child: Center(
-                        child: FollowButton(
-                            _userCardInfo.userId,
-                            _userCardInfo.userName,
-                            _userCardInfo.followStatus)))
+                _buildFollowButton(),
               ],
             )),
       ),
     );
   }
+
+  _buildFollowButton() => Expanded(
+      flex: 29,
+      child: Center(
+          child: StorageUtil().loginInfo.userId != _userCardInfo.userId
+              ? FollowButton(_userCardInfo.userId, _userCardInfo.userName,
+                  _userCardInfo.followStatus)
+              : Container()));
 }
