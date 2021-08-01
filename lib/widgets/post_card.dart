@@ -127,13 +127,13 @@ class PostCard extends StatelessWidget {
       );
 }
 
-class SearchedPostCard extends StatelessWidget {
+class SearchedCommentCard extends StatelessWidget {
   /// Vertical gap between rows.
   static const _gap = const SizedBox(height: 5.0);
   final SearchedPost _post;
   final List<String> searchKey;
 
-  const SearchedPostCard(this._post, this.searchKey, {Key? key})
+  const SearchedCommentCard(this._post, this.searchKey, {Key? key})
       : super(key: key);
 
   @override
@@ -147,7 +147,6 @@ class SearchedPostCard extends StatelessWidget {
         UserAvatarWithName(_user.userName, 21.0,
             textStyle: CustomStyles.postContentStyle,
             gap: 7.0,
-            searchKey: searchKey,
             avatarUrl: _user.avatarUrl),
         _gap,
         buildContent(),
