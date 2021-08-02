@@ -2,6 +2,7 @@ import 'package:comment_overflow/assets/custom_colors.dart';
 import 'package:comment_overflow/model/quote.dart';
 import 'package:comment_overflow/service/post_service.dart';
 import 'package:comment_overflow/utils/message_box.dart';
+import 'package:comment_overflow/utils/storage_util.dart';
 import 'package:comment_overflow/widgets/approval_button.dart';
 import 'package:comment_overflow/widgets/disapproval_button.dart';
 import 'package:comment_overflow/widgets/image_list.dart';
@@ -131,7 +132,11 @@ class _CommentCardState extends State<CommentCard>
                       mainAxisSize: MainAxisSize.max,
                       children: [
                         _gap,
-                        Expanded(child: QuoteCard(widget._comment.quote)),
+                        Expanded(
+                            child: GestureDetector(
+                                onTap: () => widget._jumpCallback!(
+                                    widget._comment.quote!.floor),
+                                child: QuoteCard(widget._comment.quote))),
                       ],
                     ),
               _gap,
@@ -232,7 +237,8 @@ class _CommentCardState extends State<CommentCard>
       Navigator.pop(context);
     }
 
-    return widget._userId == widget._comment.user.userId
+    return widget._userId == widget._comment.user.userId ||
+            StorageUtil().loginInfo.userType == UserType.Admin
         ? IconButton(
             splashColor: Colors.transparent,
             icon: CustomStyles.getDefaultDeleteIcon(size: _iconSize),

@@ -4,6 +4,7 @@ import 'package:comment_overflow/model/post.dart';
 import 'package:comment_overflow/service/post_service.dart';
 import 'package:comment_overflow/utils/general_utils.dart';
 import 'package:comment_overflow/utils/message_box.dart';
+import 'package:comment_overflow/utils/storage_util.dart';
 import 'package:comment_overflow/widgets/adaptive_alert_dialog.dart';
 import 'package:comment_overflow/widgets/approval_button.dart';
 import 'package:comment_overflow/widgets/comment_card_list.dart';
@@ -233,7 +234,8 @@ class _PostPageState extends State<PostPage> {
       case ConnectionState.done:
         {
           int _userId = snapshot.data;
-          return _userId == widget._post.hostComment.user.userId
+          return _userId == widget._post.hostComment.user.userId ||
+                  StorageUtil().loginInfo.userType == UserType.Admin
               ? IconButton(
                   icon: CustomStyles.getDefaultDeleteIcon(size: _iconSize),
                   tooltip: 'Delete this Post',
