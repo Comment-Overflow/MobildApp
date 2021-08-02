@@ -30,7 +30,7 @@ class ChatCard extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
           UserAvatar(_chat.chatter.userId, Constants.defaultChatListAvatarSize,
-              imageContent: this._chat.chatter.avatarUrl),
+              imageContent: this._chat.chatter.avatarUrl, canJump: false),
           SizedBox(width: _horizontalGap),
           Expanded(
             child: Column(
