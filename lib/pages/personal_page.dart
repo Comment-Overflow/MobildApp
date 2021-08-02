@@ -76,7 +76,13 @@ class _PersonalPageState extends State<PersonalPage> {
                   ),
                 ];
               },
-              body: Container(child: PostCardList()),
+              body: TabBarView(
+                children:[
+                  Container(child: PostCardList(userId: widget._userId,)),
+                  Container(child: PostCardList()),
+                  Container(child: PostCardList(userId: widget._userId, isStarred: true,)),
+                ]
+              ),
             ),
           ),
           bottomNavigationBar:

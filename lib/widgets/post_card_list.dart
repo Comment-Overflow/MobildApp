@@ -9,9 +9,12 @@ import 'package:flutter/widgets.dart';
 
 class PostCardList extends StatefulWidget {
   final PostTag? _tag;
-
-  const PostCardList({PostTag? tag, Key? key})
+  final int? _userId;
+  final bool _isStarred;
+  const PostCardList({PostTag? tag, int? userId, bool isStarred = false, Key? key})
       : _tag = tag,
+        _userId = userId,
+        _isStarred = isStarred,
         super(key: key);
 
   @override
@@ -21,8 +24,10 @@ class PostCardList extends StatefulWidget {
 class _PostCardListState extends State<PostCardList> {
   late final PagingManager<Post> _pagingManager =
       PagingManager(Constants.defaultPageSize, (page, pageSize) async {
-    var response = await PostService.getPosts(
-        PostQueryDTO(tag: widget._tag, pageNum: page, pageSize: pageSize));
+    var response = widget._userId == null ?
+        (await PostService.getPosts(PostQueryDTO(tag: widget._tag, pageNum: page, pageSize: pageSize)))
+        : widget._isStarred == true ? (await PostService.getStarredPosts(PostQueryDTO(pageNum: page, pageSize: pageSize)))
+        : (await PostService.getMyPosts(widget._userId.toString(), PostQueryDTO(pageNum: page, pageSize: pageSize)));
     var postObjJson = response.data['content'] as List;
     return postObjJson.map((e) => Post.fromJson(e)).toList();
   }, (context, item, index) => PostCard(item),

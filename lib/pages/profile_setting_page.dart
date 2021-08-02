@@ -203,24 +203,24 @@ class _ProfileSettingPageState extends State<ProfileSettingPage> {
                 ),
                 ],
             ),
-                _itemDivider,
-                _gap,
-                _gap,
-                Text(
-                  "一句话介绍",
-                  style: CustomStyles.profileSettingItemTitleStyle,
-                ),
-                TextFormField(
-                  controller: _briefController,
-                  inputFormatters: [
-                    LengthLimitingTextInputFormatter(30),
-                  ],
-                  maxLength: 30,
-                  minLines: 1,
-                  maxLines: 1,
-                  decoration: InputDecoration(
-                    hintText: "不超过30个字",
-                    enabledBorder: UnderlineInputBorder(
+            _itemDivider,
+            _gap,
+            _gap,
+            Text(
+              "一句话介绍",
+              style: CustomStyles.profileSettingItemTitleStyle,
+            ),
+            TextFormField(
+              controller: _briefController,
+              inputFormatters: [
+                LengthLimitingTextInputFormatter(30),
+              ],
+              maxLength: 30,
+              minLines: 1,
+              maxLines: 1,
+              decoration: InputDecoration(
+                hintText: "不超过30个字",
+                enabledBorder: UnderlineInputBorder(
                   borderSide: BorderSide(color: CustomColors.profileSettingInputGery),
                 ),
                 focusedBorder: UnderlineInputBorder(
@@ -228,39 +228,39 @@ class _ProfileSettingPageState extends State<ProfileSettingPage> {
                 ),
               ),
             ),
-        Row(
-          mainAxisSize: MainAxisSize.min,
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: [
-            Text("性别", style: CustomStyles.profileSettingItemTitleStyle),
-            Expanded(
-              flex: 2,
-              child: Container(),
-            ),
-            Expanded(
-              flex: 15,
-              child: DropdownButtonHideUnderline(
-                child: DropdownButton<String>(
-                  value: _gender,
-                  onChanged: (String? value) {
-                    setState(() {
-                      _gender = value!;
-                    });
-                  },
-                  items: <String>['男', '女', '保密']
-                      .map<DropdownMenuItem<String>>((String value) {
-                    return DropdownMenuItem<String>(
-                      value: value,
-                      child: Text(value),
-                    );
-                  }).toList(),
+            Row(
+              mainAxisSize: MainAxisSize.min,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                Text("性别", style: CustomStyles.profileSettingItemTitleStyle),
+                Expanded(
+                  flex: 2,
+                  child: Container(),
                 ),
-              ),
-            )
+                Expanded(
+                  flex: 15,
+                  child: DropdownButtonHideUnderline(
+                    child: DropdownButton<String>(
+                      value: _gender,
+                      onChanged: (String? value) {
+                        setState(() {
+                          _gender = value!;
+                        });
+                      },
+                      items: <String>['男', '女', '保密']
+                          .map<DropdownMenuItem<String>>((String value) {
+                        return DropdownMenuItem<String>(
+                          value: value,
+                          child: Text(value),
+                        );
+                      }).toList(),
+                    ),
+                  ),
+                )
+              ],
+            ),
+            _itemDivider,
           ],
-        ),
-        _itemDivider,
-      ],
     ));
   }
 }
