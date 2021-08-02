@@ -4,7 +4,7 @@ import 'package:comment_overflow/model/post.dart';
 import 'package:comment_overflow/service/post_service.dart';
 import 'package:comment_overflow/utils/general_utils.dart';
 import 'package:comment_overflow/utils/message_box.dart';
-import 'package:comment_overflow/utils/recent_chats_provider.dart';
+import 'package:comment_overflow/utils/storage_util.dart';
 import 'package:comment_overflow/widgets/adaptive_alert_dialog.dart';
 import 'package:comment_overflow/widgets/approval_button.dart';
 import 'package:comment_overflow/widgets/comment_card_list.dart';
@@ -31,7 +31,6 @@ class PostPage extends StatefulWidget {
 }
 
 class _PostPageState extends State<PostPage> {
-  var _sortPolicy = SortPolicy.earliest;
   final List<AssetEntity> _assets = <AssetEntity>[];
   final TextEditingController _replyController = TextEditingController();
 
@@ -202,36 +201,6 @@ class _PostPageState extends State<PostPage> {
     );
   }
 
-  Widget _buildDropDownMenu() {
-    return PopupMenuButton<SortPolicy>(
-        padding: const EdgeInsets.all(7.0),
-        onSelected: (SortPolicy result) => {
-              setState(() {
-                _sortPolicy = result;
-              })
-            },
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            CustomStyles.getDefaultListIcon(size: _bottomIconSize),
-            Text(
-              "${getPolicyName(_sortPolicy)}",
-              style: CustomStyles.postPageBottomStyle,
-            ),
-          ],
-        ),
-        itemBuilder: (BuildContext context) => <PopupMenuEntry<SortPolicy>>[
-              const PopupMenuItem(
-                value: SortPolicy.earliest,
-                child: Text("最早回复"),
-              ),
-              const PopupMenuItem(
-                value: SortPolicy.latest,
-                child: Text("最近回复"),
-              ),
-            ]);
-  }
-
   Future<int> _getUserId() async {
     return await GeneralUtils.getCurrentUserId();
   }
@@ -257,7 +226,8 @@ class _PostPageState extends State<PostPage> {
       case ConnectionState.done:
         {
           int _userId = snapshot.data;
-          return _userId == widget._post.hostComment.user.userId
+          return _userId == widget._post.hostComment.user.userId ||
+                  StorageUtil().loginInfo.userType == UserType.Admin
               ? IconButton(
                   icon: CustomStyles.getDefaultDeleteIcon(size: _iconSize),
                   tooltip: 'Delete this Post',

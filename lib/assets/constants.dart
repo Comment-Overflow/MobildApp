@@ -140,6 +140,8 @@ class Constants {
 
   static const String searchHistory = 'searchHistory';
 
+  static const String userType = 'userType';
+
   static const String imageLastMessage = '[图片]';
 
   static const String imageLoadingError = '图片加载失败';
@@ -217,6 +219,24 @@ enum Setting {
 enum PostTag { Life, Study, Art, Mood, Career }
 
 enum MessageStatus { Normal, Sending, Failed }
+
+enum UserType { Admin, User, Unauthorized, Banned, Silenced }
+
+Map<String, UserType> userTypeMap = {
+  "ADMIN" : UserType.Admin,
+  "USER" : UserType.User,
+  "UNAUTHORIZED" : UserType.Unauthorized,
+  "BANNED" : UserType.Banned,
+  "SILENCED" : UserType.Silenced
+};
+
+Map<UserType, String> userTypeString = {
+  UserType.Admin : "ADMIN",
+  UserType.User : "USER",
+  UserType.Unauthorized : "UNAUTHORIZED",
+  UserType.Banned : "BANNED",
+  UserType.Silenced : "SILENCED"
+};
 
 Map<String, FollowStatus> followStatusMap = {
   "NONE": FollowStatus.none,
