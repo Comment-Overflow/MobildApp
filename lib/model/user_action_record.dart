@@ -33,6 +33,7 @@ class ReplyRecord {
   DateTime _time;
   String _content;
   int _replyCommentId;//回复的comment id
+  int _replyFloor;//回复的comment的floor
   Quote _repliedQuote;//引用的信息
 
   UserInfo get userInfo => _userInfo;
@@ -40,7 +41,7 @@ class ReplyRecord {
   String get content => _content;
   Quote get repliedQuote => _repliedQuote;
 
-  ReplyRecord(this._userInfo, this._time, this._content, this._replyCommentId, this._repliedQuote);
+  ReplyRecord(this._userInfo, this._time, this._content, this._replyCommentId, this._replyFloor, this._repliedQuote);
 
   factory ReplyRecord.fromJson(dynamic json) {
     int timestamp = json['timestamp'] as int;
@@ -50,6 +51,7 @@ class ReplyRecord {
         DateTime.fromMillisecondsSinceEpoch(timestamp),
         json['replyContent'] as String,
         json['replyCommentId'] as int,
+        json['replyCommentFloor'] as int,
         Quote(
             json['quoteCommentId'] as int,
             json['postTitle'] as String,
