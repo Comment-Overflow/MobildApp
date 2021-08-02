@@ -94,6 +94,7 @@ class _PostPageState extends State<PostPage> {
                 ),
                 onPressed: () {
                   showModalBottomSheet(
+                      backgroundColor: Colors.transparent,
                       isScrollControlled: true,
                       context: context,
                       builder: (_) => _buildPageJumper());
@@ -127,7 +128,7 @@ class _PostPageState extends State<PostPage> {
               shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.all(Radius.circular(5.0))),
               child: Padding(
-                padding: const EdgeInsets.symmetric(vertical: 10.0),
+                padding: const EdgeInsets.all(10.0),
                 child: InkWell(
                   child: Column(
                     mainAxisSize: MainAxisSize.min,
@@ -159,20 +160,28 @@ class _PostPageState extends State<PostPage> {
                       ),
                       Divider(),
                       SizedBox(
-                        height: 200,
+                        height: counter.value > 9 ? 200 : null,
                         child: GridView.builder(
                             gridDelegate:
                                 SliverGridDelegateWithFixedCrossAxisCount(
-                              crossAxisCount: 5,
-                            ),
+                                    crossAxisCount: 5,
+                                    mainAxisSpacing:
+                                        Constants.defaultNinePatternSpacing,
+                                    crossAxisSpacing:
+                                        Constants.defaultNinePatternSpacing,
+                                    childAspectRatio: 1.0),
                             shrinkWrap: true,
                             itemCount: counter.value + 1,
                             itemBuilder: (context2, index) => index ==
                                     (_pageIndex ~/ Constants.defaultPageSize)
-                                ? TextButton(
-                                    onPressed: null,
+                                ? ElevatedButton(
+                                    onPressed: () {},
+                                    style: ButtonStyle(
+                                        shape: MaterialStateProperty.all(
+                                            CircleBorder())),
                                     child: Text(index.toString(),
-                                        style: CustomStyles.currentPageStyle))
+                                        style: CustomStyles.currentPageStyle),
+                                  )
                                 : TextButton(
                                     onPressed: () {
                                       Navigator.pop(context1);
@@ -280,7 +289,6 @@ class _PostPageState extends State<PostPage> {
 
   void _pushReply() {
     showModalBottomSheet(
-        backgroundColor: Colors.transparent,
         isScrollControlled: true, // !important
         context: context,
         builder: (_) {
@@ -304,8 +312,8 @@ class _PostPageState extends State<PostPage> {
       case ConnectionState.done:
         {
           int _userId = snapshot.data;
-          return CommentCardList(
-              widget._post, _userId, _pushReplyCallback, _setMaxPageCallback, _pushReplyCallback,
+          return CommentCardList(widget._post, _userId, _pushReplyCallback,
+              _setMaxPageCallback, _pushReplyCallback,
               pageIndex: _pageIndex);
         }
     }
