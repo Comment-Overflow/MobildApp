@@ -22,32 +22,34 @@ class ApprovalRecord {
             json['fromUserUserId'] as int, json['fromUserUserName'] as String,
             avatarUrl: json['fromUserAvatarUrl'] as String),
         DateTime.fromMillisecondsSinceEpoch(timeStamp),
-        Quote(json['commentId'] as int,
-            json['commentPostTitle'] as String,
-            json['commentContent'] as String,
-            json['commentFloor'] as int));
+        Quote(json['commentId'] as int, json['commentPostTitle'] as String,
+            json['commentContent'] as String, json['commentFloor'] as int));
   }
 }
+
 class ReplyRecord {
   UserInfo _userInfo;
   DateTime _time;
   String _content;
-  int _replyCommentId;//回复的comment id
-  int _replyFloor;//回复的comment的floor
-  Quote _repliedQuote;//引用的信息
+  int _replyCommentId; //回复的comment id
+  int _replyFloor; //回复的comment的floor
+  Quote _repliedQuote; //引用的信息
 
   UserInfo get userInfo => _userInfo;
   DateTime get time => _time;
   String get content => _content;
   Quote get repliedQuote => _repliedQuote;
+  int get replyCommentId => _replyCommentId;
+  int get replyFloor => _replyFloor;
 
-  ReplyRecord(this._userInfo, this._time, this._content, this._replyCommentId, this._replyFloor, this._repliedQuote);
+  ReplyRecord(this._userInfo, this._time, this._content, this._replyCommentId,
+      this._replyFloor, this._repliedQuote);
 
   factory ReplyRecord.fromJson(dynamic json) {
     int timestamp = json['timestamp'] as int;
     return ReplyRecord(
-        UserInfo(
-            json['userId'] as int, json['userName'] as String, avatarUrl: json['userAvatarUrl'] as String),
+        UserInfo(json['userId'] as int, json['userName'] as String,
+            avatarUrl: json['userAvatarUrl'] as String),
         DateTime.fromMillisecondsSinceEpoch(timestamp),
         json['replyContent'] as String,
         json['replyCommentId'] as int,
@@ -56,8 +58,7 @@ class ReplyRecord {
             json['quoteCommentId'] as int,
             json['postTitle'] as String,
             json['quoteCommentContent'] as String,
-            json['commentFloor'] as int)
-    );
+            json['commentFloor'] as int));
   }
 }
 
@@ -77,8 +78,9 @@ class FollowRecord {
     return FollowRecord(
         UserInfo(
             json['fromUserUserId'] as int, json['fromUserUserName'] as String,
-            avatarUrl: json['fromUserAvatar'] == null ? null : json['fromUserAvatar'] as String
-        ),
+            avatarUrl: json['fromUserAvatar'] == null
+                ? null
+                : json['fromUserAvatar'] as String),
         DateTime.fromMillisecondsSinceEpoch(timestamp),
         followStatusMap[json['followStatus'] as String]!);
   }

@@ -35,7 +35,7 @@ class _SearchedCommentCardListState extends State<SearchedCommentCardList> {
             return SearchedPost.fromJson(i);
           }).toList();
           return searchedComments;
-        }, (context, item, index) => SearchedPostCard(item, [searchKey]),
+        }, (context, item, index) => SearchedCommentCard(item, [searchKey]),
             emptyIndicatorTitle: Constants.searchCommentEmptyIndicatorTitle,
             emptyIndicatorSubtitle:
                 Constants.searchCommentEmptyIndicatorSubtitle);

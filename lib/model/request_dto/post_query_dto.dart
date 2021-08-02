@@ -2,6 +2,7 @@ import 'package:comment_overflow/assets/constants.dart';
 
 class PostQueryDTO {
   final PostTag? _tag;
+  final bool _followingOnly;
   final int _pageNum;
   final int _pageSize;
 
@@ -13,12 +14,26 @@ class PostQueryDTO {
     PostTag.Career: "CAREER"
   };
 
-  PostQueryDTO({PostTag? tag, required int pageNum, required int pageSize})
+  PostQueryDTO(
+      {PostTag? tag,
+      required int pageNum,
+      required int pageSize,
+      bool followingOnly: false})
       : _tag = tag,
         _pageSize = pageSize,
-        _pageNum = pageNum;
+        _pageNum = pageNum,
+        _followingOnly = followingOnly;
 
   Map<String, dynamic> getData() => _tag != null
-      ? {"tag": _tagNames[_tag], "pageNum": _pageNum, "pageSize": _pageSize}
-      : {"pageNum": _pageNum, "pageSize": _pageSize};
+      ? {
+          "tag": _tagNames[_tag],
+          "pageNum": _pageNum,
+          "pageSize": _pageSize,
+          "followingOnly": _followingOnly
+        }
+      : {
+          "pageNum": _pageNum,
+          "pageSize": _pageSize,
+          "followingOnly": _followingOnly
+        };
 }

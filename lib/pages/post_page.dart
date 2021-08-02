@@ -4,7 +4,6 @@ import 'package:comment_overflow/model/post.dart';
 import 'package:comment_overflow/service/post_service.dart';
 import 'package:comment_overflow/utils/general_utils.dart';
 import 'package:comment_overflow/utils/message_box.dart';
-import 'package:comment_overflow/utils/recent_chats_provider.dart';
 import 'package:comment_overflow/widgets/adaptive_alert_dialog.dart';
 import 'package:comment_overflow/widgets/approval_button.dart';
 import 'package:comment_overflow/widgets/comment_card_list.dart';
@@ -31,7 +30,6 @@ class PostPage extends StatefulWidget {
 }
 
 class _PostPageState extends State<PostPage> {
-  var _sortPolicy = SortPolicy.earliest;
   final List<AssetEntity> _assets = <AssetEntity>[];
   final TextEditingController _replyController = TextEditingController();
 
@@ -39,8 +37,10 @@ class _PostPageState extends State<PostPage> {
   static const _bottomIconSize = 24.0;
 
   int _pageIndex;
+  int _currentPageNum;
 
-  _PostPageState(this._pageIndex);
+  _PostPageState(this._pageIndex)
+      : _currentPageNum = _pageIndex ~/ Constants.defaultPageSize;
 
   String getPolicyName(SortPolicy policy) {
     switch (policy) {
@@ -126,7 +126,7 @@ class _PostPageState extends State<PostPage> {
           child: Card(
               elevation: Constants.defaultCardElevation,
               shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.all(Radius.circular(5.0))),
+                  borderRadius: BorderRadius.all(Radius.circular(15.0))),
               child: Padding(
                 padding: const EdgeInsets.all(10.0),
                 child: InkWell(
@@ -172,26 +172,33 @@ class _PostPageState extends State<PostPage> {
                                     childAspectRatio: 1.0),
                             shrinkWrap: true,
                             itemCount: counter.value + 1,
-                            itemBuilder: (context2, index) => index ==
-                                    (_pageIndex ~/ Constants.defaultPageSize)
-                                ? ElevatedButton(
-                                    onPressed: () {},
-                                    style: ButtonStyle(
-                                        shape: MaterialStateProperty.all(
-                                            CircleBorder())),
-                                    child: Text(index.toString(),
-                                        style: CustomStyles.currentPageStyle),
-                                  )
-                                : TextButton(
-                                    onPressed: () {
-                                      Navigator.pop(context1);
-                                      setState(() {
-                                        _pageIndex =
-                                            index * Constants.defaultPageSize;
-                                      });
-                                    },
-                                    child: Text(index.toString(),
-                                        style: CustomStyles.otherPageStyle))),
+                            itemBuilder: (context2, index) {
+                              return index == _currentPageNum
+                                  ? Padding(
+                                      padding: EdgeInsets.all(10.0),
+                                      child: ElevatedButton(
+                                        onPressed: () {},
+                                        style: ButtonStyle(
+                                            elevation:
+                                                MaterialStateProperty.all(0),
+                                            shape: MaterialStateProperty.all(
+                                                CircleBorder())),
+                                        child: Text((index + 1).toString(),
+                                            style:
+                                                CustomStyles.currentPageStyle),
+                                      ),
+                                    )
+                                  : TextButton(
+                                      onPressed: () {
+                                        Navigator.pop(context1);
+                                        setState(() {
+                                          _pageIndex =
+                                              index * Constants.defaultPageSize;
+                                        });
+                                      },
+                                      child: Text((index + 1).toString(),
+                                          style: CustomStyles.otherPageStyle));
+                            }),
                       ),
                     ],
                   ),
@@ -200,36 +207,6 @@ class _PostPageState extends State<PostPage> {
         );
       }),
     );
-  }
-
-  Widget _buildDropDownMenu() {
-    return PopupMenuButton<SortPolicy>(
-        padding: const EdgeInsets.all(7.0),
-        onSelected: (SortPolicy result) => {
-              setState(() {
-                _sortPolicy = result;
-              })
-            },
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            CustomStyles.getDefaultListIcon(size: _bottomIconSize),
-            Text(
-              "${getPolicyName(_sortPolicy)}",
-              style: CustomStyles.postPageBottomStyle,
-            ),
-          ],
-        ),
-        itemBuilder: (BuildContext context) => <PopupMenuEntry<SortPolicy>>[
-              const PopupMenuItem(
-                value: SortPolicy.earliest,
-                child: Text("最早回复"),
-              ),
-              const PopupMenuItem(
-                value: SortPolicy.latest,
-                child: Text("最近回复"),
-              ),
-            ]);
   }
 
   Future<int> _getUserId() async {
@@ -241,8 +218,7 @@ class _PostPageState extends State<PostPage> {
       _deletePost();
       Navigator.pop(context);
       Navigator.pop(context);
-      MessageBox.showToast(
-          msg: "帖子已被删除，刷新以更新。", messageBoxType: MessageBoxType.Info);
+      MessageBox.showToast(msg: "帖子已被删除!", messageBoxType: MessageBoxType.Info);
     }
 
     cancelCallback() {
@@ -313,8 +289,9 @@ class _PostPageState extends State<PostPage> {
         {
           int _userId = snapshot.data;
           return CommentCardList(widget._post, _userId, _pushReplyCallback,
-              _setMaxPageCallback, _pushReplyCallback,
-              pageIndex: _pageIndex);
+              _setMaxPageCallback, _pushReplyCallback, (pageNum) {
+            _currentPageNum = pageNum;
+          }, pageIndex: _pageIndex);
         }
     }
   }
