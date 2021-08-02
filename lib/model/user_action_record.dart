@@ -78,9 +78,9 @@ class FollowRecord {
     return FollowRecord(
         UserInfo(
             json['fromUserUserId'] as int, json['fromUserUserName'] as String,
-            avatarUrl: json['fromUserAvatar'] == null
+            avatarUrl: json['fromUserAvatarUrl'] == null
                 ? null
-                : json['fromUserAvatar'] as String),
+                : json['fromUserAvatarUrl'] as String),
         DateTime.fromMillisecondsSinceEpoch(timestamp),
         followStatusMap[json['followStatus'] as String]!);
   }
@@ -99,9 +99,10 @@ class StarRecord {
 
   factory StarRecord.fromJson(dynamic json) {
     int timeStamp = json['timestamp'] as int;
+    print(json);
     return StarRecord(
         UserInfo(
-            json['fromUserUserId'] as int, json['fromUserUserName'] as String),
+            json['fromUserUserId'] as int, json['fromUserUserName'] as String, avatarUrl: json['fromUserAvatarUrl']),
         DateTime.fromMillisecondsSinceEpoch(timeStamp),
         Quote(
             json['postHostCommentId'] as int,
