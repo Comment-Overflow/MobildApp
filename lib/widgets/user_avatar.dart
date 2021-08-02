@@ -37,13 +37,38 @@ class UserAvatar extends StatelessWidget {
         fit: BoxFit.cover,
       );
     } else if (_imageContent.runtimeType == String) {
-      avatarContent = GestureDetector(
-        onTap: _canJump
-            ? () => Navigator.of(context).pushNamed(
-                RouteGenerator.personalRoute,
-                arguments: PersonalPageAccessDto(_userId, true))
-            : () {},
-        child: ExtendedImage.network(
+      if (_canJump) {
+        avatarContent = avatarContent = GestureDetector(
+          onTap: _canJump
+              ? () => Navigator.of(context).pushNamed(
+                  RouteGenerator.personalRoute,
+                  arguments: PersonalPageAccessDto(_userId, true))
+              : () {},
+          child: ExtendedImage.network(
+            _imageContent as String,
+            width: _imageSize,
+            height: _imageSize,
+            fit: BoxFit.cover,
+            loadStateChanged: (ExtendedImageState state) {
+              switch (state.extendedImageLoadState) {
+                case LoadState.loading:
+                  return SkeletonAnimation(
+                    borderRadius: BorderRadius.circular(50),
+                    shimmerDuration: 2000,
+                    child: Container(
+                      color: Colors.grey[200],
+                    ),
+                  );
+                case LoadState.completed:
+                  return null;
+                case LoadState.failed:
+                  return _buildFallbackContent();
+              }
+            },
+          ),
+        );
+      } else {
+        avatarContent = ExtendedImage.network(
           _imageContent as String,
           width: _imageSize,
           height: _imageSize,
@@ -64,16 +89,21 @@ class UserAvatar extends StatelessWidget {
                 return _buildFallbackContent();
             }
           },
-        ),
-      );
-    } else
-      avatarContent = GestureDetector(
-          onTap: _canJump
-              ? () => Navigator.of(context).pushNamed(
-                  RouteGenerator.personalRoute,
-                  arguments: PersonalPageAccessDto(_userId, true))
-              : () {},
-          child: _buildFallbackContent());
+        );
+      }
+    } else {
+      if (_canJump) {
+        avatarContent = GestureDetector(
+            onTap: _canJump
+                ? () => Navigator.of(context).pushNamed(
+                    RouteGenerator.personalRoute,
+                    arguments: PersonalPageAccessDto(_userId, true))
+                : () {},
+            child: _buildFallbackContent());
+      } else {
+        avatarContent = _buildFallbackContent();
+      }
+    }
 
     return CircleAvatar(
       backgroundColor: Colors.transparent,
