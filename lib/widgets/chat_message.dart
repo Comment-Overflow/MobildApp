@@ -79,7 +79,8 @@ class ChatMessage extends StatelessWidget {
               Container(
                 padding: EdgeInsets.fromLTRB(
                     Constants.defaultChatRoomAvatarPadding, 0, 0, 0),
-                child: UserAvatar(Constants.defaultChatRoomAvatarSize,
+                child: UserAvatar(
+                    _message.sender.userId, Constants.defaultChatRoomAvatarSize,
                     imageContent: _avatarUrl),
               ),
             ],
@@ -92,7 +93,8 @@ class ChatMessage extends StatelessWidget {
               Container(
                 padding: EdgeInsets.fromLTRB(
                     0, 0, Constants.defaultChatRoomAvatarPadding, 0),
-                child: UserAvatar(Constants.defaultChatRoomAvatarSize,
+                child: UserAvatar(
+                    _message.sender.userId, Constants.defaultChatRoomAvatarSize,
                     imageContent: _avatarUrl),
               ),
               Column(

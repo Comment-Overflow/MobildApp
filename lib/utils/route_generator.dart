@@ -105,7 +105,9 @@ class RouteGenerator {
                   ));
         }
       case profileSettingRoute:
-        return MaterialPageRoute(settings: settings, builder: (_) => ProfileSettingPage(args as ProfileSettingDto));
+        return MaterialPageRoute(
+            settings: settings,
+            builder: (_) => ProfileSettingPage(args as ProfileSettingDto));
       case galleryRoute:
         return MaterialPageRoute(
             settings: settings,
@@ -121,14 +123,17 @@ class RouteGenerator {
             settings: settings,
             builder: (_) {
               final arguments = args as PersonalPageAccessDto;
-              return PersonalPage(arguments.userId, arguments.fromCard);
+              return PersonalPage(arguments.userId, arguments.displayBack);
             });
       case privateChatRoute:
         return MaterialPageRoute(
             settings: settings,
             builder: (_) => PrivateChatPage(args as UserInfo));
       case homeRoute:
-        return MaterialPageRoute(settings: settings, builder: (_) => PagesContainer(defaultIndex: args == null ? 0 : args as int));
+        return MaterialPageRoute(
+            settings: settings,
+            builder: (_) =>
+                PagesContainer(defaultIndex: args == null ? 0 : args as int));
       case introRoute:
       default:
         return MaterialPageRoute(

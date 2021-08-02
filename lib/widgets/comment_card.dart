@@ -106,6 +106,7 @@ class _CommentCardState extends State<CommentCard>
                   Expanded(
                     child: UserAvatarWithName(
                       widget._comment.user.userName,
+                      widget._comment.user.userId,
                       Constants.defaultAvatarInCommentSize,
                       avatarUrl: widget._comment.user.avatarUrl,
                     ),

@@ -315,7 +315,7 @@ class PrivateChatPageState extends State<PrivateChatPage> {
   _buildBackButton() {
     return GestureDetector(
       onTap: () => Navigator.of(context).pop(),
-      child: CustomStyles.getDefaultBackIcon(size: 24, color: Colors.black),
+      child: CustomStyles.getDefaultBackIcon(size: 24.0, color: Colors.black),
     );
   }
 }
