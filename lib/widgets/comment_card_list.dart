@@ -15,9 +15,11 @@ class CommentCardList extends StatefulWidget {
   final int _userId;
   final Function _replyCallback;
   final Function _setMaxCallback;
+  final Function _changePageCallback;
   final Function _distantJumpCallback;
 
-  CommentCardList(this._post, this._userId, this._replyCallback, this._setMaxCallback, this._distantJumpCallback,
+  CommentCardList(this._post, this._userId, this._replyCallback,
+      this._setMaxCallback, this._distantJumpCallback, this._changePageCallback,
       {Key? key, pageIndex: 0})
       : _pageIndex = pageIndex,
         super(key: key);
@@ -63,6 +65,7 @@ class _CommentCardListState extends State<CommentCardList> {
                   jumpCallback: jumpCallback,
                 ),
       widget._distantJumpCallback,
+      widget._changePageCallback,
       initialIndex: _pageIndex,
     );
 

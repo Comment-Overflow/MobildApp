@@ -59,11 +59,18 @@ class CommentPagingManager<T> {
   /// Jump floor related.
   int _initialIndex;
   final Function _distantJumpCallback;
+  final Function _changePageCallback;
   JumpFloorValues jumpFloorValues;
 
-  CommentPagingManager(this._pageSize, this._customFetchApi,
-      this._customItemBuilder, this._distantJumpCallback,
-      {emptyIndicatorTitle, emptyIndicatorSubtitle, initialIndex: 0})
+  CommentPagingManager(
+      this._pageSize,
+      this._customFetchApi,
+      this._customItemBuilder,
+      this._distantJumpCallback,
+      this._changePageCallback,
+      {emptyIndicatorTitle,
+      emptyIndicatorSubtitle,
+      initialIndex: 0})
       : this._emptyIndicatorTitle = emptyIndicatorTitle,
         this._emptyIndicatorSubtitle = emptyIndicatorSubtitle,
         this._initialIndex = initialIndex,
@@ -347,6 +354,7 @@ class CommentPagingManager<T> {
       // print('$index build as card!');
       jumpFloorValues._hasBuiltAsCard.add(index);
 
+      _changePageCallback(index ~/ _pageSize);
       Widget _widget = _customItemBuilder(context, item, index,
           highlight: index == _initialIndex && shouldHighlight,
           jumpCallback: _jumpFloorCallback);
