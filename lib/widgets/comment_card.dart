@@ -191,7 +191,7 @@ class _CommentCardState extends State<CommentCard>
                   ),
                 ),
               ),
-    );
+            );
   }
 
   Future _highlightComment() async {
