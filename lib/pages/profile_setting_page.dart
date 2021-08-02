@@ -154,118 +154,116 @@ class _ProfileSettingPageState extends State<ProfileSettingPage> {
   Widget _buildBody() {
     return Form(
         child: ListView(
-      padding: const EdgeInsets.all(20.0),
-      children: [
-        GestureDetector(
-          onTap: _selectAssets,
-          child: _userAvatar,
-        ),
-        _gap,
-        _gap,
-        _gap,
-        _gap,
-        Text(
-          "基本资料",
-          style: TextStyle(fontWeight: FontWeight.bold, fontSize: 24.0),
-        ),
-        Row(
-          mainAxisSize: MainAxisSize.min,
-          crossAxisAlignment: CrossAxisAlignment.center,
+          padding: const EdgeInsets.all(20.0),
           children: [
+            GestureDetector(
+              onTap: _selectAssets,
+              child: _userAvatar,
+            ),
+            _gap,
+            _gap,
+            _gap,
+            _gap,
             Text(
-              "昵称",
+              "基本资料",
+              style: TextStyle(fontWeight: FontWeight.bold, fontSize: 24.0),
+            ),
+            Row(
+              mainAxisSize: MainAxisSize.min,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                Text(
+                  "昵称",
+                  style: CustomStyles.profileSettingItemTitleStyle,
+                ),
+                Expanded(
+                  flex: 2,
+                  child: Container(),
+                ),
+                Expanded(
+                  flex: 15,
+                  child: TextFormField(
+                      controller: _userNameController,
+                      inputFormatters: [
+                        LengthLimitingTextInputFormatter(10),
+                      ],
+                      decoration: InputDecoration(
+                        hintText: '昵称（不超过10个字）',
+                        border: null,
+                        focusedBorder: InputBorder.none,
+                        enabledBorder: InputBorder.none,
+                        errorBorder: InputBorder.none,
+                        focusedErrorBorder: InputBorder.none,
+                        disabledBorder: InputBorder.none,
+                      ),
+                      onChanged: (value) {
+                        setState(() {
+                          value.isEmpty
+                              ? _isUserNameValid = false
+                              : _isUserNameValid = true;
+                        });
+                      }),
+                ),
+                ],
+            ),
+            _itemDivider,
+            _gap,
+            _gap,
+            Text(
+              "一句话介绍",
               style: CustomStyles.profileSettingItemTitleStyle,
             ),
-            Expanded(
-              flex: 2,
-              child: Container(),
-            ),
-            Expanded(
-              flex: 15,
-              child: TextFormField(
-                  controller: _userNameController,
-                  inputFormatters: [
-                    LengthLimitingTextInputFormatter(10),
-                  ],
-                  decoration: InputDecoration(
-                    hintText: '昵称（不超过10个字）',
-                    border: null,
-                    focusedBorder: InputBorder.none,
-                    enabledBorder: InputBorder.none,
-                    errorBorder: InputBorder.none,
-                    focusedErrorBorder: InputBorder.none,
-                    disabledBorder: InputBorder.none,
-                  ),
-                  onChanged: (value) {
-                    setState(() {
-                      value.isEmpty
-                          ? _isUserNameValid = false
-                          : _isUserNameValid = true;
-                    });
-                  }),
-            ),
-          ],
-        ),
-        _itemDivider,
-        _gap,
-        _gap,
-        Text(
-          "一句话介绍",
-          style: CustomStyles.profileSettingItemTitleStyle,
-        ),
-        TextFormField(
-          controller: _briefController,
-          inputFormatters: [
-            LengthLimitingTextInputFormatter(30),
-          ],
-          maxLength: 30,
-          minLines: 1,
-          maxLines: 1,
-          decoration: InputDecoration(
-            hintText: "不超过30个字",
-            enabledBorder: UnderlineInputBorder(
-              borderSide:
-                  BorderSide(color: CustomColors.profileSettingInputGery),
-            ),
-            focusedBorder: UnderlineInputBorder(
-              borderSide:
-                  BorderSide(color: CustomColors.profileSettingInputGery),
-            ),
-          ),
-        ),
-        Row(
-          mainAxisSize: MainAxisSize.min,
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: [
-            Text("性别", style: CustomStyles.profileSettingItemTitleStyle),
-            Expanded(
-              flex: 2,
-              child: Container(),
-            ),
-            Expanded(
-              flex: 15,
-              child: DropdownButtonHideUnderline(
-                child: DropdownButton<String>(
-                  value: _gender,
-                  onChanged: (String? value) {
-                    setState(() {
-                      _gender = value!;
-                    });
-                  },
-                  items: <String>['男', '女', '保密']
-                      .map<DropdownMenuItem<String>>((String value) {
-                    return DropdownMenuItem<String>(
-                      value: value,
-                      child: Text(value),
-                    );
-                  }).toList(),
+            TextFormField(
+              controller: _briefController,
+              inputFormatters: [
+                LengthLimitingTextInputFormatter(30),
+              ],
+              maxLength: 30,
+              minLines: 1,
+              maxLines: 1,
+              decoration: InputDecoration(
+                hintText: "不超过30个字",
+                enabledBorder: UnderlineInputBorder(
+                  borderSide: BorderSide(color: CustomColors.profileSettingInputGery),
+                ),
+                focusedBorder: UnderlineInputBorder(
+                  borderSide: BorderSide(color: CustomColors.profileSettingInputGery),
                 ),
               ),
-            )
+            ),
+            Row(
+              mainAxisSize: MainAxisSize.min,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                Text("性别", style: CustomStyles.profileSettingItemTitleStyle),
+                Expanded(
+                  flex: 2,
+                  child: Container(),
+                ),
+                Expanded(
+                  flex: 15,
+                  child: DropdownButtonHideUnderline(
+                    child: DropdownButton<String>(
+                      value: _gender,
+                      onChanged: (String? value) {
+                        setState(() {
+                          _gender = value!;
+                        });
+                      },
+                      items: <String>['男', '女', '保密']
+                          .map<DropdownMenuItem<String>>((String value) {
+                        return DropdownMenuItem<String>(
+                          value: value,
+                          child: Text(value),
+                        );
+                      }).toList(),
+                    ),
+                  ),
+                )
+              ],
+            ),
+            _itemDivider,
           ],
-        ),
-        _itemDivider,
-      ],
     ));
   }
 }

@@ -29,7 +29,7 @@ class _NotificationCardListState extends State<NotificationCardList> {
         _itemBuilder = (context, item, index) => ApprovalNotificationCard(item);
         this._pagingManager =
             PagingManager(Constants.defaultNotificationPageSize, (page, pageSize) async {
-              var jsonArray = (await NotificationService.getNotification(page, pageSize, "/notifications/approvals")).data as List;
+              var jsonArray = (await NotificationService.getNotification(page, pageSize, "/notifications/approvals")).data['content'] as List;
               return jsonArray.map((json) => ApprovalRecord.fromJson(json)).toList();
             }, _itemBuilder);
         break;
@@ -45,7 +45,7 @@ class _NotificationCardListState extends State<NotificationCardList> {
         _itemBuilder = (context, item, index) => StarNotificationCard(item);
         this._pagingManager =
             PagingManager(Constants.defaultNotificationPageSize, (page, pageSize) async {
-              var jsonArray = (await NotificationService.getNotification(page, pageSize, "/notifications/stars")).data as List;
+              var jsonArray = (await NotificationService.getNotification(page, pageSize, "/notifications/stars")).data['content'] as List;
               return jsonArray.map((json) => StarRecord.fromJson(json)).toList();
             }, _itemBuilder);
         break;
@@ -53,7 +53,7 @@ class _NotificationCardListState extends State<NotificationCardList> {
         _itemBuilder = (context, item, index) => FollowNotificationCard(item);
         this._pagingManager =
             PagingManager(Constants.defaultNotificationPageSize, (page, pageSize) async {
-              var jsonArray = (await NotificationService.getNotification(page, pageSize, "/notifications/followers")).data as List;
+              var jsonArray = (await NotificationService.getNotification(page, pageSize, "/notifications/followers")).data['content'] as List;
               print(jsonArray);
               return jsonArray.map((json) => FollowRecord.fromJson(json)).toList();
             }, _itemBuilder);
