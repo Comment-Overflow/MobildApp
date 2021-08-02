@@ -137,13 +137,15 @@ class CommentPagingManager<T> {
           Future.delayed(Duration(milliseconds: 400), () async {
             await scrollToIndex(_initialIndex);
 
-            if (_autoScrollController.position.pixels < _cacheExtent + 0.1 &&
-                jumpFloorValues._recentlyFetchedTopIndex != 0) {
-              // print('trigger scroll position adjustment');
-              WidgetsBinding.instance!.addPostFrameCallback((_) {
-                _autoScrollController.jumpTo(_cacheExtent + 0.1);
-              });
-            }
+            try {
+              if (_autoScrollController.position.pixels < _cacheExtent + 0.1 &&
+                  jumpFloorValues._recentlyFetchedTopIndex != 0) {
+                // print('trigger scroll position adjustment');
+                WidgetsBinding.instance!.addPostFrameCallback((_) {
+                  _autoScrollController.jumpTo(_cacheExtent + 0.1);
+                });
+              }
+            } catch (e) {}
 
             jumpFloorValues._firstJumpCompleted = true;
           });
