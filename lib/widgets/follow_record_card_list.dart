@@ -7,8 +7,7 @@ import 'package:flutter/cupertino.dart';
 
 class FollowRecordCardList extends StatefulWidget {
   final FollowStatus _followStatus;
-  const FollowRecordCardList(this._followStatus, {Key? key})
-      : super(key: key);
+  const FollowRecordCardList(this._followStatus, {Key? key}) : super(key: key);
 
   @override
   _FollowRecordCardListState createState() =>
@@ -18,9 +17,9 @@ class FollowRecordCardList extends StatefulWidget {
 class _FollowRecordCardListState extends State<FollowRecordCardList> {
   late PagingManager<UserCardInfo> _pagingManager;
 
-  _FollowRecordCardListState(followStatus){
+  _FollowRecordCardListState(followStatus) {
     String url = '';
-    switch(followStatus){
+    switch (followStatus) {
       case FollowStatus.followingMe:
         url = '/records/following';
         break;
@@ -31,10 +30,12 @@ class _FollowRecordCardListState extends State<FollowRecordCardList> {
         throw 'unsupported follow status for profile page\'s follow records';
     }
     var _itemBuilder = (context, item, index) => UserCard(item);
-    _pagingManager =
-        PagingManager((Constants.defaultNotificationPageSize), (page, pageSize) async {
-          var jsonArray = (await NotificationService.getNotification(page, pageSize, url)).data as List;
-          return jsonArray.map((json) => UserCardInfo.fromJson(json)).toList();
+    _pagingManager = PagingManager((Constants.defaultNotificationPageSize),
+        (page, pageSize) async {
+      var jsonArray =
+          (await NotificationService.getNotification(page, pageSize, url))
+              .data['content'] as List;
+      return jsonArray.map((json) => UserCardInfo.fromJson(json)).toList();
     }, _itemBuilder);
   }
 
