@@ -64,6 +64,12 @@ class CustomStyles {
     fontSize: 16.5,
   );
 
+  static const galleryStyle = TextStyle(
+    color: Colors.white,
+    fontWeight: FontWeight.bold,
+    fontSize: 16.5,
+  );
+
   static final highlightedUserNameStyle =
       userNameStyle.copyWith(color: highlightedColor);
 
@@ -75,7 +81,7 @@ class CustomStyles {
   static const currentPageStyle = TextStyle(
       fontWeight: FontWeight.bold,
       fontSize: 20.0,
-      color: Colors.blueAccent
+      color: Colors.white
   );
 
   static const otherPageStyle = TextStyle(

@@ -40,9 +40,7 @@ class CommentOverflow extends StatelessWidget {
           900: Colors.blueAccent,
         }),
         primaryColor: Colors.white,
-        bottomSheetTheme: BottomSheetThemeData(
-          backgroundColor: Colors.transparent
-        ),
+
         accentColor: Colors.blueAccent,
         textButtonTheme: TextButtonThemeData(
           style: ButtonStyle(

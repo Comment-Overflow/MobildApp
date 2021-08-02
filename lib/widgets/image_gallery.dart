@@ -97,7 +97,7 @@ class _ImageGalleryState extends State<ImageGallery> {
           padding: const EdgeInsets.all(20.0),
           child: Text(
             "第 ${currentIndex + 1} / ${widget.imageUrl.length} 张图片",
-            style: CustomStyles.userNameStyle,
+            style: CustomStyles.galleryStyle,
           ),
         ),
         color: Colors.black87,
