@@ -33,7 +33,6 @@ class _PersonalPageState extends State<PersonalPage> {
   void initState() {
     _callback = (dynamic json) => this.setState(() {
       _personalPageInfo = PersonalPageInfo.fromJson(json);
-      print(json);
     });
     super.initState();
   }
