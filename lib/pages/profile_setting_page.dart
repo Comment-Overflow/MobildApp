@@ -54,7 +54,9 @@ class _ProfileSettingPageState extends State<ProfileSettingPage> {
         _assets.clear();
         _assets.addAll(List<AssetEntity>.from(result));
         _userAvatar = UserAvatar(
+          _profileSettingDto.userId,
           Constants.profileSettingImageSize,
+          canJump: false,
           imageContent: _assets.first,
         );
       });
@@ -76,7 +78,8 @@ class _ProfileSettingPageState extends State<ProfileSettingPage> {
   void initState() {
     super.initState();
     _gender = genderEnum2StringMap[_profileSettingDto.gender]!;
-    _userAvatar = UserAvatar(Constants.profileSettingImageSize,
+    _userAvatar = UserAvatar(
+        _profileSettingDto.userId, Constants.profileSettingImageSize,
         imageContent: _profileSettingDto.userAvatar == null
             ? null
             : NetworkImage(_profileSettingDto.userAvatar!));
