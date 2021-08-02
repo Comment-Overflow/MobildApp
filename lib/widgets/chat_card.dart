@@ -29,7 +29,7 @@ class ChatCard extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.start,
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
-          UserAvatar(Constants.defaultChatListAvatarSize,
+          UserAvatar(_chat.chatter.userId, Constants.defaultChatListAvatarSize,
               imageContent: this._chat.chatter.avatarUrl),
           SizedBox(width: _horizontalGap),
           Expanded(

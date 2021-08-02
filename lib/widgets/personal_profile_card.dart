@@ -48,7 +48,9 @@ class PersonalProfileCard extends StatelessWidget {
                         mainAxisSize: MainAxisSize.max,
                         mainAxisAlignment: MainAxisAlignment.start,
                         children: [
-                          UserAvatar(Constants.defaultPersonalPageAvatarSize,
+                          UserAvatar(_personalPageInfo.userId,
+                              Constants.defaultPersonalPageAvatarSize,
+                              canJump: false,
                               imageContent: _personalPageInfo.avatarUrl),
                         ],
                       ),
@@ -288,10 +290,14 @@ class PersonalProfileCard extends StatelessWidget {
                 ),
                 onPressed: () {
                   // TODO: edit route.
-                  Navigator.of(context)
-                      .pushNamed(
+                  Navigator.of(context).pushNamed(
                       RouteGenerator.profileSettingRoute,
-                      arguments: new ProfileSettingDto(_personalPageInfo.userId, _personalPageInfo.avatarUrl, _personalPageInfo.brief, _personalPageInfo.userName, _personalPageInfo.gender));
+                      arguments: new ProfileSettingDto(
+                          _personalPageInfo.userId,
+                          _personalPageInfo.avatarUrl,
+                          _personalPageInfo.brief,
+                          _personalPageInfo.userName,
+                          _personalPageInfo.gender));
                 }),
           ),
         ),

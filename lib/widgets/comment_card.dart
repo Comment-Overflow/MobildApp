@@ -105,6 +105,7 @@ class _CommentCardState extends State<CommentCard>
                   Expanded(
                     child: UserAvatarWithName(
                       widget._comment.user.userName,
+                      widget._comment.user.userId,
                       Constants.defaultAvatarInCommentSize,
                       avatarUrl: widget._comment.user.avatarUrl,
                     ),
@@ -131,7 +132,11 @@ class _CommentCardState extends State<CommentCard>
                       mainAxisSize: MainAxisSize.max,
                       children: [
                         _gap,
-                        Expanded(child: QuoteCard(widget._comment.quote)),
+                        Expanded(
+                            child: GestureDetector(
+                                onTap: () => widget._jumpCallback!(
+                                    widget._comment.quote!.floor),
+                                child: QuoteCard(widget._comment.quote))),
                       ],
                     ),
               _gap,

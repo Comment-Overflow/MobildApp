@@ -42,8 +42,8 @@ class UserCard extends StatelessWidget {
               children: [
                 Expanded(
                   flex: 15,
-                  child:
-                      UserAvatar(50.0, imageContent: _userCardInfo.avatarUrl),
+                  child: UserAvatar(_userCardInfo.userId, 50.0,
+                      imageContent: _userCardInfo.avatarUrl),
                 ),
                 Expanded(
                   flex: 4,

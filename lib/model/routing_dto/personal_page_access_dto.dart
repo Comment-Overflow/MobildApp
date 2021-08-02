@@ -4,7 +4,7 @@ class PersonalPageAccessDto {
 
   int get userId => _userId;
 
-  bool get fromCard => _fromCard;
+  bool get displayBack => _fromCard;
 
   PersonalPageAccessDto(this._userId, this._fromCard);
 }

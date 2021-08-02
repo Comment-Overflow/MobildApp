@@ -22,7 +22,8 @@ class PostCard extends StatelessWidget {
     final userAndContentColumn = Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        UserAvatarWithName(_post.hostComment.user.userName, 21.0,
+        UserAvatarWithName(_post.hostComment.user.userName,
+            _post.hostComment.user.userId, 21.0,
             textStyle: CustomStyles.postContentStyle,
             gap: 7.0,
             avatarUrl: _post.hostComment.user.avatarUrl),
@@ -144,7 +145,7 @@ class SearchedCommentCard extends StatelessWidget {
     final userAndContentColumn = Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        UserAvatarWithName(_user.userName, 21.0,
+        UserAvatarWithName(_user.userName, _user.userId, 21.0,
             textStyle: CustomStyles.postContentStyle,
             gap: 7.0,
             avatarUrl: _user.avatarUrl),

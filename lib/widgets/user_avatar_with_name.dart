@@ -8,6 +8,7 @@ import 'package:substring_highlight/substring_highlight.dart';
 class UserAvatarWithName extends StatelessWidget {
   final UserAvatar _userAvatar;
   final String _userName;
+  final int _userId;
 
   /// Text style of user name.
   final TextStyle? textStyle;
@@ -20,13 +21,14 @@ class UserAvatarWithName extends StatelessWidget {
 
   UserAvatarWithName(
     this._userName,
+    this._userId,
     imageSize, {
     Key? key,
     String? avatarUrl,
     this.textStyle,
     this.gap = 10.0,
     this.searchKey = const [],
-  })  : _userAvatar = UserAvatar(imageSize, imageContent: avatarUrl),
+  })  : _userAvatar = UserAvatar(_userId, imageSize, imageContent: avatarUrl),
         super(key: key);
 
   @override
