@@ -40,14 +40,12 @@ class HomePage extends StatelessWidget {
                   child: PostCardList(),
                   removeTop: true,
                 ),
+                Container(child: Text("TODO")),
                 MediaQuery.removePadding(
                   context: context,
-                  child: PostCardList(),
-                  removeTop: true,
-                ),
-                MediaQuery.removePadding(
-                  context: context,
-                  child: PostCardList(),
+                  child: PostCardList(
+                    followingOnly: true,
+                  ),
                   removeTop: true,
                 ),
                 MediaQuery.removePadding(
