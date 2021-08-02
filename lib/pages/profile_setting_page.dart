@@ -54,7 +54,9 @@ class _ProfileSettingPageState extends State<ProfileSettingPage> {
         _assets.clear();
         _assets.addAll(List<AssetEntity>.from(result));
         _userAvatar = UserAvatar(
+          _profileSettingDto.userId,
           Constants.profileSettingImageSize,
+          canJump: false,
           imageContent: _assets.first,
         );
       });
@@ -76,7 +78,8 @@ class _ProfileSettingPageState extends State<ProfileSettingPage> {
   void initState() {
     super.initState();
     _gender = genderEnum2StringMap[_profileSettingDto.gender]!;
-    _userAvatar = UserAvatar(Constants.profileSettingImageSize,
+    _userAvatar = UserAvatar(
+        _profileSettingDto.userId, Constants.profileSettingImageSize,
         imageContent: _profileSettingDto.userAvatar == null
             ? null
             : NetworkImage(_profileSettingDto.userAvatar!));
@@ -151,57 +154,31 @@ class _ProfileSettingPageState extends State<ProfileSettingPage> {
   Widget _buildBody() {
     return Form(
         child: ListView(
-          padding: const EdgeInsets.all(20.0),
+      padding: const EdgeInsets.all(20.0),
+      children: [
+        GestureDetector(
+          onTap: _selectAssets,
+          child: _userAvatar,
+        ),
+        _gap,
+        _gap,
+        _gap,
+        _gap,
+        Text(
+          "基本资料",
+          style: TextStyle(fontWeight: FontWeight.bold, fontSize: 24.0),
+        ),
+        Row(
+          mainAxisSize: MainAxisSize.min,
+          crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-            GestureDetector(
-              onTap: _selectAssets,
-              child: _userAvatar,
-            ),
-            _gap,
-            _gap,
-            _gap,
-            _gap,
             Text(
-              "基本资料",
-              style: TextStyle(fontWeight: FontWeight.bold, fontSize: 24.0),
+              "昵称",
+              style: CustomStyles.profileSettingItemTitleStyle,
             ),
-            Row(
-              mainAxisSize: MainAxisSize.min,
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: [
-                Text(
-                  "昵称",
-                  style: CustomStyles.profileSettingItemTitleStyle,
-                ),
-                Expanded(
-                  flex: 2,
-                  child: Container(),
-                ),
-                Expanded(
-                  flex: 15,
-                  child: TextFormField(
-                      controller: _userNameController,
-                      inputFormatters: [
-                        LengthLimitingTextInputFormatter(10),
-                      ],
-                      decoration: InputDecoration(
-                        hintText: '昵称（不超过10个字）',
-                        border: null,
-                        focusedBorder: InputBorder.none,
-                        enabledBorder: InputBorder.none,
-                        errorBorder: InputBorder.none,
-                        focusedErrorBorder: InputBorder.none,
-                        disabledBorder: InputBorder.none,
-                      ),
-                      onChanged: (value) {
-                        setState(() {
-                          value.isEmpty
-                              ? _isUserNameValid = false
-                              : _isUserNameValid = true;
-                        });
-                      }),
-                ),
-                ],
+            Expanded(
+              flex: 2,
+              child: Container(),
             ),
             _itemDivider,
             _gap,

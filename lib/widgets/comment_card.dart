@@ -2,6 +2,7 @@ import 'package:comment_overflow/assets/custom_colors.dart';
 import 'package:comment_overflow/model/quote.dart';
 import 'package:comment_overflow/service/post_service.dart';
 import 'package:comment_overflow/utils/message_box.dart';
+import 'package:comment_overflow/utils/storage_util.dart';
 import 'package:comment_overflow/widgets/approval_button.dart';
 import 'package:comment_overflow/widgets/disapproval_button.dart';
 import 'package:comment_overflow/widgets/image_list.dart';
@@ -79,118 +80,106 @@ class _CommentCardState extends State<CommentCard>
       _highlightComment();
     }
     return AnimatedBuilder(
-        animation: _colorTween,
-        builder: (context, child) => Card(
-              color: widget._highlight ? _colorTween.value : Colors.white,
-              elevation: Constants.defaultCardElevation,
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.all(Radius.circular(10.0)),
+      animation: _colorTween,
+      builder: (context, child) => Card(
+        color: widget._highlight ? _colorTween.value : Colors.white,
+        elevation: Constants.defaultCardElevation,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.all(Radius.circular(10.0)),
+        ),
+        child: Padding(
+          padding: EdgeInsets.only(
+              left: Constants.defaultCardPadding,
+              right: Constants.defaultCardPadding,
+              top: Constants.defaultCardPadding,
+              bottom: widget._comment.floor == 0
+                  ? Constants.defaultCardPadding
+                  : Constants.defaultCardPadding / 4),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              ...(widget._comment.floor == 0 && widget._title.isNotEmpty
+                  ? [_buildTitle(), _gap]
+                  : [SizedBox.shrink()]),
+              Row(
+                children: [
+                  Expanded(
+                    child: UserAvatarWithName(
+                      widget._comment.user.userName,
+                      widget._comment.user.userId,
+                      Constants.defaultAvatarInCommentSize,
+                      avatarUrl: widget._comment.user.avatarUrl,
+                    ),
+                  ),
+                  Text(
+                    widget._comment.timeString,
+                    style: CustomStyles.dateStyle,
+                    textAlign: TextAlign.right,
+                  ),
+                  SizedBox(width: 10),
+                  Text(
+                    widget._comment.floor > 0
+                        ? widget._comment.floorString + '楼'
+                        : "",
+                    style: CustomStyles.floorStyle,
+                    textAlign: TextAlign.right,
+                  ),
+                ],
               ),
-              child: Padding(
-                padding: EdgeInsets.only(
-                    left: Constants.defaultCardPadding,
-                    right: Constants.defaultCardPadding,
-                    top: Constants.defaultCardPadding,
-                    bottom: widget._comment.floor == 0
-                        ? Constants.defaultCardPadding
-                        : Constants.defaultCardPadding / 4),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    ...(widget._comment.floor == 0 && widget._title.isNotEmpty
-                        ? [_buildTitle(), _gap]
-                        : [SizedBox.shrink()]),
-                    Row(
+              _gap,
+              widget._comment.quote == null || isDeleted
+                  ? SizedBox.shrink()
+                  : Row(
+                      mainAxisSize: MainAxisSize.max,
                       children: [
+                        _gap,
                         Expanded(
-                          child: UserAvatarWithName(
-                            widget._comment.user.userName,
-                            Constants.defaultAvatarInCommentSize,
-                            avatarUrl: widget._comment.user.avatarUrl,
-                          ),
-                        ),
-                        Text(
-                          widget._comment.timeString,
-                          style: CustomStyles.dateStyle,
-                          textAlign: TextAlign.right,
-                        ),
-                        SizedBox(width: 10),
-                        Text(
-                          widget._comment.floor > 0
-                              ? widget._comment.floorString + '楼'
-                              : "",
-                          style: CustomStyles.floorStyle,
-                          textAlign: TextAlign.right,
-                        ),
+                            child: GestureDetector(
+                                onTap: () => widget._jumpCallback!(
+                                    widget._comment.quote!.floor),
+                                child: QuoteCard(widget._comment.quote))),
                       ],
                     ),
-                    _gap,
-                    widget._comment.quote == null
-                        ? SizedBox.shrink()
-                        : Row(
-                            mainAxisSize: MainAxisSize.max,
-                            children: [
-                              _gap,
-                              Expanded(
-                                  child: GestureDetector(
-                                      onTap: () => widget._jumpCallback!(
-                                          widget._comment.quote!.floor),
-                                      child: QuoteCard(widget._comment.quote))),
-                            ],
-                          ),
-                      _gap,
-                      widget._comment.quote == null || isDeleted
-                          ? SizedBox.shrink()
-                          : Row(
-                              mainAxisSize: MainAxisSize.max,
-                              children: [
-                                _gap,
-                                Expanded(
-                                    child: QuoteCard(widget._comment.quote)),
-                              ],
-                            ),
-                      _gap,
-                      isDeleted
-                          ? Padding(
-                              padding: EdgeInsets.only(bottom: 10, left: 133),
-                              child: Text("该回复已被删除",
-                                  style: CustomStyles.commentDeletedStyle,
-                                  textAlign: TextAlign.center))
-                          : Text(
-                              widget._comment.content,
-                            ),
-                      _gap,
-                      ImageList(isDeleted
-                          ? []
-                          : widget._comment.imageUrl),
-                      widget._comment.floor > 0 && !isDeleted
-                          ? Row(
-                              mainAxisSize: MainAxisSize.max,
-                              mainAxisAlignment: MainAxisAlignment.start,
-                              children: [
-                                ApprovalButton.horizontal(
-                                  comment: widget._comment,
-                                  size: _iconSize,
-                                ),
-                                DisapprovalButton(
-                                  comment: widget._comment,
-                                  size: _iconSize,
-                                  showText: false,
-                                ),
-                                IconButton(
-                                  splashColor: Colors.transparent,
-                                  icon: CustomStyles.getDefaultReplyIcon(
-                                      size: _iconSize),
-                                  onPressed: _pushReply,
-                                ),
-                                _buildDeleteButton(),
-                              ],
-                            )
-                          : SizedBox.shrink(),
-                    ],
-                  ),
-                ),
-              ),
+              _gap,
+              isDeleted
+                  ? Padding(
+                      padding: EdgeInsets.only(bottom: 10, left: 133),
+                      child: Text("该回复已被删除",
+                          style: CustomStyles.commentDeletedStyle,
+                          textAlign: TextAlign.center))
+                  : Text(
+                      widget._comment.content,
+                    ),
+              _gap,
+              ImageList(isDeleted ? [] : widget._comment.imageUrl),
+              widget._comment.floor > 0 && !isDeleted
+                  ? Row(
+                      mainAxisSize: MainAxisSize.max,
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      children: [
+                        ApprovalButton.horizontal(
+                          comment: widget._comment,
+                          size: _iconSize,
+                        ),
+                        DisapprovalButton(
+                          comment: widget._comment,
+                          size: _iconSize,
+                          showText: false,
+                        ),
+                        IconButton(
+                          splashColor: Colors.transparent,
+                          icon:
+                              CustomStyles.getDefaultReplyIcon(size: _iconSize),
+                          onPressed: _pushReply,
+                        ),
+                        _buildDeleteButton(),
+                      ],
+                    )
+                  : SizedBox.shrink(),
+            ],
+          ),
+        ),
+      ),
     );
   }
 
@@ -242,14 +231,15 @@ class _CommentCardState extends State<CommentCard>
         isDeleted = true;
       });
       MessageBox.showToast(
-          msg: "回复已被删除，刷新以更新。", messageBoxType: MessageBoxType.Success);
+          msg: "删除成功!", messageBoxType: MessageBoxType.Success);
     }
 
     cancelCallback() {
       Navigator.pop(context);
     }
 
-    return widget._userId == widget._comment.user.userId
+    return widget._userId == widget._comment.user.userId ||
+            StorageUtil().loginInfo.userType == UserType.Admin
         ? IconButton(
             splashColor: Colors.transparent,
             icon: CustomStyles.getDefaultDeleteIcon(size: _iconSize),

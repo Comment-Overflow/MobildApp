@@ -108,8 +108,15 @@ class ReplyNotificationCard extends StatelessWidget {
                   _replyRecord.time, UserActionType.reply),
               _gap,
               GestureDetector(
-                  child: Text(_replyRecord.content,
-                      style: CustomStyles.postContentStyle)),
+                  onTap: () => _jumpToPostByIdAndFloor(
+                      _replyRecord.replyCommentId,
+                      _replyRecord.replyFloor,
+                      context),
+                  child: Padding(
+                    padding: const EdgeInsets.all(5.0),
+                    child: Text(_replyRecord.content,
+                        style: CustomStyles.postContentStyle),
+                  )),
               _gap,
               Row(
                 mainAxisSize: MainAxisSize.min,
@@ -165,12 +172,27 @@ _jumpToPost(Quote quote, BuildContext context) async {
   try {
     final Response response =
         await PostService.getPostByComment(quote.commentId);
-    print(response.data);
     Post _post = Post.fromJson(response.data);
     Navigator.of(context).pushNamed(RouteGenerator.postRoute,
         arguments: JumpPostDTO(_post, pageIndex: quote.floor));
   } on DioError catch (e) {
-    print(e.type);
+    if (e.type == DioErrorType.connectTimeout || e.type == DioErrorType.other) {
+      MessageBox.showToast(msg: "网络连接异常", messageBoxType: MessageBoxType.Error);
+    } else {
+      MessageBox.showToast(
+          msg: "服务器开小差了，过会再试试", messageBoxType: MessageBoxType.Error);
+    }
+  }
+}
+
+_jumpToPostByIdAndFloor(int targetCommentId, int targetFloor, context) async {
+  try {
+    final Response response =
+        await PostService.getPostByComment(targetCommentId);
+    Post _post = Post.fromJson(response.data);
+    Navigator.of(context).pushNamed(RouteGenerator.postRoute,
+        arguments: JumpPostDTO(_post, pageIndex: targetFloor));
+  } on DioError catch (e) {
     if (e.type == DioErrorType.connectTimeout || e.type == DioErrorType.other) {
       MessageBox.showToast(msg: "网络连接异常", messageBoxType: MessageBoxType.Error);
     } else {

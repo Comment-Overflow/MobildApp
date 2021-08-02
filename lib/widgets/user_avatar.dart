@@ -1,4 +1,5 @@
-import 'package:cached_network_image/cached_network_image.dart';
+import 'package:comment_overflow/model/routing_dto/personal_page_access_dto.dart';
+import 'package:comment_overflow/utils/route_generator.dart';
 import 'package:extended_image/extended_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
@@ -8,21 +9,26 @@ import 'package:wechat_assets_picker/wechat_assets_picker.dart';
 class UserAvatar extends StatelessWidget {
   /// Diameter of the circular avatar.
   final double _imageSize;
-
+  final bool _canJump;
+  final int _userId;
   dynamic _imageContent;
 
   UserAvatar(
+    userId,
     this._imageSize, {
-    imageContent = null,
+    imageContent,
+    canJump: true,
     Key? key,
-  })  : _imageContent = imageContent,
+  })  : _userId = userId,
+        _imageContent = imageContent,
+        _canJump = canJump,
         super(key: key);
 
   @override
   Widget build(BuildContext context) {
     Widget avatarContent;
 
-    if (_imageContent.runtimeType == AssetEntity)
+    if (_imageContent.runtimeType == AssetEntity) {
       avatarContent = Image(
         image: AssetEntityImageProvider(_imageContent as AssetEntity,
             isOriginal: false),
@@ -30,31 +36,44 @@ class UserAvatar extends StatelessWidget {
         height: _imageSize,
         fit: BoxFit.cover,
       );
-    else if (_imageContent.runtimeType == String)
-      avatarContent = ExtendedImage.network(
-        _imageContent as String,
-        width: _imageSize,
-        height: _imageSize,
-        fit: BoxFit.cover,
-        loadStateChanged: (ExtendedImageState state) {
-          switch (state.extendedImageLoadState) {
-            case LoadState.loading:
-              return SkeletonAnimation(
-                borderRadius: BorderRadius.circular(50),
-                shimmerDuration: 2000,
-                child: Container(
-                  color: Colors.grey[200],
-                ),
-              );
-            case LoadState.completed:
-              return null;
-            case LoadState.failed:
-              return _buildFallbackContent();
-          }
-        },
+    } else if (_imageContent.runtimeType == String) {
+      avatarContent = GestureDetector(
+        onTap: _canJump
+            ? () => Navigator.of(context).pushNamed(
+                RouteGenerator.personalRoute,
+                arguments: PersonalPageAccessDto(_userId, true))
+            : () {},
+        child: ExtendedImage.network(
+          _imageContent as String,
+          width: _imageSize,
+          height: _imageSize,
+          fit: BoxFit.cover,
+          loadStateChanged: (ExtendedImageState state) {
+            switch (state.extendedImageLoadState) {
+              case LoadState.loading:
+                return SkeletonAnimation(
+                  borderRadius: BorderRadius.circular(50),
+                  shimmerDuration: 2000,
+                  child: Container(
+                    color: Colors.grey[200],
+                  ),
+                );
+              case LoadState.completed:
+                return null;
+              case LoadState.failed:
+                return _buildFallbackContent();
+            }
+          },
+        ),
       );
-    else
-      avatarContent = _buildFallbackContent();
+    } else
+      avatarContent = GestureDetector(
+          onTap: _canJump
+              ? () => Navigator.of(context).pushNamed(
+                  RouteGenerator.personalRoute,
+                  arguments: PersonalPageAccessDto(_userId, true))
+              : () {},
+          child: _buildFallbackContent());
 
     return CircleAvatar(
       backgroundColor: Colors.transparent,

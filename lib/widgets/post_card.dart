@@ -22,7 +22,8 @@ class PostCard extends StatelessWidget {
     final userAndContentColumn = Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        UserAvatarWithName(_post.hostComment.user.userName, 21.0,
+        UserAvatarWithName(_post.hostComment.user.userName,
+            _post.hostComment.user.userId, 21.0,
             textStyle: CustomStyles.postContentStyle,
             gap: 7.0,
             avatarUrl: _post.hostComment.user.avatarUrl),
@@ -127,13 +128,13 @@ class PostCard extends StatelessWidget {
       );
 }
 
-class SearchedPostCard extends StatelessWidget {
+class SearchedCommentCard extends StatelessWidget {
   /// Vertical gap between rows.
   static const _gap = const SizedBox(height: 5.0);
   final SearchedPost _post;
   final List<String> searchKey;
 
-  const SearchedPostCard(this._post, this.searchKey, {Key? key})
+  const SearchedCommentCard(this._post, this.searchKey, {Key? key})
       : super(key: key);
 
   @override
@@ -144,10 +145,9 @@ class SearchedPostCard extends StatelessWidget {
     final userAndContentColumn = Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        UserAvatarWithName(_user.userName, 21.0,
+        UserAvatarWithName(_user.userName, _user.userId, 21.0,
             textStyle: CustomStyles.postContentStyle,
             gap: 7.0,
-            searchKey: searchKey,
             avatarUrl: _user.avatarUrl),
         _gap,
         buildContent(),

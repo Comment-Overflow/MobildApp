@@ -4,6 +4,7 @@ import 'package:comment_overflow/model/post.dart';
 import 'package:comment_overflow/service/post_service.dart';
 import 'package:comment_overflow/utils/general_utils.dart';
 import 'package:comment_overflow/utils/message_box.dart';
+import 'package:comment_overflow/utils/storage_util.dart';
 import 'package:comment_overflow/widgets/adaptive_alert_dialog.dart';
 import 'package:comment_overflow/widgets/approval_button.dart';
 import 'package:comment_overflow/widgets/comment_card_list.dart';
@@ -14,6 +15,7 @@ import 'package:dio/dio.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
+import 'package:provider/provider.dart';
 import 'package:wechat_assets_picker/wechat_assets_picker.dart';
 
 class PostPage extends StatefulWidget {
@@ -29,7 +31,6 @@ class PostPage extends StatefulWidget {
 }
 
 class _PostPageState extends State<PostPage> {
-  var _sortPolicy = SortPolicy.earliest;
   final List<AssetEntity> _assets = <AssetEntity>[];
   final TextEditingController _replyController = TextEditingController();
 
@@ -37,8 +38,10 @@ class _PostPageState extends State<PostPage> {
   static const _bottomIconSize = 24.0;
 
   int _pageIndex;
+  int _currentPageNum;
 
-  _PostPageState(this._pageIndex);
+  _PostPageState(this._pageIndex)
+      : _currentPageNum = _pageIndex ~/ Constants.defaultPageSize;
 
   String getPolicyName(SortPolicy policy) {
     switch (policy) {
@@ -87,10 +90,16 @@ class _PostPageState extends State<PostPage> {
                   mainAxisSize: MainAxisSize.min,
                   children: [
                     CustomStyles.getDefaultListIcon(size: _bottomIconSize),
-                    Text("跳页"),
+                    Text("跳页", style: CustomStyles.postPageBottomStyle),
                   ],
                 ),
-                onPressed: () {},
+                onPressed: () {
+                  showModalBottomSheet(
+                      backgroundColor: Colors.transparent,
+                      isScrollControlled: true,
+                      context: context,
+                      builder: (_) => _buildPageJumper());
+                },
               ),
               ApprovalButton(
                   comment: widget._post.hostComment, size: _bottomIconSize),
@@ -109,67 +118,96 @@ class _PostPageState extends State<PostPage> {
     );
   }
 
-  Widget _buildPageJumper(int currentPage, int totalPage) {
-    return StatefulBuilder(builder: (BuildContext c, StateSetter s) {
-      return Card(
-        elevation: Constants.defaultCardElevation,
-        shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.all(Radius.circular(5.0))),
-        child: InkWell(
-            child: Padding(
-          padding: EdgeInsets.symmetric(vertical: 30, horizontal: 20),
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              Row(
-                children: [
-                  TextButton(onPressed: () {}, child: Text("首页")),
-                  Text("页面跳转"),
-                  TextButton(onPressed: () {}, child: Text("末页"))
-                ],
-                mainAxisAlignment: MainAxisAlignment.spaceAround,
-              ),
-              Divider(),
-              GridView(
-                gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                  crossAxisCount: 5,
+  Widget _buildPageJumper() {
+    return Consumer<MaxPageCounter>(
+      builder: (context1, counter, child) =>
+          StatefulBuilder(builder: (BuildContext c, StateSetter s) {
+        return Padding(
+          padding: const EdgeInsets.symmetric(vertical: 60.0, horizontal: 8.0),
+          child: Card(
+              elevation: Constants.defaultCardElevation,
+              shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.all(Radius.circular(15.0))),
+              child: Padding(
+                padding: const EdgeInsets.all(10.0),
+                child: InkWell(
+                  child: Column(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      Row(
+                        children: [
+                          TextButton(
+                              onPressed: () {
+                                Navigator.pop(context1);
+                                setState(() {
+                                  _pageIndex = 0;
+                                });
+                              },
+                              child: Text("首页",
+                                  style: CustomStyles.jumpPageStyle)),
+                          Text("页面跳转", style: CustomStyles.jumpPageStyle),
+                          TextButton(
+                              onPressed: () {
+                                Navigator.pop(context1);
+                                setState(() {
+                                  _pageIndex =
+                                      counter.value * Constants.defaultPageSize;
+                                });
+                              },
+                              child:
+                                  Text("末页", style: CustomStyles.jumpPageStyle))
+                        ],
+                        mainAxisAlignment: MainAxisAlignment.spaceAround,
+                      ),
+                      Divider(),
+                      SizedBox(
+                        height: counter.value > 9 ? 200 : null,
+                        child: GridView.builder(
+                            gridDelegate:
+                                SliverGridDelegateWithFixedCrossAxisCount(
+                                    crossAxisCount: 5,
+                                    mainAxisSpacing:
+                                        Constants.defaultNinePatternSpacing,
+                                    crossAxisSpacing:
+                                        Constants.defaultNinePatternSpacing,
+                                    childAspectRatio: 1.0),
+                            shrinkWrap: true,
+                            itemCount: counter.value + 1,
+                            itemBuilder: (context2, index) {
+                              return index == _currentPageNum
+                                  ? Padding(
+                                      padding: EdgeInsets.all(10.0),
+                                      child: ElevatedButton(
+                                        onPressed: () {},
+                                        style: ButtonStyle(
+                                            elevation:
+                                                MaterialStateProperty.all(0),
+                                            shape: MaterialStateProperty.all(
+                                                CircleBorder())),
+                                        child: Text((index + 1).toString(),
+                                            style:
+                                                CustomStyles.currentPageStyle),
+                                      ),
+                                    )
+                                  : TextButton(
+                                      onPressed: () {
+                                        Navigator.pop(context1);
+                                        setState(() {
+                                          _pageIndex =
+                                              index * Constants.defaultPageSize;
+                                        });
+                                      },
+                                      child: Text((index + 1).toString(),
+                                          style: CustomStyles.otherPageStyle));
+                            }),
+                      ),
+                    ],
+                  ),
                 ),
-              )
-            ],
-          ),
-        )),
-      );
-    });
-  }
-
-  Widget _buildDropDownMenu() {
-    return PopupMenuButton<SortPolicy>(
-        padding: const EdgeInsets.all(7.0),
-        onSelected: (SortPolicy result) => {
-              setState(() {
-                _sortPolicy = result;
-              })
-            },
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            CustomStyles.getDefaultListIcon(size: _bottomIconSize),
-            Text(
-              "${getPolicyName(_sortPolicy)}",
-              style: CustomStyles.postPageBottomStyle,
-            ),
-          ],
-        ),
-        itemBuilder: (BuildContext context) => <PopupMenuEntry<SortPolicy>>[
-              const PopupMenuItem(
-                value: SortPolicy.earliest,
-                child: Text("最早回复"),
-              ),
-              const PopupMenuItem(
-                value: SortPolicy.latest,
-                child: Text("最近回复"),
-              ),
-            ]);
+              )),
+        );
+      }),
+    );
   }
 
   Future<int> _getUserId() async {
@@ -181,8 +219,7 @@ class _PostPageState extends State<PostPage> {
       _deletePost();
       Navigator.pop(context);
       Navigator.pop(context);
-      MessageBox.showToast(
-          msg: "帖子已被删除，刷新以更新。", messageBoxType: MessageBoxType.Info);
+      MessageBox.showToast(msg: "帖子已被删除!", messageBoxType: MessageBoxType.Info);
     }
 
     cancelCallback() {
@@ -197,7 +234,8 @@ class _PostPageState extends State<PostPage> {
       case ConnectionState.done:
         {
           int _userId = snapshot.data;
-          return _userId == widget._post.hostComment.user.userId
+          return _userId == widget._post.hostComment.user.userId ||
+                  StorageUtil().loginInfo.userType == UserType.Admin
               ? IconButton(
                   icon: CustomStyles.getDefaultDeleteIcon(size: _iconSize),
                   tooltip: 'Delete this Post',
@@ -252,9 +290,10 @@ class _PostPageState extends State<PostPage> {
       case ConnectionState.done:
         {
           int _userId = snapshot.data;
-          return CommentCardList(
-              widget._post, _userId, _pushReplyCallback, _pushReplyCallback,
-              pageIndex: _pageIndex);
+          return CommentCardList(widget._post, _userId, _pushReplyCallback,
+              _setMaxPageCallback, _pushReplyCallback, (pageNum) {
+            _currentPageNum = pageNum;
+          }, pageIndex: _pageIndex);
         }
     }
   }
@@ -262,4 +301,19 @@ class _PostPageState extends State<PostPage> {
   _pushReplyCallback(pageIndex) => setState(() {
         _pageIndex = pageIndex;
       });
+
+  _setMaxPageCallback(int maxPage) {
+    context.read<MaxPageCounter>().setValue(maxPage);
+  }
+}
+
+class MaxPageCounter with ChangeNotifier {
+  int value = 0;
+
+  void setValue(int newValue) {
+    if (value != newValue) {
+      value = newValue;
+      notifyListeners();
+    }
+  }
 }

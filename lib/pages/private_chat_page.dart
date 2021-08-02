@@ -70,6 +70,8 @@ class PrivateChatPageState extends State<PrivateChatPage> {
           _chatter.userName,
           style: CustomStyles.pageTitleStyle,
         ),
+        automaticallyImplyLeading: false,
+        leading: _buildBackButton(),
       ),
       body: GestureDetector(
         onTap: () {
@@ -308,5 +310,12 @@ class PrivateChatPageState extends State<PrivateChatPage> {
       message.status = MessageStatus.Sending;
     });
     _sendMessage(message);
+  }
+
+  _buildBackButton() {
+    return GestureDetector(
+      onTap: () => Navigator.of(context).pop(),
+      child: CustomStyles.getDefaultBackIcon(size: 24.0, color: Colors.black),
+    );
   }
 }

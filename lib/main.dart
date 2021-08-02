@@ -1,3 +1,4 @@
+import 'package:comment_overflow/pages/post_page.dart';
 import 'package:comment_overflow/utils/recent_chats_provider.dart';
 import 'package:comment_overflow/utils/global_utils.dart';
 import 'package:comment_overflow/utils/route_generator.dart';
@@ -15,6 +16,7 @@ void main() async {
 
   runApp(MultiProvider(providers: [
     ChangeNotifierProvider(create: (_) => RecentChatsProvider()),
+    ChangeNotifierProvider(create: (_) => MaxPageCounter()),
   ], child: CommentOverflow()));
 }
 
@@ -38,6 +40,7 @@ class CommentOverflow extends StatelessWidget {
           900: Colors.blueAccent,
         }),
         primaryColor: Colors.white,
+
         accentColor: Colors.blueAccent,
         textButtonTheme: TextButtonThemeData(
           style: ButtonStyle(

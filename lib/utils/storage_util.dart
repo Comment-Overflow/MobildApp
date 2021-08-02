@@ -36,6 +36,7 @@ class StorageUtil {
     await StorageUtil().storage.delete(key: Constants.emailToken);
 
     _loginInfo.userId = loginDTO.userId;
+    _loginInfo.userType = loginDTO.userType;
   }
 
   Future deleteOnLogout() async {
@@ -56,12 +57,19 @@ class StorageUtil {
 
 class _LoginInfo {
   static const notLoggedInId = 0;
+  static const notLoggedInUserType = UserType.Unauthorized;
 
   int? _userId;
+  UserType? _userType;
 
   int get userId => _userId == null ? notLoggedInId : _userId!;
+  UserType get userType => _userType == null ? notLoggedInUserType : _userType!;
 
   set userId(int value) {
     _userId = value;
+  }
+
+  set userType(UserType userType) {
+    _userType = userType;
   }
 }
