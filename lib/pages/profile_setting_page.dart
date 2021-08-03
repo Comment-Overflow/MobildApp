@@ -9,6 +9,7 @@ import 'package:comment_overflow/utils/my_image_picker.dart';
 import 'package:comment_overflow/utils/route_generator.dart';
 import 'package:comment_overflow/utils/storage_util.dart';
 import 'package:comment_overflow/widgets/user_avatar.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter/widgets.dart';
@@ -29,6 +30,7 @@ class _ProfileSettingPageState extends State<ProfileSettingPage> {
   bool _isIntroductionValid = true;
   bool _isUserNameValid = true;
   bool _isUserAvatarChanged = false;
+  bool _isLoading = false;
 
   late UserAvatar _userAvatar;
   late String _gender;
@@ -109,10 +111,13 @@ class _ProfileSettingPageState extends State<ProfileSettingPage> {
           ),
           actions: [
             IconButton(
-                icon: Icon(Icons.save),
+                icon: _isLoading
+                    ? CupertinoActivityIndicator()
+                    : Icon(Icons.check),
                 onPressed: () async {
                   if (_isUserNameValid && _isIntroductionValid) {
                     bool errorFlag = false;
+                    setState(() => _isLoading = true);
                     try {
                       final Response response =
                           await ProfileService.putProfileSetting(
@@ -123,9 +128,10 @@ class _ProfileSettingPageState extends State<ProfileSettingPage> {
                           userNameAndAvatarUrl['avatarUrl']);
                     } on DioError catch (e) {
                       errorFlag = true;
-                      print(e.message);
                       MessageBox.showToast(
-                          msg: Constants.networkError,
+                          msg: e.response == null
+                              ? Constants.networkError
+                              : e.response!.data,
                           messageBoxType: MessageBoxType.Error);
                     }
                     if (!errorFlag) {
@@ -138,6 +144,7 @@ class _ProfileSettingPageState extends State<ProfileSettingPage> {
                             arguments: 2,
                           )));
                     }
+                    setState(() => _isLoading = false);
                   } else if (!_isUserNameValid) {
                     MessageBox.showToast(
                         msg: "用户名不能为空", messageBoxType: MessageBoxType.Error);

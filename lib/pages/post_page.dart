@@ -361,7 +361,7 @@ class _PostPageState extends State<PostPage> {
     try {
       await PostService.deletePost(widget._post.postId);
     } on DioError catch (e) {
-      print(e.message);
+      print(e.response!.data);
     }
   }
 

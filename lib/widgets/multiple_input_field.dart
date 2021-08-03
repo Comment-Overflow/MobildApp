@@ -130,7 +130,7 @@ class MultipleInputField extends StatelessWidget {
                           });
                           final response = await PostService.postComment(dto);
                           MessageBox.showToast(
-                              msg: "回复成功，经验+3！",
+                              msg: "回复成功",
                               messageBoxType: MessageBoxType.Success);
                           s(() {
                             _isLoading = false;
@@ -140,7 +140,8 @@ class MultipleInputField extends StatelessWidget {
                           _controller.clear();
                           _assets.clear();
                         } on DioError catch (e) {
-                          if (e.response != null && e.response!.statusCode == 401) {
+                          if (e.response != null &&
+                              e.response!.statusCode == 401) {
                             MessageBox.showToast(
                                 msg: "发送回复失败: 您已被禁言",
                                 messageBoxType: MessageBoxType.Error);
@@ -150,9 +151,8 @@ class MultipleInputField extends StatelessWidget {
                             Navigator.pop(context);
                             return;
                           }
-                          print(e.message);
                           MessageBox.showToast(
-                              msg: "发送回复失败: ${e.message}",
+                              msg: "发送回复失败: ${e.response!.data}",
                               messageBoxType: MessageBoxType.Error);
                           s(() {
                             _isLoading = false;

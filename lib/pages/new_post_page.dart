@@ -143,8 +143,6 @@ class _NewPostPageState extends State<NewPostPage> {
                             : Theme.of(context).disabledColor),
                     onPressed: this._title.isNotEmpty
                         ? () {
-                            print(this._title);
-                            print(this._content);
                             _pushSend();
                           }
                         : null),
@@ -204,7 +202,7 @@ class _NewPostPageState extends State<NewPostPage> {
     } on DioError catch (e) {
       if (e.response != null && e.response!.statusCode == 401) {
         MessageBox.showToast(
-            msg: "发帖失败！ 您已被禁言", messageBoxType: MessageBoxType.Error);
+            msg: "发帖失败！您已被禁言", messageBoxType: MessageBoxType.Error);
         setState(() {
           _isLoading = false;
         });
@@ -212,8 +210,10 @@ class _NewPostPageState extends State<NewPostPage> {
         return;
       }
       MessageBox.showToast(
-          msg: "发帖失败！ ${e.message}", messageBoxType: MessageBoxType.Error);
+          msg: "发帖失败！${e.response!.data}",
+          messageBoxType: MessageBoxType.Error);
     } on Error {
+      // FIXME: not working
       MessageBox.showToast(
           msg: "发帖失败！每张图片大小应小于20MB.", messageBoxType: MessageBoxType.Error);
     } finally {
