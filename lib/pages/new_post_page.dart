@@ -1,7 +1,6 @@
 import 'package:chips_choice/chips_choice.dart';
 import 'package:comment_overflow/assets/constants.dart';
 import 'package:comment_overflow/assets/custom_styles.dart';
-import 'package:comment_overflow/fake_data/fake_data.dart';
 import 'package:comment_overflow/model/post.dart';
 import 'package:comment_overflow/model/request_dto/new_post_dto.dart';
 import 'package:comment_overflow/model/routing_dto/jump_post_dto.dart';
@@ -27,7 +26,7 @@ class NewPostPage extends StatefulWidget {
 class _NewPostPageState extends State<NewPostPage> {
   final _iconSize = Constants.searchBarHeight * 0.8;
   // List of category tags.
-  final List<String> _options = tags;
+  final List<String> _options = ['校园生活', '学在交大', '文化艺术', '心情驿站', '职业发展'];
 
   // Below are the fields that user inputs.
   // Title can't be empty, but content can.
@@ -203,6 +202,15 @@ class _NewPostPageState extends State<NewPostPage> {
             arguments: JumpPostDTO(Post.fromJson(response.data)),
           )));
     } on DioError catch (e) {
+      if (e.response != null && e.response!.statusCode == 401) {
+        MessageBox.showToast(
+            msg: "发帖失败！ 您已被禁言", messageBoxType: MessageBoxType.Error);
+        setState(() {
+          _isLoading = false;
+        });
+        Navigator.pop(context);
+        return;
+      }
       MessageBox.showToast(
           msg: "发帖失败！ ${e.message}", messageBoxType: MessageBoxType.Error);
     } on Error {

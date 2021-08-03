@@ -12,7 +12,6 @@ import 'package:provider/provider.dart';
 class ChatService {
 
   static Future initChat() async {
-    // TODO: Toast on error.
     int totalUnreadCount = (await ChatService.getTotalUnreadCount()).data as int;
     BuildContext context = GlobalUtils.navKey!.currentContext!;
     context.read<RecentChatsProvider>().updateTotalUnreadCount(totalUnreadCount);

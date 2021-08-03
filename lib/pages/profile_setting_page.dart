@@ -81,9 +81,7 @@ class _ProfileSettingPageState extends State<ProfileSettingPage> {
     _userAvatar = UserAvatar(
       _profileSettingDto.userId,
       Constants.profileSettingImageSize,
-      imageContent: _profileSettingDto.userAvatar == null
-          ? null
-          : NetworkImage(_profileSettingDto.userAvatar!),
+      imageContent: _profileSettingDto.userAvatar,
       canJump: false,
     );
     _userNameController =

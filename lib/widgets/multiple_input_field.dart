@@ -135,12 +135,21 @@ class MultipleInputField extends StatelessWidget {
                           s(() {
                             _isLoading = false;
                           });
-
                           Navigator.pop(context);
                           _finishCallback(response.data);
                           _controller.clear();
                           _assets.clear();
                         } on DioError catch (e) {
+                          if (e.response != null && e.response!.statusCode == 401) {
+                            MessageBox.showToast(
+                                msg: "发送回复失败: 您已被禁言",
+                                messageBoxType: MessageBoxType.Error);
+                            s(() {
+                              _isLoading = false;
+                            });
+                            Navigator.pop(context);
+                            return;
+                          }
                           print(e.message);
                           MessageBox.showToast(
                               msg: "发送回复失败: ${e.message}",

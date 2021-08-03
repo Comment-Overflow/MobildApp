@@ -11,7 +11,6 @@ import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:stomp_dart_client/stomp_frame.dart';
 import 'package:provider/provider.dart';
 
-// TODO: Catch the exception.
 
 class SocketClient {
   // Singleton method.
@@ -43,57 +42,75 @@ class SocketClient {
   }
 
   Future<void> _onConnect(StompFrame _) async {
-    print('Connected to ${dotenv.env['SOCKET_BASE_URL']!}/chat');
+    print('Connected to ${dotenv.env['SOCKET_BASE_URL']!}');
     String token = await GeneralUtils.getCurrentToken();
     int userId = await GeneralUtils.getCurrentUserId();
 
-    _stompClient.subscribe(
-        destination: '/user/${userId.toString()}/queue/private',
-        headers: {'Authorization': token},
-        callback: (frame) {
-          Message message = Message.fromJson(jsonDecode(frame.body!));
-          if (onReceiveMessage != null) {
-            onReceiveMessage!(message);
-            updateChat(message.sender.userId);
-          } else {
-            BuildContext context = GlobalUtils.navKey!.currentContext!;
-            context.read<RecentChatsProvider>().updateLastMessageUnread(
-                message.sender, message.getLastMessageContent(), message.time!);
-          }
-        });
+    try {
+      _stompClient.subscribe(
+          destination: '/user/${userId.toString()}/queue/private',
+          headers: {'Authorization': token},
+          callback: (frame) {
+            Message message = Message.fromJson(jsonDecode(frame.body!));
+            if (onReceiveMessage != null) {
+              onReceiveMessage!(message);
+              updateChat(message.sender.userId);
+            } else {
+              BuildContext context = GlobalUtils.navKey!.currentContext!;
+              context.read<RecentChatsProvider>().updateLastMessageUnread(
+                  message.sender,
+                  message.getLastMessageContent(),
+                  message.time!);
+            }
+          });
+      print("Successfully subscribed to the private channel.");
+    } on Exception {
+      print("Fail to subscribe to the private channel.");
+    }
   }
 
   Future<void> updateChat(int chatterId) async {
     String token = await GeneralUtils.getCurrentToken();
     int userId = await GeneralUtils.getCurrentUserId();
-    _stompClient.send(destination: '/comment-overflow/chat/update', headers: {
-      'Authorization': token,
-      'UserId': userId.toString(),
-      'ChatterId': chatterId.toString(),
-    });
+    try {
+      _stompClient.send(destination: '/comment-overflow/chat/update', headers: {
+        'Authorization': token,
+        'UserId': userId.toString(),
+        'ChatterId': chatterId.toString(),
+      });
+    } on Exception {
+      print("Socket has lost connection. Fail to update the chat on server.");
+    }
   }
 
   Future deleteReadChats() async {
     String token = await GeneralUtils.getCurrentToken();
     int userId = await GeneralUtils.getCurrentUserId();
-    _stompClient.send(
-        destination: '/comment-overflow/user/read-chats/delete',
-        headers: {
-          'Authorization': token,
-          'UserId': userId.toString(),
-        });
+    try {
+      _stompClient.send(
+          destination: '/comment-overflow/user/read-chats/delete',
+          headers: {
+            'Authorization': token,
+            'UserId': userId.toString(),
+          });
+    } on Exception {
+      print("Socket has lost connection. Fail to delete read chats on server.");
+    }
   }
 
   Future deleteChat(int chatterId) async {
     String token = await GeneralUtils.getCurrentToken();
     int userId = await GeneralUtils.getCurrentUserId();
-    _stompClient.send(
-        destination: '/comment-overflow/user/chat/delete',
-        headers: {
-          'Authorization': token,
-          'UserId': userId.toString(),
-          'ChatterId': chatterId.toString(),
-        });
+    try {
+      _stompClient
+          .send(destination: '/comment-overflow/user/chat/delete', headers: {
+        'Authorization': token,
+        'UserId': userId.toString(),
+        'ChatterId': chatterId.toString(),
+      });
+    } on Exception {
+      print("Socket has lost connection. Fail to delete the chat on server.");
+    }
   }
 
   Future init() async {
