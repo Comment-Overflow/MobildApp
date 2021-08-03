@@ -165,55 +165,55 @@ class _PostPageState extends State<PostPage> {
 
     return StorageUtil().loginInfo.userType == UserType.Admin
         ? StatefulBuilder(builder: (bc, s) {
-          if (isFreezeLoading) return CupertinoActivityIndicator();
+            if (isFreezeLoading) return CupertinoActivityIndicator();
 
-          freezeCallback() {
-            _freezePost(s);
-            Navigator.pop(context);
-          }
+            freezeCallback() {
+              _freezePost(s);
+              Navigator.pop(context);
+            }
 
-          releaseCallback() {
-            _releasePost(s);
-            Navigator.pop(context);
-          }
+            releaseCallback() {
+              _releasePost(s);
+              Navigator.pop(context);
+            }
 
-          cancelCallback() {
-            Navigator.pop(context);
-          }
+            cancelCallback() {
+              Navigator.pop(context);
+            }
 
-          if (widget._post.isFrozen) {
-            return IconButton(
-                onPressed: () {
-                  showDialog(
-                      context: context,
-                      builder: (context) {
-                        return AdaptiveAlertDialog(
-                            "解锁帖子",
-                            "你确认要解除帖子 ${widget._post.title} 的锁定吗",
-                            "确定",
-                            "取消",
-                            releaseCallback,
-                            cancelCallback);
-                      });
-                },
-                icon: CustomStyles.getReleaseIcon(size: _iconSize));
-          } else {
-            return IconButton(
-                onPressed: () {
-                  showDialog(
-                      context: context,
-                      builder: (context) {
-                        return AdaptiveAlertDialog(
-                            "锁定帖子",
-                            "你确认要锁定帖子 ${widget._post.title} 吗",
-                            "确定",
-                            "取消",
-                            freezeCallback,
-                            cancelCallback);
-                      });
-                },
-                icon: CustomStyles.getFreezeIcon(size: _iconSize));
-          }
+            if (widget._post.isFrozen) {
+              return IconButton(
+                  onPressed: () {
+                    showDialog(
+                        context: context,
+                        builder: (context) {
+                          return AdaptiveAlertDialog(
+                              "解锁帖子",
+                              "你确认要解除帖子 ${widget._post.title} 的锁定吗",
+                              "确定",
+                              "取消",
+                              releaseCallback,
+                              cancelCallback);
+                        });
+                  },
+                  icon: CustomStyles.getReleaseIcon(size: _iconSize));
+            } else {
+              return IconButton(
+                  onPressed: () {
+                    showDialog(
+                        context: context,
+                        builder: (context) {
+                          return AdaptiveAlertDialog(
+                              "锁定帖子",
+                              "你确认要锁定帖子 ${widget._post.title} 吗",
+                              "确定",
+                              "取消",
+                              freezeCallback,
+                              cancelCallback);
+                        });
+                  },
+                  icon: CustomStyles.getFreezeIcon(size: _iconSize));
+            }
           })
         : Container();
   }
@@ -400,6 +400,7 @@ class _PostPageState extends State<PostPage> {
 
   _pushReplyCallback(pageIndex) => setState(() {
         _pageIndex = pageIndex;
+        _assets.clear();
       });
 
   _setMaxPageCallback(int maxPage) {
