@@ -91,6 +91,11 @@ class CustomStyles {
     fontSize: 15.0,
   );
 
+  static const postFrozenStyle = TextStyle(
+    color: Colors.grey,
+    fontWeight: FontWeight.w400,
+  );
+
   static const pageTitleStyle = TextStyle(
     fontWeight: FontWeight.normal,
   );
@@ -126,6 +131,12 @@ class CustomStyles {
   /// Default icon for not thumb up.
   static getDefaultNotThumbUpIcon({size = 14.0, color = Colors.grey}) =>
       Icon(CupertinoIcons.heart, color: color, size: size);
+
+  static getFreezeIcon({size = 14.0, color = Colors.grey}) =>
+      Icon(CupertinoIcons.lock, color: color, size: size);
+
+  static getReleaseIcon({size = 14.0, color = Colors.grey}) =>
+      Icon(CupertinoIcons.lock_open, color: color, size: size);
 
   static getDefaultThumbDownIcon({size = 14.0, color = Colors.black87}) =>
       Icon(CupertinoIcons.hand_thumbsdown_fill, color: color, size: size);

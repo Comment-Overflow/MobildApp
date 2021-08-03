@@ -8,6 +8,7 @@ class Post {
   // Depending on whether the comment is displayed as post or comment.
   final Comment _hostComment;
   bool isStarred;
+  bool isFrozen;
 
   int get postId => _postId;
   String get title => _title;
@@ -16,7 +17,7 @@ class Post {
   Comment get hostComment => _hostComment;
 
   Post(this._postId, this._title, this._commentCount, this._approvalCount,
-      this._hostComment, this.isStarred);
+      this._hostComment, this.isStarred, this.isFrozen);
 
   factory Post.fromJson(dynamic json) => Post(
       json['id'] as int,
@@ -24,7 +25,8 @@ class Post {
       json['commentCount'] as int,
       json['hostComment']['approvalCount'] as int,
       Comment.fromJson(json['hostComment']),
-      json['isStarred'] as bool);
+      json['isStarred'] as bool,
+      json['isFrozen'] as bool);
 }
 
 class SearchedPost extends Post {
@@ -40,5 +42,6 @@ class SearchedPost extends Post {
             json['commentCount'] as int,
             json['hostComment']['approvalCount'] as int,
             Comment.fromJson(json['hostComment']),
-            json['isStarred'] as bool);
+            json['isStarred'] as bool,
+            json['isFrozen'] as bool);
 }
