@@ -91,6 +91,11 @@ class CustomStyles {
     fontSize: 15.0,
   );
 
+  static const postFrozenStyle = TextStyle(
+    color: Colors.grey,
+    fontWeight: FontWeight.w400,
+  );
+
   static const pageTitleStyle = TextStyle(
     fontWeight: FontWeight.normal,
   );
@@ -126,6 +131,12 @@ class CustomStyles {
   /// Default icon for not thumb up.
   static getDefaultNotThumbUpIcon({size = 14.0, color = Colors.grey}) =>
       Icon(CupertinoIcons.heart, color: color, size: size);
+
+  static getFreezeIcon({size = 14.0, color = Colors.grey}) =>
+      Icon(CupertinoIcons.lock, color: color, size: size);
+
+  static getReleaseIcon({size = 14.0, color = Colors.grey}) =>
+      Icon(CupertinoIcons.lock_open, color: color, size: size);
 
   static getDefaultThumbDownIcon({size = 14.0, color = Colors.black87}) =>
       Icon(CupertinoIcons.hand_thumbsdown_fill, color: color, size: size);
@@ -182,6 +193,24 @@ class CustomStyles {
         color: color,
         size: size,
       );
+
+  static Icon getSilenceIcon({size = 14.0, color: Colors.black87}) => Icon(
+    CupertinoIcons.speaker_slash,
+    color: color,
+    size: size,
+  );
+
+  static Icon getFreeIcon({size = 14.0, color: Colors.black87}) => Icon(
+    CupertinoIcons.speaker_2,
+    color: color,
+    size: size,
+  );
+
+  static Icon getAdminIcon({size = 14.0, color: Colors.green}) => Icon(
+    Icons.verified_user_outlined,
+    color: color,
+    size: size,
+  );
 
   /// Default icon for female.
   static getDefaultFemaleIcon(

@@ -1,6 +1,7 @@
 import 'package:comment_overflow/assets/constants.dart';
 import 'package:comment_overflow/assets/custom_styles.dart';
 import 'package:comment_overflow/model/post.dart';
+import 'package:comment_overflow/service/admin_service.dart';
 import 'package:comment_overflow/service/post_service.dart';
 import 'package:comment_overflow/utils/general_utils.dart';
 import 'package:comment_overflow/utils/message_box.dart';
@@ -65,14 +66,17 @@ class _PostPageState extends State<PostPage> {
           },
           child: Icon(Icons.arrow_back),
         ),
-        title: Text("帖子 ${widget._post.postId.toString()}"),
+        title: Text(
+            "帖子 ${widget._post.postId.toString() + (widget._post.isFrozen ? " (已锁定)" : "")}"),
         actions: <Widget>[
-          FutureBuilder(future: _getUserId(), builder: _buildDeleteButton)
+          FutureBuilder(future: _getUserId(), builder: _buildDeleteButton),
+          _buildFreezeButton()
         ],
         centerTitle: true,
       ),
       floatingActionButton: FloatingActionButton(
-          onPressed: _pushReply,
+          onPressed: widget._post.isFrozen ? null : _pushReply,
+          backgroundColor: widget._post.isFrozen ? Colors.grey : null,
           child: CustomStyles.getDefaultReplyIcon(
               size: Constants.defaultFabIconSize, color: Colors.white)),
       body: FutureBuilder(
@@ -116,6 +120,102 @@ class _PostPageState extends State<PostPage> {
         );
       }),
     );
+  }
+
+  Widget _buildFreezeButton() {
+    bool isFreezeLoading = false;
+
+    Future<void> _freezePost(StateSetter setter) async {
+      setter(() {
+        isFreezeLoading = true;
+      });
+      try {
+        await AdminService.freezePost(widget._post.postId);
+        setState(() {
+          widget._post.isFrozen = true;
+          isFreezeLoading = false;
+        });
+      } on DioError catch (e) {
+        MessageBox.showToast(
+            msg: e.message, messageBoxType: MessageBoxType.Error);
+        setter(() {
+          isFreezeLoading = false;
+        });
+      }
+    }
+
+    Future<void> _releasePost(StateSetter setter) async {
+      setter(() {
+        isFreezeLoading = true;
+      });
+      try {
+        await AdminService.releasePost(widget._post.postId);
+        setState(() {
+          widget._post.isFrozen = false;
+          isFreezeLoading = false;
+        });
+      } on DioError catch (e) {
+        MessageBox.showToast(
+            msg: e.message, messageBoxType: MessageBoxType.Error);
+        setter(() {
+          isFreezeLoading = false;
+        });
+      }
+    }
+
+    return StorageUtil().loginInfo.userType == UserType.Admin
+        ? StatefulBuilder(builder: (bc, s) {
+          if (isFreezeLoading) return CupertinoActivityIndicator();
+
+          freezeCallback() {
+            _freezePost(s);
+            Navigator.pop(context);
+          }
+
+          releaseCallback() {
+            _releasePost(s);
+            Navigator.pop(context);
+          }
+
+          cancelCallback() {
+            Navigator.pop(context);
+          }
+
+          if (widget._post.isFrozen) {
+            return IconButton(
+                onPressed: () {
+                  showDialog(
+                      context: context,
+                      builder: (context) {
+                        return AdaptiveAlertDialog(
+                            "解锁帖子",
+                            "你确认要解除帖子 ${widget._post.title} 的锁定吗",
+                            "确定",
+                            "取消",
+                            releaseCallback,
+                            cancelCallback);
+                      });
+                },
+                icon: CustomStyles.getReleaseIcon(size: _iconSize));
+          } else {
+            return IconButton(
+                onPressed: () {
+                  showDialog(
+                      context: context,
+                      builder: (context) {
+                        return AdaptiveAlertDialog(
+                            "锁定帖子",
+                            "你确认要锁定帖子 ${widget._post.title} 吗",
+                            "确定",
+                            "取消",
+                            freezeCallback,
+                            cancelCallback);
+                      });
+                },
+                icon: CustomStyles.getFreezeIcon(size: _iconSize));
+          }
+          })
+        : Container();
   }
 
   Widget _buildPageJumper() {

@@ -1,13 +1,18 @@
 import 'package:comment_overflow/assets/constants.dart';
 import 'package:comment_overflow/assets/custom_styles.dart';
 import 'package:comment_overflow/model/user_info.dart';
+import 'package:comment_overflow/service/admin_service.dart';
 import 'package:comment_overflow/service/chat_service.dart';
 import 'package:comment_overflow/service/profile_service.dart';
 import 'package:comment_overflow/utils/general_utils.dart';
+import 'package:comment_overflow/utils/message_box.dart';
 import 'package:comment_overflow/utils/route_generator.dart';
 import 'package:comment_overflow/utils/storage_util.dart';
+import 'package:comment_overflow/widgets/adaptive_alert_dialog.dart';
 import 'package:comment_overflow/widgets/personal_profile_card.dart';
 import 'package:comment_overflow/widgets/post_card_list.dart';
+import 'package:comment_overflow/widgets/searched_comment_card_list.dart';
+import 'package:dio/dio.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:toggle_switch/toggle_switch.dart';
@@ -32,8 +37,8 @@ class _PersonalPageState extends State<PersonalPage> {
   @override
   void initState() {
     _callback = (dynamic json) => this.setState(() {
-          _personalPageInfo = PersonalPageInfo.fromJson(json);
-        });
+        _personalPageInfo = PersonalPageInfo.fromJson(json);
+      });
     super.initState();
   }
 
@@ -44,6 +49,7 @@ class _PersonalPageState extends State<PersonalPage> {
       builder: (_, snapshot) {
         if (!snapshot.hasData) return Container();
         bool isSelf = snapshot.data == widget._userId;
+        bool isAdmin = StorageUtil().loginInfo.userType == UserType.Admin;
         String title = isSelf ? "我的个人主页" : _personalPageInfo.userName + "的个人主页";
         return Scaffold(
           appBar: AppBar(
@@ -52,7 +58,15 @@ class _PersonalPageState extends State<PersonalPage> {
               title,
               style: CustomStyles.pageTitleStyle,
             ),
-            actions: [isSelf ? _buildDropDownMenu() : Container()],
+            actions: [
+              isSelf ? _buildDropDownMenu() : Container(),
+              (isAdmin && !isSelf)
+                  ? Padding(
+                      padding: const EdgeInsets.all(11.0),
+                      child: _buildSilenceUserButton(),
+                    )
+                  : Container(),
+            ],
             leading: widget._fromCard ? _buildBackButton() : null,
             automaticallyImplyLeading: false,
             centerTitle: true,
@@ -80,7 +94,7 @@ class _PersonalPageState extends State<PersonalPage> {
               body: TabBarView(
                 children:[
                   Container(child: PostCardList(userId: widget._userId,)),
-                  Container(child: PostCardList()),
+                  Container(child: SearchedCommentCardList("", userId: widget._userId)),
                   Container(child: PostCardList(userId: widget._userId, isStarred: true,)),
                 ]
               ),
@@ -188,6 +202,114 @@ class _PersonalPageState extends State<PersonalPage> {
         ),
       ],
     );
+  }
+
+  Widget _buildSilenceUserButton() {
+    var iconSize = 26.0;
+    bool isLoading = false;
+
+    Future<void> _silenceUser(StateSetter setter) async {
+      setter(() {
+        isLoading = true;
+      });
+      try {
+        await AdminService.silenceUser(widget._userId);
+        setter(() {
+          _personalPageInfo.userType = UserType.Silenced;
+          isLoading = false;
+        });
+      } on DioError catch (e) {
+        MessageBox.showToast(
+            msg: e.message, messageBoxType: MessageBoxType.Error);
+        setter(() {
+          isLoading = false;
+        });
+      }
+    }
+
+    Future<void> _freeUser(StateSetter setter) async {
+      setter(() {
+        isLoading = true;
+      });
+      try {
+        await AdminService.freeUser(widget._userId);
+        setter(() {
+          _personalPageInfo.userType = UserType.User;
+          isLoading = false;
+        });
+      } on DioError catch (e) {
+        MessageBox.showToast(
+            msg: e.message, messageBoxType: MessageBoxType.Error);
+        setter(() {
+          isLoading = false;
+        });
+      }
+    }
+
+    return StatefulBuilder(builder: (bc, s) {
+      if (isLoading) return CupertinoActivityIndicator();
+
+      silenceCallback() {
+        _silenceUser(s);
+        Navigator.pop(context);
+      }
+
+      freeCallback() {
+        _freeUser(s);
+        Navigator.pop(context);
+      }
+
+      cancelCallback() {
+        Navigator.pop(context);
+      }
+
+      switch (_personalPageInfo.userType) {
+        case UserType.User:
+          {
+            return IconButton(
+                onPressed: () {
+                  showDialog(
+                      context: context,
+                      builder: (context) {
+                        return AdaptiveAlertDialog(
+                            "禁言用户",
+                            "你确认要禁言用户 ${_personalPageInfo.userName} 吗",
+                            "确定",
+                            "取消",
+                            silenceCallback,
+                            cancelCallback);
+                      });
+                },
+                icon: CustomStyles.getSilenceIcon(size: iconSize));
+          }
+        case UserType.Silenced:
+        case UserType.Banned:
+          {
+            return IconButton(
+                onPressed: () {
+                  showDialog(
+                      context: context,
+                      builder: (context) {
+                        return AdaptiveAlertDialog(
+                            "解禁用户",
+                            "你确认要解禁用户 ${_personalPageInfo.userName} 吗",
+                            "确定",
+                            "取消",
+                            freeCallback,
+                            cancelCallback);
+                      });
+                },
+                icon: CustomStyles.getFreeIcon(size: iconSize));
+          }
+        case UserType.Admin:
+          {
+            return IconButton(
+                onPressed: () {}, icon: CustomStyles.getAdminIcon());
+          }
+        default:
+          return Container();
+      }
+    });
   }
 
   _buildBackButton() {
