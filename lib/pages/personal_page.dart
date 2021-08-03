@@ -8,6 +8,7 @@ import 'package:comment_overflow/utils/route_generator.dart';
 import 'package:comment_overflow/utils/storage_util.dart';
 import 'package:comment_overflow/widgets/personal_profile_card.dart';
 import 'package:comment_overflow/widgets/post_card_list.dart';
+import 'package:comment_overflow/widgets/searched_comment_card_list.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:toggle_switch/toggle_switch.dart';
@@ -80,7 +81,7 @@ class _PersonalPageState extends State<PersonalPage> {
               body: TabBarView(
                 children:[
                   Container(child: PostCardList(userId: widget._userId,)),
-                  Container(child: PostCardList()),
+                  Container(child: SearchedCommentCardList("", userId: widget._userId)),
                   Container(child: PostCardList(userId: widget._userId, isStarred: true,)),
                 ]
               ),
