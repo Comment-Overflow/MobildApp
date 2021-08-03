@@ -40,6 +40,10 @@ class PostService {
     return await HttpUtil().dio.get('/posts/$userId', queryParameters: query.getData());
   }
 
+  static Future<Response> getMyComments(String userId, PostQueryDTO queryDTO) async {
+    return await HttpUtil().dio.get('/comments/$userId', queryParameters: queryDTO.getData());
+  }
+
   static Future<Response> getStarredPosts(PostQueryDTO query) async {
     return await HttpUtil().dio.get('/posts/starred', queryParameters: query.getData());
   }
