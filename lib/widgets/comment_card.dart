@@ -230,7 +230,7 @@ class _CommentCardState extends State<CommentCard>
         isDeleted = true;
       });
       MessageBox.showToast(
-          msg: "回复已被删除，刷新以更新。", messageBoxType: MessageBoxType.Success);
+          msg: "删除成功!", messageBoxType: MessageBoxType.Success);
     }
 
     cancelCallback() {

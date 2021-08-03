@@ -36,8 +36,8 @@ class _PersonalPageState extends State<PersonalPage> {
   @override
   void initState() {
     _callback = (dynamic json) => this.setState(() {
-          _personalPageInfo = PersonalPageInfo.fromJson(json);
-        });
+        _personalPageInfo = PersonalPageInfo.fromJson(json);
+      });
     super.initState();
   }
 
@@ -66,7 +66,8 @@ class _PersonalPageState extends State<PersonalPage> {
                     )
                   : Container(),
             ],
-            automaticallyImplyLeading: widget._fromCard,
+            leading: widget._fromCard ? _buildBackButton() : null,
+            automaticallyImplyLeading: false,
             centerTitle: true,
           ),
           body: DefaultTabController(
@@ -302,6 +303,13 @@ class _PersonalPageState extends State<PersonalPage> {
           return Container();
       }
     });
+  }
+
+  _buildBackButton() {
+    return GestureDetector(
+      onTap: () => Navigator.of(context).pop(),
+      child: CustomStyles.getDefaultBackIcon(size: 24.0, color: Colors.black),
+    );
   }
 }
 

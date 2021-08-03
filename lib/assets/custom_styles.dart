@@ -73,22 +73,14 @@ class CustomStyles {
   static final highlightedUserNameStyle =
       userNameStyle.copyWith(color: highlightedColor);
 
-  static const jumpPageStyle = TextStyle(
-    fontWeight: FontWeight.bold,
-    fontSize: 15.0
-  );
+  static const jumpPageStyle =
+      TextStyle(fontWeight: FontWeight.bold, fontSize: 15.0);
 
   static const currentPageStyle = TextStyle(
-      fontWeight: FontWeight.bold,
-      fontSize: 20.0,
-      color: Colors.white
-  );
+      fontWeight: FontWeight.bold, fontSize: 20.0, color: Colors.white);
 
   static const otherPageStyle = TextStyle(
-      fontWeight: FontWeight.bold,
-      fontSize: 18.0,
-      color: Colors.black87
-  );
+      fontWeight: FontWeight.bold, fontSize: 18.0, color: Colors.black54);
 
   static const userBriefStyle = TextStyle(
     color: Colors.grey,
@@ -248,7 +240,8 @@ class CustomStyles {
       Icon(Icons.keyboard_arrow_right_sharp, color: color, size: size);
 
   static Icon getDefaultMessageFailIcon({size = 14.0, color = Colors.red}) =>
-      Icon(CupertinoIcons.exclamationmark_circle_fill, color: color, size: size);
+      Icon(CupertinoIcons.exclamationmark_circle_fill,
+          color: color, size: size);
 
   static const referenceUserNameStyle = TextStyle(
     fontWeight: FontWeight.bold,
