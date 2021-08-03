@@ -183,6 +183,24 @@ class CustomStyles {
         size: size,
       );
 
+  static Icon getSilenceIcon({size = 14.0, color: Colors.black87}) => Icon(
+    CupertinoIcons.speaker_slash,
+    color: color,
+    size: size,
+  );
+
+  static Icon getFreeIcon({size = 14.0, color: Colors.black87}) => Icon(
+    CupertinoIcons.speaker_2,
+    color: color,
+    size: size,
+  );
+
+  static Icon getAdminIcon({size = 14.0, color: Colors.green}) => Icon(
+    Icons.verified_user_outlined,
+    color: color,
+    size: size,
+  );
+
   /// Default icon for female.
   static getDefaultFemaleIcon(
           {size = Constants.defaultPersonalPageHeaderTitleSize,
