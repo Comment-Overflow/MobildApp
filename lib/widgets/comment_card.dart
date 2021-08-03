@@ -25,16 +25,23 @@ class CommentCard extends StatefulWidget {
   final int _postId;
   final String _title;
   final bool _highlight;
+  final bool _isPostFrozen;
   final int _userId;
   final Function? _replyCallback;
   final Function? _jumpCallback;
 
   const CommentCard(this._comment, this._postId, this._userId,
-      {Key? key, title = "", highlight = false, replyCallback, jumpCallback})
+      {Key? key,
+      title = "",
+      highlight = false,
+      replyCallback,
+      jumpCallback,
+      isPostFrozen = false})
       : _title = title,
         _highlight = highlight,
         _replyCallback = replyCallback,
         _jumpCallback = jumpCallback,
+        _isPostFrozen = isPostFrozen,
         super(key: key);
 
   @override
@@ -165,12 +172,14 @@ class _CommentCardState extends State<CommentCard>
                           size: _iconSize,
                           showText: false,
                         ),
-                        IconButton(
-                          splashColor: Colors.transparent,
-                          icon:
-                              CustomStyles.getDefaultReplyIcon(size: _iconSize),
-                          onPressed: _pushReply,
-                        ),
+                        widget._isPostFrozen
+                            ? Container()
+                            : IconButton(
+                                splashColor: Colors.transparent,
+                                icon: CustomStyles.getDefaultReplyIcon(
+                                    size: _iconSize),
+                                onPressed: _pushReply,
+                              ),
                         _buildDeleteButton(),
                       ],
                     )
@@ -237,7 +246,8 @@ class _CommentCardState extends State<CommentCard>
       Navigator.pop(context);
     }
 
-    return widget._userId == widget._comment.user.userId ||
+    return (widget._userId == widget._comment.user.userId &&
+                !widget._isPostFrozen) ||
             StorageUtil().loginInfo.userType == UserType.Admin
         ? IconButton(
             splashColor: Colors.transparent,

@@ -121,6 +121,16 @@ class PostCard extends StatelessWidget {
             TextSpan(
               text: ' ${_post.approvalCount} · ${_post.hostComment.timeString}',
             ),
+            WidgetSpan(
+                child:
+                    _post.isFrozen ? Row(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        SizedBox(width: 130.0),
+                        CustomStyles.getFreezeIcon(),
+                        Text("该帖子已被锁定", style: CustomStyles.postFrozenStyle)
+                      ],
+                    ) : Container()),
           ],
           style: CustomStyles.postFooterStyle,
         ),
@@ -246,6 +256,9 @@ class SearchedCommentCard extends StatelessWidget {
               text:
                   ' ${_post.searchedComment.approvalCount} · ${_post.hostComment.timeString}',
             ),
+            WidgetSpan(
+                child:
+                _post.isFrozen ? CustomStyles.getFreezeIcon() : Container()),
           ],
           style: CustomStyles.postFooterStyle,
         ),

@@ -55,7 +55,13 @@ class _CommentCardListState extends State<CommentCardList> {
       },
       (context, item, index, {highlight: false, jumpCallback}) =>
           (item as Comment).floor == 0
-              ? CommentCard(item, post.postId, userId, title: post.title)
+              ? CommentCard(
+                  item,
+                  post.postId,
+                  userId,
+                  title: post.title,
+                  isPostFrozen: post.isFrozen,
+                )
               : CommentCard(
                   item,
                   post.postId,
@@ -63,6 +69,7 @@ class _CommentCardListState extends State<CommentCardList> {
                   highlight: highlight,
                   replyCallback: widget._replyCallback,
                   jumpCallback: jumpCallback,
+                  isPostFrozen: post.isFrozen,
                 ),
       widget._distantJumpCallback,
       widget._changePageCallback,
