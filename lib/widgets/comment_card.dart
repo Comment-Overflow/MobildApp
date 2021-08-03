@@ -219,7 +219,7 @@ class _CommentCardState extends State<CommentCard>
     try {
       await PostService.deleteComment(widget._comment.id);
     } on DioError catch (e) {
-      print(e.message);
+      print(e.response!.data);
     }
   }
 

@@ -37,8 +37,8 @@ class _PersonalPageState extends State<PersonalPage> {
   @override
   void initState() {
     _callback = (dynamic json) => this.setState(() {
-        _personalPageInfo = PersonalPageInfo.fromJson(json);
-      });
+          _personalPageInfo = PersonalPageInfo.fromJson(json);
+        });
     super.initState();
   }
 
@@ -91,13 +91,19 @@ class _PersonalPageState extends State<PersonalPage> {
                   ),
                 ];
               },
-              body: TabBarView(
-                children:[
-                  Container(child: PostCardList(userId: widget._userId,)),
-                  Container(child: SearchedCommentCardList("", userId: widget._userId)),
-                  Container(child: PostCardList(userId: widget._userId, isStarred: true,)),
-                ]
-              ),
+              body: TabBarView(children: [
+                Container(
+                    child: PostCardList(
+                  userId: widget._userId,
+                )),
+                Container(
+                    child: SearchedCommentCardList("", userId: widget._userId)),
+                Container(
+                    child: PostCardList(
+                  userId: widget._userId,
+                  isStarred: true,
+                )),
+              ]),
             ),
           ),
           bottomNavigationBar:
@@ -220,7 +226,7 @@ class _PersonalPageState extends State<PersonalPage> {
         });
       } on DioError catch (e) {
         MessageBox.showToast(
-            msg: e.message, messageBoxType: MessageBoxType.Error);
+            msg: e.response!.data, messageBoxType: MessageBoxType.Error);
         setter(() {
           isLoading = false;
         });
