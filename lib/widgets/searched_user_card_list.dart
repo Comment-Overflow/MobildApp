@@ -1,7 +1,4 @@
-import 'dart:math';
-
 import 'package:comment_overflow/assets/constants.dart';
-import 'package:comment_overflow/fake_data/fake_data.dart';
 import 'package:comment_overflow/model/user_info.dart';
 import 'package:comment_overflow/service/search_service.dart';
 import 'package:comment_overflow/utils/paging_manager.dart';
