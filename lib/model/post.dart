@@ -19,7 +19,7 @@ class Post {
   Post(this._postId, this._title, this._commentCount, this._approvalCount,
       this._hostComment, this.isStarred, this.isFrozen);
 
-  factory Post.fromJson(dynamic json) => Post(
+  factory Post.fromJson(Map<String, dynamic> json) => Post(
       json['id'] as int,
       json['title'] as String,
       json['commentCount'] as int,
@@ -27,6 +27,11 @@ class Post {
       Comment.fromJson(json['hostComment']),
       json['isStarred'] as bool,
       json['isFrozen'] as bool);
+
+  @override
+  String toString() {
+    return 'Post{_postId: $_postId, _title: $_title, _commentCount: $_commentCount, _approvalCount: $_approvalCount, _hostComment: $_hostComment, isStarred: $isStarred, isFrozen: $isFrozen}';
+  }
 }
 
 class SearchedPost extends Post {

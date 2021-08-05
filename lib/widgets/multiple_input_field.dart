@@ -1,6 +1,5 @@
 import 'package:comment_overflow/assets/constants.dart';
 import 'package:comment_overflow/assets/custom_styles.dart';
-import 'package:comment_overflow/model/comment.dart';
 import 'package:comment_overflow/model/quote.dart';
 import 'package:comment_overflow/model/request_dto/new_comment_dto.dart';
 import 'package:comment_overflow/service/post_service.dart';
@@ -203,8 +202,7 @@ class MultipleInputField extends StatelessWidget {
 
   Future<void> _selectAssets() async {
     final List<AssetEntity>? result = await MyImagePicker.pickImage(_context,
-        maxAssets: Constants.maxImageNumber - _assets.length,
-        selectedAssets: _assets);
+        maxAssets: Constants.maxImageNumber, selectedAssets: _assets);
     if (result != null) {
       _assets.clear();
       _assets.addAll(List<AssetEntity>.from(result));

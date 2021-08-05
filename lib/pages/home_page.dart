@@ -1,13 +1,16 @@
 import 'package:comment_overflow/assets/constants.dart';
 import 'package:comment_overflow/utils/route_generator.dart';
+import 'package:comment_overflow/widgets/following_comment_list.dart';
+import 'package:comment_overflow/widgets/hot_post_list.dart';
 import 'package:comment_overflow/widgets/post_card_list.dart';
 import 'package:comment_overflow/widgets/search_bar.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 
-class HomePage extends StatelessWidget {
-  final _tabs = ['时间线', '推荐', '关注'] + Constants.postCategories;
+final _tabs = ['时间线', '热榜', '推荐', '关注'] + Constants.postCategories;
 
+class HomePage extends StatelessWidget {
   HomePage({Key? key}) : super(key: key);
 
   @override
@@ -20,8 +23,8 @@ class HomePage extends StatelessWidget {
             headerSliverBuilder: (context, value) => [
               SliverAppBar(
                 automaticallyImplyLeading: false,
-                pinned: true,
                 floating: true,
+                pinned: true,
                 elevation: Constants.defaultAppBarElevation,
                 title: Row(
                   children: [
@@ -30,7 +33,7 @@ class HomePage extends StatelessWidget {
                     buildAddButton(context),
                   ],
                 ),
-                bottom: buildTabBar(),
+                bottom: _buildTabBar(context),
               ),
             ],
             body: TabBarView(
@@ -40,12 +43,15 @@ class HomePage extends StatelessWidget {
                   child: PostCardList(),
                   removeTop: true,
                 ),
+                MediaQuery.removePadding(
+                  context: context,
+                  child: HotPostList(),
+                  removeTop: true,
+                ),
                 Container(child: Text("TODO")),
                 MediaQuery.removePadding(
                   context: context,
-                  child: PostCardList(
-                    followingOnly: true,
-                  ),
+                  child: FollowingCommentList(),
                   removeTop: true,
                 ),
                 MediaQuery.removePadding(
@@ -87,19 +93,10 @@ class HomePage extends StatelessWidget {
         ),
       );
 
-  buildTabBar() => TabBar(
-        tabs: _tabs
-            .map((e) => Tab(
-                  text: e,
-                ))
-            .toList(),
-        isScrollable: true,
-      );
-
   buildAddButton(BuildContext context) => ConstrainedBox(
         constraints: BoxConstraints.tightFor(
-          width: Constants.searchBarHeight,
-          height: Constants.searchBarHeight,
+          width: Constants.searchBarHeight * 0.95,
+          height: Constants.searchBarHeight * 0.95,
         ),
         child: ElevatedButton(
           onPressed: () =>
@@ -112,4 +109,60 @@ class HomePage extends StatelessWidget {
           child: Icon(Icons.add_outlined),
         ),
       );
+
+  _buildTabBar(BuildContext context) {
+    final TabBar _tabBar = TabBar(
+      tabs: _tabs
+          .map((e) => Tab(
+                text: e,
+              ))
+          .toList(),
+      isScrollable: true,
+    );
+
+    final _realTabBar = Theme(
+      data: Theme.of(context).copyWith(
+          highlightColor: Colors.transparent, splashColor: Colors.transparent),
+      child: _tabBar,
+    );
+
+    return PreferredSize(
+      preferredSize: Size.fromHeight(_tabBar.preferredSize.height),
+      child: Row(children: [
+        Expanded(
+          child: Stack(
+            alignment: Alignment.centerRight,
+            children: [
+              _realTabBar,
+              Container(
+                  height: _tabBar.preferredSize.height,
+                  width: 20,
+                  decoration: BoxDecoration(
+                      gradient: LinearGradient(
+                    begin: Alignment.centerLeft,
+                    end: Alignment.centerRight,
+                    colors: [
+                      Colors.white.withOpacity(0.0),
+                      Colors.white,
+                    ],
+                  ))),
+            ],
+          ),
+        ),
+        Padding(
+          padding: const EdgeInsets.only(right: 16.0),
+          child: SizedBox(
+              width: Constants.searchBarHeight * 0.95,
+              child: IconButton(
+                padding: EdgeInsets.zero,
+                splashColor: Theme.of(context).buttonColor,
+                splashRadius: Constants.searchBarHeight * 0.48,
+                icon: Icon(Icons.equalizer, color: Colors.grey),
+                onPressed: () => Navigator.of(context)
+                    .pushNamed(RouteGenerator.statisticRoute),
+              )),
+        ),
+      ]),
+    );
+  }
 }
