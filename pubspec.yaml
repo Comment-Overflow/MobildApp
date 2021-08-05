@@ -70,6 +70,7 @@ dependencies:
   skeleton_text: ^3.0.0
   empty_widget: ^0.0.5
   image_gallery_saver: ^1.6.9
+  animated_flip_counter: ^0.1.2
 
 dev_dependencies:
   flutter_test:

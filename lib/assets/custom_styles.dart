@@ -117,6 +117,15 @@ class CustomStyles {
     fontSize: 14.0,
   );
 
+  static const statisticFigureStyle = TextStyle(
+    fontSize: 34.0,
+    fontWeight: FontWeight.bold
+  );
+
+  static const statisticTextStyle = TextStyle(
+      fontSize: 22.0
+  );
+
   static const profileSettingItemTitleStyle = TextStyle(
       color: Colors.blueGrey, fontWeight: FontWeight.normal, fontSize: 16.0);
 

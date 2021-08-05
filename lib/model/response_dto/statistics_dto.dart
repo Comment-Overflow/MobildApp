@@ -76,6 +76,40 @@ class StatisticsDTO {
 
   int get viewCountOverall => _viewCountOverall;
 
+  int getCountByIndex(int index) {
+    switch (index) {
+      case 0: return _postCountLastDay;
+      case 1: return _commentCountLastDay;
+      case 2: return _userCountLastDay;
+      case 3: return _activeUserCountLastDay;
+      case 4: return _approvalCountLastDay;
+      case 5: return _viewCountLastDay;
+
+      case 6: return _postCountLastWeek;
+      case 7: return _commentCountLastWeek;
+      case 8: return _userCountLastWeek;
+      case 9: return _activeUserCountLastWeek;
+      case 10: return _approvalCountLastWeek;
+      case 11: return _viewCountLastWeek;
+
+      case 12: return _postCountLastMonth;
+      case 13: return _commentCountLastMonth;
+      case 14: return _userCountLastMonth;
+      case 15: return _activeUserCountLastMonth;
+      case 16: return _approvalCountLastMonth;
+      case 17: return _viewCountLastMonth;
+
+      case 18: return _postCountOverall;
+      case 19: return _commentCountOverall;
+      case 20: return _userCountOverall;
+      case 21: return _activeUserCountOverall;
+      case 22: return _approvalCountOverall;
+      case 23: return _viewCountOverall;
+
+      default: return 0;
+    }
+  }
+
   StatisticsDTO.fromList(List<dynamic> list)
       : _postCountLastDay = list[0] as int,
         _commentCountLastDay = list[1] as int,

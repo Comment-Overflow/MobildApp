@@ -128,6 +128,10 @@ class Constants {
 
   static const List<String> personalPageTabs = ["我的帖子", "我的回复", "我的收藏"];
 
+  static const List<String> statisticPageTabs = ["今天", "本周", "本月", "所有"];
+
+  static const List<String> statistics = ["发帖数", "评论数", "新注册用户", "活跃用户", "点赞数", "浏览量"];
+
   static const String emailToken = 'emailToken';
 
   static const String token = 'token';
@@ -192,6 +196,10 @@ enum UserActionType {
   follow,
   reply,
   star,
+}
+
+enum StatisticPeriodType {
+  Day, Week, Month, All
 }
 
 enum MessageType { Text, Image, TemporaryImage }

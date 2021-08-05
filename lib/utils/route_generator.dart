@@ -16,6 +16,7 @@ import 'package:comment_overflow/pages/profile_setting_page.dart';
 import 'package:comment_overflow/pages/scroll_view_page.dart';
 import 'package:comment_overflow/pages/search_page.dart';
 import 'package:comment_overflow/pages/search_result_page.dart';
+import 'package:comment_overflow/pages/statistic_page.dart';
 import 'package:comment_overflow/widgets/follow_record_card_list.dart';
 import 'package:comment_overflow/widgets/image_gallery.dart';
 import 'package:comment_overflow/widgets/notification_card_list.dart';
@@ -87,7 +88,7 @@ class RouteGenerator {
             settings: settings, builder: (_) => LoginPage());
       case newPostRoute:
         return MaterialPageRoute(
-            settings: settings, builder: (_) => NewPostPage());
+            settings: settings, builder: (_) => StatisticPage());
       case searchRoute:
         return MaterialPageRoute(
             settings: settings, builder: (_) => SearchPage());
