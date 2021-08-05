@@ -1,6 +1,5 @@
 import 'package:comment_overflow/assets/constants.dart';
 import 'package:comment_overflow/assets/custom_styles.dart';
-import 'package:comment_overflow/model/comment.dart';
 import 'package:comment_overflow/model/quote.dart';
 import 'package:comment_overflow/model/request_dto/new_comment_dto.dart';
 import 'package:comment_overflow/service/post_service.dart';

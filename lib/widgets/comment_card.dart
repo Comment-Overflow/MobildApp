@@ -154,9 +154,11 @@ class _CommentCardState extends State<CommentCard>
                       child: Text("该回复已被删除",
                           style: CustomStyles.commentDeletedStyle,
                           textAlign: TextAlign.center))
-                  : Text(
-                      widget._comment.content,
-                    ),
+                  : widget._comment.content.isNotEmpty
+                      ? Text(
+                          widget._comment.content,
+                        )
+                      : SizedBox.shrink(),
               _gap,
               ImageList(isDeleted ? [] : widget._comment.imageUrl),
               widget._comment.floor > 0 && !isDeleted

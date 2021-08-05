@@ -38,7 +38,8 @@ class RouteGenerator {
   static const approveMeRoute = '/approval';
   static const replyMeRoute = '/comment';
   static const starMeRoute = '/star';
-  static const privateChatRoute = 'private_chat';
+  static const privateChatRoute = '/private_chat';
+  static const statisticRoute = '/statistic';
 
   /// Shows the list of notification when other users have followed me.
   static const followMeNotificationRoute = '/follow';
@@ -88,7 +89,7 @@ class RouteGenerator {
             settings: settings, builder: (_) => LoginPage());
       case newPostRoute:
         return MaterialPageRoute(
-            settings: settings, builder: (_) => StatisticPage());
+            settings: settings, builder: (_) => NewPostPage());
       case searchRoute:
         return MaterialPageRoute(
             settings: settings, builder: (_) => SearchPage());
@@ -135,6 +136,8 @@ class RouteGenerator {
             settings: settings,
             builder: (_) =>
                 PagesContainer(defaultIndex: args == null ? 0 : args as int));
+      case statisticRoute:
+        return MaterialPageRoute(builder: (_) => StatisticPage());
       case introRoute:
       default:
         return MaterialPageRoute(

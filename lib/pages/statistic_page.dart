@@ -37,28 +37,32 @@ class _StatisticPageState extends State<StatisticPage> {
 
   @override
   Widget build(BuildContext context) {
-    return _hasData ? DefaultTabController(
-      length: Constants.statisticPageTabs.length,
-      child: Scaffold(
-        appBar: AppBar(
-          elevation: Constants.defaultAppBarElevation,
-          title: Text("奉告统计", style: CustomStyles.pageTitleStyle),
-          centerTitle: true,
-          bottom: TabBar(
-            tabs: Constants.statisticPageTabs.map((e) => Tab(text: e)).toList(),
-            isScrollable: false,
-          ),
-        ),
-        body: TabBarView(
-          children: [
-            StatisticsList(dto: dto!, type: StatisticPeriodType.Day),
-            StatisticsList(dto: dto!, type: StatisticPeriodType.Week),
-            StatisticsList(dto: dto!, type: StatisticPeriodType.Month),
-            StatisticsList(dto: dto!, type: StatisticPeriodType.All),
-          ],
-        ),
-      ),
-    ) : Container();
+    return _hasData
+        ? DefaultTabController(
+            length: Constants.statisticPageTabs.length,
+            child: Scaffold(
+              appBar: AppBar(
+                elevation: Constants.defaultAppBarElevation,
+                title: Text("奉告统计", style: CustomStyles.pageTitleStyle),
+                centerTitle: true,
+                bottom: TabBar(
+                  tabs: Constants.statisticPageTabs
+                      .map((e) => Tab(text: e))
+                      .toList(),
+                  isScrollable: false,
+                ),
+              ),
+              body: TabBarView(
+                children: [
+                  StatisticsList(dto: dto!, type: StatisticPeriodType.Day),
+                  StatisticsList(dto: dto!, type: StatisticPeriodType.Week),
+                  StatisticsList(dto: dto!, type: StatisticPeriodType.Month),
+                  StatisticsList(dto: dto!, type: StatisticPeriodType.All),
+                ],
+              ),
+            ),
+          )
+        : Container();
   }
 
   @override

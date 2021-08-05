@@ -1,7 +1,5 @@
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:comment_overflow/assets/custom_styles.dart';
 import 'package:comment_overflow/widgets/user_avatar.dart';
-import 'package:extended_image/extended_image.dart';
 import 'package:flutter/widgets.dart';
 import 'package:substring_highlight/substring_highlight.dart';
 
