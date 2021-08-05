@@ -4,6 +4,7 @@ import 'package:extended_image/extended_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:skeleton_text/skeleton_text.dart';
+import 'package:skeletons/skeletons.dart';
 import 'package:wechat_assets_picker/wechat_assets_picker.dart';
 
 class UserAvatar extends StatelessWidget {
@@ -52,11 +53,9 @@ class UserAvatar extends StatelessWidget {
             loadStateChanged: (ExtendedImageState state) {
               switch (state.extendedImageLoadState) {
                 case LoadState.loading:
-                  return SkeletonAnimation(
-                    borderRadius: BorderRadius.circular(50),
-                    shimmerDuration: 2000,
-                    child: Container(
-                      color: Colors.grey[200],
+                  return SkeletonAvatar(
+                    style: SkeletonAvatarStyle(
+                      shape: BoxShape.circle,
                     ),
                   );
                 case LoadState.completed:
@@ -76,11 +75,9 @@ class UserAvatar extends StatelessWidget {
           loadStateChanged: (ExtendedImageState state) {
             switch (state.extendedImageLoadState) {
               case LoadState.loading:
-                return SkeletonAnimation(
-                  borderRadius: BorderRadius.circular(50),
-                  shimmerDuration: 2000,
-                  child: Container(
-                    color: Colors.grey[200],
+                return SkeletonAvatar(
+                  style: SkeletonAvatarStyle(
+                      shape: BoxShape.circle,
                   ),
                 );
               case LoadState.completed:

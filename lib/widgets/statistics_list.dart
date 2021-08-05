@@ -45,10 +45,10 @@ class StatisticsList extends StatelessWidget {
           itemCount: 6,
           itemBuilder: (bc, index) {
             return Card(
-              shadowColor: Colors.blueAccent,
+              shadowColor: Colors.black87,
               child: Column(
                 children: [
-                  SizedBox(height: 30.0),
+                  SizedBox(height: 36.0),
                   Text(Constants.statistics[index],
                       style: CustomStyles.statisticTextStyle),
                   SizedBox(height: 10.0),
