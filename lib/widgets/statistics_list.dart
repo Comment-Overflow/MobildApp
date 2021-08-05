@@ -45,6 +45,7 @@ class StatisticsList extends StatelessWidget {
           itemCount: 6,
           itemBuilder: (bc, index) {
             return Card(
+              elevation: Constants.defaultCardElevation,
               shadowColor: Colors.blueAccent,
               child: Column(
                 children: [
