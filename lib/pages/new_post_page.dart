@@ -5,6 +5,7 @@ import 'package:comment_overflow/model/post.dart';
 import 'package:comment_overflow/model/request_dto/new_post_dto.dart';
 import 'package:comment_overflow/model/routing_dto/jump_post_dto.dart';
 import 'package:comment_overflow/service/post_service.dart';
+import 'package:comment_overflow/utils/general_utils.dart';
 import 'package:comment_overflow/utils/message_box.dart';
 import 'package:comment_overflow/utils/my_image_picker.dart';
 import 'package:comment_overflow/utils/route_generator.dart';
@@ -186,12 +187,25 @@ class _NewPostPageState extends State<NewPostPage> {
   }
 
   Future<void> _post() async {
+    setState(() {
+      _isLoading = true;
+    });
+
+    // Check image size to be less than 20MB each.
+    List<int> overSizedIndex = await GeneralUtils.checkImageSize(_assets);
+    if (overSizedIndex.isNotEmpty) {
+      MessageBox.showToast(
+          msg: "发帖失败！" + GeneralUtils.buildOverSizeAlert(overSizedIndex),
+          messageBoxType: MessageBoxType.Error);
+      setState(() {
+        _isLoading = false;
+      });
+      return;
+    }
+
     final dto = NewPostDTO(
         tag: _tags[_idx], title: _title, content: _content, assets: _assets);
     try {
-      setState(() {
-        _isLoading = true;
-      });
       final response = await PostService.postPost(dto);
       Navigator.pushReplacement(
           context,
@@ -200,6 +214,13 @@ class _NewPostPageState extends State<NewPostPage> {
             arguments: JumpPostDTO(Post.fromJson(response.data)),
           )));
     } on DioError catch (e) {
+      // Error: Connect timeout.
+      if (e.type == DioErrorType.connectTimeout) {
+        MessageBox.showToast(
+            msg: "发帖失败！网络连接超时", messageBoxType: MessageBoxType.Error);
+        return;
+      }
+      // Error: User silenced.
       if (e.response != null && e.response!.statusCode == 401) {
         MessageBox.showToast(
             msg: "发帖失败！您已被禁言", messageBoxType: MessageBoxType.Error);
@@ -209,13 +230,10 @@ class _NewPostPageState extends State<NewPostPage> {
         Navigator.pop(context);
         return;
       }
+      // Error: Any other type.
       MessageBox.showToast(
           msg: "发帖失败！${e.response!.data}",
           messageBoxType: MessageBoxType.Error);
-    } on Error {
-      // FIXME: not working
-      MessageBox.showToast(
-          msg: "发帖失败！每张图片大小应小于20MB.", messageBoxType: MessageBoxType.Error);
     } finally {
       setState(() {
         _isLoading = false;

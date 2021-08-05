@@ -2,6 +2,7 @@ import 'package:comment_overflow/assets/constants.dart';
 import 'package:comment_overflow/exceptions/user_unauthorized_exception.dart';
 import 'package:comment_overflow/utils/storage_util.dart';
 import 'package:dart_date/dart_date.dart';
+import 'package:wechat_assets_picker/wechat_assets_picker.dart';
 
 class GeneralUtils {
   /// Convert DateTime to String by default. Eliminate verbose
@@ -78,5 +79,33 @@ class GeneralUtils {
       default:
         return FollowStatus.none;
     }
+  }
+
+  static Future<List<int>> checkImageSize(List<AssetEntity> images) async {
+    List<int> indices = List.empty(growable: true);
+    int index = 0;
+    for (final image in images) {
+      if ((await image.file)!.lengthSync() > Constants.sizeLimitBytes) {
+        indices.add(index++);
+      }
+    }
+    return indices;
+  }
+
+  static String buildOverSizeAlert(List<int> indices) {
+    StringBuffer buffer = StringBuffer();
+    buffer.write('第');
+
+    int i = 0;
+    int length = indices.length;
+
+    for (int index in indices) {
+      ++i;
+      buffer.write(index + 1);
+      if (i != length) buffer.write(', ');
+    }
+    buffer.write('张图片超过大小限制 (${Constants.sizeLimitMB.floor()}MB)');
+
+    return buffer.toString();
   }
 }

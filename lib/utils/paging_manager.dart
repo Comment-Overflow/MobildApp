@@ -44,10 +44,17 @@ class PagingManager<T> {
   String? _emptyIndicatorTitle;
   String? _emptyIndicatorSubtitle;
 
+  Widget _firstPageIndicator;
+
   PagingManager(this._pageSize, this._customFetchApi, this._customItemBuilder,
-      {enableAutoScroll = false, emptyIndicatorTitle, emptyIndicatorSubtitle})
-      : this._emptyIndicatorTitle = emptyIndicatorTitle,
-        this._emptyIndicatorSubtitle = emptyIndicatorSubtitle {
+      {enableAutoScroll = false,
+      emptyIndicatorTitle,
+      emptyIndicatorSubtitle,
+      firstPageIndicator})
+      : _emptyIndicatorTitle = emptyIndicatorTitle,
+        _emptyIndicatorSubtitle = emptyIndicatorSubtitle,
+        _firstPageIndicator =
+            firstPageIndicator == null ? Container() : firstPageIndicator {
     this._wrappedFetchApi = (pageKey) {
       _fetchPage(pageKey);
     };
@@ -103,7 +110,7 @@ class PagingManager<T> {
         transitionDuration: const Duration(milliseconds: 200),
         itemBuilder: (context, item, index) =>
             _customItemBuilder(context, item, index),
-        firstPageProgressIndicatorBuilder: (_) => Container(),
+        firstPageProgressIndicatorBuilder: (_) => _firstPageIndicator,
         noItemsFoundIndicatorBuilder: (_) => buildEmptyWidget(),
         noMoreItemsIndicatorBuilder: (_) => buildNoMoreItemsIndicator(),
       ),

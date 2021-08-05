@@ -3,6 +3,7 @@ import 'package:comment_overflow/assets/custom_styles.dart';
 import 'package:comment_overflow/model/quote.dart';
 import 'package:comment_overflow/model/request_dto/new_comment_dto.dart';
 import 'package:comment_overflow/service/post_service.dart';
+import 'package:comment_overflow/utils/general_utils.dart';
 import 'package:comment_overflow/utils/message_box.dart';
 import 'package:comment_overflow/utils/my_image_picker.dart';
 import 'package:comment_overflow/widgets/quote_card.dart';
@@ -111,11 +112,30 @@ class MultipleInputField extends StatelessWidget {
                 Padding(
                     padding: EdgeInsets.only(right: 5.0),
                     child: StatefulBuilder(builder: (c, s) {
+                      // Check for empty content.
                       Future<void> _postComment() async {
                         if (_controller.text.isEmpty) {
                           MessageBox.showToast(
                               msg: "回复文字不能为空",
                               messageBoxType: MessageBoxType.Error);
+                          return;
+                        }
+
+                        s(() {
+                          _isLoading = true;
+                        });
+                        // Check image size to be less than 20MB each.
+                        List<int> overSizedIndex =
+                            await GeneralUtils.checkImageSize(_assets);
+                        if (overSizedIndex.isNotEmpty) {
+                          MessageBox.showToast(
+                              msg: "发帖失败！" +
+                                  GeneralUtils.buildOverSizeAlert(
+                                      overSizedIndex),
+                              messageBoxType: MessageBoxType.Error);
+                          s(() {
+                            _isLoading = false;
+                          });
                           return;
                         }
                         final dto = NewCommentDTO(
@@ -124,9 +144,6 @@ class MultipleInputField extends StatelessWidget {
                             content: _controller.text,
                             assets: _assets);
                         try {
-                          s(() {
-                            _isLoading = true;
-                          });
                           final response = await PostService.postComment(dto);
                           MessageBox.showToast(
                               msg: "回复成功",

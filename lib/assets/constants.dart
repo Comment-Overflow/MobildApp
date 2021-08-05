@@ -110,6 +110,10 @@ class Constants {
 
   static const postCommentTimeout = 30;
 
+  static const sizeLimitBytes = 5 * 1024 * 1024;
+
+  static final sizeLimitMB = sizeLimitBytes / 1024 / 1024;
+
   // Categories of posts
   static const List<String> postCategories = [
     '校园生活',
@@ -130,7 +134,14 @@ class Constants {
 
   static const List<String> statisticPageTabs = ["今天", "本周", "本月", "所有"];
 
-  static const List<String> statistics = ["发帖数", "评论数", "新注册用户", "活跃用户", "点赞数", "浏览量"];
+  static const List<String> statistics = [
+    "发帖数",
+    "评论数",
+    "新注册用户",
+    "活跃用户",
+    "点赞数",
+    "浏览量"
+  ];
 
   static const String emailToken = 'emailToken';
 
@@ -202,9 +213,7 @@ enum UserActionType {
   star,
 }
 
-enum StatisticPeriodType {
-  Day, Week, Month, All
-}
+enum StatisticPeriodType { Day, Week, Month, All }
 
 enum MessageType { Text, Image, TemporaryImage }
 
