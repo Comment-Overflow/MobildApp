@@ -9,9 +9,8 @@ import 'package:dio/dio.dart';
 class PostService {
   static Future<Response> postPost(NewPostDTO newPost) async {
     return await HttpUtil()
-        .dio
-        .post('/post', data: await newPost.formData())
-        .timeout(Duration(seconds: Constants.postCommentTimeout));
+        .longConnDio
+        .post('/post', data: await newPost.formData(), options: Options());
   }
 
   static Future<Response> getPost(int postId) async {
@@ -28,7 +27,7 @@ class PostService {
 
   static Future<Response> getPostComments(CommentQueryDTO query) async {
     return await HttpUtil()
-        .dio
+        .longConnDio
         .get('/post/comments', queryParameters: query.getData());
   }
 

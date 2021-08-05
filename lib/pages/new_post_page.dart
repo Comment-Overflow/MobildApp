@@ -209,6 +209,7 @@ class _NewPostPageState extends State<NewPostPage> {
         Navigator.pop(context);
         return;
       }
+      print(e.type);
       MessageBox.showToast(
           msg: "发帖失败！${e.response!.data}",
           messageBoxType: MessageBoxType.Error);
