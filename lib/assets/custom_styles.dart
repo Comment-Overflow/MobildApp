@@ -124,6 +124,10 @@ class CustomStyles {
   static Icon getDefaultReplyIcon({size = 14.0, color = Colors.grey}) =>
       Icon(CupertinoIcons.text_bubble, color: color, size: size);
 
+  /// Default icon for hot index.
+  static Icon getDefaultHotIcon({size = 14.0, color = Colors.grey}) =>
+      Icon(CupertinoIcons.flame_fill, color: color, size: size);
+
   /// Default icon for thumb up.
   static getDefaultThumbUpIcon({size = 14.0, color = Colors.pinkAccent}) =>
       Icon(CupertinoIcons.heart_fill, color: color, size: size);

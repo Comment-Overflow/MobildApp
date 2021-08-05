@@ -37,15 +37,22 @@ class PostService {
   }
 
   static Future<Response> getMyPosts(String userId, PostQueryDTO query) async {
-    return await HttpUtil().dio.get('/posts/$userId', queryParameters: query.getData());
+    return await HttpUtil()
+        .dio
+        .get('/posts/$userId', queryParameters: query.getData());
   }
 
-  static Future<Response> getMyComments(String userId, PostQueryDTO queryDTO) async {
-    return await HttpUtil().dio.get('/comments/$userId', queryParameters: queryDTO.getData());
+  static Future<Response> getMyComments(
+      String userId, PostQueryDTO queryDTO) async {
+    return await HttpUtil()
+        .dio
+        .get('/comments/$userId', queryParameters: queryDTO.getData());
   }
 
   static Future<Response> getStarredPosts(PostQueryDTO query) async {
-    return await HttpUtil().dio.get('/posts/starred', queryParameters: query.getData());
+    return await HttpUtil()
+        .dio
+        .get('/posts/starred', queryParameters: query.getData());
   }
 
   static Future<Response> postComment(NewCommentDTO newComment) async {
@@ -65,5 +72,21 @@ class PostService {
     return await HttpUtil()
         .dio
         .delete('/comment', queryParameters: {'commentId': commentId});
+  }
+
+  static Future<Response> getHotList(page, pageSize) async {
+    return await HttpUtil().dio.get('/posts/hot-list', queryParameters: {
+      'pageNum': page,
+      'pageSize': pageSize,
+    });
+  }
+
+  static Future<Response> getFollowingComments(page, pageSize) async {
+    return await HttpUtil()
+        .dio
+        .get('/comments/followed-users', queryParameters: {
+      'pageNum': page,
+      'pageSize': pageSize,
+    });
   }
 }

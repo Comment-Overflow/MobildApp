@@ -158,6 +158,10 @@ class Constants {
 
   static const String searchUserEmptyIndicatorSubtitle = '也许只是擦肩而过';
 
+  static const String commentEmptyIndicatorTitle = "还没有发言";
+
+  static const String followingCommentEmptyIndicatorSubtitle = "人都是需要休息的";
+
   static const String browsePostIndicatorTitle = '还没有话题';
 
   static const String browsePostEmptyIndicatorSubtitle = '做第一个打破沉默的人吧';
@@ -223,19 +227,19 @@ enum MessageStatus { Normal, Sending, Failed }
 enum UserType { Admin, User, Unauthorized, Banned, Silenced }
 
 Map<String, UserType> userTypeMap = {
-  "ADMIN" : UserType.Admin,
-  "USER" : UserType.User,
-  "UNAUTHORIZED" : UserType.Unauthorized,
-  "BANNED" : UserType.Banned,
-  "SILENCED" : UserType.Silenced
+  "ADMIN": UserType.Admin,
+  "USER": UserType.User,
+  "UNAUTHORIZED": UserType.Unauthorized,
+  "BANNED": UserType.Banned,
+  "SILENCED": UserType.Silenced
 };
 
 Map<UserType, String> userTypeString = {
-  UserType.Admin : "ADMIN",
-  UserType.User : "USER",
-  UserType.Unauthorized : "UNAUTHORIZED",
-  UserType.Banned : "BANNED",
-  UserType.Silenced : "SILENCED"
+  UserType.Admin: "ADMIN",
+  UserType.User: "USER",
+  UserType.Unauthorized: "UNAUTHORIZED",
+  UserType.Banned: "BANNED",
+  UserType.Silenced: "SILENCED"
 };
 
 Map<String, FollowStatus> followStatusMap = {

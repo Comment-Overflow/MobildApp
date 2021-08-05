@@ -31,13 +31,15 @@ class _SearchedCommentCardListState extends State<SearchedCommentCardList> {
   _SearchedCommentCardListState(searchKey, postTag, userId)
       : _pagingManager = PagingManager(Constants.defaultPageSize,
             (page, pageSize) async {
-          final Response response = userId == null ? (await SearchService.searchComment(
-              searchKey, page, pageSize,
-              postTag: postTag)) : (await PostService.getMyComments(userId.toString(), PostQueryDTO(pageNum: page, pageSize: pageSize)));
+          final Response response = userId == null
+              ? (await SearchService.searchComment(searchKey, page, pageSize,
+                  postTag: postTag))
+              : (await PostService.getMyComments(userId.toString(),
+                  PostQueryDTO(pageNum: page, pageSize: pageSize)));
           // The type is Post, but they are actually comments.
-          List searchedComments = (response.data as List).map((i) {
-            return SearchedPost.fromJson(i);
-          }).toList();
+          List searchedComments = (response.data as List)
+              .map((i) => SearchedPost.fromJson(i))
+              .toList();
           return searchedComments;
         }, (context, item, index) => SearchedCommentCard(item, [searchKey]),
             emptyIndicatorTitle: Constants.searchCommentEmptyIndicatorTitle,

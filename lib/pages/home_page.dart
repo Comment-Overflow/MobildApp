@@ -1,12 +1,15 @@
 import 'package:comment_overflow/assets/constants.dart';
 import 'package:comment_overflow/utils/route_generator.dart';
+import 'package:comment_overflow/widgets/following_comment_list.dart';
+import 'package:comment_overflow/widgets/hot_post_list.dart';
 import 'package:comment_overflow/widgets/post_card_list.dart';
 import 'package:comment_overflow/widgets/search_bar.dart';
+import 'package:comment_overflow/widgets/searched_comment_card_list.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 
 class HomePage extends StatelessWidget {
-  final _tabs = ['时间线', '推荐', '关注'] + Constants.postCategories;
+  final _tabs = ['时间线', '热榜', '推荐', '关注'] + Constants.postCategories;
 
   HomePage({Key? key}) : super(key: key);
 
@@ -40,12 +43,15 @@ class HomePage extends StatelessWidget {
                   child: PostCardList(),
                   removeTop: true,
                 ),
+                MediaQuery.removePadding(
+                  context: context,
+                  child: HotPostList(),
+                  removeTop: true,
+                ),
                 Container(child: Text("TODO")),
                 MediaQuery.removePadding(
                   context: context,
-                  child: PostCardList(
-                    followingOnly: true,
-                  ),
+                  child: FollowingCommentList(),
                   removeTop: true,
                 ),
                 MediaQuery.removePadding(
