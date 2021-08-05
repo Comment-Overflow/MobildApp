@@ -5,6 +5,7 @@ import 'package:comment_overflow/model/routing_dto/jump_post_dto.dart';
 import 'package:comment_overflow/service/post_service.dart';
 import 'package:comment_overflow/utils/paging_manager.dart';
 import 'package:comment_overflow/utils/route_generator.dart';
+import 'package:comment_overflow/widgets/post_card_image.dart';
 import 'package:comment_overflow/widgets/user_avatar_with_name.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -87,7 +88,7 @@ class HotPostCard extends StatelessWidget {
                     aspectRatio: 1.2,
                     child: ClipRRect(
                       borderRadius: BorderRadius.circular(8.0),
-                      child: Image.network(
+                      child: PostCardImage(
                         _post.hostComment.imageUrl[0],
                         fit: BoxFit.cover,
                       ),

@@ -98,6 +98,8 @@ class _SkeletonCards extends StatelessWidget {
                   SizedBox(height: 40.0),
                   SkeletonLine(
                       style: SkeletonLineStyle(
+                          borderRadius:
+                              const BorderRadius.all(Radius.circular(5)),
                           maxLength: 80.0,
                           minLength: 70.0,
                           height: 20.0,
@@ -105,6 +107,8 @@ class _SkeletonCards extends StatelessWidget {
                   SizedBox(height: 15.0),
                   SkeletonLine(
                       style: SkeletonLineStyle(
+                          borderRadius:
+                              const BorderRadius.all(Radius.circular(5)),
                           maxLength: 32.0,
                           minLength: 30.0,
                           height: 30.0,
