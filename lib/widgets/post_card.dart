@@ -56,6 +56,7 @@ class PostCard extends StatelessWidget {
                       child: PostCardImage(
                         _post.hostComment.imageUrl[0],
                         fit: BoxFit.cover,
+                        cache: true,
                       ),
                     ),
                   ),
@@ -191,6 +192,7 @@ class SearchedCommentCard extends StatelessWidget {
                       child: PostCardImage(
                         _searchedComment.imageUrl[0],
                         fit: BoxFit.cover,
+                        cache: true,
                       ),
                     ),
                   ),
@@ -321,6 +323,7 @@ class CommentSummaryCard extends StatelessWidget {
                       child: PostCardImage(
                         _comment.imageUrl[0],
                         fit: BoxFit.cover,
+                        cache: true,
                       ),
                     ),
                   ),

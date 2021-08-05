@@ -10,7 +10,7 @@ class PostService {
   static Future<Response> postPost(NewPostDTO newPost) async {
     return await HttpUtil()
         .longConnDio
-        .post('/post', data: await newPost.formData(), options: Options());
+        .post('/post', data: await newPost.formData());
   }
 
   static Future<Response> getPost(int postId) async {

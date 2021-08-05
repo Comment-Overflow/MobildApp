@@ -24,6 +24,8 @@ class PostCardImage extends StatelessWidget {
   final Widget _fallback;
   final Widget _loadingIndicator;
   final Duration _timeout;
+  final bool _cache;
+  final void Function()? _onTap;
 
   PostCardImage(this._url,
       {Key? key,
@@ -32,7 +34,9 @@ class PostCardImage extends StatelessWidget {
       fit: BoxFit.cover,
       fallback,
       loadingIndicator,
-      timeout: _defaultTimeout})
+      timeout: _defaultTimeout,
+      cache,
+      onTap})
       : _width = width,
         _height = height,
         _fit = fit,
@@ -41,6 +45,8 @@ class PostCardImage extends StatelessWidget {
             ? _defaultLoadingIndicator
             : loadingIndicator,
         _timeout = timeout,
+        _cache = cache,
+        _onTap = onTap,
         super(key: key);
 
   @override
@@ -51,12 +57,15 @@ class PostCardImage extends StatelessWidget {
       width: _width,
       height: _height,
       fit: _fit,
+      cache: _cache,
       loadStateChanged: (ExtendedImageState state) {
         switch (state.extendedImageLoadState) {
           case LoadState.loading:
             return _loadingIndicator;
           case LoadState.completed:
-            return null;
+            return _onTap == null
+                ? state.completedWidget
+                : GestureDetector(onTap: _onTap, child: state.completedWidget);
           case LoadState.failed:
             return GestureDetector(
                 onTap: () => state.reLoadImage(), child: _fallback);
