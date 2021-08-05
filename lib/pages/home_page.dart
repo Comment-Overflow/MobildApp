@@ -4,7 +4,6 @@ import 'package:comment_overflow/widgets/following_comment_list.dart';
 import 'package:comment_overflow/widgets/hot_post_list.dart';
 import 'package:comment_overflow/widgets/post_card_list.dart';
 import 'package:comment_overflow/widgets/search_bar.dart';
-import 'package:comment_overflow/widgets/searched_comment_card_list.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 

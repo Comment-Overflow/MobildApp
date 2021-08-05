@@ -1,8 +1,5 @@
-import 'dart:io';
-
 import 'package:comment_overflow/assets/constants.dart';
 import 'package:comment_overflow/model/chat.dart';
-import 'package:comment_overflow/model/user_info.dart';
 import 'package:comment_overflow/utils/general_utils.dart';
 import 'package:comment_overflow/utils/route_generator.dart';
 import 'package:comment_overflow/widgets/user_avatar.dart';
