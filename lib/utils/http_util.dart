@@ -13,19 +13,41 @@ class HttpUtil {
     return _instance;
   }
 
-  final options = BaseOptions(
+  final _options = BaseOptions(
     baseUrl: baseUrl,
     connectTimeout: 5000,
     receiveTimeout: 3000,
   );
 
+  final _longConnOptions = BaseOptions(
+    baseUrl: baseUrl,
+    connectTimeout: 30 * 1000,
+    receiveTimeout: 10 * 1000,
+  );
+
   late final _dio;
+  late final _longConnDio;
 
   Dio get dio => _dio;
+  Dio get longConnDio => _longConnDio;
 
   HttpUtil._internal() {
-    _dio = Dio(options);
+    _dio = Dio(_options);
     _dio.interceptors
+        .add(InterceptorsWrapper(onRequest: (options, handler) async {
+      String? token = await StorageUtil().storage.read(key: 'token');
+      if (token != null) {
+        options.headers['Authorization'] = token;
+      }
+      return handler.next(options);
+    }, onResponse: (response, handler) {
+      return handler.next(response);
+    }, onError: (DioError e, handler) {
+      return handler.next(e);
+    }));
+
+    _longConnDio = Dio(_longConnOptions);
+    _longConnDio.interceptors
         .add(InterceptorsWrapper(onRequest: (options, handler) async {
       String? token = await StorageUtil().storage.read(key: 'token');
       if (token != null) {
