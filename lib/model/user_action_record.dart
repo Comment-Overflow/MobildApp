@@ -99,10 +99,10 @@ class StarRecord {
 
   factory StarRecord.fromJson(dynamic json) {
     int timeStamp = json['timestamp'] as int;
-    print(json);
     return StarRecord(
         UserInfo(
-            json['fromUserUserId'] as int, json['fromUserUserName'] as String, avatarUrl: json['fromUserAvatarUrl']),
+            json['fromUserUserId'] as int, json['fromUserUserName'] as String,
+            avatarUrl: json['fromUserAvatarUrl']),
         DateTime.fromMillisecondsSinceEpoch(timeStamp),
         Quote(
             json['postHostCommentId'] as int,

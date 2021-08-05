@@ -73,23 +73,32 @@ class _ImageGalleryState extends State<ImageGallery> {
   }
 
   AppBar _buildAppBar(BuildContext context) => AppBar(
-        title: Text("浏览图片"),
+        title: Text("浏览图片", style: TextStyle(color: Colors.white)),
         leading: GestureDetector(
           onTap: () {
             Navigator.pop(context);
           },
-          child: Icon(Icons.arrow_back),
+          child: Icon(
+            Icons.arrow_back,
+            color: Colors.white,
+          ),
         ),
         actions: <Widget>[
           Padding(
-            padding: const EdgeInsets.all(Constants.defaultCardPadding / 2),
+            padding: const EdgeInsets.all(Constants.defaultCardPadding / 1.3),
             child: ElevatedButton(
-              child: Text("保存"),
-              onPressed: _saveImage,
-            ),
+                child: Text("保存"),
+                onPressed: _saveImage,
+                style: ElevatedButton.styleFrom(
+                    minimumSize: Size.zero,
+                    tapTargetSize: MaterialTapTargetSize.shrinkWrap,
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(20.0),
+                    ))),
           )
         ],
         backgroundColor: Colors.black87,
+        automaticallyImplyLeading: false,
       );
 
   BottomAppBar _buildBottomBar() => BottomAppBar(
@@ -123,9 +132,8 @@ class _ImageGalleryState extends State<ImageGallery> {
     String currentUrl = widget.imageUrl[currentIndex];
     var response = await ImageService.getImageBytes(currentUrl);
     final result = await ImageGallerySaver.saveImage(
-      Uint8List.fromList(response.data),
-      quality: 100
-    );
+        Uint8List.fromList(response.data),
+        quality: 100);
     print(result);
   }
 }

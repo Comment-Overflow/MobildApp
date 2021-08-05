@@ -20,47 +20,53 @@ class _NotificationCardListState extends State<NotificationCardList> {
   late PagingManager _pagingManager;
 
   _NotificationCardListState(userActionType) {
-
     var _itemBuilder;
 
     switch (userActionType) {
       case UserActionType.approval:
         _itemBuilder = (context, item, index) => ApprovalNotificationCard(item);
-        this._pagingManager =
-            PagingManager(Constants.defaultNotificationPageSize, (page, pageSize) async {
-              var jsonArray = (await NotificationService.getNotification(page, pageSize, "/notifications/approvals")).data['content'] as List;
-              return jsonArray.map((json) => ApprovalRecord.fromJson(json)).toList();
-            }, _itemBuilder);
+        this._pagingManager = PagingManager(
+            Constants.defaultNotificationPageSize, (page, pageSize) async {
+          var jsonArray = (await NotificationService.getNotification(
+                  page, pageSize, "/notifications/approvals"))
+              .data['content'] as List;
+          return jsonArray
+              .map((json) => ApprovalRecord.fromJson(json))
+              .toList();
+        }, _itemBuilder);
         break;
       case UserActionType.reply:
         _itemBuilder = (context, item, index) => ReplyNotificationCard(item);
-        this._pagingManager =
-            PagingManager(Constants.defaultNotificationPageSize, (page, pageSize) async {
-              var jsonArray = (await NotificationService.getNotification(page, pageSize, "/notifications/replies")).data as List;
-              return jsonArray.map((json) => ReplyRecord.fromJson(json)).toList();
-            }, _itemBuilder);
+        this._pagingManager = PagingManager(
+            Constants.defaultNotificationPageSize, (page, pageSize) async {
+          var jsonArray = (await NotificationService.getNotification(
+                  page, pageSize, "/notifications/replies"))
+              .data as List;
+          return jsonArray.map((json) => ReplyRecord.fromJson(json)).toList();
+        }, _itemBuilder);
         break;
       case UserActionType.star:
         _itemBuilder = (context, item, index) => StarNotificationCard(item);
-        this._pagingManager =
-            PagingManager(Constants.defaultNotificationPageSize, (page, pageSize) async {
-              var jsonArray = (await NotificationService.getNotification(page, pageSize, "/notifications/stars")).data['content'] as List;
-              return jsonArray.map((json) => StarRecord.fromJson(json)).toList();
-            }, _itemBuilder);
+        this._pagingManager = PagingManager(
+            Constants.defaultNotificationPageSize, (page, pageSize) async {
+          var jsonArray = (await NotificationService.getNotification(
+                  page, pageSize, "/notifications/stars"))
+              .data['content'] as List;
+          return jsonArray.map((json) => StarRecord.fromJson(json)).toList();
+        }, _itemBuilder);
         break;
       case UserActionType.follow:
         _itemBuilder = (context, item, index) => FollowNotificationCard(item);
-        this._pagingManager =
-            PagingManager(Constants.defaultNotificationPageSize, (page, pageSize) async {
-              var jsonArray = (await NotificationService.getNotification(page, pageSize, "/notifications/followers")).data['content'] as List;
-              print(jsonArray);
-              return jsonArray.map((json) => FollowRecord.fromJson(json)).toList();
-            }, _itemBuilder);
+        this._pagingManager = PagingManager(
+            Constants.defaultNotificationPageSize, (page, pageSize) async {
+          var jsonArray = (await NotificationService.getNotification(
+                  page, pageSize, "/notifications/followers"))
+              .data['content'] as List;
+          return jsonArray.map((json) => FollowRecord.fromJson(json)).toList();
+        }, _itemBuilder);
         break;
     }
   }
-
-
 
   @override
   dispose() {

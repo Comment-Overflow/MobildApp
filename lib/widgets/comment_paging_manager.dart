@@ -379,7 +379,7 @@ class CommentPagingManager<T> {
 
     List<Comment?>? _itemList = _pagingController.itemList;
 
-    print(_itemList);
+    // print(_itemList);
     _itemList!.asMap().forEach((key, value) {
       if (value != null && !jumpFloorValues._hasBuiltAsCard.contains(key)) {
         // print('$key should not be drawed on next rebuild');
