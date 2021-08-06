@@ -3,6 +3,7 @@ import 'package:comment_overflow/utils/route_generator.dart';
 import 'package:comment_overflow/widgets/following_comment_list.dart';
 import 'package:comment_overflow/widgets/hot_post_list.dart';
 import 'package:comment_overflow/widgets/post_card_list.dart';
+import 'package:comment_overflow/widgets/recommend_post_list.dart';
 import 'package:comment_overflow/widgets/search_bar.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -48,7 +49,11 @@ class HomePage extends StatelessWidget {
                   child: HotPostList(),
                   removeTop: true,
                 ),
-                Container(child: Text("TODO")),
+                MediaQuery.removePadding(
+                  context: context,
+                  child: RecommendPostList(),
+                  removeTop: true,
+                ),
                 MediaQuery.removePadding(
                   context: context,
                   child: FollowingCommentList(),
