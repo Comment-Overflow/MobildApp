@@ -15,7 +15,7 @@ class Constants {
   static const defaultButtonPadding = 5.0;
 
   /// Default size of Avatar in commentCard.
-  static const defaultAvatarInCommentSize = 24.0;
+  static const defaultAvatarInCommentSize = 30.0;
 
   /// Default size of buttons in notification page.
   static const defaultNotificationButtonSize = 32.0;

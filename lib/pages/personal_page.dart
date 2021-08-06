@@ -13,6 +13,7 @@ import 'package:comment_overflow/widgets/personal_profile_card.dart';
 import 'package:comment_overflow/widgets/post_card_list.dart';
 import 'package:comment_overflow/widgets/searched_comment_card_list.dart';
 import 'package:dio/dio.dart';
+import 'package:empty_widget/empty_widget.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:toggle_switch/toggle_switch.dart';
@@ -47,7 +48,14 @@ class _PersonalPageState extends State<PersonalPage> {
     return FutureBuilder<int>(
       future: _initData(),
       builder: (_, snapshot) {
-        if (!snapshot.hasData) return Container();
+        if (!snapshot.hasData) {
+          return Scaffold(
+            appBar: AppBar(
+              elevation: Constants.defaultCardElevation,
+            ),
+            body: _buildEmptyWidget(),
+          );
+        }
         bool isSelf = snapshot.data == widget._userId;
         bool isAdmin = StorageUtil().loginInfo.userType == UserType.Admin;
         String title = isSelf ? "我的个人主页" : _personalPageInfo.userName + "的个人主页";
@@ -324,6 +332,16 @@ class _PersonalPageState extends State<PersonalPage> {
       child: CustomStyles.getDefaultBackIcon(size: 24.0, color: Colors.black),
     );
   }
+
+  Widget _buildEmptyWidget() => Center(
+        child: Padding(
+          padding: const EdgeInsets.all(80.0),
+          child: EmptyWidget(
+            image: null,
+            packageImage: PackageImage.Image_2,
+          ),
+        ),
+      );
 }
 
 class TabBarHeader extends SliverPersistentHeaderDelegate {

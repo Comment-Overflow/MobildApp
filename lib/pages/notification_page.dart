@@ -64,7 +64,6 @@ class _NotificationPageState extends State<NotificationPage> {
   }
 
   Future _onRefresh() async {
-    print("Notification Page onRefresh");
     _getRecentChats();
   }
 

@@ -3,6 +3,7 @@ import 'package:comment_overflow/model/post.dart';
 import 'package:comment_overflow/service/post_service.dart';
 import 'package:comment_overflow/utils/paging_manager.dart';
 import 'package:comment_overflow/widgets/post_card.dart';
+import 'package:comment_overflow/widgets/skeleton/skeleton_post_list.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/widgets.dart';
 
@@ -26,6 +27,7 @@ class _FollowingCommentListState extends State<FollowingCommentList> {
     (context, item, index) => CommentSummaryCard(item),
     emptyIndicatorTitle: Constants.commentEmptyIndicatorTitle,
     emptyIndicatorSubtitle: Constants.followingCommentEmptyIndicatorSubtitle,
+    firstPageIndicator: SkeletonPostList(),
   );
 
   @override
