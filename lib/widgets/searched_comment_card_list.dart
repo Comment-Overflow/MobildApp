@@ -34,7 +34,7 @@ class _SearchedCommentCardListState extends State<SearchedCommentCardList> {
           final Response response = userId == null
               ? (await SearchService.searchComment(searchKey, page, pageSize,
                   postTag: postTag))
-              : (await PostService.getMyComments(userId.toString(),
+              : (await PostService.getOnesComments(userId.toString(),
                   PostQueryDTO(pageNum: page, pageSize: pageSize)));
           // The type is Post, but they are actually comments.
           List searchedComments = (response.data as List)

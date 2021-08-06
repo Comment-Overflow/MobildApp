@@ -41,11 +41,18 @@ class PostService {
         .get('/posts/$userId', queryParameters: query.getData());
   }
 
-  static Future<Response> getMyComments(
+  static Future<Response> getOnesComments(
       String userId, PostQueryDTO queryDTO) async {
     return await HttpUtil()
         .dio
         .get('/comments/$userId', queryParameters: queryDTO.getData());
+  }
+
+  static Future<Response> getRecommendPosts(
+      PostQueryDTO queryDTO) async {
+    return await HttpUtil()
+        .dio
+        .get('/recommendations', queryParameters: queryDTO.getData());
   }
 
   static Future<Response> getStarredPosts(PostQueryDTO query) async {
