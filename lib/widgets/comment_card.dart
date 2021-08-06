@@ -15,6 +15,7 @@ import 'package:comment_overflow/model/comment.dart';
 import 'package:comment_overflow/assets/custom_styles.dart';
 import 'package:comment_overflow/widgets/user_avatar_with_name.dart';
 import 'package:flutter/widgets.dart';
+import 'package:skeletons/skeletons.dart';
 import 'package:wechat_assets_picker/wechat_assets_picker.dart';
 
 import 'adaptive_alert_dialog.dart';
@@ -60,7 +61,6 @@ class _CommentCardState extends State<CommentCard>
   final List<AssetEntity> _assets = <AssetEntity>[];
   final TextEditingController _replyController = TextEditingController();
 
-  // TODO: Change color transition.
   @override
   void initState() {
     _animationController = AnimationController(
@@ -270,5 +270,92 @@ class _CommentCardState extends State<CommentCard>
             },
           )
         : SizedBox.shrink();
+  }
+}
+
+class SkeletonCommentCardList extends StatelessWidget {
+  const SkeletonCommentCardList({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      mainAxisSize: MainAxisSize.min,
+      children: List<Widget>.generate(4, (index) => SkeletonCommentCard(index)),
+    );
+  }
+}
+
+class SkeletonCommentCard extends StatelessWidget {
+  final int _index;
+
+  const SkeletonCommentCard(this._index, {Key? key}) : super(key: key);
+
+  static const _gap = const SizedBox(height: 15.0);
+  static const _title = SkeletonLine(
+      style: SkeletonLineStyle(
+    borderRadius: const BorderRadius.all(Radius.circular(10)),
+    height: 13.0,
+  ));
+  static final _block = SkeletonLine(
+      style: SkeletonLineStyle(
+    borderRadius: const BorderRadius.all(Radius.circular(10)),
+    height: 100,
+  ));
+
+  @override
+  Widget build(BuildContext context) {
+    return SizedBox(
+      height: 300,
+      child: Card(
+        elevation: Constants.defaultCardElevation,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.all(Radius.circular(10.0)),
+        ),
+        child: Padding(
+            padding: EdgeInsets.all(Constants.defaultCardPadding),
+            child: SkeletonItem(
+              child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    ...(_index == 0 ? [_title, _gap] : [SizedBox.shrink()]),
+                    Row(children: [
+                      SkeletonAvatar(
+                        style: SkeletonAvatarStyle(
+                          height: Constants.defaultAvatarInCommentSize,
+                          width: Constants.defaultAvatarInCommentSize,
+                          shape: BoxShape.circle,
+                        ),
+                      ),
+                      SizedBox(width: 15),
+                      Expanded(
+                        child: SkeletonLine(
+                          style: SkeletonLineStyle(
+                            height: 11,
+                            width: 60,
+                            borderRadius:
+                                const BorderRadius.all(Radius.circular(10)),
+                          ),
+                        ),
+                      ),
+                    ]),
+                    _gap,
+                    SkeletonParagraph(
+                      style: SkeletonParagraphStyle(
+                        spacing: 16,
+                        padding: EdgeInsets.zero,
+                        lineStyle: SkeletonLineStyle(
+                          randomLength: true,
+                          height: 11,
+                          borderRadius:
+                              const BorderRadius.all(Radius.circular(10)),
+                        ),
+                      ),
+                    ),
+                    _gap,
+                    _block,
+                  ]),
+            )),
+      ),
+    );
   }
 }

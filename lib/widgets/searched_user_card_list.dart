@@ -2,6 +2,7 @@ import 'package:comment_overflow/assets/constants.dart';
 import 'package:comment_overflow/model/user_info.dart';
 import 'package:comment_overflow/service/search_service.dart';
 import 'package:comment_overflow/utils/paging_manager.dart';
+import 'package:comment_overflow/widgets/skeleton/skeleton_user_list.dart';
 import 'package:comment_overflow/widgets/user_card.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/widgets.dart';
@@ -33,6 +34,7 @@ class _SearchedUserCardListState extends State<SearchedUserCardList> {
           (context, item, index) => UserCard(item, searchKey: searchKey),
           emptyIndicatorTitle: Constants.searchUserEmptyIndicatorTitle,
           emptyIndicatorSubtitle: Constants.searchUserEmptyIndicatorSubtitle,
+          firstPageIndicator: SkeletonUserList(),
         );
 
   @override

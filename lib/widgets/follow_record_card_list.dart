@@ -2,6 +2,7 @@ import 'package:comment_overflow/assets/constants.dart';
 import 'package:comment_overflow/model/user_info.dart';
 import 'package:comment_overflow/service/notification_service.dart';
 import 'package:comment_overflow/utils/paging_manager.dart';
+import 'package:comment_overflow/widgets/skeleton/skeleton_user_list.dart';
 import 'package:comment_overflow/widgets/user_card.dart';
 import 'package:flutter/cupertino.dart';
 
@@ -36,7 +37,7 @@ class _FollowRecordCardListState extends State<FollowRecordCardList> {
           (await NotificationService.getNotification(page, pageSize, url))
               .data['content'] as List;
       return jsonArray.map((json) => UserCardInfo.fromJson(json)).toList();
-    }, _itemBuilder);
+    }, _itemBuilder, firstPageIndicator: SkeletonUserList());
   }
 
   @override

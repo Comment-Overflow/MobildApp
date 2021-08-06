@@ -61,24 +61,28 @@ class CommentPagingManager<T> {
   final Function _distantJumpCallback;
   final Function _changePageCallback;
   JumpFloorValues jumpFloorValues;
+  final Widget _firstPageIndicator;
 
   CommentPagingManager(
-      this._pageSize,
-      this._customFetchApi,
-      this._customItemBuilder,
-      this._distantJumpCallback,
-      this._changePageCallback,
-      {emptyIndicatorTitle,
-      emptyIndicatorSubtitle,
-      initialIndex: 0})
-      : this._emptyIndicatorTitle = emptyIndicatorTitle,
+    this._pageSize,
+    this._customFetchApi,
+    this._customItemBuilder,
+    this._distantJumpCallback,
+    this._changePageCallback, {
+    emptyIndicatorTitle,
+    emptyIndicatorSubtitle,
+    initialIndex: 0,
+    firstPageIndicator,
+  })  : this._emptyIndicatorTitle = emptyIndicatorTitle,
         this._emptyIndicatorSubtitle = emptyIndicatorSubtitle,
         this._initialIndex = initialIndex,
         jumpFloorValues =
             JumpFloorValues(initialIndex ~/ _pageSize * _pageSize),
         this._pagingController = PagingController(
           firstPageKey: initialIndex ~/ _pageSize * _pageSize,
-        ) {
+        ),
+        this._firstPageIndicator =
+            firstPageIndicator == null ? Container() : firstPageIndicator {
     /// Wrap [_customFetchApi] with pageKey, because _fetchPage uses page number
     /// as parameter.
     this._wrappedFetchApi = (pageKey) {
@@ -207,7 +211,7 @@ class CommentPagingManager<T> {
             child: buildListItem(context, item, index),
           );
         },
-        firstPageProgressIndicatorBuilder: (_) => Container(),
+        firstPageProgressIndicatorBuilder: (_) => _firstPageIndicator,
         noItemsFoundIndicatorBuilder: (_) => buildEmptyWidget(),
         noMoreItemsIndicatorBuilder: (_) => buildNoMoreItemsIndicator(),
       ),

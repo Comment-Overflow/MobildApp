@@ -74,6 +74,7 @@ class _CommentCardListState extends State<CommentCardList> {
       widget._distantJumpCallback,
       widget._changePageCallback,
       initialIndex: _pageIndex,
+      firstPageIndicator: SkeletonCommentCardList(),
     );
 
     super.initState();

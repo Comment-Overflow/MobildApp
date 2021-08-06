@@ -3,6 +3,8 @@ import 'package:comment_overflow/model/user_action_record.dart';
 import 'package:comment_overflow/service/notification_service.dart';
 import 'package:comment_overflow/utils/paging_manager.dart';
 import 'package:comment_overflow/widgets/notification_card.dart';
+import 'package:comment_overflow/widgets/skeleton/skeleton_notification_list.dart';
+import 'package:comment_overflow/widgets/skeleton/skeleton_user_list.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 
@@ -33,7 +35,7 @@ class _NotificationCardListState extends State<NotificationCardList> {
           return jsonArray
               .map((json) => ApprovalRecord.fromJson(json))
               .toList();
-        }, _itemBuilder);
+        }, _itemBuilder, firstPageIndicator: SkeletonNotificationCardList());
         break;
       case UserActionType.reply:
         _itemBuilder = (context, item, index) => ReplyNotificationCard(item);
@@ -43,7 +45,7 @@ class _NotificationCardListState extends State<NotificationCardList> {
                   page, pageSize, "/notifications/replies"))
               .data as List;
           return jsonArray.map((json) => ReplyRecord.fromJson(json)).toList();
-        }, _itemBuilder);
+        }, _itemBuilder, firstPageIndicator: SkeletonNotificationCardList());
         break;
       case UserActionType.star:
         _itemBuilder = (context, item, index) => StarNotificationCard(item);
@@ -53,7 +55,7 @@ class _NotificationCardListState extends State<NotificationCardList> {
                   page, pageSize, "/notifications/stars"))
               .data['content'] as List;
           return jsonArray.map((json) => StarRecord.fromJson(json)).toList();
-        }, _itemBuilder);
+        }, _itemBuilder, firstPageIndicator: SkeletonNotificationCardList());
         break;
       case UserActionType.follow:
         _itemBuilder = (context, item, index) => FollowNotificationCard(item);
@@ -63,7 +65,7 @@ class _NotificationCardListState extends State<NotificationCardList> {
                   page, pageSize, "/notifications/followers"))
               .data['content'] as List;
           return jsonArray.map((json) => FollowRecord.fromJson(json)).toList();
-        }, _itemBuilder);
+        }, _itemBuilder, firstPageIndicator: SkeletonUserList());
         break;
     }
   }

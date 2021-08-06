@@ -6,6 +6,7 @@ import 'package:comment_overflow/service/post_service.dart';
 import 'package:comment_overflow/utils/paging_manager.dart';
 import 'package:comment_overflow/utils/route_generator.dart';
 import 'package:comment_overflow/widgets/post_card_image.dart';
+import 'package:comment_overflow/widgets/skeleton/skeleton_post_list.dart';
 import 'package:comment_overflow/widgets/user_avatar_with_name.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -28,6 +29,7 @@ class _HotPostListState extends State<HotPostList> {
       return _hotPost;
     },
     (context, item, index) => HotPostCard(item, index + 1),
+    firstPageIndicator: SkeletonPostList(),
   );
 
   @override

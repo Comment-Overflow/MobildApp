@@ -7,6 +7,7 @@ import 'package:comment_overflow/service/post_service.dart';
 import 'package:comment_overflow/service/search_service.dart';
 import 'package:comment_overflow/utils/paging_manager.dart';
 import 'package:comment_overflow/widgets/post_card.dart';
+import 'package:comment_overflow/widgets/skeleton/skeleton_post_list.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/widgets.dart';
 
@@ -29,22 +30,25 @@ class _SearchedCommentCardListState extends State<SearchedCommentCardList> {
   final PagingManager<SearchedPost> _pagingManager;
 
   _SearchedCommentCardListState(searchKey, postTag, userId)
-      : _pagingManager = PagingManager(Constants.defaultPageSize,
-            (page, pageSize) async {
-          final Response response = userId == null
-              ? (await SearchService.searchComment(searchKey, page, pageSize,
-                  postTag: postTag))
-              : (await PostService.getMyComments(userId.toString(),
-                  PostQueryDTO(pageNum: page, pageSize: pageSize)));
-          // The type is Post, but they are actually comments.
-          List searchedComments = (response.data as List)
-              .map((i) => SearchedPost.fromJson(i))
-              .toList();
-          return searchedComments;
-        }, (context, item, index) => SearchedCommentCard(item, [searchKey]),
-            emptyIndicatorTitle: Constants.searchCommentEmptyIndicatorTitle,
-            emptyIndicatorSubtitle:
-                Constants.searchCommentEmptyIndicatorSubtitle);
+      : _pagingManager = PagingManager(
+          Constants.defaultPageSize,
+          (page, pageSize) async {
+            final Response response = userId == null
+                ? (await SearchService.searchComment(searchKey, page, pageSize,
+                    postTag: postTag))
+                : (await PostService.getMyComments(userId.toString(),
+                    PostQueryDTO(pageNum: page, pageSize: pageSize)));
+            // The type is Post, but they are actually comments.
+            List searchedComments = (response.data as List)
+                .map((i) => SearchedPost.fromJson(i))
+                .toList();
+            return searchedComments;
+          },
+          (context, item, index) => SearchedCommentCard(item, [searchKey]),
+          emptyIndicatorTitle: Constants.searchCommentEmptyIndicatorTitle,
+          emptyIndicatorSubtitle: Constants.searchCommentEmptyIndicatorSubtitle,
+          firstPageIndicator: SkeletonPostList(),
+        );
 
   @override
   dispose() {
