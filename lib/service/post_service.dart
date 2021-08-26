@@ -52,7 +52,7 @@ class PostService {
       PostQueryDTO queryDTO) async {
     return await HttpUtil()
         .dio
-        .get('/recommendations', queryParameters: queryDTO.getData());
+        .get('/recommendations/all', queryParameters: queryDTO.getData());
   }
 
   static Future<Response> getStarredPosts(PostQueryDTO query) async {
