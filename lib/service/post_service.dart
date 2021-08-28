@@ -13,12 +13,6 @@ class PostService {
         .post('/post', data: await newPost.formData());
   }
 
-  static Future<Response> getPost(int postId) async {
-    return await HttpUtil()
-        .dio
-        .get('/post', queryParameters: {'postId': postId});
-  }
-
   static Future<Response> getPostByComment(int commentId) async {
     return await HttpUtil()
         .dio
@@ -48,8 +42,7 @@ class PostService {
         .get('/comments/$userId', queryParameters: queryDTO.getData());
   }
 
-  static Future<Response> getRecommendPosts(
-      PostQueryDTO queryDTO) async {
+  static Future<Response> getRecommendPosts(PostQueryDTO queryDTO) async {
     return await HttpUtil()
         .dio
         .get('/recommendations', queryParameters: queryDTO.getData());
