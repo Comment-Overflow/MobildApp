@@ -1,5 +1,4 @@
 import 'package:comment_overflow/model/comment.dart';
-import 'package:comment_overflow/utils/general_utils.dart';
 
 class Post {
   final int _postId;

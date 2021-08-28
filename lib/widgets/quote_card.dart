@@ -30,18 +30,22 @@ class QuoteCard extends StatelessWidget {
             Row(
               mainAxisSize: MainAxisSize.max,
               children: [
-                Text(
-                  this._quote.title,
-                  style: CustomStyles.referenceUserNameStyle,
-                  maxLines: 1,
-                  overflow: TextOverflow.ellipsis,
-                ),
                 Expanded(
-                    child: Text(
+                  child: Text(
+                    this._quote.title,
+                    style: CustomStyles.referenceUserNameStyle,
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
+                  ),
+                ),
+                SizedBox(
+                  width: 20,
+                ),
+                Text(
                   _quote.floor == 0 ? "楼主" : this._quote.floor.toString() + "楼",
                   style: CustomStyles.floorStyle,
                   textAlign: TextAlign.right,
-                ))
+                ),
               ],
             ),
             ...(this._quote.content.isNotEmpty
