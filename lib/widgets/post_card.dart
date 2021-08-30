@@ -4,6 +4,7 @@ import 'package:comment_overflow/model/comment.dart';
 import 'package:comment_overflow/model/post.dart';
 import 'package:comment_overflow/model/routing_dto/jump_post_dto.dart';
 import 'package:comment_overflow/model/user_info.dart';
+import 'package:comment_overflow/utils/general_utils.dart';
 import 'package:comment_overflow/utils/route_generator.dart';
 import 'package:comment_overflow/widgets/post_card_image.dart';
 import 'package:comment_overflow/widgets/user_avatar_with_name.dart';
@@ -124,7 +125,8 @@ class PostCard extends StatelessWidget {
                         ? CustomStyles.getDefaultThumbUpIcon()
                         : CustomStyles.getDefaultNotThumbUpIcon()),
             TextSpan(
-              text: ' ${_post.approvalCount} · ${_post.hostComment.timeString}',
+              text:
+                  ' ${_post.approvalCount} · ${GeneralUtils.getDefaultTimeString(_post.lastCommentTime)}',
             ),
             WidgetSpan(
                 child: _post.isFrozen
@@ -263,7 +265,7 @@ class SearchedCommentCard extends StatelessWidget {
             ),
             TextSpan(
               text:
-                  ' ${_post.searchedComment.approvalCount} · ${_post.hostComment.timeString}',
+                  ' ${_post.searchedComment.approvalCount} · ${_post.searchedComment.timeString}',
             ),
             WidgetSpan(
                 child: _post.isFrozen
@@ -389,7 +391,7 @@ class CommentSummaryCard extends StatelessWidget {
             ),
             TextSpan(
               text:
-                  ' ${_post.searchedComment.approvalCount} · ${_post.hostComment.timeString}',
+                  ' ${_post.searchedComment.approvalCount} · ${_post.searchedComment.timeString}',
             ),
             WidgetSpan(
                 child: _post.isFrozen
