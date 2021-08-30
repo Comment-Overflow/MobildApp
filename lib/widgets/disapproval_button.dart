@@ -82,7 +82,7 @@ class _DisapprovalButtonState extends State<DisapprovalButton> {
                       : CustomStyles.getDefaultNotThumbDownIcon(
                           size: widget._size),
                   widget._showText
-                      ? Text("不赞同", style: CustomStyles.postPageBottomStyle)
+                      ? Text("反对", style: CustomStyles.postPageBottomStyle)
                       : SizedBox.shrink(),
                 ],
               ));
