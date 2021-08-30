@@ -1,4 +1,5 @@
 import 'package:comment_overflow/assets/custom_colors.dart';
+import 'package:empty_widget/empty_widget.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
@@ -275,4 +276,24 @@ class CustomStyles {
 
   static const chatMessageTimeStyle =
       TextStyle(fontSize: 11.0, color: Colors.grey);
+
+  static final firstPageErrorIndicator = Container(
+      height: 1,
+      padding: EdgeInsets.fromLTRB(60, 0, 60, 60),
+      child: EmptyWidget(
+        image: null,
+        packageImage: PackageImage.Image_4,
+        title: '网络出错了',
+        subTitle: '点击重试',
+        titleTextStyle: TextStyle(
+          fontSize: 18,
+          color: Color(0xff9da9c7),
+          fontWeight: FontWeight.w500,
+        ),
+        subtitleTextStyle: TextStyle(
+          fontSize: 17,
+          color: Color(0xffabb8d6),
+        ),
+        hideBackgroundAnimation: true,
+      ));
 }

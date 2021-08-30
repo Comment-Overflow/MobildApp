@@ -2,6 +2,7 @@ import 'dart:collection';
 import 'dart:math';
 
 import 'package:comment_overflow/assets/constants.dart';
+import 'package:comment_overflow/assets/custom_styles.dart';
 import 'package:comment_overflow/model/comment.dart';
 import 'package:comment_overflow/widgets/adaptive_refresher.dart';
 import 'package:empty_widget/empty_widget.dart';
@@ -214,6 +215,8 @@ class CommentPagingManager<T> {
         firstPageProgressIndicatorBuilder: (_) => _firstPageIndicator,
         noItemsFoundIndicatorBuilder: (_) => buildEmptyWidget(),
         noMoreItemsIndicatorBuilder: (_) => buildNoMoreItemsIndicator(),
+        firstPageErrorIndicatorBuilder: (_) => buildFirstPageErrorIndicator(),
+        newPageErrorIndicatorBuilder: (_) => buildNewPageErrorIndicator(),
       ),
     );
 
@@ -320,6 +323,20 @@ class CommentPagingManager<T> {
                   style: TextStyle(color: Colors.grey)))
         ]),
       );
+
+  buildNewPageErrorIndicator() => GestureDetector(
+        onTap: _pagingController.retryLastFailedRequest,
+        child: Column(crossAxisAlignment: CrossAxisAlignment.center, children: [
+          Padding(
+              padding: EdgeInsets.symmetric(vertical: 20.0),
+              child: Text('-  网络出错了！点击重试  -',
+                  style: TextStyle(color: Colors.grey)))
+        ]),
+      );
+
+  buildFirstPageErrorIndicator() => GestureDetector(
+      onTap: _pagingController.retryLastFailedRequest,
+      child: CustomStyles.firstPageErrorIndicator);
 
   Widget buildListItem(context, item, index) {
     if (item == null) {
