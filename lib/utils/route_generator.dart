@@ -55,15 +55,15 @@ class RouteGenerator {
         return MaterialPageRoute(
           settings: settings,
           builder: (_) => ScrollViewPage(
-              FollowRecordCardList(FollowStatus.followingMe),
-              (args as UserNameIdDto).userName + '的粉丝'),
+              FollowRecordCardList(FollowStatus.followingCurrentUser, (args as UserNameIdDto).id),
+              (args).userName + '的粉丝'),
         );
       case followersRoute:
         return MaterialPageRoute(
             settings: settings,
             builder: (_) => ScrollViewPage(
-                FollowRecordCardList(FollowStatus.followedByMe),
-                (args as UserNameIdDto).userName + '的关注'));
+                FollowRecordCardList(FollowStatus.followedByCurrentUser, (args as UserNameIdDto).id),
+                (args).userName + '的关注'));
       case approveMeRoute:
         return MaterialPageRoute(
             settings: settings,

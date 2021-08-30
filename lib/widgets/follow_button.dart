@@ -24,7 +24,7 @@ class _FollowButtonState extends State<FollowButton> {
 
   _FollowButtonState(FollowStatus followStatus)
       : _followStatus = followStatus,
-        _isOtherFollowing = followStatus == FollowStatus.followingMe ||
+        _isOtherFollowing = followStatus == FollowStatus.followingCurrentUser ||
             followStatus == FollowStatus.both;
 
   @override
@@ -50,14 +50,14 @@ class _FollowButtonState extends State<FollowButton> {
       child: TextButton(
         child: _isLoading
             ? _buildLoadingFollowText()
-            : _followStatus == FollowStatus.followedByMe
+            : _followStatus == FollowStatus.followedByCurrentUser
                 ? _buildFollowedByMeText()
                 : (_followStatus == FollowStatus.both
                     ? _buildBidirectionalFollowText()
                     : _buildNotFollowedByMeText()),
         onPressed: () {
           if (_isLoading) return;
-          if (_followStatus == FollowStatus.followedByMe ||
+          if (_followStatus == FollowStatus.followedByCurrentUser ||
               _followStatus == FollowStatus.both) {
             showDialog(
                 context: context,
@@ -79,12 +79,12 @@ class _FollowButtonState extends State<FollowButton> {
                 _isLoading = false;
                 _followStatus = _isOtherFollowing
                     ? FollowStatus.both
-                    : FollowStatus.followedByMe;
+                    : FollowStatus.followedByCurrentUser;
               });
             });
           }
         },
-        style: _followStatus == FollowStatus.followedByMe ||
+        style: _followStatus == FollowStatus.followedByCurrentUser ||
                 _followStatus == FollowStatus.both
             ? _buildHasFollowedButtonStyle()
             : _buildAddFollowButtonStyle(),

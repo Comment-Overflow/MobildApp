@@ -70,9 +70,9 @@ class GeneralUtils {
   static FollowStatus getFollowStatus(String str) {
     switch (str) {
       case 'FOLLOWED_BY_ME':
-        return FollowStatus.followedByMe;
+        return FollowStatus.followedByCurrentUser;
       case 'FOLLOWING_ME':
-        return FollowStatus.followingMe;
+        return FollowStatus.followingCurrentUser;
       case 'BOTH':
         return FollowStatus.both;
       case 'NONE':

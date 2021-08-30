@@ -8,24 +8,25 @@ import 'package:flutter/cupertino.dart';
 
 class FollowRecordCardList extends StatefulWidget {
   final FollowStatus _followStatus;
-  const FollowRecordCardList(this._followStatus, {Key? key}) : super(key: key);
+  final int _userId;
+  const FollowRecordCardList(this._followStatus, this._userId,{Key? key}) : super(key: key);
 
   @override
   _FollowRecordCardListState createState() =>
-      _FollowRecordCardListState(_followStatus);
+      _FollowRecordCardListState(_followStatus, _userId);
 }
 
 class _FollowRecordCardListState extends State<FollowRecordCardList> {
   late PagingManager<UserCardInfo> _pagingManager;
 
-  _FollowRecordCardListState(followStatus) {
+  _FollowRecordCardListState(followStatus, userId) {
     String url = '';
     switch (followStatus) {
-      case FollowStatus.followingMe:
-        url = '/records/following';
+      case FollowStatus.followingCurrentUser:
+        url = '/records/following/$userId';
         break;
-      case FollowStatus.followedByMe:
-        url = '/records/followed';
+      case FollowStatus.followedByCurrentUser:
+        url = '/records/followed/$userId';
         break;
       default:
         throw 'unsupported follow status for profile page\'s follow records';
