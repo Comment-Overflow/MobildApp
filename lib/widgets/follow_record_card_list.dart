@@ -37,7 +37,11 @@ class _FollowRecordCardListState extends State<FollowRecordCardList> {
           (await NotificationService.getNotification(page, pageSize, url))
               .data['content'] as List;
       return jsonArray.map((json) => UserCardInfo.fromJson(json)).toList();
-    }, _itemBuilder, firstPageIndicator: SkeletonUserList());
+    }, _itemBuilder,
+        firstPageIndicator: SkeletonUserList(),
+        emptyIndicatorTitle: followStatus == FollowStatus.followingMe
+            ? Constants.noFansIndicatorTitle
+            : Constants.noFollowingIndicatorTitle);
   }
 
   @override

@@ -38,8 +38,8 @@ class _PostCardListState extends State<PostCardList> {
     var postObjJson = response.data['content'] as List;
     return postObjJson.map((e) => Post.fromJson(e)).toList();
   }, (context, item, index) => PostCard(item),
-          emptyIndicatorTitle: Constants.browsePostIndicatorTitle,
-          emptyIndicatorSubtitle: Constants.browsePostEmptyIndicatorSubtitle,
+          emptyIndicatorTitle: Constants.noStarIndicatorTitle,
+          emptyIndicatorSubtitle: Constants.noStarIndicatorSubtitle,
           firstPageIndicator: SkeletonPostList());
 
   @override

@@ -30,6 +30,8 @@ class _HotPostListState extends State<HotPostList> {
     },
     (context, item, index) => HotPostCard(item, index + 1),
     firstPageIndicator: SkeletonPostList(),
+    emptyIndicatorTitle: Constants.browsePostIndicatorTitle,
+    emptyIndicatorSubtitle: Constants.browsePostEmptyIndicatorSubtitle,
   );
 
   @override

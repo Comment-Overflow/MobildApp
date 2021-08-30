@@ -130,7 +130,6 @@ class _PersonalPageState extends State<PersonalPage> {
   }
 
   void _onToggle(int index) {
-    // TODO: Implement onToggle.
     switch (index) {
       case 0:
         setState(() {

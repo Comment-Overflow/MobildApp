@@ -25,8 +25,8 @@ class _RecommendPostListState extends State<RecommendPostList> {
       return jsonArray.map((e) => Post.fromJson(e)).toList();
     },
     (context, item, index) => PostCard(item),
-    emptyIndicatorTitle: Constants.browsePostIndicatorTitle,
-    emptyIndicatorSubtitle: Constants.browsePostEmptyIndicatorSubtitle,
+    emptyIndicatorTitle: Constants.noRecommendationIndicatorTitle,
+    emptyIndicatorSubtitle: Constants.noRecommendationIndicatorSubtitle,
     firstPageIndicator: SkeletonPostList(),
   );
 

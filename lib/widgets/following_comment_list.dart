@@ -26,7 +26,6 @@ class _FollowingCommentListState extends State<FollowingCommentList> {
     },
     (context, item, index) => CommentSummaryCard(item),
     emptyIndicatorTitle: Constants.commentEmptyIndicatorTitle,
-    emptyIndicatorSubtitle: Constants.followingCommentEmptyIndicatorSubtitle,
     firstPageIndicator: SkeletonPostList(),
   );
 

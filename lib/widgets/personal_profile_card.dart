@@ -289,7 +289,6 @@ class PersonalProfileCard extends StatelessWidget {
                   ],
                 ),
                 onPressed: () {
-                  // TODO: edit route.
                   Navigator.of(context).pushNamed(
                       RouteGenerator.profileSettingRoute,
                       arguments: new ProfileSettingDto(

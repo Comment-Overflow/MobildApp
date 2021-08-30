@@ -175,11 +175,26 @@ class Constants {
 
   static const String commentEmptyIndicatorTitle = "还没有发言";
 
-  static const String followingCommentEmptyIndicatorSubtitle = "人都是需要休息的";
-
   static const String browsePostIndicatorTitle = '还没有话题';
 
   static const String browsePostEmptyIndicatorSubtitle = '做第一个打破沉默的人吧';
+
+  static const String noFansIndicatorTitle = "还没有粉丝";
+
+  static const String noFollowingIndicatorTitle = "还没有关注";
+
+  static const String noRecommendationIndicatorTitle = "不知道该推荐什么给你";
+
+  static const String noRecommendationIndicatorSubtitle = "多看看看帖，让我们知道你喜欢什么";
+
+  static const String noStarIndicatorTitle = "还没有收藏帖子";
+
+  static const String noStarIndicatorSubtitle = "多逛逛一定能发现喜欢的内容";
+
+  static const String noApprovalIndicatorTitle = "还没有收到点赞";
+  static const String noStarredIndicatorTitle = "还没有帖子被收藏";
+  static const String noReplyIndicatorTitle = "还没有收到回复";
+  static const String noFollowNotificationTitle = "还没有被关注";
 }
 
 enum FollowStatus {

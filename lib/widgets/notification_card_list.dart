@@ -35,7 +35,9 @@ class _NotificationCardListState extends State<NotificationCardList> {
           return jsonArray
               .map((json) => ApprovalRecord.fromJson(json))
               .toList();
-        }, _itemBuilder, firstPageIndicator: SkeletonNotificationCardList());
+        }, _itemBuilder,
+            firstPageIndicator: SkeletonNotificationCardList(),
+            emptyIndicatorTitle: Constants.noApprovalIndicatorTitle);
         break;
       case UserActionType.reply:
         _itemBuilder = (context, item, index) => ReplyNotificationCard(item);
@@ -45,7 +47,9 @@ class _NotificationCardListState extends State<NotificationCardList> {
                   page, pageSize, "/notifications/replies"))
               .data as List;
           return jsonArray.map((json) => ReplyRecord.fromJson(json)).toList();
-        }, _itemBuilder, firstPageIndicator: SkeletonNotificationCardList());
+        }, _itemBuilder,
+            firstPageIndicator: SkeletonNotificationCardList(),
+            emptyIndicatorTitle: Constants.noReplyIndicatorTitle);
         break;
       case UserActionType.star:
         _itemBuilder = (context, item, index) => StarNotificationCard(item);
@@ -55,7 +59,9 @@ class _NotificationCardListState extends State<NotificationCardList> {
                   page, pageSize, "/notifications/stars"))
               .data['content'] as List;
           return jsonArray.map((json) => StarRecord.fromJson(json)).toList();
-        }, _itemBuilder, firstPageIndicator: SkeletonNotificationCardList());
+        }, _itemBuilder,
+            firstPageIndicator: SkeletonNotificationCardList(),
+            emptyIndicatorTitle: Constants.noStarredIndicatorTitle);
         break;
       case UserActionType.follow:
         _itemBuilder = (context, item, index) => FollowNotificationCard(item);
@@ -65,7 +71,9 @@ class _NotificationCardListState extends State<NotificationCardList> {
                   page, pageSize, "/notifications/followers"))
               .data['content'] as List;
           return jsonArray.map((json) => FollowRecord.fromJson(json)).toList();
-        }, _itemBuilder, firstPageIndicator: SkeletonUserList());
+        }, _itemBuilder,
+            firstPageIndicator: SkeletonUserList(),
+            emptyIndicatorTitle: Constants.noFollowNotificationTitle);
         break;
     }
   }
