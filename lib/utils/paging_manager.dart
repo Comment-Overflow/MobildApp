@@ -152,6 +152,7 @@ class PagingManager<T> {
           fontSize: 14,
           color: Color(0xffabb8d6),
         ),
+        hideBackgroundAnimation: true,
       ));
 
   buildNoMoreItemsIndicator() =>
