@@ -199,8 +199,8 @@ class Constants {
 
 enum FollowStatus {
   none,
-  followedByMe,
-  followingMe,
+  followedByCurrentUser,
+  followingCurrentUser,
   both,
 }
 enum Gender {
@@ -276,8 +276,8 @@ Map<UserType, String> userTypeString = {
 
 Map<String, FollowStatus> followStatusMap = {
   "NONE": FollowStatus.none,
-  "FOLLOWED_BY_ME": FollowStatus.followedByMe,
-  "FOLLOWING_ME": FollowStatus.followingMe,
+  "FOLLOWED_BY_ME": FollowStatus.followedByCurrentUser,
+  "FOLLOWING_ME": FollowStatus.followingCurrentUser,
   "BOTH": FollowStatus.both,
 };
 
