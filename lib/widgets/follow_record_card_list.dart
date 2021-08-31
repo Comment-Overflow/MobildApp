@@ -9,7 +9,8 @@ import 'package:flutter/cupertino.dart';
 class FollowRecordCardList extends StatefulWidget {
   final FollowStatus _followStatus;
   final int _userId;
-  const FollowRecordCardList(this._followStatus, this._userId,{Key? key}) : super(key: key);
+  const FollowRecordCardList(this._followStatus, this._userId, {Key? key})
+      : super(key: key);
 
   @override
   _FollowRecordCardListState createState() =>
@@ -40,7 +41,7 @@ class _FollowRecordCardListState extends State<FollowRecordCardList> {
       return jsonArray.map((json) => UserCardInfo.fromJson(json)).toList();
     }, _itemBuilder,
         firstPageIndicator: SkeletonUserList(),
-        emptyIndicatorTitle: followStatus == FollowStatus.followingMe
+        emptyIndicatorTitle: followStatus == FollowStatus.followingCurrentUser
             ? Constants.noFansIndicatorTitle
             : Constants.noFollowingIndicatorTitle);
   }

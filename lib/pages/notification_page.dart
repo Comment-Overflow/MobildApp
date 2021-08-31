@@ -40,6 +40,11 @@ class _NotificationPageState extends State<NotificationPage> {
         automaticallyImplyLeading: false,
       ),
       body: AdaptiveRefresher(
+        iosComplete: SizedBox(
+          width: 25.0,
+          height: 25.0,
+          child: const CupertinoActivityIndicator(),
+        ),
         onRefresh: _onRefresh,
         child: CustomScrollView(
           slivers: <Widget>[
