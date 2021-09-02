@@ -61,7 +61,7 @@ class UserAvatar extends StatelessWidget {
                 case LoadState.completed:
                   return null;
                 case LoadState.failed:
-                  return _buildFallbackContent();
+                  return _buildFallbackContent(context);
               }
             },
           ),
@@ -77,13 +77,13 @@ class UserAvatar extends StatelessWidget {
               case LoadState.loading:
                 return SkeletonAvatar(
                   style: SkeletonAvatarStyle(
-                      shape: BoxShape.circle,
+                    shape: BoxShape.circle,
                   ),
                 );
               case LoadState.completed:
                 return null;
               case LoadState.failed:
-                return _buildFallbackContent();
+                return _buildFallbackContent(context);
             }
           },
         );
@@ -96,9 +96,9 @@ class UserAvatar extends StatelessWidget {
                     RouteGenerator.personalRoute,
                     arguments: PersonalPageAccessDto(_userId, true))
                 : () {},
-            child: _buildFallbackContent());
+            child: _buildFallbackContent(context));
       } else {
-        avatarContent = _buildFallbackContent();
+        avatarContent = _buildFallbackContent(context);
       }
     }
 
@@ -109,10 +109,10 @@ class UserAvatar extends StatelessWidget {
     );
   }
 
-  Widget _buildFallbackContent() {
+  Widget _buildFallbackContent(context) {
     return Icon(
       Icons.account_circle_rounded,
-      color: Colors.blueAccent,
+      color: Theme.of(context).accentColor,
       size: _imageSize,
     );
   }

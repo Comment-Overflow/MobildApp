@@ -25,6 +25,8 @@ class CommentOverflow extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
+    const primaryColor = Color.fromRGBO(29, 149, 63, 1);
+    const accentColor = Color.fromRGBO(29, 149, 63, 1);
     return SkeletonTheme(
       shimmerGradient: LinearGradient(
         colors: [
@@ -44,20 +46,20 @@ class CommentOverflow extends StatelessWidget {
       child: MaterialApp(
         title: '有可奉告',
         theme: ThemeData(
-          primarySwatch: MaterialColor(Colors.blueAccent.value, const {
-            50: Colors.blueAccent,
-            100: Colors.blueAccent,
-            200: Colors.blueAccent,
-            300: Colors.blueAccent,
-            400: Colors.blueAccent,
-            500: Colors.blueAccent,
-            600: Colors.blueAccent,
-            700: Colors.blueAccent,
-            800: Colors.blueAccent,
-            900: Colors.blueAccent,
+          primarySwatch: MaterialColor(accentColor.value, const {
+            50: accentColor,
+            100: accentColor,
+            200: accentColor,
+            300: accentColor,
+            400: accentColor,
+            500: accentColor,
+            600: accentColor,
+            700: accentColor,
+            800: accentColor,
+            900: accentColor,
           }),
           primaryColor: Colors.white,
-          accentColor: Colors.blueAccent,
+          accentColor: accentColor,
           textButtonTheme: TextButtonThemeData(
             style: ButtonStyle(
               overlayColor: MaterialStateProperty.all(Colors.transparent),
@@ -67,7 +69,7 @@ class CommentOverflow extends StatelessWidget {
                   EdgeInsets.symmetric(vertical: 6.0)),
             ),
           ),
-          buttonColor: Colors.blue.withOpacity(0.12),
+          buttonColor: primaryColor.withOpacity(0.12),
           disabledColor: Colors.grey.withOpacity(0.5),
           secondaryHeaderColor: Colors.grey,
         ),

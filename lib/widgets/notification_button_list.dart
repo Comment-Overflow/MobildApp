@@ -44,7 +44,7 @@ class _NotificationButtonList extends State<NotificationButtonList> {
     SizedBox _gap = SizedBox(height: widget._buttonSize * 0.3);
 
     return Theme(
-      data: ThemeData(
+      data: Theme.of(context).copyWith(
         splashColor: Colors.transparent,
         highlightColor: Colors.transparent,
       ),

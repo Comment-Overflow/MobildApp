@@ -247,9 +247,6 @@ class CustomStyles {
   static Icon getDefaultCloseIcon({size = 14.0, color: Colors.grey}) =>
       Icon(Icons.close, color: color, size: size);
 
-  static Icon getDefaultMailIcon({size = 22.0, color = Colors.blueAccent}) =>
-      Icon(Icons.mail_outline, color: color, size: size);
-
   static Icon getDefaultEditIcon({size = 20.0, color = Colors.black}) =>
       Icon(Icons.edit, color: color, size: size);
 

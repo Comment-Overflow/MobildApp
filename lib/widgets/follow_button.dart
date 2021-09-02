@@ -45,6 +45,7 @@ class _FollowButtonState extends State<FollowButton> {
     cancelCallback() {
       Navigator.of(context).pop();
     }
+
     return SizedBox(
       height: Constants.defaultTextButtonHeight,
       child: TextButton(
@@ -93,13 +94,14 @@ class _FollowButtonState extends State<FollowButton> {
   }
 
   Widget _buildNotFollowedByMeText() {
+    Color accentColor = Theme.of(context).accentColor;
     return Row(
       mainAxisSize: MainAxisSize.min,
       children: <Widget>[
-        CustomStyles.getDefaultPlusIcon(),
+        CustomStyles.getDefaultPlusIcon(color: accentColor),
         Text("关注",
             style: TextStyle(
-                fontSize: Constants.defaultButtonTextSize, color: Colors.blue)),
+                fontSize: Constants.defaultButtonTextSize, color: accentColor)),
       ],
     );
   }
@@ -141,14 +143,15 @@ class _FollowButtonState extends State<FollowButton> {
     return ButtonStyle(
       padding: MaterialStateProperty.all<EdgeInsetsGeometry>(
           EdgeInsets.symmetric(horizontal: Constants.defaultTextButtonPadding)),
-      foregroundColor: MaterialStateProperty.all<Color>(Colors.blueAccent),
+      foregroundColor:
+          MaterialStateProperty.all<Color>(Theme.of(context).accentColor),
       backgroundColor:
-          MaterialStateProperty.all<Color>(Colors.blue.withOpacity(0.12)),
+          MaterialStateProperty.all<Color>(Theme.of(context).buttonColor),
       overlayColor: MaterialStateProperty.resolveWith<Color>(
         (Set<MaterialState> states) {
           if (states.contains(MaterialState.focused) ||
               states.contains(MaterialState.pressed))
-            return Colors.blue.withOpacity(0.12);
+            return Theme.of(context).buttonColor;
           return Theme.of(context).primaryColor;
         },
       ),
@@ -167,7 +170,7 @@ class _FollowButtonState extends State<FollowButton> {
         (Set<MaterialState> states) {
           if (states.contains(MaterialState.focused) ||
               states.contains(MaterialState.pressed))
-            return Colors.blue.withOpacity(0.12);
+            return Theme.of(context).buttonColor;
           return Theme.of(context).primaryColor;
         },
       ),
