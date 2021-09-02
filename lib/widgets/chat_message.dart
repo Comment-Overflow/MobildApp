@@ -58,7 +58,7 @@ class ChatMessage extends StatelessWidget {
                         elevation: 0.3,
                         alignment: Alignment.topRight,
                         nip: BubbleNip.rightTop,
-                        color: CustomColors.chatBubbleBlue,
+                        color: CustomColors.chatBubbleColor,
                         child: _buildContent(),
                       ),
                       _message.time == null
