@@ -80,6 +80,7 @@ class _LoginPageState extends State<LoginPage> {
 
   @override
   Widget build(BuildContext context) {
+    Color themeAccentColor = Theme.of(context).accentColor;
     return FlutterLogin(
       loginAfterSignUp: false,
       title: '有可奉告',
@@ -93,17 +94,17 @@ class _LoginPageState extends State<LoginPage> {
       theme: LoginTheme(
           // Gradient background color.
           pageColorLight: Color(0xFFFAD4AB),
-          pageColorDark: Color(0xFFFF841A),
-          primaryColor: Colors.orangeAccent,
+          pageColorDark: themeAccentColor,
+          primaryColor: themeAccentColor,
           titleStyle: TextStyle(
             color: Colors.white,
           ),
           cardTheme: CardTheme(
             elevation: 3,
           ),
-          buttonTheme: LoginButtonTheme(
-              elevation: 2, backgroundColor: Colors.orangeAccent),
-          accentColor: Colors.orangeAccent,
+          buttonTheme:
+              LoginButtonTheme(elevation: 2, backgroundColor: themeAccentColor),
+          accentColor: themeAccentColor,
           authButtonPadding: EdgeInsets.only(top: 15.0, bottom: 5.0)),
       onRecoverPassword: _recoverPassword,
       emailRetryInterval: 30,

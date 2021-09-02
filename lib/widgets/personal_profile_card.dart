@@ -271,8 +271,8 @@ class PersonalProfileCard extends StatelessWidget {
                     padding: MaterialStateProperty.all<EdgeInsetsGeometry>(
                         EdgeInsets.symmetric(
                             horizontal: Constants.defaultTextButtonPadding)),
-                    backgroundColor:
-                        MaterialStateProperty.all<Color>(Colors.orangeAccent)),
+                    backgroundColor: MaterialStateProperty.all<Color>(
+                        Theme.of(context).accentColor)),
                 child: Row(
                   mainAxisSize: MainAxisSize.min,
                   children: [

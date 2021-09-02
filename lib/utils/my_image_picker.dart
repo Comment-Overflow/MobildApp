@@ -7,7 +7,7 @@ class MyImagePicker {
     return AssetPicker.pickAssets(
       context,
       maxAssets: maxAssets,
-      themeColor: Colors.orangeAccent,
+      themeColor: Theme.of(context).accentColor,
       pathThumbSize: 84,
       selectedAssets: selectedAssets,
       requestType: RequestType.image,

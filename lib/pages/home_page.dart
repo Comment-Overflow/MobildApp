@@ -111,7 +111,7 @@ class HomePage extends StatelessWidget {
             shape: CircleBorder(),
             padding: EdgeInsets.zero,
           ),
-          child: Icon(Icons.add_outlined),
+          child: Icon(Icons.add_outlined, color: Colors.white),
         ),
       );
 
