@@ -114,8 +114,6 @@ class _PersonalPageState extends State<PersonalPage> {
               ]),
             ),
           ),
-          bottomNavigationBar:
-              isSelf ? SafeArea(child: _buildSorter()) : Container(height: 0),
         );
       },
     );
