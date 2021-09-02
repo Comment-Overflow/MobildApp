@@ -77,7 +77,7 @@ class UserAvatar extends StatelessWidget {
               case LoadState.loading:
                 return SkeletonAvatar(
                   style: SkeletonAvatarStyle(
-                      shape: BoxShape.circle,
+                    shape: BoxShape.circle,
                   ),
                 );
               case LoadState.completed:
@@ -112,7 +112,7 @@ class UserAvatar extends StatelessWidget {
   Widget _buildFallbackContent() {
     return Icon(
       Icons.account_circle_rounded,
-      color: Colors.blueAccent,
+      color: Colors.orangeAccent,
       size: _imageSize,
     );
   }

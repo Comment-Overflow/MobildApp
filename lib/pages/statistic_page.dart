@@ -92,7 +92,7 @@ class _SkeletonCards extends StatelessWidget {
           itemCount: 6,
           itemBuilder: (bc, index) {
             return Card(
-              shadowColor: Colors.blueAccent,
+              shadowColor: Colors.orangeAccent,
               child: Column(
                 children: [
                   SizedBox(height: 40.0),

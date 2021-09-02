@@ -11,9 +11,9 @@ class CustomColors {
   static const maleBlue = Color(0xFF1B86D9);
   static const profileSettingInputGery = Color(0x1f000000);
   static const messageBoxError = Colors.redAccent;
-  static const messageBoxInfo = Colors.blue;
-  static const messageBoxSuccess = Colors.blueAccent;
+  static const messageBoxInfo = Colors.orangeAccent;
+  static const messageBoxSuccess = Colors.orangeAccent;
   static const messageBoxText = Colors.blueGrey;
   static const lightBlue = Color(0xFF49BAFF);
-  static const highlightBlue = Color(0xFFE0EBFF);
+  static const highlightOrange = Color(0xFFFFEBDE);
 }

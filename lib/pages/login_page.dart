@@ -92,9 +92,9 @@ class _LoginPageState extends State<LoginPage> {
       },
       theme: LoginTheme(
           // Gradient background color.
-          pageColorLight: Color(0xFF77ACF1),
-          pageColorDark: Color(0xFF0500B6),
-          primaryColor: Colors.blueAccent,
+          pageColorLight: Color(0xFFFAD4AB),
+          pageColorDark: Color(0xFFFF841A),
+          primaryColor: Colors.orangeAccent,
           titleStyle: TextStyle(
             color: Colors.white,
           ),
@@ -102,8 +102,8 @@ class _LoginPageState extends State<LoginPage> {
             elevation: 3,
           ),
           buttonTheme: LoginButtonTheme(
-              elevation: 2, backgroundColor: Color(0xFF3F84DE)),
-          accentColor: Colors.blueAccent,
+              elevation: 2, backgroundColor: Colors.orangeAccent),
+          accentColor: Colors.orangeAccent,
           authButtonPadding: EdgeInsets.only(top: 15.0, bottom: 5.0)),
       onRecoverPassword: _recoverPassword,
       emailRetryInterval: 30,

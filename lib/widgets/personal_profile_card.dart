@@ -24,7 +24,7 @@ class PersonalProfileCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Theme(
-      data: ThemeData(
+      data: Theme.of(context).copyWith(
         splashColor: Colors.transparent,
         highlightColor: Colors.transparent,
       ),
@@ -239,11 +239,11 @@ class PersonalProfileCard extends StatelessWidget {
                         EdgeInsets.symmetric(
                             horizontal: Constants.defaultTextButtonPadding)),
                     side: MaterialStateProperty.all<BorderSide>(
-                        BorderSide(color: Colors.blue, width: 0.7))),
+                        BorderSide(color: Colors.orange, width: 0.7))),
                 child: Text("私信",
                     style: TextStyle(
                         fontSize: Constants.defaultButtonTextSize,
-                        color: Colors.blue)),
+                        color: Theme.of(context).accentColor)),
                 onPressed: () {
                   Navigator.of(context).pushNamed(
                       RouteGenerator.privateChatRoute,
@@ -272,7 +272,7 @@ class PersonalProfileCard extends StatelessWidget {
                         EdgeInsets.symmetric(
                             horizontal: Constants.defaultTextButtonPadding)),
                     backgroundColor:
-                        MaterialStateProperty.all<Color>(Colors.blueAccent)),
+                        MaterialStateProperty.all<Color>(Colors.orangeAccent)),
                 child: Row(
                   mainAxisSize: MainAxisSize.min,
                   children: [

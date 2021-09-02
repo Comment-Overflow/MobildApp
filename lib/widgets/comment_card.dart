@@ -67,7 +67,7 @@ class _CommentCardState extends State<CommentCard>
         vsync: this,
         duration: Duration(milliseconds: Constants.defaultHighlightTime));
     _colorTween =
-        ColorTween(begin: CustomColors.highlightBlue, end: Colors.white)
+        ColorTween(begin: CustomColors.highlightOrange, end: Colors.white)
             .animate(
       CurvedAnimation(parent: _animationController, curve: Interval(0.5, 1.0)),
     );

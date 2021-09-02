@@ -45,6 +45,7 @@ class _FollowButtonState extends State<FollowButton> {
     cancelCallback() {
       Navigator.of(context).pop();
     }
+
     return SizedBox(
       height: Constants.defaultTextButtonHeight,
       child: TextButton(
@@ -93,13 +94,14 @@ class _FollowButtonState extends State<FollowButton> {
   }
 
   Widget _buildNotFollowedByMeText() {
+    Color color = Theme.of(context).accentColor;
     return Row(
       mainAxisSize: MainAxisSize.min,
       children: <Widget>[
-        CustomStyles.getDefaultPlusIcon(),
+        CustomStyles.getDefaultPlusIcon(color: color),
         Text("关注",
             style: TextStyle(
-                fontSize: Constants.defaultButtonTextSize, color: Colors.blue)),
+                fontSize: Constants.defaultButtonTextSize, color: color)),
       ],
     );
   }
@@ -138,24 +140,24 @@ class _FollowButtonState extends State<FollowButton> {
   }
 
   ButtonStyle _buildAddFollowButtonStyle() {
+    ThemeData theme = Theme.of(context);
     return ButtonStyle(
       padding: MaterialStateProperty.all<EdgeInsetsGeometry>(
           EdgeInsets.symmetric(horizontal: Constants.defaultTextButtonPadding)),
-      foregroundColor: MaterialStateProperty.all<Color>(Colors.blueAccent),
-      backgroundColor:
-          MaterialStateProperty.all<Color>(Colors.blue.withOpacity(0.12)),
+      foregroundColor: MaterialStateProperty.all<Color>(theme.accentColor),
+      backgroundColor: MaterialStateProperty.all<Color>(theme.buttonColor),
       overlayColor: MaterialStateProperty.resolveWith<Color>(
         (Set<MaterialState> states) {
           if (states.contains(MaterialState.focused) ||
-              states.contains(MaterialState.pressed))
-            return Colors.blue.withOpacity(0.12);
-          return Theme.of(context).primaryColor;
+              states.contains(MaterialState.pressed)) return theme.buttonColor;
+          return theme.primaryColor;
         },
       ),
     );
   }
 
   ButtonStyle _buildHasFollowedButtonStyle() {
+    ThemeData theme = Theme.of(context);
     return ButtonStyle(
       padding: MaterialStateProperty.all<EdgeInsetsGeometry>(
           EdgeInsets.symmetric(horizontal: Constants.defaultTextButtonPadding)),
@@ -166,9 +168,8 @@ class _FollowButtonState extends State<FollowButton> {
       overlayColor: MaterialStateProperty.resolveWith<Color>(
         (Set<MaterialState> states) {
           if (states.contains(MaterialState.focused) ||
-              states.contains(MaterialState.pressed))
-            return Colors.blue.withOpacity(0.12);
-          return Theme.of(context).primaryColor;
+              states.contains(MaterialState.pressed)) return theme.buttonColor;
+          return theme.primaryColor;
         },
       ),
     );
