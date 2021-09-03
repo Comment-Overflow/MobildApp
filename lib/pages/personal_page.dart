@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:comment_overflow/assets/constants.dart';
 import 'package:comment_overflow/assets/custom_styles.dart';
 import 'package:comment_overflow/model/user_info.dart';
@@ -67,7 +69,7 @@ class _PersonalPageState extends State<PersonalPage> {
               style: CustomStyles.pageTitleStyle,
             ),
             actions: [
-              isSelf ? _buildDropDownMenu() : Container(),
+              isSelf ? _buildSignOutButton() : Container(),
               (isAdmin && !isSelf)
                   ? Padding(
                       padding: const EdgeInsets.all(11.0),
@@ -191,27 +193,16 @@ class _PersonalPageState extends State<PersonalPage> {
     );
   }
 
-  Widget _buildDropDownMenu() {
-    return PopupMenuButton<Setting>(
+  Widget _buildSignOutButton() {
+    return IconButton(
       padding: const EdgeInsets.all(7.0),
-      onSelected: (Setting setting) async {
+      icon: CustomStyles.getDefaultSignOutIcon(),
+      onPressed: () async {
         await ChatService.disposeChat();
         await StorageUtil().deleteOnLogout();
         Navigator.of(context).pushNamedAndRemoveUntil(
             RouteGenerator.loginRoute, (route) => false);
       },
-      itemBuilder: (BuildContext context) => [
-        PopupMenuItem(
-          value: Setting.signOut,
-          child: Row(
-            children: [
-              CustomStyles.getDefaultSignOutIcon(),
-              SizedBox(width: 10.0),
-              Text("退出登录"),
-            ],
-          ),
-        ),
-      ],
     );
   }
 
