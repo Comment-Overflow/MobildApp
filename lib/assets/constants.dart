@@ -114,6 +114,8 @@ class Constants {
 
   static final sizeLimitMB = sizeLimitBytes / 1024 / 1024;
 
+  static final fadeTransitionDuration = 1200;
+
   // Categories of posts
   static const List<String> postCategories = [
     '校园生活',
