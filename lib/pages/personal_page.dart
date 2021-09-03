@@ -342,10 +342,13 @@ class _PersonalPageState extends State<PersonalPage> {
 }
 
 class TabBarHeader extends SliverPersistentHeaderDelegate {
-  final TabBar _tabBar = TabBar(
-    tabs: Constants.personalPageTabs.map((e) => Tab(text: e)).toList(),
-    isScrollable: false,
-  );
+  TabBarHeader()
+      : _tabBar = TabBar(
+          tabs: Constants.personalPageTabs.map((e) => Tab(text: e)).toList(),
+          isScrollable: false,
+        );
+
+  final TabBar _tabBar;
 
   @override
   Widget build(
@@ -428,7 +431,6 @@ class PersonalPostHeader extends SliverPersistentHeaderDelegate {
               ],
             ),
           ),
-          _buildToggle(context),
         ],
       ),
     );
