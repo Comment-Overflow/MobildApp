@@ -110,7 +110,7 @@ class Constants {
 
   static const postCommentTimeout = 30;
 
-  static const sizeLimitBytes = 5 * 1024 * 1024;
+  static const sizeLimitBytes = 20 * 1024 * 1024;
 
   static final sizeLimitMB = sizeLimitBytes / 1024 / 1024;
 
