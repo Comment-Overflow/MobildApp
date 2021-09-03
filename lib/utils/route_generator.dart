@@ -26,6 +26,7 @@ import 'package:flutter/material.dart';
 
 class RouteGenerator {
   static const homeRoute = '/';
+  static const fadingHomeRoute = '/fading/home';
   static const searchRoute = '/search';
   static const searchResultRoute = '/search_result';
   static const newPostRoute = '/new_post';
@@ -55,14 +56,16 @@ class RouteGenerator {
         return MaterialPageRoute(
           settings: settings,
           builder: (_) => ScrollViewPage(
-              FollowRecordCardList(FollowStatus.followingCurrentUser, (args as UserNameIdDto).id),
+              FollowRecordCardList(FollowStatus.followingCurrentUser,
+                  (args as UserNameIdDto).id),
               (args).userName + '的粉丝'),
         );
       case followersRoute:
         return MaterialPageRoute(
             settings: settings,
             builder: (_) => ScrollViewPage(
-                FollowRecordCardList(FollowStatus.followedByCurrentUser, (args as UserNameIdDto).id),
+                FollowRecordCardList(FollowStatus.followedByCurrentUser,
+                    (args as UserNameIdDto).id),
                 (args).userName + '的关注'));
       case approveMeRoute:
         return MaterialPageRoute(
@@ -85,8 +88,12 @@ class RouteGenerator {
             builder: (_) => ScrollViewPage(
                 NotificationCardList(UserActionType.follow), '关注'));
       case loginRoute:
-        return MaterialPageRoute(
-            settings: settings, builder: (_) => LoginPage());
+        return PageRouteBuilder(
+          pageBuilder: (_c, _a, _s) => LoginPage(),
+          transitionsBuilder: (_c, animation, _s, child) =>
+              FadeTransition(opacity: animation, child: child),
+          transitionDuration: Duration(milliseconds: Constants.fadeTransitionDuration),
+        );;
       case newPostRoute:
         return MaterialPageRoute(
             settings: settings, builder: (_) => NewPostPage());
@@ -136,12 +143,19 @@ class RouteGenerator {
             settings: settings,
             builder: (_) =>
                 PagesContainer(defaultIndex: args == null ? 0 : args as int));
+      case fadingHomeRoute:
+        return PageRouteBuilder(
+          pageBuilder: (_c, _a, _s) =>
+              PagesContainer(defaultIndex: args == null ? 0 : args as int),
+          transitionsBuilder: (_c, animation, _s, child) =>
+              FadeTransition(opacity: animation, child: child),
+          transitionDuration: Duration(milliseconds: Constants.fadeTransitionDuration),
+        );
       case statisticRoute:
         return MaterialPageRoute(builder: (_) => StatisticPage());
       case introRoute:
       default:
-        return MaterialPageRoute(
-            settings: settings, builder: (_) => IntroPage());
+        return MaterialPageRoute(builder: (_) => IntroPage());
     }
   }
 }
