@@ -15,5 +15,5 @@ class CustomColors {
   static const messageBoxSuccess = Color.fromRGBO(29, 149, 63, 1);
   static const messageBoxText = Colors.blueGrey;
   static const lightBlue = Color(0xFF49BAFF);
-  static const highlightGreen = Color(0xFFD3FFD4);
+  static const highlightGreen = Color(0xFFE9FFE9);
 }

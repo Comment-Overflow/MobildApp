@@ -82,6 +82,7 @@ class _LoginPageState extends State<LoginPage> {
   Widget build(BuildContext context) {
     Color accentColor = Theme.of(context).accentColor;
     return FlutterLogin(
+      backgroundImage: AssetImage("assets/images/login_background.jpeg"),
       loginAfterSignUp: false,
       title: '有可奉告',
       messages: buildMessages(),
