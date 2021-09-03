@@ -28,14 +28,6 @@ class AdaptiveAlertDialog extends StatelessWidget {
 
     Text? title = _titleText != null ?  Text(_titleText!) : null;
     Text? content = _contentText != null ? Text(_contentText!) : null;
-    Widget androidApproveButton = TextButton(
-      onPressed: _okCallback,
-      child: Text(_okLabel)
-    );
-    Widget androidDisapproveButton = TextButton(
-        onPressed: _cancelCallback,
-        child: Text(_cancelLabel)
-    );
 
     if (Platform.isIOS) {
       return CupertinoAlertDialog(

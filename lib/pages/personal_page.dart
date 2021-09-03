@@ -198,12 +198,21 @@ class _PersonalPageState extends State<PersonalPage> {
       padding: const EdgeInsets.all(7.0),
       icon: CustomStyles.getDefaultSignOutIcon(),
       onPressed: () async {
-        await ChatService.disposeChat();
-        await StorageUtil().deleteOnLogout();
-        Navigator.of(context).pushNamedAndRemoveUntil(
-            RouteGenerator.loginRoute, (route) => false);
+        showDialog(
+            context: context,
+            builder: (context) {
+              return AdaptiveAlertDialog("退出登录", "确定要退出登录吗？", "确定", "取消",
+                  _onConfirmLogout, () => Navigator.pop(context));
+            });
       },
     );
+  }
+
+  Future _onConfirmLogout() async {
+    await ChatService.disposeChat();
+    await StorageUtil().deleteOnLogout();
+    Navigator.of(context)
+        .pushNamedAndRemoveUntil(RouteGenerator.loginRoute, (route) => false);
   }
 
   Widget _buildSilenceUserButton() {
