@@ -78,7 +78,7 @@ class CustomStyles {
       TextStyle(fontWeight: FontWeight.bold, fontSize: 15.0);
 
   static const currentPageStyle = TextStyle(
-      fontWeight: FontWeight.bold, fontSize: 20.0, color: Colors.white);
+      fontWeight: FontWeight.bold, fontSize: 17.5, color: Colors.white);
 
   static const otherPageStyle = TextStyle(
       fontWeight: FontWeight.bold, fontSize: 18.0, color: Colors.black54);

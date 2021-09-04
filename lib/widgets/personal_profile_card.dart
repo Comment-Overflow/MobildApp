@@ -1,3 +1,4 @@
+import 'package:auto_size_text/auto_size_text.dart';
 import 'package:comment_overflow/assets/constants.dart';
 import 'package:comment_overflow/assets/custom_styles.dart';
 import 'package:comment_overflow/model/routing_dto/image_gallery_dto.dart';
@@ -79,9 +80,15 @@ class PersonalProfileCard extends StatelessWidget {
                           child: Row(
                             mainAxisSize: MainAxisSize.max,
                             children: [
-                              Text(
-                                _personalPageInfo.userName,
-                                style: CustomStyles.personalPageUserNameStyle,
+                              Expanded(
+                                child: Padding(
+                                  padding: const EdgeInsets.symmetric(horizontal: 3.0),
+                                  child: AutoSizeText(
+                                    _personalPageInfo.userName,
+                                    style: CustomStyles.personalPageUserNameStyle,
+                                    maxLines: 1,
+                                  ),
+                                ),
                               ),
                               SizedBox(
                                   width: Constants
@@ -96,18 +103,17 @@ class PersonalProfileCard extends StatelessWidget {
                           ),
                         ),
                         Expanded(
-                            flex: 8,
+                            flex: 9,
                             child: Divider(
                                 height: 0.5,
                                 endIndent: 0.0,
                                 color: Colors.grey.withOpacity(0.5))),
                         Expanded(
-                          flex: 33,
-                          child: Text(
+                          flex: 32,
+                          child: AutoSizeText(
                             _personalPageInfo.brief,
-                            overflow: TextOverflow.ellipsis,
-                            maxLines: 3,
                             style: CustomStyles.personalPageUserBriefStyle,
+                            maxLines: 2,
                           ),
                         ),
                         SizedBox(height: 5.0),

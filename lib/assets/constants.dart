@@ -66,7 +66,7 @@ class Constants {
   static const defaultPersonalPageAvatarPadding = 5.0;
 
   /// Default sex icon size on personal page.
-  static const defaultPersonalPageHeaderTitleSize = 22.5;
+  static const defaultPersonalPageHeaderTitleSize = 22.0;
 
   /// Default size of personal page header footer text.
   static const defaultPersonalPageHeaderFooterSize = 14.0;

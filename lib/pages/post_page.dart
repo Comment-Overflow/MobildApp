@@ -1,3 +1,4 @@
+import 'package:auto_size_text/auto_size_text.dart';
 import 'package:comment_overflow/assets/constants.dart';
 import 'package:comment_overflow/assets/custom_styles.dart';
 import 'package:comment_overflow/model/post.dart';
@@ -276,7 +277,7 @@ class _PostPageState extends State<PostPage> {
                             itemBuilder: (context2, index) {
                               return index == _currentPageNum
                                   ? Padding(
-                                      padding: EdgeInsets.all(10.0),
+                                      padding: EdgeInsets.all(3.0),
                                       child: ElevatedButton(
                                         onPressed: () {},
                                         style: ButtonStyle(
@@ -284,9 +285,11 @@ class _PostPageState extends State<PostPage> {
                                                 MaterialStateProperty.all(0),
                                             shape: MaterialStateProperty.all(
                                                 CircleBorder())),
-                                        child: Text((index + 1).toString(),
-                                            style:
-                                                CustomStyles.currentPageStyle),
+                                        child: AutoSizeText(
+                                          (index + 1).toString(),
+                                          style: CustomStyles.currentPageStyle,
+                                          maxLines: 1,
+                                        ),
                                       ),
                                     )
                                   : TextButton(
