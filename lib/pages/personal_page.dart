@@ -80,7 +80,7 @@ class _PersonalPageState extends State<PersonalPage> {
             centerTitle: true,
           ),
           body: DefaultTabController(
-            length: Constants.personalPageTabs.length,
+            length: isSelf ? Constants.personalPageTabs.length : 1,
             child: NestedScrollView(
               physics: NeverScrollableScrollPhysics(),
               headerSliverBuilder: (context, value) {
@@ -99,19 +99,28 @@ class _PersonalPageState extends State<PersonalPage> {
                   ),
                 ];
               },
-              body: TabBarView(children: [
-                Container(
-                    child: PostCardList(
-                  userId: widget._userId,
-                )),
-                Container(
-                    child: SearchedCommentCardList("", userId: widget._userId)),
-                Container(
-                    child: PostCardList(
-                  userId: widget._userId,
-                  isStarred: true,
-                )),
-              ]),
+              body: TabBarView(
+                  children: isSelf
+                      ? [
+                          Container(
+                              child: PostCardList(
+                            userId: widget._userId,
+                          )),
+                          Container(
+                              child: SearchedCommentCardList("",
+                                  userId: widget._userId)),
+                          Container(
+                              child: PostCardList(
+                            userId: widget._userId,
+                            isStarred: true,
+                          )),
+                        ]
+                      : [
+                          Container(
+                              child: PostCardList(
+                            userId: widget._userId,
+                          ))
+                        ]),
             ),
           ),
         );
@@ -227,6 +236,8 @@ class _PersonalPageState extends State<PersonalPage> {
           _personalPageInfo.userType = UserType.Silenced;
           isLoading = false;
         });
+        MessageBox.showToast(
+            msg: "禁言成功", messageBoxType: MessageBoxType.Success);
       } on DioError catch (e) {
         MessageBox.showToast(
             msg: e.response!.data, messageBoxType: MessageBoxType.Error);
@@ -246,6 +257,8 @@ class _PersonalPageState extends State<PersonalPage> {
           _personalPageInfo.userType = UserType.User;
           isLoading = false;
         });
+        MessageBox.showToast(
+            msg: "解禁成功", messageBoxType: MessageBoxType.Success);
       } on DioError catch (e) {
         MessageBox.showToast(
             msg: e.message, messageBoxType: MessageBoxType.Error);
