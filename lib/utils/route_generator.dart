@@ -93,7 +93,7 @@ class RouteGenerator {
           transitionsBuilder: (_c, animation, _s, child) =>
               FadeTransition(opacity: animation, child: child),
           transitionDuration: Duration(milliseconds: Constants.fadeTransitionDuration),
-        );;
+        );
       case newPostRoute:
         return MaterialPageRoute(
             settings: settings, builder: (_) => NewPostPage());
