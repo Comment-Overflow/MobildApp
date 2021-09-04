@@ -192,6 +192,7 @@ class CommentPagingManager<T> {
     // print(_pagingController.itemList);
 
     PagedListView<int, Comment?> listView = PagedListView<int, Comment?>(
+      physics: BouncingScrollPhysics(),
       scrollController: _autoScrollController,
       pagingController: _pagingController,
       cacheExtent: _cacheExtent,
