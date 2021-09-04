@@ -1,3 +1,4 @@
+import 'package:comment_overflow/utils/general_utils.dart';
 import 'package:extended_image/extended_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
@@ -52,7 +53,7 @@ class PostCardImage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ExtendedImage.network(
-      _url,
+      GeneralUtils.getThumbnailPath(_url),
       timeLimit: _timeout,
       width: _width,
       height: _height,

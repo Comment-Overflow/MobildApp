@@ -261,7 +261,10 @@ class SearchedCommentCard extends StatelessWidget {
                   : '${_post.searchedComment.floorString}楼 · ',
             ),
             WidgetSpan(
-              child: CustomStyles.getDefaultThumbUpIcon(),
+              child:
+                  _post.searchedComment.approvalStatus == ApprovalStatus.approve
+                      ? CustomStyles.getDefaultThumbUpIcon()
+                      : CustomStyles.getDefaultNotThumbUpIcon(),
             ),
             TextSpan(
               text:
@@ -387,7 +390,10 @@ class CommentSummaryCard extends StatelessWidget {
                   : '${_post.searchedComment.floorString}楼 · ',
             ),
             WidgetSpan(
-              child: CustomStyles.getDefaultThumbUpIcon(),
+              child:
+                  _post.searchedComment.approvalStatus == ApprovalStatus.approve
+                      ? CustomStyles.getDefaultThumbUpIcon()
+                      : CustomStyles.getDefaultNotThumbUpIcon(),
             ),
             TextSpan(
               text:

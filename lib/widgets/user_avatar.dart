@@ -1,9 +1,9 @@
 import 'package:comment_overflow/model/routing_dto/personal_page_access_dto.dart';
+import 'package:comment_overflow/utils/general_utils.dart';
 import 'package:comment_overflow/utils/route_generator.dart';
 import 'package:extended_image/extended_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
-import 'package:skeleton_text/skeleton_text.dart';
 import 'package:skeletons/skeletons.dart';
 import 'package:wechat_assets_picker/wechat_assets_picker.dart';
 
@@ -12,7 +12,7 @@ class UserAvatar extends StatelessWidget {
   final double _imageSize;
   final bool _canJump;
   final int _userId;
-  dynamic _imageContent;
+  final dynamic _imageContent;
 
   UserAvatar(
     userId,
@@ -46,7 +46,7 @@ class UserAvatar extends StatelessWidget {
                   arguments: PersonalPageAccessDto(_userId, true))
               : () {},
           child: ExtendedImage.network(
-            _imageContent as String,
+            GeneralUtils.getThumbnailPath(_imageContent),
             width: _imageSize,
             height: _imageSize,
             fit: BoxFit.cover,
@@ -68,7 +68,7 @@ class UserAvatar extends StatelessWidget {
         );
       } else {
         avatarContent = ExtendedImage.network(
-          _imageContent as String,
+          GeneralUtils.getThumbnailPath(_imageContent as String),
           width: _imageSize,
           height: _imageSize,
           fit: BoxFit.cover,

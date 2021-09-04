@@ -1,5 +1,6 @@
 import 'package:comment_overflow/assets/constants.dart';
 import 'package:comment_overflow/assets/custom_styles.dart';
+import 'package:comment_overflow/model/routing_dto/image_gallery_dto.dart';
 import 'package:comment_overflow/model/routing_dto/profile_setting_dto.dart';
 import 'package:comment_overflow/model/routing_dto/user_name_id_dto.dart';
 import 'package:comment_overflow/model/user_info.dart';
@@ -48,10 +49,21 @@ class PersonalProfileCard extends StatelessWidget {
                         mainAxisSize: MainAxisSize.max,
                         mainAxisAlignment: MainAxisAlignment.start,
                         children: [
-                          UserAvatar(_personalPageInfo.userId,
-                              Constants.defaultPersonalPageAvatarSize,
-                              canJump: false,
-                              imageContent: _personalPageInfo.avatarUrl),
+                          GestureDetector(
+                            onTap: _personalPageInfo.avatarUrl == null
+                                ? null
+                                : () => Navigator.push(
+                                    context,
+                                    RouteGenerator.generateRoute(RouteSettings(
+                                      name: RouteGenerator.galleryRoute,
+                                      arguments: ImageGalleryDto(
+                                          [_personalPageInfo.avatarUrl!], 1),
+                                    ))),
+                            child: UserAvatar(_personalPageInfo.userId,
+                                Constants.defaultPersonalPageAvatarSize,
+                                canJump: false,
+                                imageContent: _personalPageInfo.avatarUrl),
+                          ),
                         ],
                       ),
                     ),

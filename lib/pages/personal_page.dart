@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:comment_overflow/assets/constants.dart';
 import 'package:comment_overflow/assets/custom_styles.dart';
 import 'package:comment_overflow/model/user_info.dart';
@@ -67,7 +69,7 @@ class _PersonalPageState extends State<PersonalPage> {
               style: CustomStyles.pageTitleStyle,
             ),
             actions: [
-              isSelf ? _buildDropDownMenu() : Container(),
+              isSelf ? _buildSignOutButton() : Container(),
               (isAdmin && !isSelf)
                   ? Padding(
                       padding: const EdgeInsets.all(11.0),
@@ -191,28 +193,26 @@ class _PersonalPageState extends State<PersonalPage> {
     );
   }
 
-  Widget _buildDropDownMenu() {
-    return PopupMenuButton<Setting>(
+  Widget _buildSignOutButton() {
+    return IconButton(
       padding: const EdgeInsets.all(7.0),
-      onSelected: (Setting setting) async {
-        await ChatService.disposeChat();
-        await StorageUtil().deleteOnLogout();
-        Navigator.of(context).pushNamedAndRemoveUntil(
-            RouteGenerator.loginRoute, (route) => false);
+      icon: CustomStyles.getDefaultSignOutIcon(),
+      onPressed: () async {
+        showDialog(
+            context: context,
+            builder: (context) {
+              return AdaptiveAlertDialog("退出登录", "确定要退出登录吗？", "确定", "取消",
+                  _onConfirmLogout, () => Navigator.pop(context));
+            });
       },
-      itemBuilder: (BuildContext context) => [
-        PopupMenuItem(
-          value: Setting.signOut,
-          child: Row(
-            children: [
-              CustomStyles.getDefaultSignOutIcon(),
-              SizedBox(width: 10.0),
-              Text("退出登录"),
-            ],
-          ),
-        ),
-      ],
     );
+  }
+
+  Future _onConfirmLogout() async {
+    await ChatService.disposeChat();
+    await StorageUtil().deleteOnLogout();
+    Navigator.of(context)
+        .pushNamedAndRemoveUntil(RouteGenerator.loginRoute, (route) => false);
   }
 
   Widget _buildSilenceUserButton() {
@@ -342,10 +342,13 @@ class _PersonalPageState extends State<PersonalPage> {
 }
 
 class TabBarHeader extends SliverPersistentHeaderDelegate {
-  final TabBar _tabBar = TabBar(
-    tabs: Constants.personalPageTabs.map((e) => Tab(text: e)).toList(),
-    isScrollable: false,
-  );
+  TabBarHeader()
+      : _tabBar = TabBar(
+          tabs: Constants.personalPageTabs.map((e) => Tab(text: e)).toList(),
+          isScrollable: false,
+        );
+
+  final TabBar _tabBar;
 
   @override
   Widget build(
@@ -428,7 +431,6 @@ class PersonalPostHeader extends SliverPersistentHeaderDelegate {
               ],
             ),
           ),
-          _buildToggle(context),
         ],
       ),
     );

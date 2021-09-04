@@ -3,6 +3,7 @@ import 'package:comment_overflow/pages/personal_page.dart';
 import 'package:comment_overflow/utils/general_utils.dart';
 import 'package:comment_overflow/utils/recent_chats_provider.dart';
 import 'package:convex_bottom_bar/convex_bottom_bar.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:comment_overflow/pages/notification_page.dart';
@@ -49,8 +50,11 @@ class _PagesContainerState extends State<PagesContainer> {
         color: Colors.grey,
         height: 55,
         items: [
-          TabItem(icon: Icons.home, title: '首页'),
-          TabItem(icon: Icons.message, title: '消息'),
+          TabItem(icon: Icons.home_rounded, title: '首页'),
+          TabItem(
+            icon: Icons.chat_rounded,
+            title: '消息',
+          ),
           TabItem(icon: Icons.person, title: '我的'),
         ],
         onTap: (int i) => setState(() {

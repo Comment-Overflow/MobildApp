@@ -82,8 +82,9 @@ class _LoginPageState extends State<LoginPage> {
   Widget build(BuildContext context) {
     Color accentColor = Theme.of(context).accentColor;
     return FlutterLogin(
+      backgroundImage: AssetImage("assets/images/login_background.jpg"),
       loginAfterSignUp: false,
-      title: '有可奉告',
+      logo: "assets/images/logo.png",
       messages: buildMessages(),
       hideForgotPasswordButton: true,
       onLogin: _login,
@@ -103,7 +104,7 @@ class _LoginPageState extends State<LoginPage> {
             elevation: 3,
           ),
           buttonTheme: LoginButtonTheme(
-              elevation: 2, backgroundColor: Color.fromRGBO(29, 149, 63, 1)),
+              elevation: 2, backgroundColor: Color.fromRGBO(38, 156, 70, 1.0)),
           accentColor: accentColor,
           authButtonPadding: EdgeInsets.only(top: 15.0, bottom: 5.0)),
       onRecoverPassword: _recoverPassword,

@@ -49,7 +49,7 @@ dependencies:
   flutter_login:
     git:
       url: https://github.com/Gun9niR/flutter_login.git
-      ref: 5452262c5df21b6f83f98cfe2ceae7a2f3c475ec
+      ref: 7e2474471dbf515b0c57de035749aab72fb7358e
   wechat_assets_picker: ^5.5.8
   extended_image: ^4.1.0
   provider: ^5.0.0
@@ -102,6 +102,9 @@ flutter:
   assets:
     - .env
     - assets/images/image_loading_fail.png
+    - assets/images/logo.png
+    - assets/images/login_background.jpg
+    - assets/images/developed_by.png
 
   # To add custom fonts to your application, add a fonts section here,
   # in this "flutter" section. Each entry in this list should have a

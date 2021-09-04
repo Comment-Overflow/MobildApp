@@ -343,11 +343,8 @@ class CommentPagingManager<T> {
       if (index == jumpFloorValues._recentlyFetchedTopIndex - 1 &&
           jumpFloorValues._firstJumpCompleted == true) {
         // print('$index build as indicator');
-        return Padding(
-          padding: const EdgeInsets.only(
-            top: 16,
-            bottom: 16,
-          ),
+        return Container(
+          height: _loadingIndicatorHeight,
           child: Center(child: CircularProgressIndicator()),
         );
       } else {

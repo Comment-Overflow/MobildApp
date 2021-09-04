@@ -58,7 +58,7 @@ class ChatMessage extends StatelessWidget {
                         elevation: 0.3,
                         alignment: Alignment.topRight,
                         nip: BubbleNip.rightTop,
-                        color: CustomColors.chatBubbleBlue,
+                        color: CustomColors.chatBubbleColor,
                         child: _buildContent(),
                       ),
                       _message.time == null
@@ -146,7 +146,7 @@ class ChatMessage extends StatelessWidget {
               maxWidth: Constants.defaultMaxBubbleWidth,
             ),
             child: ExtendedImage.network(
-              _message.content,
+              GeneralUtils.getThumbnailPath(_message.content),
               fit: BoxFit.scaleDown,
               cache: true,
               loadStateChanged: (ExtendedImageState state) {
@@ -263,7 +263,8 @@ class _ImageDetailView extends StatelessWidget {
   }
 
   Widget _buildNetworkImage() {
-    return ExtendedImage.network(_message.content as String,
+    return ExtendedImage.network(
+        GeneralUtils.getThumbnailPath(_message.content as String),
         loadStateChanged: (ExtendedImageState state) {
       switch (state.extendedImageLoadState) {
         case LoadState.loading:

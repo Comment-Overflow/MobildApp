@@ -108,4 +108,9 @@ class GeneralUtils {
 
     return buffer.toString();
   }
+
+  static String getThumbnailPath(String originalPath) =>
+      originalPath.substring(0, originalPath.lastIndexOf(".")) +
+      "-tbn" +
+      originalPath.substring(originalPath.lastIndexOf("."));
 }
