@@ -1,5 +1,3 @@
-import 'dart:io';
-
 import 'package:comment_overflow/assets/constants.dart';
 import 'package:comment_overflow/assets/custom_styles.dart';
 import 'package:comment_overflow/model/user_info.dart';

@@ -123,7 +123,9 @@ class CustomStyles {
   static const statisticTextStyle = TextStyle(fontSize: 18.0);
 
   static const profileSettingItemTitleStyle = TextStyle(
-      color: Colors.blueGrey, fontWeight: FontWeight.normal, fontSize: 16.0);
+      color: Colors.blueGrey,
+      fontWeight: FontWeight.normal,
+      fontSize: Constants.profileSettingFontSize);
 
   /// Default icon for reply with changeable size.
   static Icon getDefaultReplyIcon({size = 14.0, color = Colors.grey}) =>
