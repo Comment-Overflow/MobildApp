@@ -199,6 +199,9 @@ class Constants {
   static const String noStarredIndicatorTitle = "还没有帖子被收藏";
   static const String noReplyIndicatorTitle = "还没有收到回复";
   static const String noFollowNotificationTitle = "还没有被关注";
+
+  static const String commentDeletedPrompt = "[该回复已被删除]";
+  static const String postFrozenPrompt = "该帖子已被锁定";
 }
 
 enum FollowStatus {

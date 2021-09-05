@@ -150,10 +150,11 @@ class _CommentCardState extends State<CommentCard>
               _gap,
               isDeleted
                   ? Padding(
-                      padding: EdgeInsets.only(bottom: 10, left: 133),
-                      child: Text("该回复已被删除",
-                          style: CustomStyles.commentDeletedStyle,
-                          textAlign: TextAlign.center))
+                      padding: EdgeInsets.only(bottom: 10),
+                      child: Center(
+                        child: Text(Constants.commentDeletedPrompt,
+                            style: CustomStyles.commentDeletedStyle),
+                      ))
                   : widget._comment.content.isNotEmpty
                       ? Text(
                           widget._comment.content,
