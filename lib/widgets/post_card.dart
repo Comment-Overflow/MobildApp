@@ -130,13 +130,19 @@ class PostCard extends StatelessWidget {
             ),
             WidgetSpan(
                 child: _post.isFrozen
-                    ? Row(
-                        mainAxisSize: MainAxisSize.min,
-                        children: [
-                          SizedBox(width: 130.0),
-                          CustomStyles.getFreezeIcon(),
-                          Text("该帖子已被锁定", style: CustomStyles.postFrozenStyle)
-                        ],
+                    ? Padding(
+                        padding: const EdgeInsets.only(
+                            top: Constants.defaultCardPadding * 0.7),
+                        child: Center(
+                          child: Row(
+                            mainAxisSize: MainAxisSize.min,
+                            children: [
+                              CustomStyles.getFreezeIcon(),
+                              Text(Constants.postFrozenPrompt,
+                                  style: CustomStyles.postFrozenStyle)
+                            ],
+                          ),
+                        ),
                       )
                     : Container()),
           ],
