@@ -45,8 +45,7 @@ class _SearchedCommentCardListState extends State<SearchedCommentCardList> {
             return searchedComments;
           },
           (context, item, index) => SearchedCommentCard(item, [searchKey]),
-          emptyIndicatorTitle: Constants.searchCommentEmptyIndicatorTitle,
-          emptyIndicatorSubtitle: Constants.searchCommentEmptyIndicatorSubtitle,
+          emptyIndicatorTitle: Constants.commentEmptyIndicatorTitle,
           firstPageIndicator: SkeletonPostList(),
         );
 

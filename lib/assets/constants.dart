@@ -169,15 +169,9 @@ class Constants {
 
   static const String networkError = '网络错误';
 
-  static const String searchCommentEmptyIndicatorTitle = '找不到话题';
-
-  static const String searchCommentEmptyIndicatorSubtitle = '试试换个姿势搜索';
+  static const String commentEmptyIndicatorTitle = '这里没有内容';
 
   static const String searchUserEmptyIndicatorTitle = '找不到用户';
-
-  static const String searchUserEmptyIndicatorSubtitle = '也许只是擦肩而过';
-
-  static const String commentEmptyIndicatorTitle = "还没有发言";
 
   static const String browsePostIndicatorTitle = '还没有话题';
 
@@ -189,11 +183,7 @@ class Constants {
 
   static const String noRecommendationIndicatorTitle = "不知道该推荐什么给你";
 
-  static const String noRecommendationIndicatorSubtitle = "多看看看帖，让我们知道你喜欢什么";
-
-  static const String noStarIndicatorTitle = "还没有收藏帖子";
-
-  static const String noStarIndicatorSubtitle = "多逛逛一定能发现喜欢的内容";
+  static const String noRecommendationIndicatorSubtitle = "多逛一逛，让我们知道你喜欢什么";
 
   static const String noApprovalIndicatorTitle = "还没有收到点赞";
   static const String noStarredIndicatorTitle = "还没有帖子被收藏";
