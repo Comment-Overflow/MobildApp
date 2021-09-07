@@ -130,19 +130,13 @@ class PostCard extends StatelessWidget {
             ),
             WidgetSpan(
                 child: _post.isFrozen
-                    ? Padding(
-                        padding: const EdgeInsets.only(
-                            top: Constants.defaultCardPadding * 0.7),
-                        child: Center(
-                          child: Row(
-                            mainAxisSize: MainAxisSize.min,
-                            children: [
-                              CustomStyles.getFreezeIcon(),
-                              Text(Constants.postFrozenPrompt,
-                                  style: CustomStyles.postFrozenStyle)
-                            ],
-                          ),
-                        ),
+                    ? Row(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          CustomStyles.getFreezeIcon(),
+                          Text(Constants.postFrozenPrompt,
+                              style: CustomStyles.postFrozenStyle)
+                        ],
                       )
                     : Container()),
           ],
