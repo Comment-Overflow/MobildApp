@@ -81,35 +81,40 @@ class _LoginPageState extends State<LoginPage> {
   @override
   Widget build(BuildContext context) {
     Color accentColor = Theme.of(context).accentColor;
-    return FlutterLogin(
-      backgroundImage: AssetImage("assets/images/login_background.jpg"),
-      loginAfterSignUp: false,
-      logo: "assets/images/logo.png",
-      messages: buildMessages(),
-      hideForgotPasswordButton: true,
-      onLogin: _login,
-      onSignup: _signUp,
-      onSubmitAnimationCompleted: () {
-        Navigator.of(context).pushReplacementNamed(RouteGenerator.homeRoute);
+    return GestureDetector(
+      onTap: () {
+        FocusScope.of(context).unfocus();
       },
-      theme: LoginTheme(
-          // Gradient background color.
-          pageColorLight: Color.fromRGBO(1, 180, 59, 1.0),
-          pageColorDark: Color.fromRGBO(29, 149, 63, 1),
-          primaryColor: accentColor,
-          titleStyle: TextStyle(
-            color: Colors.white,
-          ),
-          cardTheme: CardTheme(
-            elevation: 3,
-          ),
-          buttonTheme: LoginButtonTheme(
-              elevation: 2, backgroundColor: Color.fromRGBO(38, 156, 70, 1.0)),
-          accentColor: accentColor,
-          authButtonPadding: EdgeInsets.only(top: 15.0, bottom: 5.0)),
-      onRecoverPassword: _recoverPassword,
-      emailRetryInterval: 30,
-      onSend: _sendEmail,
+      child: FlutterLogin(
+        backgroundImage: AssetImage("assets/images/login_background.jpg"),
+        loginAfterSignUp: false,
+        logo: "assets/images/logo.png",
+        messages: buildMessages(),
+        hideForgotPasswordButton: true,
+        onLogin: _login,
+        onSignup: _signUp,
+        onSubmitAnimationCompleted: () {
+          Navigator.of(context).pushReplacementNamed(RouteGenerator.homeRoute);
+        },
+        theme: LoginTheme(
+            // Gradient background color.
+            pageColorLight: Color.fromRGBO(1, 180, 59, 1.0),
+            pageColorDark: Color.fromRGBO(29, 149, 63, 1),
+            primaryColor: accentColor,
+            titleStyle: TextStyle(
+              color: Colors.white,
+            ),
+            cardTheme: CardTheme(
+              elevation: 3,
+            ),
+            buttonTheme: LoginButtonTheme(
+                elevation: 2, backgroundColor: Color.fromRGBO(38, 156, 70, 1.0)),
+            accentColor: accentColor,
+            authButtonPadding: EdgeInsets.only(top: 15.0, bottom: 5.0)),
+        onRecoverPassword: _recoverPassword,
+        emailRetryInterval: 30,
+        onSend: _sendEmail,
+      ),
     );
   }
 
