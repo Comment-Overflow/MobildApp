@@ -140,12 +140,13 @@ class _ProfileSettingPageState extends State<ProfileSettingPage> {
                     if (!errorFlag) {
                       MessageBox.showToast(
                           msg: "保存成功", messageBoxType: MessageBoxType.Success);
-                      Navigator.pushReplacement(
+                      Navigator.pushAndRemoveUntil(
                           context,
                           RouteGenerator.generateRoute(RouteSettings(
                             name: RouteGenerator.homeRoute,
                             arguments: 2,
-                          )));
+                          )),
+                          (_) => false);
                     }
                     setState(() => _isLoading = false);
                   } else if (!_isUserNameValid) {
