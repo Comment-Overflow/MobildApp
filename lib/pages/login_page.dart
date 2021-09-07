@@ -94,7 +94,12 @@ class _LoginPageState extends State<LoginPage> {
         onLogin: _login,
         onSignup: _signUp,
         onSubmitAnimationCompleted: () {
-          Navigator.of(context).pushReplacementNamed(RouteGenerator.homeRoute);
+          Navigator.pushAndRemoveUntil(
+              context,
+              RouteGenerator.generateRoute(
+                  RouteSettings(name: RouteGenerator.homeRoute)),
+              (_) => false);
+          // Navigator.of(context).pushReplacementNamed(RouteGenerator.homeRoute);
         },
         theme: LoginTheme(
             // Gradient background color.
@@ -108,7 +113,8 @@ class _LoginPageState extends State<LoginPage> {
               elevation: 3,
             ),
             buttonTheme: LoginButtonTheme(
-                elevation: 2, backgroundColor: Color.fromRGBO(38, 156, 70, 1.0)),
+                elevation: 2,
+                backgroundColor: Color.fromRGBO(38, 156, 70, 1.0)),
             accentColor: accentColor,
             authButtonPadding: EdgeInsets.only(top: 15.0, bottom: 5.0)),
         onRecoverPassword: _recoverPassword,
