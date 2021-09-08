@@ -97,7 +97,8 @@ class _NewPostPageState extends State<NewPostPage> {
         Expanded(
             child: Padding(
           padding: EdgeInsets.only(left: 16.0, right: 16.0),
-          child: buildContentInputField(_activeForegroundColor),
+          child:
+              SafeArea(child: buildContentInputField(_activeForegroundColor)),
         )),
       ]),
       floatingActionButton: FloatingActionButton(
@@ -152,7 +153,7 @@ class _NewPostPageState extends State<NewPostPage> {
         automaticallyImplyLeading: false,
       );
 
-  buildTitleInputField(lineColor) => TextField(
+  Widget buildTitleInputField(lineColor) => TextField(
         maxLengthEnforcement: MaxLengthEnforcement.truncateAfterCompositionEnds,
         cursorColor: lineColor,
         maxLength: Constants.postTitleMaximumLength,
@@ -170,8 +171,9 @@ class _NewPostPageState extends State<NewPostPage> {
         onChanged: (String text) => setState(() => this._title = text),
       );
 
-  buildContentInputField(lineColor) => TextField(
+  Widget buildContentInputField(lineColor) => TextField(
         maxLines: null,
+        maxLength: Constants.postContentMaximumLength,
         keyboardType: TextInputType.multiline,
         cursorColor: lineColor,
         decoration: InputDecoration(

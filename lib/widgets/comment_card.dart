@@ -215,14 +215,17 @@ class _CommentCardState extends State<CommentCard>
         isScrollControlled: true, // !important
         context: context,
         builder: (BuildContext replyContext) {
-          return MultipleInputField(
-            postId: widget._postId,
-            context: replyContext,
-            textController: _replyController,
-            assets: _assets,
-            quote: Quote.fromComment(widget._comment),
-            finishCallback:
-                widget._replyCallback == null ? () {} : widget._replyCallback!,
+          return SafeArea(
+            child: MultipleInputField(
+              postId: widget._postId,
+              context: replyContext,
+              textController: _replyController,
+              assets: _assets,
+              quote: Quote.fromComment(widget._comment),
+              finishCallback: widget._replyCallback == null
+                  ? () {}
+                  : widget._replyCallback!,
+            ),
           );
         });
   }

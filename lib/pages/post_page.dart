@@ -373,13 +373,15 @@ class _PostPageState extends State<PostPage> {
         isScrollControlled: true, // !important
         context: context,
         builder: (_) {
-          return MultipleInputField(
-            postId: widget._post.postId,
-            context: context,
-            textController: _replyController,
-            assets: _assets,
-            quote: null,
-            finishCallback: _pushReplyCallback,
+          return SafeArea(
+            child: MultipleInputField(
+              postId: widget._post.postId,
+              context: context,
+              textController: _replyController,
+              assets: _assets,
+              quote: null,
+              finishCallback: _pushReplyCallback,
+            ),
           );
         });
   }
