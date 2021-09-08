@@ -11,12 +11,14 @@ import 'package:comment_overflow/widgets/skeleton/skeleton_post_list.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/widgets.dart';
 
+/// If _searchKey is empty, means this is user's comment page
 class SearchedCommentCardList extends StatefulWidget {
   final String _searchKey;
   final PostTag? _postTag;
   final int? _userId;
 
-  const SearchedCommentCardList(this._searchKey, {Key? key, postTag, userId})
+  const SearchedCommentCardList(this._searchKey,
+      {Key? key, postTag, userId, isSelf: false})
       : _postTag = postTag,
         _userId = userId,
         super(key: key);
@@ -45,8 +47,12 @@ class _SearchedCommentCardListState extends State<SearchedCommentCardList> {
             return searchedComments;
           },
           (context, item, index) => SearchedCommentCard(item, [searchKey]),
-          emptyIndicatorTitle: Constants.searchCommentEmptyIndicatorTitle,
-          emptyIndicatorSubtitle: Constants.searchCommentEmptyIndicatorSubtitle,
+          emptyIndicatorTitle: searchKey.isEmpty
+              ? "还没有发言"
+              : Constants.searchCommentEmptyIndicatorTitle,
+          emptyIndicatorSubtitle: searchKey.isEmpty
+              ? null
+              : Constants.searchCommentEmptyIndicatorSubtitle,
           firstPageIndicator: SkeletonPostList(),
         );
 

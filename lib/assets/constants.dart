@@ -36,6 +36,8 @@ class Constants {
   /// Maximum characters for post title.
   static const postTitleMaximumLength = 30;
 
+  static const postContentMaximumLength = 300;
+
   static const chatListBaselineSize = 15.8;
 
   /// Default size of avatar in chat room.
@@ -194,6 +196,8 @@ class Constants {
   static const String noStarIndicatorTitle = "还没有收藏帖子";
 
   static const String noStarIndicatorSubtitle = "多逛逛一定能发现喜欢的内容";
+
+  static const String noMyPostIndicatorTitle = "还没有发帖";
 
   static const String noApprovalIndicatorTitle = "还没有收到点赞";
   static const String noStarredIndicatorTitle = "还没有帖子被收藏";

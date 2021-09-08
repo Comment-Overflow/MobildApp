@@ -12,8 +12,14 @@ class PostCardList extends StatefulWidget {
   final PostTag? _tag;
   final int? _userId;
   final bool _isStarred;
+
   const PostCardList(
-      {PostTag? tag, int? userId, bool isStarred = false, Key? key})
+      {PostTag? tag,
+      int? userId,
+      bool isStarred = false,
+      emptyIndicatorTitle,
+      emptyIndicatorSubtitle,
+      Key? key})
       : _tag = tag,
         _userId = userId,
         _isStarred = isStarred,
@@ -38,8 +44,16 @@ class _PostCardListState extends State<PostCardList> {
     var postObjJson = response.data['content'] as List;
     return postObjJson.map((e) => Post.fromJson(e)).toList();
   }, (context, item, index) => PostCard(item),
-          emptyIndicatorTitle: Constants.noStarIndicatorTitle,
-          emptyIndicatorSubtitle: Constants.noStarIndicatorSubtitle,
+          emptyIndicatorTitle: widget._userId == null
+              ? Constants.browsePostIndicatorTitle
+              : widget._isStarred == true
+                  ? Constants.noStarIndicatorTitle
+                  : Constants.noMyPostIndicatorTitle,
+          emptyIndicatorSubtitle: widget._userId == null
+              ? Constants.browsePostEmptyIndicatorSubtitle
+              : widget._isStarred == true
+                  ? Constants.noStarIndicatorSubtitle
+                  : "",
           firstPageIndicator: SkeletonPostList());
 
   @override
