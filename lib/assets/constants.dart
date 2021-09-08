@@ -181,7 +181,7 @@ class Constants {
 
   static const String searchUserEmptyIndicatorSubtitle = '也许只是擦肩而过';
 
-  static const String commentEmptyIndicatorTitle = "还没有发言";
+  static const String commentEmptyIndicatorTitle = "还没有内容";
 
   static const String browsePostIndicatorTitle = '还没有话题';
 
@@ -193,7 +193,7 @@ class Constants {
 
   static const String noRecommendationIndicatorTitle = "不知道该推荐什么给你";
 
-  static const String noRecommendationIndicatorSubtitle = "多看看看帖，让我们知道你喜欢什么";
+  static const String noRecommendationIndicatorSubtitle = "多逛一逛，让我们知道你喜欢什么";
 
   static const String noStarIndicatorTitle = "还没有收藏帖子";
 

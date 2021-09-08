@@ -33,7 +33,6 @@ class _SearchedUserCardListState extends State<SearchedUserCardList> {
           },
           (context, item, index) => UserCard(item, searchKey: searchKey),
           emptyIndicatorTitle: Constants.searchUserEmptyIndicatorTitle,
-          emptyIndicatorSubtitle: Constants.searchUserEmptyIndicatorSubtitle,
           firstPageIndicator: SkeletonUserList(),
         );
 

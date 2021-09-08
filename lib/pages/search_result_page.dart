@@ -77,7 +77,6 @@ class SearchResultPage extends StatelessWidget {
                       removeTop: true,
                     ),
                   ],
-                  physics: new NeverScrollableScrollPhysics(),
                 ),
               ),
               Positioned(

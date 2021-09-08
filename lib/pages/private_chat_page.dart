@@ -63,21 +63,21 @@ class PrivateChatPageState extends State<PrivateChatPage> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        elevation: Constants.defaultAppBarElevation,
-        title: Text(
-          _chatter.userName,
-          style: CustomStyles.pageTitleStyle,
+    return GestureDetector(
+      onTap: () {
+        FocusScope.of(context).unfocus();
+      },
+      child: Scaffold(
+        appBar: AppBar(
+          elevation: Constants.defaultAppBarElevation,
+          title: Text(
+            _chatter.userName,
+            style: CustomStyles.pageTitleStyle,
+          ),
+          automaticallyImplyLeading: false,
+          leading: _buildBackButton(),
         ),
-        automaticallyImplyLeading: false,
-        leading: _buildBackButton(),
-      ),
-      body: GestureDetector(
-        onTap: () {
-          FocusScope.of(context).unfocus();
-        },
-        child: FutureBuilder(
+        body: FutureBuilder(
             future: _getCurrentUserInfo(),
             builder: (_, snapshot) {
               return Column(
