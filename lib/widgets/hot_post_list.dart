@@ -95,6 +95,7 @@ class HotPostCard extends StatelessWidget {
                       child: PostCardImage(
                         _post.hostComment.imageUrl[0],
                         fit: BoxFit.cover,
+                        cache: true,
                       ),
                     ),
                   ),

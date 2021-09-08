@@ -36,7 +36,7 @@ class PostCardImage extends StatelessWidget {
       fallback,
       loadingIndicator,
       timeout: _defaultTimeout,
-      cache,
+      cache: true,
       onTap})
       : _width = width,
         _height = height,
