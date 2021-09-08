@@ -1,4 +1,6 @@
 class Constants {
+  static const int int32MaxValue = 2147483647;
+
   /// Default page size of pageable list.
   static const defaultPageSize = 8;
 

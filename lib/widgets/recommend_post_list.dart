@@ -17,7 +17,7 @@ class RecommendPostList extends StatefulWidget {
 
 class _RecommendPostListState extends State<RecommendPostList> {
   final PagingManager<Post> _pagingManager = PagingManager(
-    Constants.defaultPageSize,
+    Constants.int32MaxValue,
     (page, pageSize) async {
       final Response response = await PostService.getRecommendPosts(
           PostQueryDTO(pageNum: page, pageSize: pageSize));

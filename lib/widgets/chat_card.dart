@@ -87,7 +87,6 @@ class ChatCard extends StatelessWidget {
 
     return GestureDetector(
         onTap: () {
-          print(_chat.chatter.avatarUrl);
           Navigator.of(context).pushNamed(RouteGenerator.privateChatRoute,
               arguments: _chat.chatter);
         },
