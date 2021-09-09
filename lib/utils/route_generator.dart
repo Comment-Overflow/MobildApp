@@ -27,6 +27,7 @@ import 'package:flutter/material.dart';
 class RouteGenerator {
   static const homeRoute = '/';
   static const fadingHomeRoute = '/fading/home';
+  static const blinkHomeRoute = '/blink/home';
   static const searchRoute = '/search';
   static const searchResultRoute = '/search_result';
   static const newPostRoute = '/new_post';
@@ -92,7 +93,8 @@ class RouteGenerator {
           pageBuilder: (_c, _a, _s) => LoginPage(),
           transitionsBuilder: (_c, animation, _s, child) =>
               FadeTransition(opacity: animation, child: child),
-          transitionDuration: Duration(milliseconds: Constants.fadeTransitionDuration),
+          transitionDuration:
+              Duration(milliseconds: Constants.fadeTransitionDuration),
         );
       case newPostRoute:
         return MaterialPageRoute(
@@ -143,13 +145,19 @@ class RouteGenerator {
             settings: settings,
             builder: (_) =>
                 PagesContainer(defaultIndex: args == null ? 0 : args as int));
+      case blinkHomeRoute:
+        return PageRouteBuilder(
+            pageBuilder: (_c, _a, _s) =>
+                PagesContainer(defaultIndex: args == null ? 0 : args as int),
+            transitionDuration: Duration.zero);
       case fadingHomeRoute:
         return PageRouteBuilder(
           pageBuilder: (_c, _a, _s) =>
               PagesContainer(defaultIndex: args == null ? 0 : args as int),
           transitionsBuilder: (_c, animation, _s, child) =>
               FadeTransition(opacity: animation, child: child),
-          transitionDuration: Duration(milliseconds: Constants.fadeTransitionDuration),
+          transitionDuration:
+              Duration(milliseconds: Constants.fadeTransitionDuration),
         );
       case statisticRoute:
         return MaterialPageRoute(builder: (_) => StatisticPage());
