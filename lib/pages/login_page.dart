@@ -97,7 +97,7 @@ class _LoginPageState extends State<LoginPage> {
           Navigator.pushAndRemoveUntil(
               context,
               RouteGenerator.generateRoute(
-                  RouteSettings(name: RouteGenerator.homeRoute)),
+                  RouteSettings(name: RouteGenerator.blinkHomeRoute)),
               (_) => false);
           // Navigator.of(context).pushReplacementNamed(RouteGenerator.homeRoute);
         },
