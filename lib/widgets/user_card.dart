@@ -113,7 +113,9 @@ class UserCard extends StatelessWidget {
                   flex: 2,
                   child: Container(),
                 ),
-                _buildFollowButton(),
+                _userCardInfo.followStatus == null
+                    ? Expanded(flex: 29, child: Container())
+                    : _buildFollowButton(),
               ],
             )),
       ),
@@ -125,6 +127,6 @@ class UserCard extends StatelessWidget {
       child: Center(
           child: StorageUtil().loginInfo.userId != _userCardInfo.userId
               ? FollowButton(_userCardInfo.userId, _userCardInfo.userName,
-                  _userCardInfo.followStatus)
+                  _userCardInfo.followStatus!)
               : Container()));
 }

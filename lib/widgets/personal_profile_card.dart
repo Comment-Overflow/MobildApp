@@ -147,7 +147,7 @@ class PersonalProfileCard extends StatelessWidget {
                 Expanded(
                   flex: 25,
                   child: MultipleWidgetButton(
-                    RouteGenerator.followersRoute,
+                    RouteGenerator.followingRoute,
                     () => {},
                     [
                       Text(
@@ -244,7 +244,7 @@ class PersonalProfileCard extends StatelessWidget {
           child: Padding(
             padding: const EdgeInsets.only(right: 4.0),
             child: FollowButton(_personalPageInfo.userId,
-                _personalPageInfo.userName, _personalPageInfo.followStatus),
+                _personalPageInfo.userName, _personalPageInfo.followStatus!),
           ),
         ),
         Expanded(

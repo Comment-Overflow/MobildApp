@@ -157,48 +157,6 @@ class _PersonalPageState extends State<PersonalPage> {
     });
   }
 
-  Widget _buildSorter() {
-    return Container(
-      height: 32.0,
-      padding: EdgeInsets.symmetric(horizontal: 15.0),
-      child: Center(
-        child: Row(
-          mainAxisSize: MainAxisSize.max,
-          mainAxisAlignment: MainAxisAlignment.start,
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: [
-            PopupMenuButton<SortPolicy>(
-              onSelected: _onSort,
-              child: Row(
-                children: [
-                  CustomStyles.getDefaultListIcon(),
-                  Padding(
-                    padding: const EdgeInsets.only(left: 4.0),
-                    child: Text(
-                      Constants.sorterTexts[_policy.index],
-                      style: TextStyle(
-                        color: Colors.grey,
-                      ),
-                    ),
-                  ),
-                ],
-              ),
-              itemBuilder: (BuildContext context) => [
-                PopupMenuItem(
-                  value: SortPolicy.hottest,
-                  child: Text(Constants.sorterTexts[SortPolicy.hottest.index]),
-                ),
-                PopupMenuItem(
-                  value: SortPolicy.latest,
-                  child: Text(Constants.sorterTexts[SortPolicy.latest.index]),
-                ),
-              ],
-            ),
-          ],
-        ),
-      ),
-    );
-  }
 
   Widget _buildSignOutButton() {
     return IconButton(

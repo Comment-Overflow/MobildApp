@@ -45,7 +45,7 @@ class RouteGenerator {
 
   /// Shows the list of notification when other users have followed me.
   static const followMeNotificationRoute = '/follow';
-  static const followersRoute = '/followers';
+  static const followingRoute = '/following';
   static const fansRoute = '/fans';
   static const introRoute = '/intro';
 
@@ -61,7 +61,7 @@ class RouteGenerator {
                   (args as UserNameIdDto).id),
               (args).userName + '的粉丝'),
         );
-      case followersRoute:
+      case followingRoute:
         return MaterialPageRoute(
             settings: settings,
             builder: (_) => ScrollViewPage(
