@@ -10,11 +10,13 @@ import 'package:flutter/cupertino.dart';
 import 'package:provider/provider.dart';
 
 class ChatService {
-
   static Future initChat() async {
-    int totalUnreadCount = (await ChatService.getTotalUnreadCount()).data as int;
+    int totalUnreadCount =
+        (await ChatService.getTotalUnreadCount()).data as int;
     BuildContext context = GlobalUtils.navKey!.currentContext!;
-    context.read<RecentChatsProvider>().updateTotalUnreadCount(totalUnreadCount);
+    context
+        .read<RecentChatsProvider>()
+        .updateTotalUnreadCount(totalUnreadCount);
     await SocketClient().init();
   }
 
@@ -30,7 +32,7 @@ class ChatService {
       'receiverId': receiverId,
       'content': content,
     });
-    return HttpUtil().dio.post('/chat/text', data: formData);
+    return HttpUtil().passNginxDio.post('/chat/text', data: formData);
   }
 
   static Future<Response> sendImage(int receiverId, File imageFile) async {
@@ -38,10 +40,11 @@ class ChatService {
       'receiverId': receiverId,
       'imageFile': MultipartFile.fromFileSync(imageFile.path)
     });
-    return HttpUtil().dio.post('/chat/image', data: formData);
+    return HttpUtil().passNginxDio.post('/chat/image', data: formData);
   }
 
-  static Future<Response> getChatHistory(int chatterId, int newMessageCount, int pageNumber) async {
+  static Future<Response> getChatHistory(
+      int chatterId, int newMessageCount, int pageNumber) async {
     return HttpUtil().dio.get('/chat-history', queryParameters: {
       'chatterId': chatterId,
       'offset': newMessageCount + pageNumber * Constants.HTTPChatHistoryPage,
