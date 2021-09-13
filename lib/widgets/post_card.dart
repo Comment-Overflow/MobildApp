@@ -278,10 +278,6 @@ class SearchedCommentCard extends StatelessWidget {
               text:
                   ' ${_post.searchedComment.approvalCount} · ${_post.searchedComment.timeString}',
             ),
-            WidgetSpan(
-                child: _post.isFrozen
-                    ? CustomStyles.getFreezeIcon()
-                    : Container()),
           ],
           style: CustomStyles.postFooterStyle,
         ),
@@ -407,10 +403,6 @@ class CommentSummaryCard extends StatelessWidget {
               text:
                   ' ${_post.searchedComment.approvalCount} · ${_post.searchedComment.timeString}',
             ),
-            WidgetSpan(
-                child: _post.isFrozen
-                    ? CustomStyles.getFreezeIcon()
-                    : Container()),
           ],
           style: CustomStyles.postFooterStyle,
         ),
