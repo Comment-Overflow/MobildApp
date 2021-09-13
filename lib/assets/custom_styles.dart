@@ -94,6 +94,7 @@ class CustomStyles {
 
   static const postFrozenStyle = TextStyle(
     color: Colors.grey,
+    fontSize: 13.0,
     fontWeight: FontWeight.w400,
   );
 

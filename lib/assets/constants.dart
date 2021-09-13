@@ -207,7 +207,7 @@ class Constants {
   static const String noFollowNotificationTitle = "还没有被关注";
 
   static const String commentDeletedPrompt = "[该回复已被删除]";
-  static const String postFrozenPrompt = "该帖子已被锁定";
+  static const String postFrozenPrompt = "已锁定";
 }
 
 enum FollowStatus {

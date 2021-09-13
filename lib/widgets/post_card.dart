@@ -1,3 +1,4 @@
+import 'package:auto_size_text/auto_size_text.dart';
 import 'package:comment_overflow/assets/constants.dart';
 import 'package:comment_overflow/assets/custom_styles.dart';
 import 'package:comment_overflow/model/comment.dart';
@@ -110,38 +111,45 @@ class PostCard extends StatelessWidget {
         )
       : SizedBox.shrink();
 
-  buildFooter() => RichText(
-        text: TextSpan(
-          children: [
-            WidgetSpan(
-              child: CustomStyles.getDefaultReplyIcon(),
-            ),
-            TextSpan(
-              text: ' ${_post.commentCount} · ',
-            ),
-            WidgetSpan(
-                child:
-                    _post.hostComment.approvalStatus == ApprovalStatus.approve
+  buildFooter() => Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          RichText(
+            text: TextSpan(
+              children: [
+                WidgetSpan(
+                  child: CustomStyles.getDefaultReplyIcon(),
+                ),
+                TextSpan(
+                  text: ' ${_post.commentCount} · ',
+                ),
+                WidgetSpan(
+                    child: _post.hostComment.approvalStatus ==
+                            ApprovalStatus.approve
                         ? CustomStyles.getDefaultThumbUpIcon()
                         : CustomStyles.getDefaultNotThumbUpIcon()),
-            TextSpan(
-              text:
-                  ' ${_post.approvalCount} · ${GeneralUtils.getDefaultTimeString(_post.lastCommentTime)}',
+                TextSpan(
+                  text:
+                      ' ${_post.approvalCount} · ${GeneralUtils.getDefaultTimeString(_post.lastCommentTime)}',
+                ),
+              ],
+              style: CustomStyles.postFooterStyle,
             ),
-            WidgetSpan(
-                child: _post.isFrozen
-                    ? Row(
-                        mainAxisSize: MainAxisSize.min,
-                        children: [
-                          CustomStyles.getFreezeIcon(),
-                          Text(Constants.postFrozenPrompt,
-                              style: CustomStyles.postFrozenStyle)
-                        ],
-                      )
-                    : Container()),
-          ],
-          style: CustomStyles.postFooterStyle,
-        ),
+          ),
+          _post.isFrozen
+              ? Padding(
+                  padding: const EdgeInsets.only(right: 5.0),
+                  child: Row(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      CustomStyles.getFreezeIcon(),
+                      AutoSizeText(Constants.postFrozenPrompt,
+                          style: CustomStyles.postFrozenStyle, maxLines: 1)
+                    ],
+                  ),
+                )
+              : Container(),
+        ],
       );
 }
 
