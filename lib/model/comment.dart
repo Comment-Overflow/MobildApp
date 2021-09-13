@@ -2,30 +2,58 @@ import 'package:comment_overflow/assets/constants.dart';
 import 'package:comment_overflow/model/quote.dart';
 import 'package:comment_overflow/model/user_info.dart';
 import 'package:comment_overflow/utils/general_utils.dart';
-import 'package:intl/intl.dart';
 
 class Comment {
+  final int _id;
   final UserInfo user;
   final String _content;
   final DateTime _time;
   final Quote? _quote;
   final int _floor;
+  final bool _isDeleted;
   int _approvalCount;
   ApprovalStatus _approvalStatus;
   List<String> _imageUrl;
 
+  int get id => _id;
   String get content => _content;
   DateTime get time => _time;
-  String get timeString => GeneralUtils.getTimeString(_time);
+  String get timeString => GeneralUtils.getDefaultTimeString(_time);
   Quote? get quote => _quote;
   int get floor => _floor;
   String get floorString => _floor.toString();
   int get approvalCount => _approvalCount;
   ApprovalStatus get approvalStatus => _approvalStatus;
   List<String> get imageUrl => _imageUrl;
+  bool get isDeleted => _isDeleted;
 
-  Comment(this.user, this._content, this._time, this._quote, this._floor,
-      this._approvalCount, this._approvalStatus, this._imageUrl);
+  Comment(this._id, this.user, this._content, this._time, this._quote,
+      this._floor, this._isDeleted, this._approvalCount, this._approvalStatus, this._imageUrl);
+
+  factory Comment.fromJson(dynamic json) {
+    var _imageList = json['imageUrl'];
+    String statusString = json['approvalStatus'] as String;
+
+    ApprovalStatus status;
+    if (statusString == "APPROVAL")
+      status = ApprovalStatus.approve;
+    else if (statusString == "DISAPPROVAL")
+      status = ApprovalStatus.disapprove;
+    else
+      status = ApprovalStatus.none;
+
+    return Comment(
+        json['id'] as int,
+        UserInfo.fromJson(json['userInfo']),
+        json['content'] as String,
+        DateTime.parse(json['time'] as String),
+        (json['quoteId'] as int) == 0 ? null : Quote.fromJson(json['quoteDTO']),
+        json['floor'] as int,
+        json['isDeleted'] as bool,
+        json['approvalCount'] as int,
+        status,
+        _imageList == null ? [] : List.from(_imageList));
+  }
 
   void addApprovals() {
     switch (_approvalStatus) {

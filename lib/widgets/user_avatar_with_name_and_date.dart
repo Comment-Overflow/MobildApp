@@ -18,8 +18,10 @@ class UserAvatarWithNameAndDate extends StatelessWidget {
   final DateTime _time;
   final UserActionType _userActionType;
   final double avatarSize;
+
   // Gap between avatar and text.
   final double horizontalGap;
+
   // Gap between lines of text.
   final double verticalGap;
 
@@ -41,7 +43,8 @@ class UserAvatarWithNameAndDate extends StatelessWidget {
     return Row(
       mainAxisSize: MainAxisSize.min,
       children: [
-        UserAvatar(this.avatarSize, image: NetworkImage(_userInfo.avatarUrl)),
+        UserAvatar(_userInfo.userId, avatarSize,
+            imageContent: _userInfo.avatarUrl),
         _horizontalGap,
         Column(
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -72,7 +75,7 @@ class UserAvatarWithNameAndDate extends StatelessWidget {
             )),
             _verticalGap,
             Text(
-              GeneralUtils.getTimeString(this._time),
+              GeneralUtils.getDefaultTimeString(this._time),
               style: TextStyle(
                 fontSize: 14.0,
                 color: Colors.grey,

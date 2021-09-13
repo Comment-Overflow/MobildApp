@@ -1,8 +1,13 @@
 import 'package:comment_overflow/assets/constants.dart';
 import 'package:comment_overflow/assets/custom_styles.dart';
 import 'package:comment_overflow/model/quote.dart';
+import 'package:comment_overflow/model/request_dto/new_comment_dto.dart';
+import 'package:comment_overflow/service/post_service.dart';
+import 'package:comment_overflow/utils/general_utils.dart';
+import 'package:comment_overflow/utils/message_box.dart';
 import 'package:comment_overflow/utils/my_image_picker.dart';
 import 'package:comment_overflow/widgets/quote_card.dart';
+import 'package:dio/dio.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:wechat_assets_picker/wechat_assets_picker.dart';
@@ -21,6 +26,12 @@ class MultipleInputField extends StatelessWidget {
   /// Quote of this reply. (if any)
   final Quote? _quote;
 
+  final int _postId;
+
+  bool _isLoading = false;
+
+  /// The function to call after sending reply.
+  final Function _finishCallback;
   /*
     Usage:
     add [onTap] property for reply button
@@ -43,15 +54,19 @@ class MultipleInputField extends StatelessWidget {
   */
 
   MultipleInputField(
-      {@required context,
-      @required textController,
-      @required assets,
-      quote,
+      {required BuildContext context,
+      required TextEditingController textController,
+      required List<AssetEntity> assets,
+      required int postId,
+      required Function finishCallback,
+      Quote? quote,
       Key? key})
       : _context = context,
         _controller = textController,
         _assets = assets,
         _quote = quote,
+        _postId = postId,
+        _finishCallback = finishCallback,
         super(key: key);
 
   @override
@@ -81,21 +96,95 @@ class MultipleInputField extends StatelessWidget {
             ),
             _quote == null
                 ? SizedBox.shrink()
-                : Padding(
-                    padding: EdgeInsets.all(6.0),
-                    child: QuoteCard(_quote),
+                : Row(
+                    children: [
+                      Expanded(
+                          child: Padding(
+                        padding: EdgeInsets.all(6.0),
+                        child: QuoteCard(_quote),
+                      ))
+                    ],
                   ),
             HorizontalImageScroller(_assets),
             Row(
               children: [
                 _buildTextField(),
                 Padding(
-                  padding: EdgeInsets.only(right: 5.0),
-                  child: ElevatedButton(
-                    child: Text("发送"),
-                    onPressed: () {},
-                  ),
-                )
+                    padding: EdgeInsets.only(right: 5.0),
+                    child: StatefulBuilder(builder: (c, s) {
+                      // Check for empty content.
+                      Future<void> _postComment() async {
+                        if (_controller.text.isEmpty) {
+                          MessageBox.showToast(
+                              msg: "回复文字不能为空",
+                              messageBoxType: MessageBoxType.Error);
+                          return;
+                        }
+
+                        s(() {
+                          _isLoading = true;
+                        });
+                        // Check image size to be less than 20MB each.
+                        List<int> overSizedIndex =
+                            await GeneralUtils.checkImageSize(_assets);
+                        if (overSizedIndex.isNotEmpty) {
+                          MessageBox.showToast(
+                              msg: "发帖失败！" +
+                                  GeneralUtils.buildOverSizeAlert(
+                                      overSizedIndex),
+                              messageBoxType: MessageBoxType.Error);
+                          s(() {
+                            _isLoading = false;
+                          });
+                          return;
+                        }
+                        final dto = NewCommentDTO(
+                            postId: _postId,
+                            quoteId: _quote == null ? 0 : _quote!.commentId,
+                            content: _controller.text,
+                            assets: _assets);
+                        try {
+                          final response = await PostService.postComment(dto);
+                          MessageBox.showToast(
+                              msg: "回复成功",
+                              messageBoxType: MessageBoxType.Success);
+                          s(() {
+                            _isLoading = false;
+                          });
+                          Navigator.pop(context);
+                          _finishCallback(response.data);
+                          _controller.clear();
+                          _assets.clear();
+                        } on DioError catch (e) {
+                          if (e.response != null &&
+                              e.response!.statusCode == 401) {
+                            MessageBox.showToast(
+                                msg: "发送回复失败: 您已被禁言",
+                                messageBoxType: MessageBoxType.Error);
+                            s(() {
+                              _isLoading = false;
+                            });
+                            Navigator.pop(context);
+                            return;
+                          }
+                          MessageBox.showToast(
+                              msg: "发送回复失败: ${e.response!.data}",
+                              messageBoxType: MessageBoxType.Error);
+                          s(() {
+                            _isLoading = false;
+                          });
+                        }
+                      }
+
+                      return _isLoading
+                          ? ElevatedButton(
+                              onPressed: null,
+                              child: CupertinoActivityIndicator())
+                          : ElevatedButton(
+                              child: Text("发送"),
+                              onPressed: _postComment,
+                            );
+                    }))
               ],
             ),
           ]),
@@ -130,8 +219,7 @@ class MultipleInputField extends StatelessWidget {
 
   Future<void> _selectAssets() async {
     final List<AssetEntity>? result = await MyImagePicker.pickImage(_context,
-        maxAssets: Constants.maxImageNumber - _assets.length,
-        selectedAssets: _assets);
+        maxAssets: Constants.maxImageNumber, selectedAssets: _assets);
     if (result != null) {
       _assets.clear();
       _assets.addAll(List<AssetEntity>.from(result));

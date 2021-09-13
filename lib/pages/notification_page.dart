@@ -1,13 +1,16 @@
-import 'package:comment_overflow/fake_data/fake_data.dart';
 import 'package:comment_overflow/model/chat.dart';
+import 'package:comment_overflow/service/chat_service.dart';
+import 'package:comment_overflow/utils/recent_chats_provider.dart';
 import 'package:comment_overflow/widgets/adaptive_refresher.dart';
 import 'package:comment_overflow/widgets/chat_card.dart';
+import 'package:dio/dio.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:comment_overflow/assets/constants.dart';
 import 'package:comment_overflow/assets/custom_styles.dart';
 import 'package:comment_overflow/widgets/notification_button_list.dart';
 import 'package:flutter/rendering.dart';
+import 'package:provider/provider.dart';
 
 class NotificationPage extends StatefulWidget {
   NotificationPage({Key? key}) : super(key: key);
@@ -17,8 +20,6 @@ class NotificationPage extends StatefulWidget {
 }
 
 class _NotificationPageState extends State<NotificationPage> {
-  late List<Chat> _recentChats;
-
   @override
   void initState() {
     super.initState();
@@ -39,6 +40,11 @@ class _NotificationPageState extends State<NotificationPage> {
         automaticallyImplyLeading: false,
       ),
       body: AdaptiveRefresher(
+        iosComplete: SizedBox(
+          width: 25.0,
+          height: 25.0,
+          child: const CupertinoActivityIndicator(),
+        ),
         onRefresh: _onRefresh,
         child: CustomScrollView(
           slivers: <Widget>[
@@ -53,27 +59,17 @@ class _NotificationPageState extends State<NotificationPage> {
                     Constants.defaultNotificationButtonSize),
               ),
             )),
-            _recentChats.length == 0 ? _buildNoChatPrompt() : _buildChatList(),
+            context.watch<RecentChatsProvider>().recentChats.length == 0
+                ? _buildNoChatPrompt()
+                : _buildChatList(),
           ],
         ),
       ),
     );
   }
 
-  void _getRecentChats() {
-    // TODO: Get cached chats from local file.
-    // TODO: Get real chats from server.
-    setState(() {
-      _recentChats = recentChats;
-    });
-  }
-
   Future _onRefresh() async {
-    // getRecentChats();
-    print("Notification Page onRefresh");
-    // monitor network fetch
-    return Future.delayed(Duration(milliseconds: 1000));
-    // if failed,use refreshFailed()
+    _getRecentChats();
   }
 
   Widget _buildNoChatPrompt() {
@@ -84,7 +80,7 @@ class _NotificationPageState extends State<NotificationPage> {
           "没有消息",
           style: TextStyle(
             color: Colors.grey,
-            fontSize: 20.0,
+            fontSize: 16.0,
           ),
         ),
       ),
@@ -92,20 +88,30 @@ class _NotificationPageState extends State<NotificationPage> {
   }
 
   Widget _buildChatList() {
+    List<Chat> recentChats = context.watch<RecentChatsProvider>().recentChats;
     return SliverList(
       delegate: SliverChildBuilderDelegate(
         (BuildContext context, int index) {
           return ChatCard(recentChats[index], () {
-            // TODO: Delete the chat from local file.
-            // TODO: Delete the chat from server. (?)
-            setState(() {
-              _recentChats.removeAt(index);
-            });
-            _getRecentChats();
+            ChatService.deleteChat(recentChats[index].chatter.userId);
+            context.read<RecentChatsProvider>().removeAt(index);
           });
         },
         childCount: recentChats.length,
       ),
     );
+  }
+
+  Future _getRecentChats() async {
+    Response<dynamic> response = await ChatService.getRecentChats();
+    List chatsResponse = response.data as List;
+    List<Chat> recentChats = [];
+    Map<int, Chat> chatMap = Map();
+    for (Map chatResponse in chatsResponse) {
+      Chat chat = Chat.fromJson(chatResponse);
+      recentChats.add(chat);
+      chatMap.putIfAbsent(chat.chatter.userId, () => chat);
+    }
+    context.read<RecentChatsProvider>().updateAll(recentChats, chatMap);
   }
 }

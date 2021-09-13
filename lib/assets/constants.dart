@@ -1,4 +1,6 @@
 class Constants {
+  static const int int32MaxValue = 2147483647;
+
   /// Default page size of pageable list.
   static const defaultPageSize = 8;
 
@@ -6,7 +8,7 @@ class Constants {
   static const defaultNotificationPageSize = 10;
 
   /// Default padding of any card component.
-  static const defaultCardPadding = 16.0;
+  static const defaultCardPadding = 14.0;
 
   /// Default size height of a user card.
   static const defaultUserCardHeight = 100.0;
@@ -15,7 +17,7 @@ class Constants {
   static const defaultButtonPadding = 5.0;
 
   /// Default size of Avatar in commentCard.
-  static const defaultAvatarInCommentSize = 24.0;
+  static const defaultAvatarInCommentSize = 30.0;
 
   /// Default size of buttons in notification page.
   static const defaultNotificationButtonSize = 32.0;
@@ -24,7 +26,7 @@ class Constants {
   static const defaultChatCardHeight = 80.0;
 
   /// Default size of chat avatar.
-  static const defaultChatListAvatarSize = 60.0;
+  static const defaultChatListAvatarSize = 50.0;
 
   static const defaultAppBarElevation = 0.5;
 
@@ -35,6 +37,8 @@ class Constants {
 
   /// Maximum characters for post title.
   static const postTitleMaximumLength = 30;
+
+  static const postContentMaximumLength = 300;
 
   static const chatListBaselineSize = 15.8;
 
@@ -60,13 +64,13 @@ class Constants {
   static const defaultPersonalPageHeaderHeight = 150.0;
 
   /// Default personal page avatar size.
-  static const defaultPersonalPageAvatarSize = 130.0;
+  static const defaultPersonalPageAvatarSize = 115.0;
 
   /// Default personal page avatar padding.
   static const defaultPersonalPageAvatarPadding = 5.0;
 
   /// Default sex icon size on personal page.
-  static const defaultPersonalPageHeaderTitleSize = 22.5;
+  static const defaultPersonalPageHeaderTitleSize = 22.0;
 
   /// Default size of personal page header footer text.
   static const defaultPersonalPageHeaderFooterSize = 14.0;
@@ -96,10 +100,27 @@ class Constants {
   /// image size of UserAvatar for profile setting page
   static const profileSettingImageSize = 130.0;
 
+  static const profileSettingFontSize = 16.0;
+
   static const messageBoxFontSize = 16.0;
 
   /// Default nine-pattern spacing.
   static const defaultNinePatternSpacing = 6.0;
+
+  static const defaultHighlightTime = 2000;
+
+  /// Default page size when getting chat history from backend.
+  static const HTTPChatHistoryPage = 15;
+
+  static const maxSearchHistory = 20;
+
+  static const postCommentTimeout = 30;
+
+  static const sizeLimitBytes = 20 * 1024 * 1024;
+
+  static final sizeLimitMB = sizeLimitBytes / 1024 / 1024;
+
+  static final fadeTransitionDuration = 1200;
 
   // Categories of posts
   static const List<String> postCategories = [
@@ -118,17 +139,87 @@ class Constants {
   ];
 
   static const List<String> personalPageTabs = ["我的帖子", "我的回复", "我的收藏"];
+
+  static const List<String> statisticPageTabs = ["今天", "本周", "本月", "所有"];
+
+  static const List<String> statistics = [
+    "发帖数",
+    "评论数",
+    "新注册用户",
+    "活跃用户",
+    "点赞数",
+    "浏览量"
+  ];
+
+  static const String emailToken = 'emailToken';
+
+  static const String token = 'token';
+
+  static const String userId = 'userId';
+
+  static const String userName = 'userName';
+
+  static const String avatarUrl = 'avatarUrl';
+
+  static const String searchHistory = 'searchHistory';
+
+  static const String userType = 'userType';
+
+  static const String imageLastMessage = '[图片]';
+
+  static const String imageLoadingError = '图片加载失败';
+
+  static const String imageReloadPrompt = '点击重新加载';
+
+  static const String networkError = '网络错误';
+
+  static const String searchCommentEmptyIndicatorTitle = '找不到话题';
+
+  static const String searchCommentEmptyIndicatorSubtitle = '试试换个姿势搜索';
+
+  static const String searchUserEmptyIndicatorTitle = '找不到用户';
+
+  static const String searchUserEmptyIndicatorSubtitle = '也许只是擦肩而过';
+
+  static const String commentEmptyIndicatorTitle = "还没有内容";
+
+  static const String browsePostIndicatorTitle = '还没有话题';
+
+  static const String browsePostEmptyIndicatorSubtitle = '做第一个打破沉默的人吧';
+
+  static const String noFansIndicatorTitle = "还没有粉丝";
+
+  static const String noFollowingIndicatorTitle = "还没有关注";
+
+  static const String noRecommendationIndicatorTitle = "不知道该推荐什么给你";
+
+  static const String noRecommendationIndicatorSubtitle = "多逛一逛，让我们知道你喜欢什么";
+
+  static const String noStarIndicatorTitle = "还没有收藏帖子";
+
+  static const String noStarIndicatorSubtitle = "多逛逛一定能发现喜欢的内容";
+
+  static const String noMyPostIndicatorTitle = "还没有发帖";
+
+  static const String noApprovalIndicatorTitle = "还没有收到点赞";
+  static const String noStarredIndicatorTitle = "还没有帖子被收藏";
+  static const String noReplyIndicatorTitle = "还没有收到回复";
+  static const String noFollowNotificationTitle = "还没有被关注";
+
+  static const String commentDeletedPrompt = "[该回复已被删除]";
+  static const String postFrozenPrompt = "已锁定";
 }
 
 enum FollowStatus {
   none,
-  followedByMe,
-  followingMe,
+  followedByCurrentUser,
+  followingCurrentUser,
   both,
 }
-enum Sex {
+enum Gender {
   male,
   female,
+  secret,
 }
 
 enum ApprovalStatus {
@@ -143,8 +234,6 @@ enum SortPolicy {
   hottest,
 }
 
-enum NotificationType { approvePost, approveComment, collect, attention, reply }
-
 enum UserActionType {
   approval,
   follow,
@@ -152,7 +241,9 @@ enum UserActionType {
   star,
 }
 
-enum MessageType { Text, Image }
+enum StatisticPeriodType { Day, Week, Month, All }
+
+enum MessageType { Text, Image, TemporaryImage }
 
 enum ChatterType {
   Me,
@@ -173,3 +264,50 @@ enum CommentType {
 enum Setting {
   signOut,
 }
+
+enum PostTag { Life, Study, Art, Mood, Career }
+
+enum MessageStatus { Normal, Sending, Failed }
+
+enum UserType { Admin, User, Unauthorized, Banned, Silenced }
+
+Map<String, UserType> userTypeMap = {
+  "ADMIN": UserType.Admin,
+  "USER": UserType.User,
+  "UNAUTHORIZED": UserType.Unauthorized,
+  "BANNED": UserType.Banned,
+  "SILENCED": UserType.Silenced
+};
+
+Map<UserType, String> userTypeString = {
+  UserType.Admin: "ADMIN",
+  UserType.User: "USER",
+  UserType.Unauthorized: "UNAUTHORIZED",
+  UserType.Banned: "BANNED",
+  UserType.Silenced: "SILENCED"
+};
+
+Map<String, FollowStatus> followStatusMap = {
+  "NONE": FollowStatus.none,
+  "FOLLOWED_BY_ME": FollowStatus.followedByCurrentUser,
+  "FOLLOWING_ME": FollowStatus.followingCurrentUser,
+  "BOTH": FollowStatus.both,
+};
+
+Map<ApprovalStatus, String> statusString = {
+  ApprovalStatus.approve: "APPROVAL",
+  ApprovalStatus.disapprove: "DISAPPROVAL",
+  ApprovalStatus.none: "NONE"
+};
+
+Map<String, Gender> genderMap = {
+  "MALE": Gender.male,
+  "FEMALE": Gender.female,
+  "SECRET": Gender.secret
+};
+
+Map<Gender, String> genderEnum2StringMap = {
+  Gender.male: "男",
+  Gender.female: "女",
+  Gender.secret: "保密"
+};

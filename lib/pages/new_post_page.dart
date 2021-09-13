@@ -1,10 +1,17 @@
 import 'package:chips_choice/chips_choice.dart';
 import 'package:comment_overflow/assets/constants.dart';
 import 'package:comment_overflow/assets/custom_styles.dart';
-import 'package:comment_overflow/fake_data/fake_data.dart';
+import 'package:comment_overflow/model/post.dart';
+import 'package:comment_overflow/model/request_dto/new_post_dto.dart';
+import 'package:comment_overflow/model/routing_dto/jump_post_dto.dart';
+import 'package:comment_overflow/service/post_service.dart';
+import 'package:comment_overflow/utils/general_utils.dart';
+import 'package:comment_overflow/utils/message_box.dart';
 import 'package:comment_overflow/utils/my_image_picker.dart';
 import 'package:comment_overflow/utils/route_generator.dart';
 import 'package:comment_overflow/widgets/horizontal_image_scroller.dart';
+import 'package:dio/dio.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter/widgets.dart';
@@ -20,7 +27,7 @@ class NewPostPage extends StatefulWidget {
 class _NewPostPageState extends State<NewPostPage> {
   final _iconSize = Constants.searchBarHeight * 0.8;
   // List of category tags.
-  final List<String> _options = tags;
+  final List<String> _options = ['校园生活', '学在交大', '文化艺术', '心情驿站', '职业发展'];
 
   // Below are the fields that user inputs.
   // Title can't be empty, but content can.
@@ -32,6 +39,10 @@ class _NewPostPageState extends State<NewPostPage> {
   String _content = '';
   // The list of images to upload.
   final List<AssetEntity> _assets = [];
+
+  bool _isLoading = false;
+
+  List<String> _tags = ["LIFE", "STUDY", "ART", "MOOD", "CAREER"];
 
   @override
   Widget build(BuildContext context) {
@@ -86,7 +97,8 @@ class _NewPostPageState extends State<NewPostPage> {
         Expanded(
             child: Padding(
           padding: EdgeInsets.only(left: 16.0, right: 16.0),
-          child: buildContentInputField(_activeForegroundColor),
+          child:
+              SafeArea(child: buildContentInputField(_activeForegroundColor)),
         )),
       ]),
       floatingActionButton: FloatingActionButton(
@@ -116,25 +128,32 @@ class _NewPostPageState extends State<NewPostPage> {
           ),
           Text("发布帖子"),
           // Send icon.
-          IconButton(
-              padding: EdgeInsets.zero,
-              constraints: BoxConstraints(),
-              splashRadius: _iconSize / 1.3,
-              splashColor: Theme.of(context).buttonColor,
-              icon: CustomStyles.getDefaultSendIcon(
-                  size: _iconSize,
-                  color: this._title.isNotEmpty
-                      ? iconColor
-                      : Theme.of(context).disabledColor),
-              onPressed: () {
-                print(this._title);
-                print(this._content);
-              }),
+          SizedBox(
+            height: _iconSize,
+            width: _iconSize,
+            child: _isLoading
+                ? CupertinoActivityIndicator()
+                : IconButton(
+                    padding: EdgeInsets.zero,
+                    constraints: BoxConstraints(),
+                    splashRadius: _iconSize / 1.3,
+                    splashColor: Theme.of(context).buttonColor,
+                    icon: CustomStyles.getDefaultSendIcon(
+                        size: _iconSize,
+                        color: this._title.isNotEmpty
+                            ? iconColor
+                            : Theme.of(context).disabledColor),
+                    onPressed: this._title.isNotEmpty
+                        ? () {
+                            _pushSend();
+                          }
+                        : null),
+          ),
         ]),
         automaticallyImplyLeading: false,
       );
 
-  buildTitleInputField(lineColor) => TextField(
+  Widget buildTitleInputField(lineColor) => TextField(
         maxLengthEnforcement: MaxLengthEnforcement.truncateAfterCompositionEnds,
         cursorColor: lineColor,
         maxLength: Constants.postTitleMaximumLength,
@@ -152,8 +171,9 @@ class _NewPostPageState extends State<NewPostPage> {
         onChanged: (String text) => setState(() => this._title = text),
       );
 
-  buildContentInputField(lineColor) => TextField(
+  Widget buildContentInputField(lineColor) => TextField(
         maxLines: null,
+        maxLength: Constants.postContentMaximumLength,
         keyboardType: TextInputType.multiline,
         cursorColor: lineColor,
         decoration: InputDecoration(
@@ -163,4 +183,63 @@ class _NewPostPageState extends State<NewPostPage> {
         expands: true,
         onChanged: (String text) => this._content = text,
       );
+
+  void _pushSend() {
+    _post();
+  }
+
+  Future<void> _post() async {
+    setState(() {
+      _isLoading = true;
+    });
+
+    // Check image size to be less than 20MB each.
+    List<int> overSizedIndex = await GeneralUtils.checkImageSize(_assets);
+    if (overSizedIndex.isNotEmpty) {
+      MessageBox.showToast(
+          msg: "发帖失败！" + GeneralUtils.buildOverSizeAlert(overSizedIndex),
+          messageBoxType: MessageBoxType.Error);
+      setState(() {
+        _isLoading = false;
+      });
+      return;
+    }
+
+    final dto = NewPostDTO(
+        tag: _tags[_idx], title: _title, content: _content, assets: _assets);
+    try {
+      final response = await PostService.postPost(dto);
+      Navigator.pushReplacement(
+          context,
+          RouteGenerator.generateRoute(RouteSettings(
+            name: RouteGenerator.postRoute,
+            arguments: JumpPostDTO(Post.fromJson(response.data)),
+          )));
+    } on DioError catch (e) {
+      // Error: Connect timeout.
+      if (e.type == DioErrorType.connectTimeout) {
+        MessageBox.showToast(
+            msg: "发帖失败！网络连接超时", messageBoxType: MessageBoxType.Error);
+        return;
+      }
+      // Error: User silenced.
+      if (e.response != null && e.response!.statusCode == 401) {
+        MessageBox.showToast(
+            msg: "发帖失败！您已被禁言", messageBoxType: MessageBoxType.Error);
+        setState(() {
+          _isLoading = false;
+        });
+        Navigator.pop(context);
+        return;
+      }
+      // Error: Any other type.
+      MessageBox.showToast(
+          msg: "发帖失败！${e.response!.data}",
+          messageBoxType: MessageBoxType.Error);
+    } finally {
+      setState(() {
+        _isLoading = false;
+      });
+    }
+  }
 }

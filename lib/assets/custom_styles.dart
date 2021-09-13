@@ -1,4 +1,5 @@
 import 'package:comment_overflow/assets/custom_colors.dart';
+import 'package:empty_widget/empty_widget.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
@@ -6,19 +7,26 @@ import 'package:flutter/widgets.dart';
 import 'constants.dart';
 
 class CustomStyles {
+  static const highlightedColor = Colors.deepOrangeAccent;
   static const postTitleStyle = TextStyle(
+    color: Colors.black,
     fontWeight: FontWeight.bold,
     fontSize: 16.0,
     height: 1.3,
   );
+  static final highlightedPostTitleStyle =
+      postTitleStyle.copyWith(color: highlightedColor);
   static const postFooterStyle = TextStyle(
     color: Colors.grey,
     fontSize: 13.0,
   );
   static const postContentStyle = TextStyle(
+    color: Colors.black,
     fontSize: 14.0,
     height: 1.3,
   );
+  static final highlightedPostContentStyle =
+      postContentStyle.copyWith(color: highlightedColor);
   static const postPageTitleStyle = TextStyle(
     fontWeight: FontWeight.bold,
     fontSize: 24.0,
@@ -52,11 +60,42 @@ class CustomStyles {
   );
 
   static const userNameStyle = TextStyle(
+    color: Colors.black,
     fontWeight: FontWeight.bold,
     fontSize: 16.5,
   );
+
+  static const galleryStyle = TextStyle(
+    color: Colors.white,
+    fontWeight: FontWeight.bold,
+    fontSize: 16.5,
+  );
+
+  static final highlightedUserNameStyle =
+      userNameStyle.copyWith(color: highlightedColor);
+
+  static const jumpPageStyle =
+      TextStyle(fontWeight: FontWeight.bold, fontSize: 15.0);
+
+  static const currentPageStyle = TextStyle(
+      fontWeight: FontWeight.bold, fontSize: 17.5, color: Colors.white);
+
+  static const otherPageStyle = TextStyle(
+      fontWeight: FontWeight.bold, fontSize: 18.0, color: Colors.black54);
+
   static const userBriefStyle = TextStyle(
     color: Colors.grey,
+  );
+
+  static const commentDeletedStyle = TextStyle(
+    color: Colors.grey,
+    fontSize: 15.0,
+  );
+
+  static const postFrozenStyle = TextStyle(
+    color: Colors.grey,
+    fontSize: 13.0,
+    fontWeight: FontWeight.w400,
   );
 
   static const pageTitleStyle = TextStyle(
@@ -80,12 +119,22 @@ class CustomStyles {
     fontSize: 14.0,
   );
 
+  static const statisticFigureStyle = TextStyle(fontSize: 28.0);
+
+  static const statisticTextStyle = TextStyle(fontSize: 18.0);
+
   static const profileSettingItemTitleStyle = TextStyle(
-      color: Colors.blueGrey, fontWeight: FontWeight.normal, fontSize: 16.0);
+      color: Colors.blueGrey,
+      fontWeight: FontWeight.normal,
+      fontSize: Constants.profileSettingFontSize);
 
   /// Default icon for reply with changeable size.
   static Icon getDefaultReplyIcon({size = 14.0, color = Colors.grey}) =>
       Icon(CupertinoIcons.text_bubble, color: color, size: size);
+
+  /// Default icon for hot index.
+  static Icon getDefaultHotIcon({size = 14.0, color = Colors.grey}) =>
+      Icon(CupertinoIcons.flame_fill, color: color, size: size);
 
   /// Default icon for thumb up.
   static getDefaultThumbUpIcon({size = 14.0, color = Colors.pinkAccent}) =>
@@ -94,6 +143,12 @@ class CustomStyles {
   /// Default icon for not thumb up.
   static getDefaultNotThumbUpIcon({size = 14.0, color = Colors.grey}) =>
       Icon(CupertinoIcons.heart, color: color, size: size);
+
+  static getFreezeIcon({size = 14.0, color = Colors.grey}) =>
+      Icon(CupertinoIcons.lock, color: color, size: size);
+
+  static getReleaseIcon({size = 14.0, color = Colors.grey}) =>
+      Icon(CupertinoIcons.lock_open, color: color, size: size);
 
   static getDefaultThumbDownIcon({size = 14.0, color = Colors.black87}) =>
       Icon(CupertinoIcons.hand_thumbsdown_fill, color: color, size: size);
@@ -151,6 +206,24 @@ class CustomStyles {
         size: size,
       );
 
+  static Icon getSilenceIcon({size = 14.0, color: Colors.black87}) => Icon(
+        CupertinoIcons.speaker_slash,
+        color: color,
+        size: size,
+      );
+
+  static Icon getFreeIcon({size = 14.0, color: Colors.black87}) => Icon(
+        CupertinoIcons.speaker_2,
+        color: color,
+        size: size,
+      );
+
+  static Icon getAdminIcon({size = 14.0, color: Colors.green}) => Icon(
+        Icons.verified_user_outlined,
+        color: color,
+        size: size,
+      );
+
   /// Default icon for female.
   static getDefaultFemaleIcon(
           {size = Constants.defaultPersonalPageHeaderTitleSize,
@@ -177,9 +250,6 @@ class CustomStyles {
   static Icon getDefaultCloseIcon({size = 14.0, color: Colors.grey}) =>
       Icon(Icons.close, color: color, size: size);
 
-  static Icon getDefaultMailIcon({size = 22.0, color = Colors.blueAccent}) =>
-      Icon(Icons.mail_outline, color: color, size: size);
-
   static Icon getDefaultEditIcon({size = 20.0, color = Colors.black}) =>
       Icon(Icons.edit, color: color, size: size);
 
@@ -188,6 +258,10 @@ class CustomStyles {
 
   static Icon getDefaultRightArrow({size = 14.0, color = Colors.grey}) =>
       Icon(Icons.keyboard_arrow_right_sharp, color: color, size: size);
+
+  static Icon getDefaultMessageFailIcon({size = 14.0, color = Colors.red}) =>
+      Icon(CupertinoIcons.exclamationmark_circle_fill,
+          color: color, size: size);
 
   static const referenceUserNameStyle = TextStyle(
     fontWeight: FontWeight.bold,
@@ -200,8 +274,26 @@ class CustomStyles {
     fontSize: 17.0,
   );
 
-  static const chatMessageTimeStyle = TextStyle(
-    fontSize: 11.0,
-    color: Colors.grey
-  );
+  static const chatMessageTimeStyle =
+      TextStyle(fontSize: 11.0, color: Colors.grey);
+
+  static final firstPageErrorIndicator = Container(
+      height: 1,
+      padding: EdgeInsets.fromLTRB(60, 0, 60, 60),
+      child: EmptyWidget(
+        image: null,
+        packageImage: PackageImage.Image_4,
+        title: '网络出错了',
+        subTitle: '点击重试',
+        titleTextStyle: TextStyle(
+          fontSize: 18,
+          color: Color(0xff9da9c7),
+          fontWeight: FontWeight.w500,
+        ),
+        subtitleTextStyle: TextStyle(
+          fontSize: 17,
+          color: Color(0xffabb8d6),
+        ),
+        hideBackgroundAnimation: true,
+      ));
 }

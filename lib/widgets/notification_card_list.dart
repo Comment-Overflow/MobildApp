@@ -1,9 +1,10 @@
-import 'dart:math';
-
 import 'package:comment_overflow/assets/constants.dart';
-import 'package:comment_overflow/fake_data/fake_data.dart';
+import 'package:comment_overflow/model/user_action_record.dart';
+import 'package:comment_overflow/service/notification_service.dart';
 import 'package:comment_overflow/utils/paging_manager.dart';
 import 'package:comment_overflow/widgets/notification_card.dart';
+import 'package:comment_overflow/widgets/skeleton/skeleton_notification_list.dart';
+import 'package:comment_overflow/widgets/skeleton/skeleton_user_list.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 
@@ -21,36 +22,60 @@ class _NotificationCardListState extends State<NotificationCardList> {
   late PagingManager _pagingManager;
 
   _NotificationCardListState(userActionType) {
-    List _dataList = [];
     var _itemBuilder;
 
     switch (userActionType) {
       case UserActionType.approval:
-        _dataList = approvalRecords;
         _itemBuilder = (context, item, index) => ApprovalNotificationCard(item);
+        this._pagingManager = PagingManager(
+            Constants.defaultNotificationPageSize, (page, pageSize) async {
+          var jsonArray = (await NotificationService.getNotification(
+                  page, pageSize, "/notifications/approvals"))
+              .data['content'] as List;
+          return jsonArray
+              .map((json) => ApprovalRecord.fromJson(json))
+              .toList();
+        }, _itemBuilder,
+            firstPageIndicator: SkeletonNotificationCardList(),
+            emptyIndicatorTitle: Constants.noApprovalIndicatorTitle);
         break;
       case UserActionType.reply:
-        _dataList = replyRecords;
         _itemBuilder = (context, item, index) => ReplyNotificationCard(item);
+        this._pagingManager = PagingManager(
+            Constants.defaultNotificationPageSize, (page, pageSize) async {
+          var jsonArray = (await NotificationService.getNotification(
+                  page, pageSize, "/notifications/replies"))
+              .data as List;
+          return jsonArray.map((json) => ReplyRecord.fromJson(json)).toList();
+        }, _itemBuilder,
+            firstPageIndicator: SkeletonNotificationCardList(),
+            emptyIndicatorTitle: Constants.noReplyIndicatorTitle);
         break;
       case UserActionType.star:
-        _dataList = starRecords;
         _itemBuilder = (context, item, index) => StarNotificationCard(item);
+        this._pagingManager = PagingManager(
+            Constants.defaultNotificationPageSize, (page, pageSize) async {
+          var jsonArray = (await NotificationService.getNotification(
+                  page, pageSize, "/notifications/stars"))
+              .data['content'] as List;
+          return jsonArray.map((json) => StarRecord.fromJson(json)).toList();
+        }, _itemBuilder,
+            firstPageIndicator: SkeletonNotificationCardList(),
+            emptyIndicatorTitle: Constants.noStarredIndicatorTitle);
         break;
       case UserActionType.follow:
-        _dataList = followRecords;
         _itemBuilder = (context, item, index) => FollowNotificationCard(item);
+        this._pagingManager = PagingManager(
+            Constants.defaultNotificationPageSize, (page, pageSize) async {
+          var jsonArray = (await NotificationService.getNotification(
+                  page, pageSize, "/notifications/followers"))
+              .data['content'] as List;
+          return jsonArray.map((json) => FollowRecord.fromJson(json)).toList();
+        }, _itemBuilder,
+            firstPageIndicator: SkeletonUserList(),
+            emptyIndicatorTitle: Constants.noFollowNotificationTitle);
         break;
     }
-
-    this._pagingManager =
-        PagingManager(Constants.defaultNotificationPageSize, (page, pageSize) {
-      return Future.delayed(
-        const Duration(seconds: 1),
-        () => _dataList.sublist(
-            page * pageSize, min((page + 1) * pageSize, _dataList.length)),
-      );
-    }, _itemBuilder);
   }
 
   @override

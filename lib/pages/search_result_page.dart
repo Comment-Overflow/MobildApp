@@ -1,9 +1,8 @@
 import 'package:comment_overflow/assets/constants.dart';
 import 'package:comment_overflow/assets/custom_styles.dart';
-import 'package:comment_overflow/fake_data/fake_data.dart';
 import 'package:comment_overflow/utils/route_generator.dart';
 import 'package:comment_overflow/widgets/search_bar.dart';
-import 'package:comment_overflow/widgets/searched_post_card_list.dart';
+import 'package:comment_overflow/widgets/searched_comment_card_list.dart';
 import 'package:comment_overflow/widgets/searched_user_card_list.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
@@ -37,7 +36,7 @@ class SearchResultPage extends StatelessWidget {
                   children: [
                     MediaQuery.removePadding(
                       context: context,
-                      child: SearchedPostCardList(this._searchKey),
+                      child: SearchedCommentCardList(this._searchKey),
                       removeTop: true,
                     ),
                     MediaQuery.removePadding(
@@ -47,31 +46,37 @@ class SearchResultPage extends StatelessWidget {
                     ),
                     MediaQuery.removePadding(
                       context: context,
-                      child: SearchedPostCardList(this._searchKey),
+                      child: SearchedCommentCardList(
+                        this._searchKey,
+                        postTag: PostTag.Life,
+                      ),
                       removeTop: true,
                     ),
                     MediaQuery.removePadding(
                       context: context,
-                      child: SearchedPostCardList(this._searchKey),
+                      child: SearchedCommentCardList(this._searchKey,
+                          postTag: PostTag.Study),
                       removeTop: true,
                     ),
                     MediaQuery.removePadding(
                       context: context,
-                      child: SearchedPostCardList(this._searchKey),
+                      child: SearchedCommentCardList(this._searchKey,
+                          postTag: PostTag.Art),
                       removeTop: true,
                     ),
                     MediaQuery.removePadding(
                       context: context,
-                      child: SearchedPostCardList(this._searchKey),
+                      child: SearchedCommentCardList(this._searchKey,
+                          postTag: PostTag.Mood),
                       removeTop: true,
                     ),
                     MediaQuery.removePadding(
                       context: context,
-                      child: SearchedPostCardList(this._searchKey),
+                      child: SearchedCommentCardList(this._searchKey,
+                          postTag: PostTag.Career),
                       removeTop: true,
                     ),
                   ],
-                  physics: new NeverScrollableScrollPhysics(),
                 ),
               ),
               Positioned(

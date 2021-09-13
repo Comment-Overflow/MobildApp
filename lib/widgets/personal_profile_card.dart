@@ -1,9 +1,12 @@
+import 'package:auto_size_text/auto_size_text.dart';
 import 'package:comment_overflow/assets/constants.dart';
 import 'package:comment_overflow/assets/custom_styles.dart';
+import 'package:comment_overflow/model/routing_dto/image_gallery_dto.dart';
+import 'package:comment_overflow/model/routing_dto/profile_setting_dto.dart';
 import 'package:comment_overflow/model/routing_dto/user_name_id_dto.dart';
 import 'package:comment_overflow/model/user_info.dart';
+import 'package:comment_overflow/utils/general_utils.dart';
 import 'package:comment_overflow/utils/route_generator.dart';
-import 'package:comment_overflow/utils/utils.dart';
 import 'package:comment_overflow/widgets/follow_button.dart';
 import 'package:comment_overflow/widgets/user_avatar.dart';
 import 'package:flutter/cupertino.dart';
@@ -23,7 +26,7 @@ class PersonalProfileCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Theme(
-      data: ThemeData(
+      data: Theme.of(context).copyWith(
         splashColor: Colors.transparent,
         highlightColor: Colors.transparent,
       ),
@@ -41,12 +44,29 @@ class PersonalProfileCard extends StatelessWidget {
                 children: [
                   Expanded(
                     flex: 40,
-                    child: Column(
-                      mainAxisSize: MainAxisSize.max,
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      children: [
-                        UserAvatar(Constants.defaultPersonalPageAvatarSize),
-                      ],
+                    child: Padding(
+                      padding: EdgeInsets.symmetric(horizontal: 12.0),
+                      child: Column(
+                        mainAxisSize: MainAxisSize.max,
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        children: [
+                          GestureDetector(
+                            onTap: _personalPageInfo.avatarUrl == null
+                                ? null
+                                : () => Navigator.push(
+                                    context,
+                                    RouteGenerator.generateRoute(RouteSettings(
+                                      name: RouteGenerator.galleryRoute,
+                                      arguments: ImageGalleryDto(
+                                          [_personalPageInfo.avatarUrl!], 1),
+                                    ))),
+                            child: UserAvatar(_personalPageInfo.userId,
+                                Constants.defaultPersonalPageAvatarSize,
+                                canJump: false,
+                                imageContent: _personalPageInfo.avatarUrl),
+                          ),
+                        ],
+                      ),
                     ),
                   ),
                   Expanded(
@@ -60,33 +80,40 @@ class PersonalProfileCard extends StatelessWidget {
                           child: Row(
                             mainAxisSize: MainAxisSize.max,
                             children: [
-                              Text(
-                                _personalPageInfo.userName,
-                                style: CustomStyles.personalPageUserNameStyle,
+                              Expanded(
+                                child: Padding(
+                                  padding: const EdgeInsets.symmetric(horizontal: 3.0),
+                                  child: AutoSizeText(
+                                    _personalPageInfo.userName,
+                                    style: CustomStyles.personalPageUserNameStyle,
+                                    maxLines: 1,
+                                  ),
+                                ),
                               ),
                               SizedBox(
                                   width: Constants
                                           .defaultPersonalPageHeaderTitleSize *
                                       0.2),
-                              _personalPageInfo.sex == Sex.male
-                                  ? CustomStyles.getDefaultMaleIcon()
-                                  : CustomStyles.getDefaultFemaleIcon(),
+                              _personalPageInfo.gender == Gender.secret
+                                  ? Container()
+                                  : _personalPageInfo.gender == Gender.male
+                                      ? CustomStyles.getDefaultMaleIcon()
+                                      : CustomStyles.getDefaultFemaleIcon(),
                             ],
                           ),
                         ),
                         Expanded(
-                            flex: 8,
+                            flex: 9,
                             child: Divider(
                                 height: 0.5,
                                 endIndent: 0.0,
                                 color: Colors.grey.withOpacity(0.5))),
                         Expanded(
-                          flex: 33,
-                          child: Text(
+                          flex: 32,
+                          child: AutoSizeText(
                             _personalPageInfo.brief,
-                            overflow: TextOverflow.ellipsis,
-                            maxLines: 3,
                             style: CustomStyles.personalPageUserBriefStyle,
+                            maxLines: 2,
                           ),
                         ),
                         SizedBox(height: 5.0),
@@ -120,10 +147,12 @@ class PersonalProfileCard extends StatelessWidget {
                 Expanded(
                   flex: 25,
                   child: MultipleWidgetButton(
-                    RouteGenerator.followersRoute,
+                    RouteGenerator.followingRoute,
+                    () => {},
                     [
                       Text(
-                        getDisplayNumber(_personalPageInfo.followingCount),
+                        GeneralUtils.getDefaultNumberString(
+                            _personalPageInfo.followingCount),
                         style: CustomStyles.personalPageButtonNumberStyle,
                       ),
                       _gap,
@@ -140,9 +169,11 @@ class PersonalProfileCard extends StatelessWidget {
                   flex: 25,
                   child: MultipleWidgetButton(
                     RouteGenerator.fansRoute,
+                    () => {},
                     [
                       Text(
-                        getDisplayNumber(_personalPageInfo.followerCount),
+                        GeneralUtils.getDefaultNumberString(
+                            _personalPageInfo.followerCount),
                         style: CustomStyles.personalPageButtonNumberStyle,
                       ),
                       _gap,
@@ -159,9 +190,11 @@ class PersonalProfileCard extends StatelessWidget {
                   flex: 25,
                   child: MultipleWidgetButton(
                     null,
+                    () => {},
                     [
                       Text(
-                        getDisplayNumber(_personalPageInfo.commentCount),
+                        GeneralUtils.getDefaultNumberString(
+                            _personalPageInfo.postCount),
                         style: CustomStyles.personalPageButtonNumberStyle,
                       ),
                       _gap,
@@ -176,9 +209,11 @@ class PersonalProfileCard extends StatelessWidget {
                   flex: 25,
                   child: MultipleWidgetButton(
                     null,
+                    () => {},
                     [
                       Text(
-                        getDisplayNumber(_personalPageInfo.approvalCount),
+                        GeneralUtils.getDefaultNumberString(
+                            _personalPageInfo.approvalCount),
                         style: CustomStyles.personalPageButtonNumberStyle,
                       ),
                       _gap,
@@ -199,6 +234,7 @@ class PersonalProfileCard extends StatelessWidget {
   }
 
   Widget _buildFollowAndChatButtons(BuildContext context) {
+    Color accentColor = Theme.of(context).accentColor;
     return Row(
       mainAxisSize: MainAxisSize.max,
       mainAxisAlignment: MainAxisAlignment.center,
@@ -207,8 +243,8 @@ class PersonalProfileCard extends StatelessWidget {
         Expanded(
           child: Padding(
             padding: const EdgeInsets.only(right: 4.0),
-            child: FollowButton(
-                _personalPageInfo.userName, _personalPageInfo.followStatus),
+            child: FollowButton(_personalPageInfo.userId,
+                _personalPageInfo.userName, _personalPageInfo.followStatus!),
           ),
         ),
         Expanded(
@@ -217,19 +253,22 @@ class PersonalProfileCard extends StatelessWidget {
             child: SizedBox(
               height: Constants.defaultTextButtonHeight,
               child: TextButton(
-                  style: ButtonStyle(
-                      padding: MaterialStateProperty.all<EdgeInsetsGeometry>(
-                          EdgeInsets.symmetric(
-                              horizontal: Constants.defaultTextButtonPadding)),
-                      side: MaterialStateProperty.all<BorderSide>(
-                          BorderSide(color: Colors.blue, width: 0.7))),
-                  child: Text("私信",
-                      style: TextStyle(
-                          fontSize: Constants.defaultButtonTextSize,
-                          color: Colors.blue)),
-                  onPressed: () {
-                    // TODO: chat room route.
-                  }),
+                style: ButtonStyle(
+                    padding: MaterialStateProperty.all<EdgeInsetsGeometry>(
+                        EdgeInsets.symmetric(
+                            horizontal: Constants.defaultTextButtonPadding)),
+                    side: MaterialStateProperty.all<BorderSide>(
+                        BorderSide(color: accentColor, width: 0.7))),
+                child: Text("私信",
+                    style: TextStyle(
+                        fontSize: Constants.defaultButtonTextSize,
+                        color: accentColor)),
+                onPressed: () {
+                  Navigator.of(context).pushNamed(
+                      RouteGenerator.privateChatRoute,
+                      arguments: _personalPageInfo);
+                },
+              ),
             ),
           ),
         ),
@@ -251,8 +290,8 @@ class PersonalProfileCard extends StatelessWidget {
                     padding: MaterialStateProperty.all<EdgeInsetsGeometry>(
                         EdgeInsets.symmetric(
                             horizontal: Constants.defaultTextButtonPadding)),
-                    backgroundColor:
-                        MaterialStateProperty.all<Color>(Colors.blueAccent)),
+                    backgroundColor: MaterialStateProperty.all<Color>(
+                        Theme.of(context).accentColor)),
                 child: Row(
                   mainAxisSize: MainAxisSize.min,
                   children: [
@@ -269,9 +308,14 @@ class PersonalProfileCard extends StatelessWidget {
                   ],
                 ),
                 onPressed: () {
-                  // TODO: edit route.
-                  Navigator.of(context)
-                      .pushNamed(RouteGenerator.profileSettingRoute);
+                  Navigator.of(context).pushNamed(
+                      RouteGenerator.profileSettingRoute,
+                      arguments: new ProfileSettingDto(
+                          _personalPageInfo.userId,
+                          _personalPageInfo.avatarUrl,
+                          _personalPageInfo.brief,
+                          _personalPageInfo.userName,
+                          _personalPageInfo.gender));
                 }),
           ),
         ),
